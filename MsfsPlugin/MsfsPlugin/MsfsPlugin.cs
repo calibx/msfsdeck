@@ -1,6 +1,7 @@
 namespace Loupedeck.MsfsPlugin
 {
     using System;
+    using System.Runtime.InteropServices;
 
     public class MsfsPlugin : Plugin
     {
@@ -14,6 +15,7 @@ namespace Loupedeck.MsfsPlugin
 
         private void OnApplicationStarted(Object sender, EventArgs e)
         {
+
         }
 
         private void OnApplicationStopped(Object sender, EventArgs e)
