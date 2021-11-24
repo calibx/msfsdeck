@@ -8,7 +8,7 @@
 
     class CnxStateInput : PluginDynamicCommand, Notifiable
     {
-        public CnxStateInput() : base("State", "Display MSFS connexion state", "Debug")
+        public CnxStateInput() : base("Connect", "Display FSUIPC connexion state", "Debug")
         {
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -20,7 +20,7 @@
 
         protected override void RunCommand(String actionParameter)
         {
-                MsfsData.Instance.state = "Init CNX";
+                MsfsData.Instance.state = "Init";
                 MsfsData.Instance.changed();
                 SimulatorDAO.Initialise();
         }
