@@ -53,16 +53,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugInput.cs" />
-    <Compile Include="HeadingEncoder.cs" />
-    <Compile Include="MsfsData.cs" />
+    <Compile Include="encoder\AltitudeEncoder.cs" />
+    <Compile Include="encoder\VerticalSpeedEncoder.cs" />
+    <Compile Include="event\Notifiable.cs" />
+    <Compile Include="input\VerticalSpeedInput.cs" />
+    <Compile Include="input\AltitudeInput.cs" />
+    <Compile Include="input\HeadingInput.cs" />
+    <Compile Include="input\CnxStateInput.cs" />
+    <Compile Include="encoder\HeadingEncoder.cs" />
+    <Compile Include="msfs\MsfsData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SimulatorDAO.cs" />
-    <Compile Include="ToggleMuteCommand.cs" />
+    <Compile Include="msfs\SimulatorDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MsfsApplication.cs" />
     <Compile Include="MsfsPlugin.cs" />

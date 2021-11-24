@@ -6,9 +6,9 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    class DebugInput : PluginDynamicCommand
+    class CnxStateInput : PluginDynamicCommand, Notifiable
     {
-        public DebugInput() : base("Etat", "Affiche l etat de connexion", "Debug")
+        public CnxStateInput() : base("State", "Display MSFS connexion state", "Debug")
         {
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -16,18 +16,13 @@
             return MsfsData.Instance.state;
         }
 
+        public void Notify() => this.AdjustmentValueChanged();
+
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.state = "Connect";
-            try
-            {
-               // SimulatorDAO.Initialise();
-            }
-            catch (Exception ex)
-            {
-                MsfsData.Instance.state = "Connexion impossible";
-            }
-            this.ActionImageChanged(actionParameter);
+                MsfsData.Instance.state = "Init CNX";
+                MsfsData.Instance.changed();
+                SimulatorDAO.Initialise();
         }
     }
 }

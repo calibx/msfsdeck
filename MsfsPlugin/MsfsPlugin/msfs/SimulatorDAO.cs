@@ -52,16 +52,18 @@
             try
             {
                 MsfsData.Instance.state = "Tentative";
+                MsfsData.Instance.changed();
                 simConnect = new SimConnect("Motion Simulator", IntPtr.Zero, WM_USER_SIMCONNECT, null, 0);
                 MsfsData.Instance.state = "Connecté";
+                MsfsData.Instance.changed();
                 SetupEvents();
                 return simConnect;
             }
             catch (COMException ex)
             {
                 MsfsData.Instance.state = "Connexion impossible";
+                MsfsData.Instance.changed();
                 return simConnect;
-                // displayText("Unable to connect to FSX " + ex.Message);
             }
         }
 
@@ -153,7 +155,7 @@
                     simData.Add("TAS", s1.tas.ToString());
                     simData.Add("Heading", s1.heading.ToString());
                     simData.Add("Altitude", s1.altitude.ToString());
-                    MsfsData.Instance.Heading = (Int32)s1.heading;
+                    MsfsData.Instance.currentHeading = (Int32)s1.heading;
                     
                     break;
 
