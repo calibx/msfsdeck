@@ -13,16 +13,22 @@
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-            return MsfsData.Instance.state;
+            return MsfsData.Instance.state ? "Disconnect" : "Connect";
         }
 
         public void Notify() => this.AdjustmentValueChanged();
 
         protected override void RunCommand(String actionParameter)
         {
-                MsfsData.Instance.state = "Init";
-                MsfsData.Instance.changed();
+            if (MsfsData.Instance.state)
+            {
+                SimulatorDAO.Disconnect();
+            }
+            else
+            {
                 SimulatorDAO.Initialise();
+            }
+
         }
     }
 }

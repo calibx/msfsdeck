@@ -19,7 +19,11 @@
         public Int32 currentVerticalSpeed;
         public Int32 currentAPVerticalSpeed;
 
-        public String state;
+        public Boolean state;
+        public Int32 fps;
+
+        public Boolean dirtyAP = false;
+
 
         private static readonly Lazy<MsfsData> lazy =
             new Lazy<MsfsData>(() => new MsfsData());

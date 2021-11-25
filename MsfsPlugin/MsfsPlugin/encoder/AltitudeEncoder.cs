@@ -16,6 +16,7 @@
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
             MsfsData.Instance.currentAPAltitude = MsfsData.Instance.currentAPAltitude + ticks*100;
+            MsfsData.Instance.dirtyAP = true;
             MsfsData.Instance.changed();
         }
         protected override void RunCommand(String actionParameter)

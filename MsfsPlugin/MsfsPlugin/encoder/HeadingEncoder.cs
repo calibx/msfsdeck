@@ -21,6 +21,7 @@
                 newHeading += 360;
             }
             MsfsData.Instance.currentAPHeading = newHeading;
+            MsfsData.Instance.dirtyAP = true;
             MsfsData.Instance.changed();
         }
         protected override void RunCommand(String actionParameter)
