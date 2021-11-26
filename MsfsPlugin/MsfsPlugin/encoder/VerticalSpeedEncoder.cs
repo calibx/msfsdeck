@@ -22,6 +22,7 @@
         protected override void RunCommand(String actionParameter)
         {
             MsfsData.Instance.currentAPVerticalSpeed = MsfsData.Instance.currentVerticalSpeed;
+            MsfsData.Instance.dirtyAP = true;
             MsfsData.Instance.changed();
         }
 

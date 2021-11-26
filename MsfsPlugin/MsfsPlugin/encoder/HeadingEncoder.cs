@@ -27,6 +27,7 @@
         protected override void RunCommand(String actionParameter)
         {
             MsfsData.Instance.currentAPHeading = MsfsData.Instance.currentHeading;
+            MsfsData.Instance.dirtyAP = true;
             MsfsData.Instance.changed();
         }
 
