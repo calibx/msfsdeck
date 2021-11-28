@@ -32,6 +32,12 @@
 
         public static MsfsData Instance { get { return lazy.Value; } }
 
+        public Int32 CurrentHeading { get => this.currentHeading; set => this.currentHeading = value; }
+        public Int32 CurrentAPHeading { get => this.currentAPHeading; set => this.currentAPHeading = value; }
+        public Int32 CurrentAltitude { get => this.currentAltitude; set => this.currentAltitude = value; }
+        public Int32 CurrentAPAltitude { get => this.currentAPAltitude; set => this.currentAPAltitude = value; }
+        public Int32 CurrentVerticalSpeed { get => this.currentVerticalSpeed; set => this.currentVerticalSpeed = value; }
+        public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set => this.currentAPVerticalSpeed = value; }
 
         private MsfsData()
         {

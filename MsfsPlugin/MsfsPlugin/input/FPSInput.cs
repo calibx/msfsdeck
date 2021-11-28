@@ -18,7 +18,7 @@
 
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-            return MsfsData.Instance.fps + "\nFPS";
+            return "\u001b[31m" + MsfsData.Instance.fps + "\nFPS\u001b[0m33";
         }
 
         protected override void RunCommand(String actionParameter)

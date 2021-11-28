@@ -12,7 +12,16 @@
         {
             MsfsData.Instance.register(this);
         }
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize) => MsfsData.Instance.apSwitch.ToString();
+        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
+        {
+            if (MsfsData.Instance.apSwitch == 1)
+            {
+                return "AP Off";
+            } else
+            {
+                return " AP On";
+            }
+        }
 
         public void Notify() => this.AdjustmentValueChanged();
 
