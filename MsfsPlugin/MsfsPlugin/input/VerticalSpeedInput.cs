@@ -18,12 +18,12 @@
 
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-            return MsfsData.Instance.currentVerticalSpeed + "\n" + MsfsData.Instance.currentAPVerticalSpeed;
+            return MsfsData.Instance.CurrentVerticalSpeed + "\n" + MsfsData.Instance.CurrentAPVerticalSpeed;
         }
 
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.currentAPAltitude = MsfsData.Instance.currentAltitude;
+            MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAltitude;
             MsfsData.Instance.changed();
         }
     }

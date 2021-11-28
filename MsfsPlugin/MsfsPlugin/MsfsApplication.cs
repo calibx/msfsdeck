@@ -9,7 +9,7 @@ namespace Loupedeck.MsfsPlugin
 
         }
 
-        protected override String GetProcessName() => "FlightSimulator";
+        protected override String GetProcessName() => "FSUIPC7";
 
         protected override String GetBundleName() => "";
     }

@@ -21,7 +21,9 @@
         private static Offset<int> fps = new Offset<int>(0x0274);          // Frame rate is given by 32768/this value
         private static Offset<int> altitude = new Offset<int>(0x0574);          // 
         private static Offset<int> altitudeAP = new Offset<int>(0x07D4);          // 
-        private static Timer timer = new System.Timers.Timer(); 
+        private static Offset<int> apSwitch = new Offset<int>(0x07BC);
+
+        private static Timer timer = new System.Timers.Timer();
 
         public static void Initialise()
         {
@@ -64,28 +66,31 @@
 
                 if (MsfsData.Instance.dirtyAP)
                 {
-                    verticalSpeedAP.Value = (Int32)(MsfsData.Instance.currentAPVerticalSpeed * 256d / (60d * 3.28084d));
-                    compassAP.Value = (Int16)(MsfsData.Instance.currentAPHeading * 182);
-                    altitudeAP.Value = (Int32)(MsfsData.Instance.currentAPAltitude * 65536 / 3.28);
+                    verticalSpeedAP.Value = (Int32)(MsfsData.Instance.CurrentAPVerticalSpeed * 256d / (60d * 3.28084d));
+                    compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
+                    altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
+                    apSwitch.Value = (Int32)MsfsData.Instance.apSwitch;
                     MsfsData.Instance.dirtyAP = false;
                 }
                 else
                 {
-                    MsfsData.Instance.currentAPVerticalSpeed = (int)((verticalSpeedAP.Value / 256d) * 60d * 3.28084d);
-                    MsfsData.Instance.currentAPHeading = compassAP.Value / 182;
-                    MsfsData.Instance.currentAPAltitude = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
+                    MsfsData.Instance.CurrentAPVerticalSpeed = (int)((verticalSpeedAP.Value / 256d) * 60d * 3.28084d);
+                    MsfsData.Instance.CurrentAPHeading = compassAP.Value / 182;
+                    MsfsData.Instance.CurrentAPAltitude = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
+                    MsfsData.Instance.apSwitch = apSwitch.Value;
                 }
 
-                MsfsData.Instance.currentHeading = (int)compass.Value;
+                MsfsData.Instance.CurrentHeading = (int)compass.Value;
                 double verticalSpeedMPS = (double)verticalSpeed.Value / 256d;
                 double verticalSpeedFPM = verticalSpeedMPS * 60d * 3.28084d;
-                MsfsData.Instance.currentVerticalSpeed = (int)verticalSpeedFPM;
-                MsfsData.Instance.currentAltitude = (int)(altitude.Value * 3.28);
+                MsfsData.Instance.CurrentVerticalSpeed = (int)verticalSpeedFPM;
+                MsfsData.Instance.CurrentAltitude = (int)(altitude.Value * 3.28);
                 MsfsData.Instance.fps = 32768 / fps.Value;
 
                 MsfsData.Instance.changed();
 
-            } else
+            }
+            else
             {
                 MsfsData.Instance.state = false;
                 MsfsData.Instance.changed();

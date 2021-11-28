@@ -10,14 +10,16 @@
     {
         private readonly List<Notifiable> notifiables = new List<Notifiable>();
 
-        public Int32 currentHeading;
-        public Int32 currentAPHeading;
+        private Int32 currentHeading;
+        private Int32 currentAPHeading;
 
-        public Int32 currentAltitude;
-        public Int32 currentAPAltitude;
+        private Int32 currentAltitude;
+        private Int32 currentAPAltitude;
 
-        public Int32 currentVerticalSpeed;
-        public Int32 currentAPVerticalSpeed;
+        private Int32 currentVerticalSpeed;
+        private Int32 currentAPVerticalSpeed;
+
+        public Int32 apSwitch;
 
         public Boolean state;
         public Int32 fps;
@@ -29,6 +31,7 @@
             new Lazy<MsfsData>(() => new MsfsData());
 
         public static MsfsData Instance { get { return lazy.Value; } }
+
 
         private MsfsData()
         {

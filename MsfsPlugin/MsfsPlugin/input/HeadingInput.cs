@@ -17,12 +17,12 @@
 
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-            return MsfsData.Instance.currentHeading + "\n" + MsfsData.Instance.currentAPHeading;
+            return MsfsData.Instance.CurrentHeading + "\n" + MsfsData.Instance.CurrentAPHeading;
         }
 
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.currentAPHeading = MsfsData.Instance.currentHeading;
+            MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentHeading;
             MsfsData.Instance.changed();
         }
     }

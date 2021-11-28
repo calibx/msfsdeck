@@ -15,18 +15,18 @@
         }
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-            MsfsData.Instance.currentAPAltitude = MsfsData.Instance.currentAPAltitude + ticks*100;
+            MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAPAltitude + ticks*100;
             MsfsData.Instance.dirtyAP = true;
             MsfsData.Instance.changed();
         }
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.currentAPAltitude = MsfsData.Instance.currentAltitude;
+            MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAltitude;
             MsfsData.Instance.dirtyAP = true;
             MsfsData.Instance.changed();
         }
 
-        protected override String GetAdjustmentValue(String actionParameter) => MsfsData.Instance.currentAPAltitude.ToString();
+        protected override String GetAdjustmentValue(String actionParameter) => MsfsData.Instance.CurrentAPAltitude.ToString();
 
 
         public void Notify() => this.AdjustmentValueChanged();

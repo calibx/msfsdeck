@@ -23,8 +23,6 @@
 
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.currentAPAltitude = MsfsData.Instance.currentAltitude;
-            MsfsData.Instance.changed();
         }
     }
 }
