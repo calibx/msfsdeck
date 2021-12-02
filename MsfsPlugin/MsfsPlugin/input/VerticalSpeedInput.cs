@@ -8,24 +8,15 @@
 
     class VerticalSpeedInput : PluginDynamicCommand, Notifiable
     {
-        public VerticalSpeedInput() : base("VS", "Display current and AP vertical speed", "Nav")
-
-        {
-            MsfsData.Instance.register(this);
-        }
+        public VerticalSpeedInput() : base("VS", "Display current and AP vertical speed", "Nav") => MsfsData.Instance.register(this);
 
         public void Notify() => this.AdjustmentValueChanged();
 
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
-        {
-            return MsfsData.Instance.CurrentVerticalSpeed + "\n" + MsfsData.Instance.CurrentAPVerticalSpeed;
-        }
+        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize) => MsfsData.Instance.CurrentVerticalSpeed + "\n" + MsfsData.Instance.CurrentAPVerticalSpeed;
 
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAltitude;
-            MsfsData.Instance.changed();
-        }
+        protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAltitude;
+
+
     }
 }
 

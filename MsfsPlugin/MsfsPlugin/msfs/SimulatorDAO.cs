@@ -36,8 +36,7 @@
         {
             FSUIPCConnection.Close();
             timer.Enabled = false;
-            MsfsData.Instance.state = false;
-            MsfsData.Instance.changed();
+            MsfsData.Instance.State = false;
         }
 
 
@@ -48,20 +47,20 @@
                 if (FSUIPCConnection.IsOpen)
                 {
                     FSUIPCConnection.Process();
-                    if (MsfsData.Instance.dirtyAP)
+                    if (MsfsData.Instance.DirtyAP)
                     {
                         verticalSpeedAP.Value = (Int32)(MsfsData.Instance.CurrentAPVerticalSpeed * 256d / (60d * 3.28084d));
                         compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                         altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
-                        apSwitch.Value = (Int32)MsfsData.Instance.apSwitch;
-                        MsfsData.Instance.dirtyAP = false;
+                        apSwitch.Value = (Int32)MsfsData.Instance.ApSwitch;
+                        MsfsData.Instance.DirtyAP = false;
                     }
                     else
                     {
                         MsfsData.Instance.CurrentAPVerticalSpeed = (int)((verticalSpeedAP.Value / 256d) * 60d * 3.28084d);
                         MsfsData.Instance.CurrentAPHeading = compassAP.Value / 182;
                         MsfsData.Instance.CurrentAPAltitude = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
-                        MsfsData.Instance.apSwitch = apSwitch.Value;
+                        MsfsData.Instance.ApSwitch = apSwitch.Value;
                     }
 
                     MsfsData.Instance.CurrentHeading = (int)compass.Value;
@@ -69,10 +68,8 @@
                     double verticalSpeedFPM = verticalSpeedMPS * 60d * 3.28084d;
                     MsfsData.Instance.CurrentVerticalSpeed = (int)verticalSpeedFPM;
                     MsfsData.Instance.CurrentAltitude = (int)(altitude.Value * 3.28);
-                    MsfsData.Instance.fps = 32768 / (fps.Value + 1);
-
-                    MsfsData.Instance.changed();
-
+                    MsfsData.Instance.Fps = 32768 / (fps.Value + 1);
+                                       
                 }
                 else
                 {
@@ -82,12 +79,12 @@
             }
             catch (FSUIPCException ex)
             {
-                MsfsData.Instance.state = false;
+                MsfsData.Instance.State = false;
                 timer.Interval = 2000;
             }
             if (FSUIPCConnection.IsOpen)
             {
-                MsfsData.Instance.state = true;
+                MsfsData.Instance.State = true;
             }
             MsfsData.Instance.changed();
         }

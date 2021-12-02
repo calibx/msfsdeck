@@ -16,14 +16,10 @@
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
             MsfsData.Instance.CurrentAPVerticalSpeed = MsfsData.Instance.CurrentAPVerticalSpeed + ticks * 10;
-            MsfsData.Instance.dirtyAP = true;
-            MsfsData.Instance.changed();
         }
         protected override void RunCommand(String actionParameter)
         {
             MsfsData.Instance.CurrentAPVerticalSpeed = MsfsData.Instance.CurrentVerticalSpeed;
-            MsfsData.Instance.dirtyAP = true;
-            MsfsData.Instance.changed();
         }
 
         protected override String GetAdjustmentValue(String actionParameter) => MsfsData.Instance.CurrentAPVerticalSpeed.ToString();

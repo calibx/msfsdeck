@@ -14,7 +14,7 @@
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-            if (MsfsData.Instance.apSwitch == 1)
+            if (MsfsData.Instance.ApSwitch == 1)
             {
                 return "AP Off";
             } else
@@ -27,9 +27,7 @@
 
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.apSwitch = (MsfsData.Instance.apSwitch + 1) % 2;
-            MsfsData.Instance.dirtyAP = true;
-            MsfsData.Instance.changed();
+            MsfsData.Instance.ApSwitch = (MsfsData.Instance.ApSwitch + 1) % 2;
         }
     }
 }

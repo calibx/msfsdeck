@@ -10,34 +10,29 @@
     {
         private readonly List<Notifiable> notifiables = new List<Notifiable>();
 
-        private Int32 currentHeading;
         private Int32 currentAPHeading;
-
-        private Int32 currentAltitude;
         private Int32 currentAPAltitude;
-
-        private Int32 currentVerticalSpeed;
         private Int32 currentAPVerticalSpeed;
 
-        public Int32 apSwitch;
+        private Int32 apSwitch;
 
-        public Boolean state;
-        public Int32 fps;
+        private Boolean state;
+        private Boolean dirtyAP = false;
 
-        public Boolean dirtyAP = false;
-
-
-        private static readonly Lazy<MsfsData> lazy =
-            new Lazy<MsfsData>(() => new MsfsData());
+        private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
 
         public static MsfsData Instance { get { return lazy.Value; } }
 
-        public Int32 CurrentHeading { get => this.currentHeading; set => this.currentHeading = value; }
-        public Int32 CurrentAPHeading { get => this.currentAPHeading; set => this.currentAPHeading = value; }
-        public Int32 CurrentAltitude { get => this.currentAltitude; set => this.currentAltitude = value; }
-        public Int32 CurrentAPAltitude { get => this.currentAPAltitude; set => this.currentAPAltitude = value; }
-        public Int32 CurrentVerticalSpeed { get => this.currentVerticalSpeed; set => this.currentVerticalSpeed = value; }
-        public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set => this.currentAPVerticalSpeed = value; }
+        public Int32 CurrentHeading { get; set; }
+        public Int32 Fps { get; set; }
+        public Int32 CurrentAPHeading { get => this.currentAPHeading; set { this.currentAPHeading = value; this.DirtyAP = true; } }
+        public Int32 ApSwitch { get => this.apSwitch; set { this.apSwitch = value; this.DirtyAP = true; } }
+        public Int32 CurrentAltitude { get; set; }
+        public Int32 CurrentAPAltitude { get => this.currentAPAltitude; set { this.currentAPAltitude = value; this.DirtyAP = true; } }
+        public Int32 CurrentVerticalSpeed { get; set; }
+        public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.DirtyAP = true; } }
+        public Boolean DirtyAP { get => this.dirtyAP; set { this.dirtyAP = value; this.changed(); } }
+        public Boolean State { get => this.state; set { this.state = value; this.changed(); } }
 
         private MsfsData()
         {
