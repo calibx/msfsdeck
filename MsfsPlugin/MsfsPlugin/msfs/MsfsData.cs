@@ -16,8 +16,12 @@
 
         private Int32 apSwitch;
 
-        private Boolean state;
-        private Boolean dirtyAP = false;
+        private Boolean connected;
+        private Boolean tryingToconnect;
+        private Boolean dirtyAP;
+
+        // Used to know if we try to autoconnect to FSUIPC
+        private Boolean valuesDisplayed;
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
 
@@ -32,7 +36,9 @@
         public Int32 CurrentVerticalSpeed { get; set; }
         public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.DirtyAP = true; } }
         public Boolean DirtyAP { get => this.dirtyAP; set { this.dirtyAP = value; this.changed(); } }
-        public Boolean State { get => this.state; set { this.state = value; this.changed(); } }
+        public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
+        public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
+        public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
 
         private MsfsData()
         {

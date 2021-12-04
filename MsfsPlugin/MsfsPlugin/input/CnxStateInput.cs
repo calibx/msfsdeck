@@ -8,27 +8,26 @@
 
     class CnxStateInput : PluginDynamicCommand, Notifiable
     {
-        public CnxStateInput() : base("Connect", "Display FSUIPC connexion state", "Debug")
+        public CnxStateInput() : base("Connection", "Display FSUIPC connexion state", "Debug")
         {
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-            return MsfsData.Instance.State ? "Disconnect" : "Connect";
+            MsfsData.Instance.ValuesDisplayed = true;
+            if (MsfsData.Instance.Connected)
+            {
+                return "Connected";
+            }
+            else
+            {
+                return MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected";
+            }
         }
 
         public void Notify() => this.AdjustmentValueChanged();
 
         protected override void RunCommand(String actionParameter)
         {
-            if (MsfsData.Instance.State)
-            {
-                SimulatorDAO.Disconnect();
-            }
-            else
-            {
-                SimulatorDAO.Initialise();
-            }
-
         }
     }
 }

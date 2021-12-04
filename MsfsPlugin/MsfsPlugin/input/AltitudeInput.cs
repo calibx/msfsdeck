@@ -18,6 +18,7 @@
 
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
+            MsfsData.Instance.ValuesDisplayed = true;
             return MsfsData.Instance.CurrentAltitude + "\n[" + MsfsData.Instance.CurrentAPAltitude + "]";
         }
 

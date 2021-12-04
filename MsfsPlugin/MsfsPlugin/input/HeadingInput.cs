@@ -12,8 +12,12 @@
 
         public void Notify() => this.AdjustmentValueChanged();
 
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize) => MsfsData.Instance.CurrentHeading + "\n" + MsfsData.Instance.CurrentAPHeading;
-        
+        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
+        {
+            MsfsData.Instance.ValuesDisplayed = true;
+            return MsfsData.Instance.CurrentHeading + "\n" + MsfsData.Instance.CurrentAPHeading;
+        }
+
 
         protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentHeading;
 

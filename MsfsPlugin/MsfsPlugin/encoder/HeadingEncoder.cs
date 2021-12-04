@@ -27,7 +27,11 @@
             MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentHeading;
         }
 
-        protected override String GetAdjustmentValue(String actionParameter) => MsfsData.Instance.CurrentAPHeading.ToString();
+        protected override String GetAdjustmentValue(String actionParameter)
+        {
+            MsfsData.Instance.ValuesDisplayed = true;
+            return MsfsData.Instance.CurrentAPHeading.ToString();
+        }
 
 
         public void Notify() => this.AdjustmentValueChanged();

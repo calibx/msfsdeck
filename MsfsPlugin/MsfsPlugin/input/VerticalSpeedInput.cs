@@ -12,7 +12,11 @@
 
         public void Notify() => this.AdjustmentValueChanged();
 
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize) => MsfsData.Instance.CurrentVerticalSpeed + "\n" + MsfsData.Instance.CurrentAPVerticalSpeed;
+        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
+        {
+            MsfsData.Instance.ValuesDisplayed = true;
+            return MsfsData.Instance.CurrentVerticalSpeed + "\n" + MsfsData.Instance.CurrentAPVerticalSpeed;
+        }
 
         protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAltitude;
 

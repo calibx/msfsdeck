@@ -22,7 +22,11 @@
             MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAltitude;
         }
 
-        protected override String GetAdjustmentValue(String actionParameter) => MsfsData.Instance.CurrentAPAltitude.ToString();
+        protected override String GetAdjustmentValue(String actionParameter)
+        {
+            MsfsData.Instance.ValuesDisplayed = true;
+            return MsfsData.Instance.CurrentAPAltitude.ToString();
+        }
 
 
         public void Notify() => this.AdjustmentValueChanged();

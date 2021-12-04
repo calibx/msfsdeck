@@ -14,12 +14,14 @@
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
+            MsfsData.Instance.ValuesDisplayed = true;
             if (MsfsData.Instance.ApSwitch == 1)
             {
-                return "AP Off";
-            } else
+                return "AP is ON";
+            }
+            else
             {
-                return " AP On";
+                return " AP is OFF";
             }
         }
 

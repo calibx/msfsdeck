@@ -1,16 +1,34 @@
-TODO :
-** Code
-* make object for simple input/encoder
-* review setter for dirty data in msfsdata
+# What is this
 
-** MSFS
+# Requirements
+
+# Installation
+
+# Usage
+
+# Plugin Content
+## Debug controls
+### FPS
+Display : current ingame fps
+Action : none
+### Connection
+Display : The current connection state with FSUIPC
+Action : none
+
+# TODO
+## Code
+* make object for simple input/encoder
+* review setter for dirty data in msfsdata => OK
+
+## MSFS Controls
+* APHeading negative
 * AP input
 * Light input
 * AP modes input
 * AP speed
 * Trims encoder
 * Thrust encoder
-* Pause
+* Pause / menu
 * Général elect input
 * Auto on/off motor
 * Gear up/dow input + status
@@ -29,12 +47,13 @@ TODO :
 * mixture encoder
 
 ** Loupe deck
-* color string => Unicode KO, question to dev !
+* color string => Ask Loupedeck or Bitmap drawing
 * Icons
 * Rename profile
 * create dynamic folders : ap, light,
-* Auto link to FSUIPC
-* Convert to 64 Bits
+* Auto link to FSUIPC => OK on display of controls
+* Direct connect to SimConnect.dll => waiting for a 64 Bits LoupeDeck driver
 
-** FSUIPC
-* Need licence ?
+## FSUIPC
+* Do I need a licence => no
+* Add trying to connect state => done

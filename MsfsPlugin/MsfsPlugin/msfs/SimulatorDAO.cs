@@ -27,16 +27,33 @@
 
         public static void Initialise()
         {
-            timer.Interval = 500;
-            timer.Enabled = true;
-            timer.Elapsed += refresh;
+            lock (timer)
+            {
+                if (!MsfsData.Instance.Connected && !MsfsData.Instance.TryConnect)
+                {
+                    try
+                    {
+                        MsfsData.Instance.TryConnect = true;
+                        FSUIPCConnection.Open();
+                    }
+                    catch (FSUIPCException)
+                    {
+                    }
+                    timer.Interval = 500;
+                    timer.Enabled = true;
+                    timer.Elapsed += refresh;
+
+                }
+            }
         }
 
         public static void Disconnect()
         {
             FSUIPCConnection.Close();
             timer.Enabled = false;
-            MsfsData.Instance.State = false;
+            MsfsData.Instance.Connected = false;
+            MsfsData.Instance.TryConnect = false;
+            MsfsData.Instance.changed();
         }
 
 
@@ -69,24 +86,27 @@
                     MsfsData.Instance.CurrentVerticalSpeed = (int)verticalSpeedFPM;
                     MsfsData.Instance.CurrentAltitude = (int)(altitude.Value * 3.28);
                     MsfsData.Instance.Fps = 32768 / (fps.Value + 1);
-                                       
+
                 }
                 else
                 {
+                    MsfsData.Instance.TryConnect = true;
+                    MsfsData.Instance.Connected = false;
                     FSUIPCConnection.Open();
-                    timer.Interval = 500;
                 }
             }
-            catch (FSUIPCException ex)
+            catch (FSUIPCException)
             {
-                MsfsData.Instance.State = false;
+                MsfsData.Instance.Connected = false;
                 timer.Interval = 2000;
             }
             if (FSUIPCConnection.IsOpen)
             {
-                MsfsData.Instance.State = true;
+                MsfsData.Instance.Connected = true;
+                MsfsData.Instance.TryConnect = false;
+                timer.Interval = 500;
+
             }
-            MsfsData.Instance.changed();
         }
 
     }

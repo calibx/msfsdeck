@@ -11,6 +11,7 @@
         public FPSInput() : base("FPS", "Display current FPS", "Debug")
 
         {
+            MsfsData.Instance.ValuesDisplayed = true;
             MsfsData.Instance.register(this);
         }
 
@@ -18,6 +19,7 @@
 
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
+
             return MsfsData.Instance.Fps + "\nFPS";
         }
 
