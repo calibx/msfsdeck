@@ -21,7 +21,7 @@ Action : none
 * review setter for dirty data in msfsdata => OK
 
 ## MSFS Controls
-* APHeading negative
+* APHeading negative => fix
 * AP input
 * Light input
 * AP modes input
@@ -46,7 +46,7 @@ Action : none
 * throtle inverter
 * mixture encoder
 
-** Loupe deck
+## Loupe deck
 * color string => Ask Loupedeck or Bitmap drawing
 * Icons
 * Rename profile

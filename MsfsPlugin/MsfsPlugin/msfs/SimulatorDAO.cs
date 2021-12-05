@@ -76,6 +76,10 @@
                     {
                         MsfsData.Instance.CurrentAPVerticalSpeed = (int)((verticalSpeedAP.Value / 256d) * 60d * 3.28084d);
                         MsfsData.Instance.CurrentAPHeading = compassAP.Value / 182;
+                        if (MsfsData.Instance.CurrentAPHeading <= 0)
+                        {
+                            MsfsData.Instance.CurrentAPHeading += 360;
+                        }
                         MsfsData.Instance.CurrentAPAltitude = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
                         MsfsData.Instance.ApSwitch = apSwitch.Value;
                     }

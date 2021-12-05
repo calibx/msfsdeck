@@ -2,8 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\MsfsPlugin",
-    "\\MsfsPlugin\\MsfsPlugin"
+    "\\MsfsPlugin\\MsfsPlugin",
+    "\\MsfsPlugin\\MsfsPlugin\\encoder",
+    "\\MsfsPlugin\\MsfsPlugin\\input",
+    "\\MsfsPlugin\\MsfsPlugin\\msfs"
   ],
-  "SelectedNode": "\\MsfsPlugin\\MsfsPlugin\\MsfsPlugin.cs",
+  "SelectedNode": "\\MsfsPlugin\\MsfsPlugin.sln",
   "PreviewInSolutionExplorer": false
 }

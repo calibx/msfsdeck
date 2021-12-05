@@ -15,12 +15,15 @@
         }
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-            var newHeading = (MsfsData.Instance.CurrentAPHeading + ticks) % 360;
-            if (newHeading < 0)
+            lock (this)
             {
-                newHeading += 360;
+                var newHeading = (MsfsData.Instance.CurrentAPHeading + ticks) % 360;
+                if (newHeading <= 0)
+                {
+                    newHeading += 360;
+                }
+                MsfsData.Instance.CurrentAPHeading = newHeading;
             }
-            MsfsData.Instance.CurrentAPHeading = newHeading;
         }
         protected override void RunCommand(String actionParameter)
         {
