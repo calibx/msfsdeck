@@ -66,7 +66,7 @@
                     FSUIPCConnection.Process();
                     if (MsfsData.Instance.DirtyAP)
                     {
-                        verticalSpeedAP.Value = (Int32)(MsfsData.Instance.CurrentAPVerticalSpeed * 256d / (60d * 3.28084d));
+                        verticalSpeedAP.Value = (Int32)(MsfsData.Instance.CurrentAPVerticalSpeed * 256d / (60d * 3.28084d) / 1.3);
                         compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                         altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
                         apSwitch.Value = (Int32)MsfsData.Instance.ApSwitch;
@@ -74,14 +74,14 @@
                     }
                     else
                     {
-                        MsfsData.Instance.CurrentAPVerticalSpeed = (int)((verticalSpeedAP.Value / 256d) * 60d * 3.28084d);
-                        MsfsData.Instance.CurrentAPHeading = compassAP.Value / 182;
+                        MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = (int)(((verticalSpeedAP.Value / 256d) * 60d * 3.28084d) * 1.3);
+                        MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;
                         if (MsfsData.Instance.CurrentAPHeading <= 0)
                         {
-                            MsfsData.Instance.CurrentAPHeading += 360;
+                            MsfsData.Instance.CurrentAPHeadingFromMSFS += 360;
                         }
-                        MsfsData.Instance.CurrentAPAltitude = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
-                        MsfsData.Instance.ApSwitch = apSwitch.Value;
+                        MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
+                        MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
                     }
 
                     MsfsData.Instance.CurrentHeading = (int)compass.Value;

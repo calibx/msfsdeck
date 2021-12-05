@@ -22,7 +22,7 @@ Action : none
 
 ## MSFS Controls
 * APHeading negative => fix
-* AP input
+* AP input => done
 * Light input
 * AP modes input
 * AP speed
@@ -45,12 +45,13 @@ Action : none
 * fuel pump
 * throtle inverter
 * mixture encoder
+* rpm display
 
 ## Loupe deck
 * color string => Ask Loupedeck or Bitmap drawing
 * Icons
 * Rename profile
-* create dynamic folders : ap, light,
+* create dynamic folders : ap, light,..
 * Auto link to FSUIPC => OK on display of controls
 * Direct connect to SimConnect.dll => waiting for a 64 Bits LoupeDeck driver
 
