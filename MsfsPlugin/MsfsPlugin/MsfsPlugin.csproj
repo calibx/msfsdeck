@@ -60,6 +60,7 @@
     <Compile Include="encoder\AltitudeEncoder.cs" />
     <Compile Include="encoder\VerticalSpeedEncoder.cs" />
     <Compile Include="event\Notifiable.cs" />
+    <Compile Include="input\ParkingBrakeInput.cs" />
     <Compile Include="input\APStateInput.cs" />
     <Compile Include="input\FPSInput.cs" />
     <Compile Include="input\VerticalSpeedInput.cs" />

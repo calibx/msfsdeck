@@ -1,12 +1,26 @@
 # What is this
-
+The aim of this plugin is to use the Loupedeck Live to control MSFS
 # Requirements
-
+* Loupedeck Live : https://loupedeck.com/fr/products/loupedeck-live/
+* MSFS : https://www.flightsimulator.com/
+* FSUIPC : http://www.fsuipc.com/
 # Installation
 
 # Usage
 
 # Plugin Content
+## Nac
+### Heading
+Display : display current and AP heading
+Action : set AP heading to the current value
+### Head
+Display : display AP heading
+Encoder : set AP heading
+Action : set AP heading to the current value
+## Misc controls
+### Parking brake
+Display : display current brake states
+Action : Enable / Disable brakes
 ## Debug controls
 ### FPS
 Display : current ingame fps
@@ -18,11 +32,9 @@ Action : none
 # TODO
 ## Code
 * make object for simple input/encoder
-* review setter for dirty data in msfsdata => OK
+
 
 ## MSFS Controls
-* APHeading negative => fix
-* AP input => done
 * Light input
 * AP modes input
 * AP speed
@@ -32,7 +44,7 @@ Action : none
 * Général elect input
 * Auto on/off motor
 * Gear up/dow input + status
-* Parking brake
+* Parking brake => test
 * Chronometer
 * Next POI name / dist / time
 * Correct altimeter
@@ -52,9 +64,6 @@ Action : none
 * Icons
 * Rename profile
 * create dynamic folders : ap, light,..
-* Auto link to FSUIPC => OK on display of controls
 * Direct connect to SimConnect.dll => waiting for a 64 Bits LoupeDeck driver
 
-## FSUIPC
-* Do I need a licence => no
-* Add trying to connect state => done
+

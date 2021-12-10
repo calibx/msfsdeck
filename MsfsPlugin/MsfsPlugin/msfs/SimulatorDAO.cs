@@ -22,6 +22,7 @@
         private static Offset<int> altitude = new Offset<int>(0x0574);
         private static Offset<int> altitudeAP = new Offset<int>(0x07D4);
         private static Offset<int> apSwitch = new Offset<int>(0x07BC);
+        private static Offset<int> parkingBrakes = new Offset<int>(0x0BC8);
 
         private static Timer timer = new System.Timers.Timer();
 
@@ -70,6 +71,7 @@
                         compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                         altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
                         apSwitch.Value = (Int32)MsfsData.Instance.ApSwitch;
+                        parkingBrakes.Value = (Int32)MsfsData.Instance.CurrentBrakes;
                         MsfsData.Instance.DirtyAP = false;
                     }
                     else
@@ -82,6 +84,7 @@
                         }
                         MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
                         MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
+                        MsfsData.Instance.CurrentBrakes = parkingBrakes.Value;
                     }
 
                     MsfsData.Instance.CurrentHeading = (int)compass.Value;

@@ -9,7 +9,7 @@
     class HeadingEncoder : PluginDynamicAdjustment, Notifiable
     {
 
-        public HeadingEncoder() : base("Head", "heading of the AP", "AP", true)
+        public HeadingEncoder() : base("Head", "heading of the AP", "Nav", true)
         {
             MsfsData.Instance.register(this);
         }

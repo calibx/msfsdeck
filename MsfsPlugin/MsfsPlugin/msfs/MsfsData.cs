@@ -17,6 +17,7 @@
         private Int32 apSwitch;
 
         private Boolean connected;
+        private Int32 currentBrakes;
         private Boolean tryingToconnect;
         private Boolean dirtyAP;
 
@@ -40,6 +41,7 @@
         public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.DirtyAP = true; } }
         public Int32 CurrentAPVerticalSpeedFromMSFS { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; } }
         public Boolean DirtyAP { get => this.dirtyAP; set { this.dirtyAP = value; this.changed(); } }
+        public Int32 CurrentBrakes { get => this.currentBrakes; set { this.currentBrakes = value; this.DirtyAP = true; } }
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
         public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
