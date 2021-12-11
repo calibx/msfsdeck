@@ -22,7 +22,7 @@ Action : set AP heading to the current value
 Display : display current brake states
 Action : Enable / Disable brakes
 ### Gear
-Display : display current 3 gears states : | for down, - for up, red if overspeeding
+Display : display current 3 gears states : | for down, - for up, / for transition
 Action : Gear up / down
 ## Debug controls
 ### FPS
@@ -38,6 +38,7 @@ Action : none
 
 
 ## MSFS Controls
+* VS : wrong module / readings
 * Light input
 * AP modes input
 * AP speed
@@ -46,8 +47,6 @@ Action : none
 * Pause / menu
 * Général elect input
 * Auto on/off motor
-* Gear up/dow input + status + oversspeed => test
-* Parking brake => test
 * Chronometer
 * Next POI name / dist / time
 * Correct altimeter
@@ -61,7 +60,7 @@ Action : none
 * throtle inverter
 * mixture encoder
 * rpm display
-* timer
+
 
 ## Loupe deck
 * color string => Ask Loupedeck or Bitmap drawing

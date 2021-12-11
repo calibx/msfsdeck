@@ -23,18 +23,36 @@
             {
                 if (MsfsData.Instance.GearOverSpeed == 1)
                 {
+                    // Don't know when it is used in MSFS
                     bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), new BitmapColor(255, 0, 0));
+                }
+                else if (MsfsData.Instance.GearFront == 0 || MsfsData.Instance.GearFront == 16383)
+                {
+
+                    bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), BitmapColor.White);
                 }
                 else
                 {
-                    bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), BitmapColor.White);
+                    // Gear is moving
+                    bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), new BitmapColor(255, 165, 0));
                 }
 
                 return bitmapBuilder.ToImage();
             }
         }
 
-        private String getDisplay(Int32 gearPos) => gearPos == 0 ? "-" : "|";
+        private String getDisplay(Int32 gearPos)
+        {
+            if (gearPos == 0)
+            {
+                return "-";
+            }
+            else
+            {
+                return gearPos == 16383 ? "|" : "/";
+            }
+        }
+
         protected override void RunCommand(String actionParameter)
         {
             MsfsData.Instance.CurrentGearHandle = MsfsData.Instance.CurrentGearHandle != 0 ? 0 : 16383;
