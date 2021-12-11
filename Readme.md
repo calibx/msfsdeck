@@ -21,6 +21,9 @@ Action : set AP heading to the current value
 ### Parking brake
 Display : display current brake states
 Action : Enable / Disable brakes
+### Gear
+Display : display current 3 gears states : | for down, - for up, red if overspeeding
+Action : Gear up / down
 ## Debug controls
 ### FPS
 Display : current ingame fps
@@ -43,7 +46,7 @@ Action : none
 * Pause / menu
 * Général elect input
 * Auto on/off motor
-* Gear up/dow input + status
+* Gear up/dow input + status + oversspeed => test
 * Parking brake => test
 * Chronometer
 * Next POI name / dist / time
@@ -52,12 +55,13 @@ Action : none
 * zoom encoder
 * refuel
 * spoiler encoder
-* flap input encoder
+* flap input encoder + overspeed
 * pitot heating
 * fuel pump
 * throtle inverter
 * mixture encoder
 * rpm display
+* timer
 
 ## Loupe deck
 * color string => Ask Loupedeck or Bitmap drawing

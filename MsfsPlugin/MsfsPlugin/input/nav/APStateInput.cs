@@ -6,25 +6,23 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    class FPSInput : PluginDynamicCommand, Notifiable
+    class APStateInput : PluginDynamicCommand, Notifiable
     {
-        public FPSInput() : base("FPS", "Display current FPS", "Debug")
-
+        public APStateInput() : base("AP Master", "Display AP state", "AP")
+        {
+            MsfsData.Instance.register(this);
+        }
+        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            MsfsData.Instance.register(this);
+            return MsfsData.Instance.ApSwitch == 1 ? "AP is ON" : " AP is OFF";
         }
 
         public void Notify() => this.AdjustmentValueChanged();
 
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
-        {
-
-            return MsfsData.Instance.Fps + "\nFPS";
-        }
-
         protected override void RunCommand(String actionParameter)
         {
+            MsfsData.Instance.ApSwitch = (MsfsData.Instance.ApSwitch + 1) % 2;
         }
     }
 }

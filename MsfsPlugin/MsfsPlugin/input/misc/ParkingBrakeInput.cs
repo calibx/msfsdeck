@@ -19,18 +19,12 @@
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            return (MsfsData.Instance.CurrentBrakes != 0) ? "Brakes On" : "Brakes Off";
+            return (MsfsData.Instance.CurrentBrakes == 0) ? "Enable parking brakes" : "Disable parking brakes";
         }
 
         protected override void RunCommand(String actionParameter)
         {
-            if (MsfsData.Instance.CurrentBrakes != 0)
-            {
-                MsfsData.Instance.CurrentBrakes = 0;
-            } else
-            {
-                MsfsData.Instance.CurrentBrakes = 32767;
-            }
+            MsfsData.Instance.CurrentBrakes = MsfsData.Instance.CurrentBrakes != 0 ? 0 : 32767;
         }
     }
 }

@@ -18,6 +18,7 @@
 
         private Boolean connected;
         private Int32 currentBrakes;
+        private Int32 currentGearHandle;
         private Boolean tryingToconnect;
         private Boolean dirtyAP;
 
@@ -30,6 +31,11 @@
 
         public Int32 CurrentHeading { get; set; }
         public Int32 Fps { get; set; }
+        public Byte GearOverSpeed { get; set; }
+        public Int32 CurrentGearHandle { get => this.currentGearHandle; set { this.currentGearHandle = value; this.DirtyAP = true; } }
+        public Int32 GearFront { get; set; }
+        public Int32 GearLeft { get; set; }
+        public Int32 GearRight { get; set; }
         public Int32 CurrentAPHeading { get => this.currentAPHeading; set { this.currentAPHeading = value; this.DirtyAP = true; } }
         public Int32 CurrentAPHeadingFromMSFS { get => this.currentAPHeading; set { this.currentAPHeading = value; } }
         public Int32 ApSwitch { get => this.apSwitch; set { this.apSwitch = value; this.DirtyAP = true; } }
