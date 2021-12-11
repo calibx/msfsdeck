@@ -15,7 +15,7 @@
     class SimulatorDAO
     {
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
-        private static readonly Offset<Int32> verticalSpeedAP = new Offset<Int32>(0x07F2);
+        private static readonly Offset<Int16> verticalSpeedAP = new Offset<Int16>(0x07F2);
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
         private static readonly Offset<Int16> compassAP = new Offset<Int16>(0x07CC);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
@@ -71,40 +71,42 @@
             {
                 if (FSUIPCConnection.IsOpen)
                 {
-                    FSUIPCConnection.Process();
-                    if (MsfsData.Instance.DirtyAP)
+                    lock (timer)
                     {
-                        verticalSpeedAP.Value = (Int32)(MsfsData.Instance.CurrentAPVerticalSpeed * 256d / (60d * 3.28084d) / 1.3);
-                        compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
-                        altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
-                        apSwitch.Value = (Int32)MsfsData.Instance.ApSwitch;
-                        parkingBrakes.Value = (Int32)MsfsData.Instance.CurrentBrakes;
-                        gearHandle.Value = (Int32)MsfsData.Instance.CurrentGearHandle;
-                        MsfsData.Instance.DirtyAP = false;
-                    }
-                    else
-                    {
-                        MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = (Int32)(verticalSpeedAP.Value / 256d * 60d * 3.28084d * 1.3);
-                        MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;
-                        if (MsfsData.Instance.CurrentAPHeading <= 0)
+                        FSUIPCConnection.Process();
+                        if (MsfsData.Instance.SetToMSFS)
                         {
-                            MsfsData.Instance.CurrentAPHeadingFromMSFS += 360;
+                            verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
+                            compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
+                            altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
+                            apSwitch.Value = (Int32)MsfsData.Instance.ApSwitch;
+                            parkingBrakes.Value = (Int32)MsfsData.Instance.CurrentBrakes;
+                            gearHandle.Value = (Int32)MsfsData.Instance.CurrentGearHandle;
+                            MsfsData.Instance.SetToMSFS = false;
                         }
-                        MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
-                        MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
-                        MsfsData.Instance.CurrentBrakes = parkingBrakes.Value;
-                        MsfsData.Instance.CurrentGearHandle = gearHandle.Value;
+                        else
+                        {
+                            MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = (Int32)verticalSpeedAP.Value;
+                            MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;
+                            if (MsfsData.Instance.CurrentAPHeading <= 0)
+                            {
+                                MsfsData.Instance.CurrentAPHeadingFromMSFS += 360;
+                            }
+                            MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
+                            MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
+                            MsfsData.Instance.CurrentBrakesFromMSFS = parkingBrakes.Value;
+                            MsfsData.Instance.CurrentGearHandleFromMSFS = gearHandle.Value;
+                        }
+
+                        MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
+                        MsfsData.Instance.CurrentVerticalSpeed = (Int32)(verticalSpeed.Value * 60 * 3.28084 / 256);
+                        MsfsData.Instance.CurrentAltitude = (Int32)(altitude.Value * 3.28);
+                        MsfsData.Instance.Fps = 32768 / (fps.Value + 1);
+                        MsfsData.Instance.GearOverSpeed = gearOverSpeed.Value;
+                        MsfsData.Instance.GearLeft = gearLeft.Value;
+                        MsfsData.Instance.GearFront = gearFront.Value;
+                        MsfsData.Instance.GearRight = gearRight.Value;
                     }
-
-                    MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
-                    MsfsData.Instance.CurrentVerticalSpeed = (Int32)(verticalSpeed.Value / 256d * 60d * 3.28084d * 1.3);
-                    MsfsData.Instance.CurrentAltitude = (Int32)(altitude.Value * 3.28);
-                    MsfsData.Instance.Fps = 32768 / (fps.Value + 1);
-                    MsfsData.Instance.GearOverSpeed = gearOverSpeed.Value;
-                    MsfsData.Instance.GearLeft = gearLeft.Value;
-                    MsfsData.Instance.GearFront = gearFront.Value;
-                    MsfsData.Instance.GearRight = gearRight.Value;
-
                 }
                 else
                 {

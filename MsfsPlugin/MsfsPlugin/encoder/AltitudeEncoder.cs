@@ -19,7 +19,7 @@
         }
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAltitude;
+            MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100);
         }
 
         protected override String GetAdjustmentValue(String actionParameter)

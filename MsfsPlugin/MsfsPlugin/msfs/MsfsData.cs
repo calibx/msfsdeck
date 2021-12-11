@@ -20,7 +20,7 @@
         private Int32 currentBrakes;
         private Int32 currentGearHandle;
         private Boolean tryingToconnect;
-        private Boolean dirtyAP;
+        private Boolean setToMSFS;
 
         // Used to know if we try to autoconnect to FSUIPC
         private Boolean valuesDisplayed;
@@ -32,22 +32,24 @@
         public Int32 CurrentHeading { get; set; }
         public Int32 Fps { get; set; }
         public Byte GearOverSpeed { get; set; }
-        public Int32 CurrentGearHandle { get => this.currentGearHandle; set { this.currentGearHandle = value; this.DirtyAP = true; } }
+        public Int32 CurrentGearHandle { get => this.currentGearHandle; set { this.currentGearHandle = value; this.SetToMSFS = true; } }
+        public Int32 CurrentGearHandleFromMSFS { get => this.currentGearHandle; set { this.currentGearHandle = value; } }
         public Int32 GearFront { get; set; }
         public Int32 GearLeft { get; set; }
         public Int32 GearRight { get; set; }
-        public Int32 CurrentAPHeading { get => this.currentAPHeading; set { this.currentAPHeading = value; this.DirtyAP = true; } }
+        public Int32 CurrentAPHeading { get => this.currentAPHeading; set { this.currentAPHeading = value; this.SetToMSFS = true; } }
         public Int32 CurrentAPHeadingFromMSFS { get => this.currentAPHeading; set { this.currentAPHeading = value; } }
-        public Int32 ApSwitch { get => this.apSwitch; set { this.apSwitch = value; this.DirtyAP = true; } }
+        public Int32 ApSwitch { get => this.apSwitch; set { this.apSwitch = value; this.SetToMSFS = true; } }
         public Int32 ApSwitchFromMSFS { get => this.apSwitch; set { this.apSwitch = value; } }
         public Int32 CurrentAltitude { get; set; }
-        public Int32 CurrentAPAltitude { get => this.currentAPAltitude; set { this.currentAPAltitude = value; this.DirtyAP = true; } }
+        public Int32 CurrentAPAltitude { get => this.currentAPAltitude; set { this.currentAPAltitude = value; this.SetToMSFS = true; } }
         public Int32 CurrentAPAltitudeFromMSFS { get => this.currentAPAltitude; set { this.currentAPAltitude = value; } }
         public Int32 CurrentVerticalSpeed { get; set; }
-        public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.DirtyAP = true; } }
+        public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.SetToMSFS = true; } }
         public Int32 CurrentAPVerticalSpeedFromMSFS { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; } }
-        public Boolean DirtyAP { get => this.dirtyAP; set { this.dirtyAP = value; this.changed(); } }
-        public Int32 CurrentBrakes { get => this.currentBrakes; set { this.currentBrakes = value; this.DirtyAP = true; } }
+        public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; this.changed(); } }
+        public Int32 CurrentBrakes { get => this.currentBrakes; set { this.currentBrakes = value; this.SetToMSFS = true; } }
+        public Int32 CurrentBrakesFromMSFS { get => this.currentBrakes; set { this.currentBrakes = value; } }
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
         public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }

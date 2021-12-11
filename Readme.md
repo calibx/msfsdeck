@@ -38,7 +38,6 @@ Action : none
 
 
 ## MSFS Controls
-* VS : wrong module / readings
 * Light input
 * AP modes input
 * AP speed
@@ -49,7 +48,6 @@ Action : none
 * Auto on/off motor
 * Chronometer
 * Next POI name / dist / time
-* Correct altimeter
 * Validate / Correct (mod) vs encoder
 * zoom encoder
 * refuel
