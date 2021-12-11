@@ -6,23 +6,23 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    class APStateInput : PluginDynamicCommand, Notifiable
+    class APAltStateInput : PluginDynamicCommand, Notifiable
     {
-        public APStateInput() : base("AP Master", "Display AP state", "AP")
+        public APAltStateInput() : base("AP Alt", "Display AP Alt state", "AP")
         {
             MsfsData.Instance.register(this);
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            return MsfsData.Instance.ApSwitch == 1 ? "AP is ON" : "AP is OFF";
+            return MsfsData.Instance.ApAltHoldSwitch == 1 ? "AP Alt is ON" : "AP Alt is OFF";
         }
 
         public void Notify() => this.AdjustmentValueChanged();
 
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.ApSwitch = (MsfsData.Instance.ApSwitch + 1) % 2;
+            MsfsData.Instance.ApAltHoldSwitch = (MsfsData.Instance.ApAltHoldSwitch + 1) % 2;
         }
     }
 }

@@ -58,12 +58,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="encoder\AltitudeEncoder.cs" />
+    <Compile Include="encoder\SpeedEncoder.cs" />
     <Compile Include="encoder\VerticalSpeedEncoder.cs" />
     <Compile Include="event\Notifiable.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
+    <Compile Include="input\nav\APNavStateInput.cs" />
+    <Compile Include="input\nav\APAltStateInput.cs" />
+    <Compile Include="input\nav\APHeadStateInput.cs" />
+    <Compile Include="input\nav\APSpeedStateInput.cs" />
+    <Compile Include="input\nav\APVSStateInput.cs" />
     <Compile Include="input\nav\APStateInput.cs" />
     <Compile Include="input\debug\FPSInput.cs" />
+    <Compile Include="input\nav\SpeedInput.cs" />
     <Compile Include="input\nav\VerticalSpeedInput.cs" />
     <Compile Include="input\nav\AltitudeInput.cs" />
     <Compile Include="input\nav\HeadingInput.cs" />

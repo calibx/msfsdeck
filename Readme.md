@@ -38,9 +38,8 @@ Action : none
 
 
 ## MSFS Controls
+* Ap coexistence
 * Light input
-* AP modes input
-* AP speed
 * Trims encoder
 * Thrust encoder
 * Pause / menu

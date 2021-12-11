@@ -13,8 +13,14 @@
         private Int32 currentAPHeading;
         private Int32 currentAPAltitude;
         private Int32 currentAPVerticalSpeed;
+        private Int32 currentAPSpeed;
 
         private Int32 apSwitch;
+        private Int32 apAltHoldSwitch;
+        private Int32 apHeadHoldSwitch;
+        private Int32 apVSHoldSwitch;
+        private Int32 apNavHoldSwitch;
+        private Int32 apSpeedHoldSwitch;
 
         private Boolean connected;
         private Int32 currentBrakes;
@@ -41,8 +47,21 @@
         public Int32 CurrentAPHeadingFromMSFS { get => this.currentAPHeading; set { this.currentAPHeading = value; } }
         public Int32 ApSwitch { get => this.apSwitch; set { this.apSwitch = value; this.SetToMSFS = true; } }
         public Int32 ApSwitchFromMSFS { get => this.apSwitch; set { this.apSwitch = value; } }
+        public Int32 ApAltHoldSwitch { get => this.apAltHoldSwitch; set { this.apAltHoldSwitch = value; this.SetToMSFS = true; } }
+        public Int32 ApAltHoldSwitchFromMSFS { get => this.apAltHoldSwitch; set { this.apAltHoldSwitch = value; } }
+        public Int32 ApHeadHoldSwitch { get => this.apHeadHoldSwitch; set { this.apHeadHoldSwitch = value; this.SetToMSFS = true; } }
+        public Int32 ApHeadHoldSwitchFromMSFS { get => this.apHeadHoldSwitch; set { this.apHeadHoldSwitch = value; } }
+        public Int32 ApVSHoldSwitch { get => this.apVSHoldSwitch; set { this.apVSHoldSwitch = value; this.SetToMSFS = true; } }
+        public Int32 ApVSHoldSwitchFromMSFS { get => this.apVSHoldSwitch; set { this.apVSHoldSwitch = value; } }
+        public Int32 ApNavHoldSwitch { get => this.apNavHoldSwitch; set { this.apNavHoldSwitch = value; this.SetToMSFS = true; } }
+        public Int32 ApNavHoldSwitchFromMSFS { get => this.apNavHoldSwitch; set { this.apNavHoldSwitch = value; } }
+        public Int32 ApSpeedHoldSwitch { get => this.apSpeedHoldSwitch; set { this.apSpeedHoldSwitch = value; this.SetToMSFS = true; } }
+        public Int32 ApSpeedHoldSwitchFromMSFS { get => this.apSpeedHoldSwitch; set { this.apSpeedHoldSwitch = value; } }
         public Int32 CurrentAltitude { get; set; }
         public Int32 CurrentAPAltitude { get => this.currentAPAltitude; set { this.currentAPAltitude = value; this.SetToMSFS = true; } }
+        public Int32 CurrentSpeed { get; set; }
+        public Int32 CurrentAPSpeed { get => this.currentAPSpeed; set { this.currentAPSpeed = value; this.SetToMSFS = true; } }
+        public Int32 CurrentAPSpeedFromMSFS { get => this.currentAPSpeed; set { this.currentAPSpeed = value; } }
         public Int32 CurrentAPAltitudeFromMSFS { get => this.currentAPAltitude; set { this.currentAPAltitude = value; } }
         public Int32 CurrentVerticalSpeed { get; set; }
         public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.SetToMSFS = true; } }

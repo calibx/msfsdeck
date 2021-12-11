@@ -6,23 +6,23 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    class APStateInput : PluginDynamicCommand, Notifiable
+    class APVSStateInput : PluginDynamicCommand, Notifiable
     {
-        public APStateInput() : base("AP Master", "Display AP state", "AP")
+        public APVSStateInput() : base("AP VS", "Display AP VS state", "AP")
         {
             MsfsData.Instance.register(this);
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            return MsfsData.Instance.ApSwitch == 1 ? "AP is ON" : "AP is OFF";
+            return MsfsData.Instance.ApVSHoldSwitch == 1 ? "AP VS is ON" : " AP VS is OFF";
         }
 
         public void Notify() => this.AdjustmentValueChanged();
 
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.ApSwitch = (MsfsData.Instance.ApSwitch + 1) % 2;
+            MsfsData.Instance.ApVSHoldSwitch = (MsfsData.Instance.ApVSHoldSwitch + 1) % 2;
         }
     }
 }

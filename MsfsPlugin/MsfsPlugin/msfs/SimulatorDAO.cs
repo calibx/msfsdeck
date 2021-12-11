@@ -15,14 +15,24 @@
     class SimulatorDAO
     {
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
-        private static readonly Offset<Int16> verticalSpeedAP = new Offset<Int16>(0x07F2);
+
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Int16> compassAP = new Offset<Int16>(0x07CC);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x0574);
+        private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
 
+        private static readonly Offset<Int16> verticalSpeedAP = new Offset<Int16>(0x07F2);
+        private static readonly Offset<Int16> compassAP = new Offset<Int16>(0x07CC);
         private static readonly Offset<Int32> altitudeAP = new Offset<Int32>(0x07D4);
+        private static readonly Offset<Int32> speedAP = new Offset<Int32>(0x07E2);
+
         private static readonly Offset<Int32> apSwitch = new Offset<Int32>(0x07BC);
+        private static readonly Offset<Int32> apAltHoldSwitch = new Offset<Int32>(0x07D0);
+        private static readonly Offset<Int32> apHeadHoldSwitch = new Offset<Int32>(0x07C8);
+        private static readonly Offset<Int32> apVSHoldSwitch = new Offset<Int32>(0x07EC);
+        private static readonly Offset<Int32> apNavHoldSwitch = new Offset<Int32>(0x07C4);
+        private static readonly Offset<Int32> apSpeedHoldSwitch = new Offset<Int32>(0x07DC);
+
         private static readonly Offset<Int32> parkingBrakes = new Offset<Int32>(0x0BC8);
 
         private static readonly Offset<Byte> gearOverSpeed = new Offset<Byte>(0x0B4F);
@@ -79,7 +89,13 @@
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
+                            speedAP.Value = (Int32)MsfsData.Instance.CurrentAPSpeed;
                             apSwitch.Value = (Int32)MsfsData.Instance.ApSwitch;
+                            apAltHoldSwitch.Value = (Int32)MsfsData.Instance.ApAltHoldSwitch;
+                            apNavHoldSwitch.Value = (Int32)MsfsData.Instance.ApNavHoldSwitch;
+                            apVSHoldSwitch.Value = (Int32)MsfsData.Instance.ApVSHoldSwitch;
+                            apHeadHoldSwitch.Value = (Int32)MsfsData.Instance.ApHeadHoldSwitch;
+                            apSpeedHoldSwitch.Value = (Int32)MsfsData.Instance.ApSpeedHoldSwitch;
                             parkingBrakes.Value = (Int32)MsfsData.Instance.CurrentBrakes;
                             gearHandle.Value = (Int32)MsfsData.Instance.CurrentGearHandle;
                             MsfsData.Instance.SetToMSFS = false;
@@ -87,6 +103,7 @@
                         else
                         {
                             MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = (Int32)verticalSpeedAP.Value;
+                            MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)speedAP.Value;
                             MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;
                             if (MsfsData.Instance.CurrentAPHeading <= 0)
                             {
@@ -96,9 +113,16 @@
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
                             MsfsData.Instance.CurrentBrakesFromMSFS = parkingBrakes.Value;
                             MsfsData.Instance.CurrentGearHandleFromMSFS = gearHandle.Value;
+                            MsfsData.Instance.ApAltHoldSwitchFromMSFS = apAltHoldSwitch.Value;
+                            MsfsData.Instance.ApNavHoldSwitchFromMSFS = apNavHoldSwitch.Value;
+                            MsfsData.Instance.ApVSHoldSwitchFromMSFS = apVSHoldSwitch.Value;
+                            MsfsData.Instance.ApHeadHoldSwitchFromMSFS = apHeadHoldSwitch.Value;
+                            MsfsData.Instance.ApSpeedHoldSwitchFromMSFS = apSpeedHoldSwitch.Value;
+
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
+                        MsfsData.Instance.CurrentSpeed = (Int32)speed.Value / 128;
                         MsfsData.Instance.CurrentVerticalSpeed = (Int32)(verticalSpeed.Value * 60 * 3.28084 / 256);
                         MsfsData.Instance.CurrentAltitude = (Int32)(altitude.Value * 3.28);
                         MsfsData.Instance.Fps = 32768 / (fps.Value + 1);
