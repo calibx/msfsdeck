@@ -66,6 +66,10 @@
         public Int32 CurrentVerticalSpeed { get; set; }
         public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.SetToMSFS = true; } }
         public Int32 CurrentAPVerticalSpeedFromMSFS { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; } }
+        public Int64 ApNextWPID { get; set; }
+        public Int32 ApNextWPETE { get; set; }
+        public Double ApNextWPDist { get; set; }
+        public Double ApNextWPHeading { get; set; }
         public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; this.changed(); } }
         public Int32 CurrentBrakes { get => this.currentBrakes; set { this.currentBrakes = value; this.SetToMSFS = true; } }
         public Int32 CurrentBrakesFromMSFS { get => this.currentBrakes; set { this.currentBrakes = value; } }

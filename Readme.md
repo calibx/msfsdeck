@@ -34,11 +34,11 @@ Action : none
 
 # TODO
 ## Code
-* make object for simple input/encoder
+* Make object for simple input/encoder
+* Switch to SimConnect when 64 bits enable
 
 
 ## MSFS Controls
-* Ap coexistence
 * Light input
 * Trims encoder
 * Thrust encoder
@@ -46,7 +46,6 @@ Action : none
 * Général elect input
 * Auto on/off motor
 * Chronometer
-* Next POI name / dist / time
 * Validate / Correct (mod) vs encoder
 * zoom encoder
 * refuel
@@ -57,13 +56,13 @@ Action : none
 * throtle inverter
 * mixture encoder
 * rpm display
+* colors (speed, ...)
 
 
 ## Loupe deck
-* color string => Ask Loupedeck or Bitmap drawing
 * Icons
 * Rename profile
 * create dynamic folders : ap, light,..
-* Direct connect to SimConnect.dll => waiting for a 64 Bits LoupeDeck driver
+
 
 

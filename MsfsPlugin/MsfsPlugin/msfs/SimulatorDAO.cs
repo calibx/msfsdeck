@@ -33,6 +33,11 @@
         private static readonly Offset<Int32> apNavHoldSwitch = new Offset<Int32>(0x07C4);
         private static readonly Offset<Int32> apSpeedHoldSwitch = new Offset<Int32>(0x07DC);
 
+        private static readonly Offset<Int32> apNextWPID = new Offset<Int32>(0x616C);
+        private static readonly Offset<Int32> apNextWPETE = new Offset<Int32>(0x60E4);
+        private static readonly Offset<Double> apNextWPDist = new Offset<Double>(0x6048);
+        private static readonly Offset<Double> apNextWPHeading = new Offset<Double>(0x6050);
+
         private static readonly Offset<Int32> parkingBrakes = new Offset<Int32>(0x0BC8);
 
         private static readonly Offset<Byte> gearOverSpeed = new Offset<Byte>(0x0B4F);
@@ -41,7 +46,7 @@
         private static readonly Offset<Int32> gearLeft = new Offset<Int32>(0x0BF0);
         private static readonly Offset<Int32> gearRight = new Offset<Int32>(0x0BF4);
 
-        private static Timer timer = new System.Timers.Timer();
+        private static readonly Timer timer = new System.Timers.Timer();
 
         public static void Initialise()
         {
@@ -130,6 +135,10 @@
                         MsfsData.Instance.GearLeft = gearLeft.Value;
                         MsfsData.Instance.GearFront = gearFront.Value;
                         MsfsData.Instance.GearRight = gearRight.Value;
+                        MsfsData.Instance.ApNextWPDist = apNextWPDist.Value * 0.00053996d;
+                        MsfsData.Instance.ApNextWPETE = apNextWPETE.Value;
+                        MsfsData.Instance.ApNextWPHeading = (apNextWPHeading.Value * 57.29);
+                        MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                     }
                 }
                 else
