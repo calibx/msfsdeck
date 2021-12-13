@@ -39,6 +39,7 @@
         private static readonly Offset<Double> apNextWPHeading = new Offset<Double>(0x6050);
 
         private static readonly Offset<Int32> parkingBrakes = new Offset<Int32>(0x0BC8);
+        private static readonly Offset<Int32> spoiler = new Offset<Int32>(0x0BD0);
 
         private static readonly Offset<Byte> gearOverSpeed = new Offset<Byte>(0x0B4F);
         private static readonly Offset<Int32> gearHandle = new Offset<Int32>(0x0BE8);
@@ -103,6 +104,7 @@
                             apSpeedHoldSwitch.Value = (Int32)MsfsData.Instance.ApSpeedHoldSwitch;
                             parkingBrakes.Value = (Int32)MsfsData.Instance.CurrentBrakes;
                             gearHandle.Value = (Int32)MsfsData.Instance.CurrentGearHandle;
+                            spoiler.Value = getSpoiler(MsfsData.Instance.CurrentSpoiler);
                             MsfsData.Instance.SetToMSFS = false;
                         }
                         else
@@ -123,7 +125,7 @@
                             MsfsData.Instance.ApVSHoldSwitchFromMSFS = apVSHoldSwitch.Value;
                             MsfsData.Instance.ApHeadHoldSwitchFromMSFS = apHeadHoldSwitch.Value;
                             MsfsData.Instance.ApSpeedHoldSwitchFromMSFS = apSpeedHoldSwitch.Value;
-
+                            MsfsData.Instance.CurrentSpoilerFromMSFS = getSpoilerFromMSFS(spoiler.Value);
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
@@ -162,5 +164,27 @@
             }
         }
 
+        private static Int32 getSpoilerFromMSFS(Int32 value)
+        {
+            var result = 0;
+            if (value == 4800)
+            { result = 1; } else
+            {
+                result = 1 + (value - 5620 / (16383 - 5620));
+            }
+            return result;
+        } 
+        private static Int32 getSpoiler(Int32 currentSpoiler)
+        {
+            var result = 0;
+            if (currentSpoiler == 1)
+            {
+                result = 4800;
+            } else
+            {
+                result = 5620 + (currentSpoiler - 1) * (16383 - 5620) / 100;
+            }
+            return result;
+        }
     }
 }

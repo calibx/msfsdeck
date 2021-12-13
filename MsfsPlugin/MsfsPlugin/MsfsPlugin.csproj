@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="encoder\AltitudeEncoder.cs" />
+    <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="encoder\SpeedEncoder.cs" />
     <Compile Include="encoder\VerticalSpeedEncoder.cs" />
     <Compile Include="event\Notifiable.cs" />

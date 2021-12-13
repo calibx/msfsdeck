@@ -49,7 +49,7 @@ Action : none
 * Validate / Correct (mod) vs encoder
 * zoom encoder
 * refuel
-* spoiler encoder
+* spoiler encoder => test
 * flap input encoder + overspeed
 * pitot heating
 * fuel pump
