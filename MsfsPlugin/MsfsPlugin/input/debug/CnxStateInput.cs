@@ -8,13 +8,15 @@
 
     class CnxStateInput : PluginDynamicCommand, Notifiable
     {
+        private Boolean heartbeat;
         public CnxStateInput() : base("Connection", "Display FSUIPC connexion state", "Debug")
         {
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            return MsfsData.Instance.Connected ? "Connected" : MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected";
+            this.heartbeat = !this.heartbeat;
+            return MsfsData.Instance.Connected ? "Connected" : MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected" + (this.heartbeat ? "\n..." : "") ;
         }
 
         public void Notify() => this.AdjustmentValueChanged();

@@ -8,6 +8,7 @@
 
     class DebugInput : PluginDynamicCommand, Notifiable
     {
+  
         public DebugInput() : base("Debug", "Display debugged value ", "Debug")
 
         {
