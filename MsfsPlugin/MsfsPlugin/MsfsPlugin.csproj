@@ -58,10 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="encoder\AltitudeEncoder.cs" />
+    <Compile Include="encoder\ThrottleEncoder.cs" />
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="encoder\SpeedEncoder.cs" />
     <Compile Include="encoder\VerticalSpeedEncoder.cs" />
     <Compile Include="event\Notifiable.cs" />
+    <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\nav\AP\APWPDisplay.cs" />

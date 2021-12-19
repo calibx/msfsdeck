@@ -24,6 +24,7 @@
 
         private Boolean connected;
         private Int32 currentBrakes;
+        private Int16 currentTrottle;
         private Int32 currentSpoiler;
         private Int32 currentGearHandle;
         private Boolean tryingToconnect;
@@ -38,6 +39,7 @@
 
         public Int32 CurrentHeading { get; set; }
         public Int32 Fps { get; set; }
+        public Int32 DebugValue { get; set; }
         public Byte GearOverSpeed { get; set; }
         public Int32 CurrentGearHandle { get => this.currentGearHandle; set { this.currentGearHandle = value; this.SetToMSFS = true; } }
         public Int32 CurrentGearHandleFromMSFS { get => this.currentGearHandle; set { this.currentGearHandle = value; } }
@@ -74,6 +76,9 @@
         public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; this.changed(); } }
         public Int32 CurrentBrakes { get => this.currentBrakes; set { this.currentBrakes = value; this.SetToMSFS = true; } }
         public Int32 CurrentBrakesFromMSFS { get => this.currentBrakes; set { this.currentBrakes = value; } }
+        public Int16 CurrentThrottle { get => this.currentTrottle; set { this.currentTrottle = value; this.SetToMSFS = true; } }
+        public Int16 CurrentThrottleFromMSFS { get => this.currentTrottle; set { this.currentTrottle = value; } }
+        public Int32 ThrottleLowerFromMSFS { get; set; }
         public Int32 CurrentSpoiler { get => this.currentSpoiler; set { this.currentSpoiler = value; this.SetToMSFS = true; } }
         public Int32 CurrentSpoilerFromMSFS { get => this.currentSpoiler; set { this.currentSpoiler = value; } }
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }

@@ -41,23 +41,21 @@ Action : none
 ## MSFS Controls
 * Light input
 * Trims encoder
-* Thrust encoder
 * Pause / menu
 * Général elect input
 * Auto on/off motor
+* AP auto throtlle
 * Chronometer
-* Validate / Correct (mod) vs encoder
 * zoom encoder
 * refuel
-* spoiler encoder => test
 * flap input encoder + overspeed
 * pitot heating
 * fuel pump
-* throtle inverter
 * mixture encoder
 * rpm display
 * colors (speed, ...)
-
+* refresh rate
+* heartbeat
 
 ## Loupe deck
 * Icons

@@ -20,6 +20,11 @@
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x0574);
         private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
+        private static readonly Offset<Int16> throttle1 = new Offset<Int16>(0x088C);
+        private static readonly Offset<Int16> throttle2 = new Offset<Int16>(0x0924);
+        private static readonly Offset<Int16> throttle3 = new Offset<Int16>(0x09BC);
+        private static readonly Offset<Int16> throttle4 = new Offset<Int16>(0x0A54);
+        private static readonly Offset<Int16> throttleLower = new Offset<Int16>(0x333A);
 
         private static readonly Offset<Int16> verticalSpeedAP = new Offset<Int16>(0x07F2);
         private static readonly Offset<Int16> compassAP = new Offset<Int16>(0x07CC);
@@ -39,7 +44,8 @@
         private static readonly Offset<Double> apNextWPHeading = new Offset<Double>(0x6050);
 
         private static readonly Offset<Int32> parkingBrakes = new Offset<Int32>(0x0BC8);
-        private static readonly Offset<Int32> spoiler = new Offset<Int32>(0x0BD0);
+        private static readonly Offset<Int32> spoilerArm = new Offset<Int32>(0x0BD0);
+        private static readonly Offset<Int32> spoilerPosition = new Offset<Int32>(0x0BD4);
 
         private static readonly Offset<Byte> gearOverSpeed = new Offset<Byte>(0x0B4F);
         private static readonly Offset<Int32> gearHandle = new Offset<Int32>(0x0BE8);
@@ -90,6 +96,7 @@
                     lock (timer)
                     {
                         FSUIPCConnection.Process();
+                        MsfsData.Instance.DebugValue = throttleLower.Value;
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -103,8 +110,22 @@
                             apHeadHoldSwitch.Value = (Int32)MsfsData.Instance.ApHeadHoldSwitch;
                             apSpeedHoldSwitch.Value = (Int32)MsfsData.Instance.ApSpeedHoldSwitch;
                             parkingBrakes.Value = (Int32)MsfsData.Instance.CurrentBrakes;
+                            if (MsfsData.Instance.CurrentThrottle < 0)
+                            {
+                                throttle1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 4096d / 100);
+                                throttle2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 4096d / 100);
+                                throttle3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 4096d / 100);
+                                throttle4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 4096d / 100);
+                            }
+                            else
+                            {
+                                throttle1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 16383d / 100);
+                                throttle2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 16383d / 100);
+                                throttle3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 16383d / 100);
+                                throttle4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 16383d / 100);
+                            }
                             gearHandle.Value = (Int32)MsfsData.Instance.CurrentGearHandle;
-                            spoiler.Value = getSpoiler(MsfsData.Instance.CurrentSpoiler);
+                            spoilerArm.Value = getSpoiler(MsfsData.Instance.CurrentSpoiler);
                             MsfsData.Instance.SetToMSFS = false;
                         }
                         else
@@ -119,13 +140,22 @@
                             MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
                             MsfsData.Instance.CurrentBrakesFromMSFS = parkingBrakes.Value;
+                            if (MsfsData.Instance.CurrentThrottle < 0)
+                            {
+                                MsfsData.Instance.CurrentThrottleFromMSFS = (Int16)(throttle1.Value * 100 / 4096);
+                            }
+                            else
+                            {
+                                MsfsData.Instance.CurrentThrottleFromMSFS = (Int16)(throttle1.Value * 100 / 16383);
+                            }
+                            MsfsData.Instance.ThrottleLowerFromMSFS = throttleLower.Value;
                             MsfsData.Instance.CurrentGearHandleFromMSFS = gearHandle.Value;
                             MsfsData.Instance.ApAltHoldSwitchFromMSFS = apAltHoldSwitch.Value;
                             MsfsData.Instance.ApNavHoldSwitchFromMSFS = apNavHoldSwitch.Value;
                             MsfsData.Instance.ApVSHoldSwitchFromMSFS = apVSHoldSwitch.Value;
                             MsfsData.Instance.ApHeadHoldSwitchFromMSFS = apHeadHoldSwitch.Value;
                             MsfsData.Instance.ApSpeedHoldSwitchFromMSFS = apSpeedHoldSwitch.Value;
-                            MsfsData.Instance.CurrentSpoilerFromMSFS = getSpoilerFromMSFS(spoiler.Value);
+                            MsfsData.Instance.CurrentSpoilerFromMSFS = getSpoilerFromMSFS(spoilerPosition.Value, spoilerArm.Value);
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
@@ -139,8 +169,9 @@
                         MsfsData.Instance.GearRight = gearRight.Value;
                         MsfsData.Instance.ApNextWPDist = apNextWPDist.Value * 0.00053996d;
                         MsfsData.Instance.ApNextWPETE = apNextWPETE.Value;
-                        MsfsData.Instance.ApNextWPHeading = (apNextWPHeading.Value * 57.29);
+                        MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
+
                     }
                 }
                 else
@@ -164,25 +195,21 @@
             }
         }
 
-        private static Int32 getSpoilerFromMSFS(Int32 value)
-        {
-            var result = 0;
-            if (value == 4800)
-            { result = 1; } else
-            {
-                result = 1 + (value - 5620 / (16383 - 5620));
-            }
-            return result;
-        } 
+        private static Int32 getSpoilerFromMSFS(Int32 msfsValue, Int32 armValue) => armValue == 4800 ? -1 : msfsValue == 0 ? 0 : (Int32)Math.Round((Double)msfsValue / 16383 * 10);
         private static Int32 getSpoiler(Int32 currentSpoiler)
         {
             var result = 0;
-            if (currentSpoiler == 1)
+            if (currentSpoiler == 0)
+            {
+                result = 0;
+            }
+            else if (currentSpoiler == -1)
             {
                 result = 4800;
-            } else
+            }
+            else
             {
-                result = 5620 + (currentSpoiler - 1) * (16383 - 5620) / 100;
+                result = 5800 + currentSpoiler * (16383 - 5800) / 10;
             }
             return result;
         }

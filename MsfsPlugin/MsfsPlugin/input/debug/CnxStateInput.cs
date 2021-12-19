@@ -14,14 +14,7 @@
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            if (MsfsData.Instance.Connected)
-            {
-                return "Connected";
-            }
-            else
-            {
-                return MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected";
-            }
+            return MsfsData.Instance.Connected ? "Connected" : MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected";
         }
 
         public void Notify() => this.AdjustmentValueChanged();
