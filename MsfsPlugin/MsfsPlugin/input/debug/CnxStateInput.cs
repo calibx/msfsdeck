@@ -16,7 +16,7 @@
         {
             MsfsData.Instance.ValuesDisplayed = true;
             this.heartbeat = !this.heartbeat;
-            return MsfsData.Instance.Connected ? "Connected" : MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected" + (this.heartbeat ? "\n..." : "") ;
+            return (MsfsData.Instance.Connected ? "Connected" : MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected") + (this.heartbeat ? "\n..." : "\n. .");
         }
 
         public void Notify() => this.AdjustmentValueChanged();

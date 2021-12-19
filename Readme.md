@@ -44,8 +44,6 @@ Action : none
 * Pause / menu
 * Général elect input
 * Auto on/off motor
-* AP auto throtlle => a tester
-* Chronometer
 * zoom encoder
 * refuel
 * flap input encoder + overspeed
@@ -54,8 +52,7 @@ Action : none
 * mixture encoder
 * rpm display
 * colors (speed, ...)
-* refresh rate
-* heartbeat
+* refresh rate encoder
 
 ## Loupe deck
 * Icons
