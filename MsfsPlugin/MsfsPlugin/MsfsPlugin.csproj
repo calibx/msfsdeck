@@ -66,6 +66,7 @@
     <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
+    <Compile Include="input\nav\AP\APThrottleStateInput.cs" />
     <Compile Include="input\nav\AP\APWPDisplay.cs" />
     <Compile Include="input\nav\AP\APNavStateInput.cs" />
     <Compile Include="input\nav\AP\APAltStateInput.cs" />

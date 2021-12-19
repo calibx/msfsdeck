@@ -16,6 +16,7 @@
         private Int32 currentAPSpeed;
 
         private Int32 apSwitch;
+        private Int32 apThrottleSwitch;
         private Int32 apAltHoldSwitch;
         private Int32 apHeadHoldSwitch;
         private Int32 apVSHoldSwitch;
@@ -50,6 +51,8 @@
         public Int32 CurrentAPHeadingFromMSFS { get => this.currentAPHeading; set { this.currentAPHeading = value; } }
         public Int32 ApSwitch { get => this.apSwitch; set { this.apSwitch = value; this.SetToMSFS = true; } }
         public Int32 ApSwitchFromMSFS { get => this.apSwitch; set { this.apSwitch = value; } }
+        public Int32 ApThrottleSwitch { get => this.apThrottleSwitch; set { this.apThrottleSwitch = value; this.SetToMSFS = true; } }
+        public Int32 ApThrottleSwitchFromMSFS { get => this.apThrottleSwitch; set { this.apThrottleSwitch = value; } }
         public Int32 ApAltHoldSwitch { get => this.apAltHoldSwitch; set { this.apAltHoldSwitch = value; this.SetToMSFS = true; } }
         public Int32 ApAltHoldSwitchFromMSFS { get => this.apAltHoldSwitch; set { this.apAltHoldSwitch = value; } }
         public Int32 ApHeadHoldSwitch { get => this.apHeadHoldSwitch; set { this.apHeadHoldSwitch = value; this.SetToMSFS = true; } }

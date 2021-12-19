@@ -44,7 +44,7 @@ Action : none
 * Pause / menu
 * Général elect input
 * Auto on/off motor
-* AP auto throtlle
+* AP auto throtlle => a tester
 * Chronometer
 * zoom encoder
 * refuel

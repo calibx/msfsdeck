@@ -32,6 +32,7 @@
         private static readonly Offset<Int32> speedAP = new Offset<Int32>(0x07E2);
 
         private static readonly Offset<Int32> apSwitch = new Offset<Int32>(0x07BC);
+        private static readonly Offset<Int32> apThrottleSwitch = new Offset<Int32>(0x0810);
         private static readonly Offset<Int32> apAltHoldSwitch = new Offset<Int32>(0x07D0);
         private static readonly Offset<Int32> apHeadHoldSwitch = new Offset<Int32>(0x07C8);
         private static readonly Offset<Int32> apVSHoldSwitch = new Offset<Int32>(0x07EC);
@@ -104,6 +105,7 @@
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
                             speedAP.Value = (Int32)MsfsData.Instance.CurrentAPSpeed;
                             apSwitch.Value = (Int32)MsfsData.Instance.ApSwitch;
+                            apThrottleSwitch.Value = (Int32)MsfsData.Instance.ApThrottleSwitch;
                             apAltHoldSwitch.Value = (Int32)MsfsData.Instance.ApAltHoldSwitch;
                             apNavHoldSwitch.Value = (Int32)MsfsData.Instance.ApNavHoldSwitch;
                             apVSHoldSwitch.Value = (Int32)MsfsData.Instance.ApVSHoldSwitch;
@@ -139,15 +141,9 @@
                             }
                             MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
+                            MsfsData.Instance.ApThrottleSwitchFromMSFS = apThrottleSwitch.Value;
                             MsfsData.Instance.CurrentBrakesFromMSFS = parkingBrakes.Value;
-                            if (MsfsData.Instance.CurrentThrottle < 0)
-                            {
-                                MsfsData.Instance.CurrentThrottleFromMSFS = (Int16)(throttle1.Value * 100 / 4096);
-                            }
-                            else
-                            {
-                                MsfsData.Instance.CurrentThrottleFromMSFS = (Int16)(throttle1.Value * 100 / 16383);
-                            }
+                            MsfsData.Instance.CurrentThrottleFromMSFS = MsfsData.Instance.CurrentThrottle < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);
                             MsfsData.Instance.ThrottleLowerFromMSFS = throttleLower.Value;
                             MsfsData.Instance.CurrentGearHandleFromMSFS = gearHandle.Value;
                             MsfsData.Instance.ApAltHoldSwitchFromMSFS = apAltHoldSwitch.Value;
@@ -196,22 +192,6 @@
         }
 
         private static Int32 getSpoilerFromMSFS(Int32 msfsValue, Int32 armValue) => armValue == 4800 ? -1 : msfsValue == 0 ? 0 : (Int32)Math.Round((Double)msfsValue / 16383 * 10);
-        private static Int32 getSpoiler(Int32 currentSpoiler)
-        {
-            var result = 0;
-            if (currentSpoiler == 0)
-            {
-                result = 0;
-            }
-            else if (currentSpoiler == -1)
-            {
-                result = 4800;
-            }
-            else
-            {
-                result = 5800 + currentSpoiler * (16383 - 5800) / 10;
-            }
-            return result;
-        }
+        private static Int32 getSpoiler(Int32 currentSpoiler) => currentSpoiler == 0 ? 0 : currentSpoiler == -1 ? 4800 : 5800 + currentSpoiler * (16383 - 5800) / 10;
     }
 }
