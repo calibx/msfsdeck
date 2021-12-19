@@ -43,7 +43,6 @@ Action : none
 * Trims encoder
 * Pause / menu
 * Général elect input
-* Auto on/off motor
 * zoom encoder
 * refuel
 * flap input encoder + overspeed
