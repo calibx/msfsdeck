@@ -27,8 +27,41 @@
 
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-            MsfsData.Instance.ValuesDisplayed = true;
-            return MsfsData.Instance.CurrentSpeed + "\n" + MsfsData.Instance.CurrentAPSpeed;
+            var ret = actionParameter + " ";
+            switch (actionParameter)
+            {
+                case "Navigation":
+                    ret += MsfsData.Instance.NavigationLight ? "Off" : "On";
+                    break;
+                case "Beacon":
+                    ret += MsfsData.Instance.BeaconLight ? "Off" : "On";
+                    break;
+                case "Landing":
+                    ret += MsfsData.Instance.LandingLight ? "Off" : "On";
+                    break;
+                case "Taxi":
+                    ret += MsfsData.Instance.NavigationLight ? "Off" : "On";
+                    break;
+                case "Strobes":
+                    ret += MsfsData.Instance.TaxiLight ? "Off" : "On";
+                    break;
+                case "Instruments":
+                    ret += MsfsData.Instance.InstrumentsLight ? "Off" : "On";
+                    break;
+                case "Recognition":
+                    ret += MsfsData.Instance.RecognitionLight ? "Off" : "On";
+                    break;
+                case "Wing":
+                    ret += MsfsData.Instance.WingLight ? "Off" : "On";
+                    break;
+                case "Logo":
+                    ret += MsfsData.Instance.LogoLight ? "Off" : "On";
+                    break;
+                case "Cabin":
+                    ret += MsfsData.Instance.CabinLight ? "Off" : "On";
+                    break;
+            }
+            return ret;
         }
 
         protected override void RunCommand(String actionParameter)
