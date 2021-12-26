@@ -74,7 +74,8 @@
                     catch (FSUIPCException)
                     {
                     }
-                    timer.Interval = 500;
+                    MsfsData.Instance.RefreshRate = 500;
+                    timer.Interval = MsfsData.Instance.RefreshRate;
                     timer.Enabled = true;
                     timer.Elapsed += refresh;
 
@@ -94,6 +95,7 @@
 
         public static void refresh(Object source, EventArgs e)
         {
+            timer.Interval = MsfsData.Instance.RefreshRate;
             try
             {
                 if (FSUIPCConnection.IsOpen)
@@ -191,13 +193,13 @@
             catch (FSUIPCException)
             {
                 MsfsData.Instance.Connected = false;
-                timer.Interval = 2000;
+                MsfsData.Instance.RefreshRate = 2000;
             }
             if (FSUIPCConnection.IsOpen)
             {
                 MsfsData.Instance.Connected = true;
                 MsfsData.Instance.TryConnect = false;
-                timer.Interval = 500;
+                MsfsData.Instance.RefreshRate = 500;
 
             }
         }
