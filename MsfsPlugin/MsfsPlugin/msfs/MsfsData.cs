@@ -38,6 +38,17 @@
         private Int32 currentMixture;
         private Boolean currentPitot;
 
+        private Boolean navigationLight;
+        private Boolean beaconLight;
+        private Boolean landingLight;
+        private Boolean taxiLight;
+        private Boolean strobesLight;
+        private Boolean instrumentsLight;
+        private Boolean recognitionLight;
+        private Boolean wingLight;
+        private Boolean logoLight;
+        private Boolean cabinLight;
+
         private Boolean connected; 
         private Boolean tryingToconnect;
         private Boolean setToMSFS;
@@ -115,7 +126,26 @@
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
         public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
-
+        public Boolean NavigationLight { get => this.navigationLight; set { this.navigationLight = value; this.SetToMSFS = true; } }
+        public Boolean NavigationLightFromMSFS { get => this.navigationLight; set { this.navigationLight = value; } }
+        public Boolean BeaconLight { get => this.beaconLight; set { this.beaconLight = value; this.SetToMSFS = true; } }
+        public Boolean BeaconLightFromMSFS { get => this.beaconLight; set { this.beaconLight = value; } }
+        public Boolean LandingLight { get => this.landingLight; set { this.landingLight = value; this.SetToMSFS = true; } }
+        public Boolean LandingLightFromMSFS { get => this.landingLight; set { this.landingLight = value; } }
+        public Boolean TaxiLight { get => this.taxiLight; set { this.taxiLight = value; this.SetToMSFS = true; } }
+        public Boolean TaxiLightFromMSFS { get => this.taxiLight; set { this.taxiLight = value; } }
+        public Boolean StrobesLight { get => this.strobesLight; set { this.strobesLight = value; this.SetToMSFS = true; } }
+        public Boolean StrobesLightFromMSFS { get => this.strobesLight; set { this.strobesLight = value; } }
+        public Boolean InstrumentsLight { get => this.instrumentsLight; set { this.instrumentsLight = value; this.SetToMSFS = true; } }
+        public Boolean InstrumentsLightFromMSFS { get => this.instrumentsLight; set { this.instrumentsLight = value; } }
+        public Boolean RecognitionLight { get => this.recognitionLight; set { this.recognitionLight = value; this.SetToMSFS = true; } }
+        public Boolean RecognitionLightFromMSFS { get => this.recognitionLight; set { this.recognitionLight = value; } }
+        public Boolean WingLight { get => this.wingLight; set { this.wingLight = value; this.SetToMSFS = true; } }
+        public Boolean WingLightFromMSFS { get => this.wingLight; set { this.wingLight = value; } }
+        public Boolean LogoLight { get => this.logoLight; set { this.logoLight = value; this.SetToMSFS = true; } }
+        public Boolean LogoLightFromMSFS { get => this.logoLight; set { this.logoLight = value; } }
+        public Boolean CabinLight { get => this.cabinLight; set { this.cabinLight = value; this.SetToMSFS = true; } }
+        public Boolean CabinLightFromMSFS { get => this.cabinLight; set { this.cabinLight = value; } }
         private MsfsData()
         {
         }

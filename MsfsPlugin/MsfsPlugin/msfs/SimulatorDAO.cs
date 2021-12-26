@@ -20,6 +20,8 @@
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
         private static readonly Offset<Int32> rpm = new Offset<Int32>(0x0908);
         private static readonly Offset<Int16> zoom = new Offset<Int16>(0x832C);
+        private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
+        
 
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x0574);
         private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
@@ -132,6 +134,7 @@
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch;
                             parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
+                            light.Value = getLights();
                             mixture1.Value = (Int16)MsfsData.Instance.CurrentMixture;
                             mixture2.Value = (Int16)MsfsData.Instance.CurrentMixture;
                             mixture3.Value = (Int16)MsfsData.Instance.CurrentMixture;
@@ -189,6 +192,7 @@
                             MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
                             MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;
+                            getLightsFromMSFS(light.Value);
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
@@ -230,6 +234,44 @@
             }
         }
 
+        private static void getLightsFromMSFS(Int16 value)
+        {
+            MsfsData.Instance.NavigationLightFromMSFS = value >= 512;
+            value %= 512;
+            MsfsData.Instance.BeaconLightFromMSFS = value >= 256;
+            value %= 256;
+            MsfsData.Instance.LandingLightFromMSFS = value >= 128;
+            value %= 128;
+            MsfsData.Instance.TaxiLightFromMSFS = value >= 64;
+            value %= 64;
+            MsfsData.Instance.StrobesLightFromMSFS = value >= 32;
+            value %= 32;
+            MsfsData.Instance.InstrumentsLightFromMSFS = value >= 16;
+            value %= 16;
+            MsfsData.Instance.RecognitionLightFromMSFS = value >= 8;
+            value %= 8;
+            MsfsData.Instance.WingLightFromMSFS = value >= 4;
+            value %= 4;
+            MsfsData.Instance.LogoLightFromMSFS = value >= 2;
+            value %= 2;
+            MsfsData.Instance.CabinLightFromMSFS = value >= 1;
+
+        }
+        private static Int16 getLights()
+        {
+            Int16 result = 0;
+            result += MsfsData.Instance.NavigationLight ? (Int16)1 : (Int16)0;
+            result += MsfsData.Instance.BeaconLight ? (Int16)2 : (Int16)0;
+            result += MsfsData.Instance.LandingLight ? (Int16)4 : (Int16)0;
+            result += MsfsData.Instance.TaxiLight ? (Int16)8 : (Int16)0;
+            result += MsfsData.Instance.StrobesLight ? (Int16)16 : (Int16)0;
+            result += MsfsData.Instance.InstrumentsLight ? (Int16)32 : (Int16)0;
+            result += MsfsData.Instance.RecognitionLight ? (Int16)64 : (Int16)0;
+            result += MsfsData.Instance.WingLight ? (Int16)128 : (Int16)0;
+            result += MsfsData.Instance.LogoLight ? (Int16)256 : (Int16)0;
+            result += MsfsData.Instance.CabinLight ? (Int16)512 : (Int16)0;
+            return result;
+        }
         private static Int32 GetSpoilerFromMSFS(Int32 msfsValue, Int32 armValue) => armValue == 4800 ? -1 : msfsValue == 0 ? 0 : (Int32)Math.Round((Double)msfsValue / 16383 * 10);
         private static Int32 GetSpoiler(Int32 currentSpoiler) => currentSpoiler == 0 ? 0 : currentSpoiler == -1 ? 4800 : 5800 + currentSpoiler * (16383 - 5800) / 10;
     }
