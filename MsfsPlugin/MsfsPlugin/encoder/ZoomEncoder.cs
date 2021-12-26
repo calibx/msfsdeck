@@ -6,31 +6,14 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    class ZoomEncoder : PluginDynamicAdjustment, Notifiable
+    using Loupedeck.MsfsPlugin.encoder;
+
+    class ZoomEncoder : DefaultEncoder
     {
-        public ZoomEncoder() : base("Zoom", "Current Zoom level", "Misc", true)
+        public ZoomEncoder() : base("Zoom", "Current Zoom level", "Misc", true, -16383, 16383, 1)
         {
-            MsfsData.Instance.register(this);
         }
-        protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
-        {
-            MsfsData.Instance.CurrentZoom += (Int16)ticks;
-            if (MsfsData.Instance.CurrentZoom < -16383)
-            { MsfsData.Instance.CurrentZoom = -16383; }
-            else if (MsfsData.Instance.CurrentZoom > 16383)
-            { MsfsData.Instance.CurrentZoom = 16383; }
-        }
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentZoom = 0;
-        }
-
-        protected override String GetAdjustmentValue(String actionParameter)
-        {
-
-            return MsfsData.Instance.CurrentZoom.ToString();
-
-        }
-        public void Notify() => this.AdjustmentValueChanged();
+        protected override Int32 GetValue() => MsfsData.Instance.CurrentZoom;
+        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentZoom = newValue;
     }
 }

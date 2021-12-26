@@ -116,7 +116,7 @@
                             apHeadHoldSwitch.Value = MsfsData.Instance.ApHeadHoldSwitch;
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch;
                             parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
-                            zoom.Value = MsfsData.Instance.CurrentZoom;
+                            zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
 
                             if (MsfsData.Instance.CurrentThrottle < 0)
                             {

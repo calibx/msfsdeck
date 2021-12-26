@@ -18,7 +18,7 @@
             return MsfsData.Instance.CurrentVerticalSpeed + "\n" + MsfsData.Instance.CurrentAPVerticalSpeed;
         }
 
-        protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentAPVerticalSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentVerticalSpeed / 100d, 0) * 100);
+        protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentAPVerticalSpeed = (Int16)(Math.Round(MsfsData.Instance.CurrentVerticalSpeed / 100d, 0) * 100);
 
 
     }

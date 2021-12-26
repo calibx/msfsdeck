@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="encoder\DefaultEncoder.cs" />
     <Compile Include="encoder\ZoomEncoder.cs" />
     <Compile Include="encoder\AltitudeEncoder.cs" />
     <Compile Include="encoder\AileronTrimEncoder.cs" />
