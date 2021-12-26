@@ -39,34 +39,31 @@
                     MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
                     break;
                 case "Beacon":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                    MsfsData.Instance.BeaconLight = !MsfsData.Instance.BeaconLight;
                     break;
                 case "Landing":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                    MsfsData.Instance.LandingLight = !MsfsData.Instance.LandingLight;
                     break;
                 case "Taxi":
                     MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
                     break;
                 case "Strobes":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                    MsfsData.Instance.TaxiLight = !MsfsData.Instance.TaxiLight;
                     break;
                 case "Instruments":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                    MsfsData.Instance.InstrumentsLight = !MsfsData.Instance.InstrumentsLight;
                     break;
                 case "Recognition":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                    MsfsData.Instance.RecognitionLight = !MsfsData.Instance.RecognitionLight;
                     break;
-                case "Navigation":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                case "Wing":
+                    MsfsData.Instance.WingLight = !MsfsData.Instance.WingLight;
                     break;
-                case "Navigation":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                case "Logo":
+                    MsfsData.Instance.LogoLight = !MsfsData.Instance.LogoLight;
                     break;
-                case "Navigation":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
-                    break;
-                case "Navigation":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                case "Cabin":
+                    MsfsData.Instance.CabinLight = !MsfsData.Instance.CabinLight;
                     break;
             }
 
