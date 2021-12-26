@@ -18,6 +18,8 @@
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
+        private static readonly Offset<Int16> zoom = new Offset<Int16>(0x832C);
+
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x0574);
         private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
         private static readonly Offset<Int16> throttle1 = new Offset<Int16>(0x088C);
@@ -114,6 +116,8 @@
                             apHeadHoldSwitch.Value = MsfsData.Instance.ApHeadHoldSwitch;
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch;
                             parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
+                            zoom.Value = MsfsData.Instance.CurrentZoom;
+
                             if (MsfsData.Instance.CurrentThrottle < 0)
                             {
                                 throttle1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 4096d / 100);
@@ -158,6 +162,7 @@
                             MsfsData.Instance.CurrentSpoilerFromMSFS = GetSpoilerFromMSFS(spoilerPosition.Value, spoilerArm.Value);
                             MsfsData.Instance.CurrentRudderTrimFromMSFS = rudderTrim.Value;
                             MsfsData.Instance.CurrentAileronTrimFromMSFS = aileronTrim.Value;
+                            MsfsData.Instance.CurrentZoom = zoom.Value;
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;

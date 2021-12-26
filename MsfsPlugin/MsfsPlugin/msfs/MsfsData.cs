@@ -23,13 +23,17 @@
         private Int32 apNavHoldSwitch;
         private Int32 apSpeedHoldSwitch;
 
-        private Boolean connected;
+        
         private Int32 currentBrakes;
         private Int16 currentTrottle;
         private Int32 currentSpoiler;
         private Int16 currentAileronTrim;
         private Int16 currentRudderTrim;       
         private Int32 currentGearHandle;
+
+        private Int16 currentZoom;
+
+        private Boolean connected; 
         private Boolean tryingToconnect;
         private Boolean setToMSFS;
 
@@ -90,6 +94,8 @@
         public Int16 CurrentAileronTrimFromMSFS { get => this.currentAileronTrim; set { this.currentAileronTrim = value; } }
         public Int16 CurrentRudderTrim { get => this.currentRudderTrim; set { this.currentRudderTrim = value; this.SetToMSFS = true; } }
         public Int16 CurrentRudderTrimFromMSFS { get => this.currentRudderTrim; set { this.currentRudderTrim = value; } }
+        public Int16 CurrentZoom { get => this.currentZoom; set { this.currentZoom = value; this.SetToMSFS = true; } }
+        public Int16 CurrentZoomFromMSFS { get => this.currentZoom; set { this.currentZoom = value; } }
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
         public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
