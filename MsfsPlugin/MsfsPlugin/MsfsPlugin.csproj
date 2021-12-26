@@ -84,6 +84,7 @@
     <Compile Include="input\nav\AP\APStateInput.cs" />
     <Compile Include="input\debug\FPSInput.cs" />
     <Compile Include="input\nav\MasterInput.cs" />
+    <Compile Include="input\nav\RPMInput.cs" />
     <Compile Include="input\nav\PitotInput.cs" />
     <Compile Include="input\nav\SpeedInput.cs" />
     <Compile Include="input\nav\VerticalSpeedInput.cs" />

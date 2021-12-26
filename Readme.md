@@ -34,15 +34,13 @@ Action : none
 
 # TODO
 ## Code
-
+* test and doc : master, pitot, trims, flap, mixture, refresh, zoom, rpm
 * Switch to SimConnect when 64 bits enable
-* Use object for all
+* Use object for all encoder and input
 * Complete object : color, availability, speed,,...
 
 ## MSFS Controls
 * Light input
-
-
 
 ## Loupe deck
 * Icons

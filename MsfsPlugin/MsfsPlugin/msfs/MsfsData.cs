@@ -50,6 +50,7 @@
         public static MsfsData Instance { get { return lazy.Value; } }
 
         public Int32 CurrentHeading { get; set; }
+        public Int32 Rpm { get; set; }
         public Int32 Fps { get; set; }
         public Int32 RefreshRate { get; set; }
         public Int32 DebugValue { get; set; }

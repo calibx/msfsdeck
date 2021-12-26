@@ -18,6 +18,7 @@
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
+        private static readonly Offset<Int32> rpm = new Offset<Int32>(0x0908);
         private static readonly Offset<Int16> zoom = new Offset<Int16>(0x832C);
 
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x0574);
@@ -204,6 +205,7 @@
                         MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                         MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
+                        MsfsData.Instance.Rpm = rpm.Value / 16383 * 100;
 
                     }
                 }
