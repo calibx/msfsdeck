@@ -14,6 +14,7 @@
         {
             this.max = MsfsData.Instance.MaxFlap;
         }
+        protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentFlap = 0;
         protected override Int32 GetValue() => MsfsData.Instance.CurrentFlap;
         protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentFlap = newValue;
     }

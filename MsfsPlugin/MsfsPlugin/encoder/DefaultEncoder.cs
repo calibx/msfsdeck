@@ -28,10 +28,7 @@
             { value = this.max; }
             this.SetValue(value);
         }
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentZoom = 0;
-        }
+
 
         protected override String GetAdjustmentValue(String actionParameter) => this.GetValue().ToString();
         public void Notify() => this.AdjustmentValueChanged();

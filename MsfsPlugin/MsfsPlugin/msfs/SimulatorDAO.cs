@@ -63,6 +63,10 @@
         private static readonly Offset<Int32> gearLeft = new Offset<Int32>(0x0BF0);
         private static readonly Offset<Int32> gearRight = new Offset<Int32>(0x0BF4);
 
+        private static readonly Offset<Byte> pitot = new Offset<Byte>(0x029C);
+        private static readonly Offset<Int16> masterSwitch = new Offset<Int16>(0x2E80);
+
+
         private static readonly Offset<Int16> maxFlap = new Offset<Int16>(0x3BF8);
         private static readonly Offset<Int16> currentFlap = new Offset<Int16>(0x3BFA);
 
@@ -151,6 +155,8 @@
                             aileronTrim.Value = MsfsData.Instance.CurrentAileronTrim;
                             rudderTrim.Value = MsfsData.Instance.CurrentRudderTrim;
                             currentFlap.Value = (Int16)(16383 / (maxFlap.Value+1) * MsfsData.Instance.CurrentFlap);
+                            pitot.Value = MsfsData.Instance.CurrentPitot ? (Byte)1 : (Byte)0;
+                            masterSwitch.Value = (Int16)(MsfsData.Instance.MasterSwitch ? 1 : 0);
                             MsfsData.Instance.SetToMSFS = false;
                         }
                         else
@@ -177,9 +183,11 @@
                             MsfsData.Instance.CurrentSpoilerFromMSFS = GetSpoilerFromMSFS(spoilerPosition.Value, spoilerArm.Value);
                             MsfsData.Instance.CurrentRudderTrimFromMSFS = rudderTrim.Value;
                             MsfsData.Instance.CurrentAileronTrimFromMSFS = aileronTrim.Value;
-                            MsfsData.Instance.CurrentZoom = zoom.Value;
-                            MsfsData.Instance.CurrentMixture = mixture1.Value;
-                            MsfsData.Instance.CurrentFlap = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
+                            MsfsData.Instance.CurrentZoomFromMSFS = zoom.Value;
+                            MsfsData.Instance.CurrentMixtureFromMSFS = mixture1.Value;
+                            MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
+                            MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
+                            MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;

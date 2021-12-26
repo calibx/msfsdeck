@@ -13,7 +13,8 @@
         public RefreshRateEncoder() : base("Refresh", "Current data refresh rate", "Misc", true, 1, 3000, 1)
         {
         }
-        protected override Int32 GetValue() => MsfsData.Instance.CurrentZoom;
-        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentZoom = newValue;
+        protected override void RunCommand(String actionParameter) => MsfsData.Instance.RefreshRate = 500;
+        protected override Int32 GetValue() => MsfsData.Instance.RefreshRate;
+        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.RefreshRate = newValue;
     }
 }

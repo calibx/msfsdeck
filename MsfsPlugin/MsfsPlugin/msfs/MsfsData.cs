@@ -16,6 +16,7 @@
         private Int32 currentAPSpeed;
 
         private Int32 apSwitch;
+        private Boolean masterSwitch;
         private Int32 apThrottleSwitch;
         private Int32 apAltHoldSwitch;
         private Int32 apHeadHoldSwitch;
@@ -35,6 +36,7 @@
 
         private Int32 currentZoom;
         private Int32 currentMixture;
+        private Boolean currentPitot;
 
         private Boolean connected; 
         private Boolean tryingToconnect;
@@ -62,6 +64,8 @@
         public Int32 CurrentAPHeadingFromMSFS { get => this.currentAPHeading; set { this.currentAPHeading = value; } }
         public Int32 ApSwitch { get => this.apSwitch; set { this.apSwitch = value; this.SetToMSFS = true; } }
         public Int32 ApSwitchFromMSFS { get => this.apSwitch; set { this.apSwitch = value; } }
+        public Boolean MasterSwitch { get => this.masterSwitch; set { this.masterSwitch = value; this.SetToMSFS = true; } }
+        public Boolean MasterSwitchFromMSFS { get => this.masterSwitch; set { this.masterSwitch = value; } }
         public Int32 ApThrottleSwitch { get => this.apThrottleSwitch; set { this.apThrottleSwitch = value; this.SetToMSFS = true; } }
         public Int32 ApThrottleSwitchFromMSFS { get => this.apThrottleSwitch; set { this.apThrottleSwitch = value; } }
         public Int32 ApAltHoldSwitch { get => this.apAltHoldSwitch; set { this.apAltHoldSwitch = value; this.SetToMSFS = true; } }
@@ -105,6 +109,8 @@
         public Int32 CurrentMixtureFromMSFS { get => this.currentMixture; set { this.currentMixture = value; } }
         public Int32 CurrentFlap { get => this.currentFlap; set { this.currentFlap = value; this.SetToMSFS = true; } }
         public Int32 CurrentFlapFromMSFS { get => this.currentFlap; set { this.currentFlap = value; } }
+        public Boolean CurrentPitot { get => this.currentPitot; set { this.currentPitot = value; this.SetToMSFS = true; } }
+        public Boolean CurrentPitotFromMSFS { get => this.currentPitot; set { this.currentPitot = value; } }
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
         public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
