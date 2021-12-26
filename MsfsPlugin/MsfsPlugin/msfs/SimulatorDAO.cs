@@ -28,6 +28,11 @@
         private static readonly Offset<Int16> throttle4 = new Offset<Int16>(0x0A54);
         private static readonly Offset<Int16> throttleLower = new Offset<Int16>(0x333A);
 
+        private static readonly Offset<Int16> mixture1 = new Offset<Int16>(0x0890);
+        private static readonly Offset<Int16> mixture2 = new Offset<Int16>(0x0928);
+        private static readonly Offset<Int16> mixture3 = new Offset<Int16>(0x09C0);
+        private static readonly Offset<Int16> mixture4 = new Offset<Int16>(0x0A58);
+
         private static readonly Offset<Int16> verticalSpeedAP = new Offset<Int16>(0x07F2);
         private static readonly Offset<Int16> compassAP = new Offset<Int16>(0x07CC);
         private static readonly Offset<Int32> altitudeAP = new Offset<Int32>(0x07D4);
@@ -119,6 +124,10 @@
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch;
                             parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
+                            mixture1.Value = (Int16)MsfsData.Instance.CurrentMixture;
+                            mixture2.Value = (Int16)MsfsData.Instance.CurrentMixture;
+                            mixture3.Value = (Int16)MsfsData.Instance.CurrentMixture;
+                            mixture4.Value = (Int16)MsfsData.Instance.CurrentMixture;
 
                             if (MsfsData.Instance.CurrentThrottle < 0)
                             {
@@ -165,6 +174,7 @@
                             MsfsData.Instance.CurrentRudderTrimFromMSFS = rudderTrim.Value;
                             MsfsData.Instance.CurrentAileronTrimFromMSFS = aileronTrim.Value;
                             MsfsData.Instance.CurrentZoom = zoom.Value;
+                            MsfsData.Instance.CurrentMixture = mixture1.Value;
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;

@@ -32,6 +32,7 @@
         private Int32 currentGearHandle;
 
         private Int32 currentZoom;
+        private Int32 currentMixture;
 
         private Boolean connected; 
         private Boolean tryingToconnect;
@@ -97,6 +98,8 @@
         public Int16 CurrentRudderTrimFromMSFS { get => this.currentRudderTrim; set { this.currentRudderTrim = value; } }
         public Int32 CurrentZoom { get => this.currentZoom; set { this.currentZoom = value; this.SetToMSFS = true; } }
         public Int32 CurrentZoomFromMSFS { get => this.currentZoom; set { this.currentZoom = value; } }
+        public Int32 CurrentMixture { get => this.currentMixture; set { this.currentMixture = value; this.SetToMSFS = true; } }
+        public Int32 CurrentMixtureFromMSFS { get => this.currentMixture; set { this.currentMixture = value; } }
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
         public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
