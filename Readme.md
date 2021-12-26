@@ -34,29 +34,26 @@ Action : none
 
 # TODO
 ## Code
-* Make object for simple input/encoder
-* Switch to SimConnect when 64 bits enable
 
+* Switch to SimConnect when 64 bits enable
+* Use object for all
+* Complete object : color, availability, speed,,...
 
 ## MSFS Controls
 * Light input
-* Trims encoder
-* Pause / menu
-* Général elect input
-* zoom encoder
-* refuel
-* flap input encoder + overspeed
-* pitot heating
-* fuel pump
-* mixture encoder
-* rpm display
-* colors (speed, ...)
-* refresh rate encoder
+
+
 
 ## Loupe deck
 * Icons
 * Rename profile
 * create dynamic folders : ap, light,..
 
-
+# Can't do
+## Pause
+No offset
+## Refuel
+No offset
+## Fuel pump
+Can find offset
 
