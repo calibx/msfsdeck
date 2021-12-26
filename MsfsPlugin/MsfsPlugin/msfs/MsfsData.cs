@@ -12,7 +12,7 @@
 
         private Int32 currentAPHeading;
         private Int32 currentAPAltitude;
-        private Int32 currentAPVerticalSpeed;
+        private Int16 currentAPVerticalSpeed;
         private Int32 currentAPSpeed;
 
         private Int32 apSwitch;
@@ -27,6 +27,8 @@
         private Int32 currentBrakes;
         private Int16 currentTrottle;
         private Int32 currentSpoiler;
+        private Int16 currentAileronTrim;
+        private Int16 currentRudderTrim;       
         private Int32 currentGearHandle;
         private Boolean tryingToconnect;
         private Boolean setToMSFS;
@@ -70,8 +72,8 @@
         public Int32 CurrentAPSpeedFromMSFS { get => this.currentAPSpeed; set { this.currentAPSpeed = value; } }
         public Int32 CurrentAPAltitudeFromMSFS { get => this.currentAPAltitude; set { this.currentAPAltitude = value; } }
         public Int32 CurrentVerticalSpeed { get; set; }
-        public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.SetToMSFS = true; } }
-        public Int32 CurrentAPVerticalSpeedFromMSFS { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; } }
+        public Int16 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.SetToMSFS = true; } }
+        public Int16 CurrentAPVerticalSpeedFromMSFS { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; } }
         public Int64 ApNextWPID { get; set; }
         public Int32 ApNextWPETE { get; set; }
         public Double ApNextWPDist { get; set; }
@@ -84,6 +86,10 @@
         public Int32 ThrottleLowerFromMSFS { get; set; }
         public Int32 CurrentSpoiler { get => this.currentSpoiler; set { this.currentSpoiler = value; this.SetToMSFS = true; } }
         public Int32 CurrentSpoilerFromMSFS { get => this.currentSpoiler; set { this.currentSpoiler = value; } }
+        public Int16 CurrentAileronTrim { get => this.currentAileronTrim; set { this.currentAileronTrim = value; this.SetToMSFS = true; } }
+        public Int16 CurrentAileronTrimFromMSFS { get => this.currentAileronTrim; set { this.currentAileronTrim = value; } }
+        public Int16 CurrentRudderTrim { get => this.currentRudderTrim; set { this.currentRudderTrim = value; this.SetToMSFS = true; } }
+        public Int16 CurrentRudderTrimFromMSFS { get => this.currentRudderTrim; set { this.currentRudderTrim = value; } }
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
         public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }

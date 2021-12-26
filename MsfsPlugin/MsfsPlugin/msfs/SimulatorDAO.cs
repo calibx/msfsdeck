@@ -47,6 +47,8 @@
         private static readonly Offset<Int32> parkingBrakes = new Offset<Int32>(0x0BC8);
         private static readonly Offset<Int32> spoilerArm = new Offset<Int32>(0x0BD0);
         private static readonly Offset<Int32> spoilerPosition = new Offset<Int32>(0x0BD4);
+        private static readonly Offset<Int16> aileronTrim = new Offset<Int16>(0x0C02);
+        private static readonly Offset<Int16> rudderTrim = new Offset<Int16>(0x0C04);
 
         private static readonly Offset<Byte> gearOverSpeed = new Offset<Byte>(0x0B4F);
         private static readonly Offset<Int32> gearHandle = new Offset<Int32>(0x0BE8);
@@ -100,18 +102,18 @@
                         MsfsData.Instance.DebugValue = throttleLower.Value;
                         if (MsfsData.Instance.SetToMSFS)
                         {
-                            verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
+                            verticalSpeedAP.Value = MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
-                            speedAP.Value = (Int32)MsfsData.Instance.CurrentAPSpeed;
-                            apSwitch.Value = (Int32)MsfsData.Instance.ApSwitch;
-                            apThrottleSwitch.Value = (Int32)MsfsData.Instance.ApThrottleSwitch;
-                            apAltHoldSwitch.Value = (Int32)MsfsData.Instance.ApAltHoldSwitch;
-                            apNavHoldSwitch.Value = (Int32)MsfsData.Instance.ApNavHoldSwitch;
-                            apVSHoldSwitch.Value = (Int32)MsfsData.Instance.ApVSHoldSwitch;
-                            apHeadHoldSwitch.Value = (Int32)MsfsData.Instance.ApHeadHoldSwitch;
-                            apSpeedHoldSwitch.Value = (Int32)MsfsData.Instance.ApSpeedHoldSwitch;
-                            parkingBrakes.Value = (Int32)MsfsData.Instance.CurrentBrakes;
+                            speedAP.Value = MsfsData.Instance.CurrentAPSpeed;
+                            apSwitch.Value = MsfsData.Instance.ApSwitch;
+                            apThrottleSwitch.Value = MsfsData.Instance.ApThrottleSwitch;
+                            apAltHoldSwitch.Value = MsfsData.Instance.ApAltHoldSwitch;
+                            apNavHoldSwitch.Value = MsfsData.Instance.ApNavHoldSwitch;
+                            apVSHoldSwitch.Value = MsfsData.Instance.ApVSHoldSwitch;
+                            apHeadHoldSwitch.Value = MsfsData.Instance.ApHeadHoldSwitch;
+                            apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch;
+                            parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
                             if (MsfsData.Instance.CurrentThrottle < 0)
                             {
                                 throttle1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 4096d / 100);
@@ -126,13 +128,15 @@
                                 throttle3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 16383d / 100);
                                 throttle4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentThrottle * 16383d / 100);
                             }
-                            gearHandle.Value = (Int32)MsfsData.Instance.CurrentGearHandle;
-                            spoilerArm.Value = getSpoiler(MsfsData.Instance.CurrentSpoiler);
+                            gearHandle.Value = MsfsData.Instance.CurrentGearHandle;
+                            spoilerArm.Value = GetSpoiler(MsfsData.Instance.CurrentSpoiler);
+                            aileronTrim.Value = MsfsData.Instance.CurrentAileronTrim;
+                            rudderTrim.Value = MsfsData.Instance.CurrentRudderTrim;
                             MsfsData.Instance.SetToMSFS = false;
                         }
                         else
                         {
-                            MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = (Int32)verticalSpeedAP.Value;
+                            MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = verticalSpeedAP.Value;
                             MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)speedAP.Value;
                             MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;
                             if (MsfsData.Instance.CurrentAPHeading <= 0)
@@ -151,7 +155,9 @@
                             MsfsData.Instance.ApVSHoldSwitchFromMSFS = apVSHoldSwitch.Value;
                             MsfsData.Instance.ApHeadHoldSwitchFromMSFS = apHeadHoldSwitch.Value;
                             MsfsData.Instance.ApSpeedHoldSwitchFromMSFS = apSpeedHoldSwitch.Value;
-                            MsfsData.Instance.CurrentSpoilerFromMSFS = getSpoilerFromMSFS(spoilerPosition.Value, spoilerArm.Value);
+                            MsfsData.Instance.CurrentSpoilerFromMSFS = GetSpoilerFromMSFS(spoilerPosition.Value, spoilerArm.Value);
+                            MsfsData.Instance.CurrentRudderTrimFromMSFS = rudderTrim.Value;
+                            MsfsData.Instance.CurrentAileronTrimFromMSFS = aileronTrim.Value;
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
@@ -191,7 +197,7 @@
             }
         }
 
-        private static Int32 getSpoilerFromMSFS(Int32 msfsValue, Int32 armValue) => armValue == 4800 ? -1 : msfsValue == 0 ? 0 : (Int32)Math.Round((Double)msfsValue / 16383 * 10);
-        private static Int32 getSpoiler(Int32 currentSpoiler) => currentSpoiler == 0 ? 0 : currentSpoiler == -1 ? 4800 : 5800 + currentSpoiler * (16383 - 5800) / 10;
+        private static Int32 GetSpoilerFromMSFS(Int32 msfsValue, Int32 armValue) => armValue == 4800 ? -1 : msfsValue == 0 ? 0 : (Int32)Math.Round((Double)msfsValue / 16383 * 10);
+        private static Int32 GetSpoiler(Int32 currentSpoiler) => currentSpoiler == 0 ? 0 : currentSpoiler == -1 ? 4800 : 5800 + currentSpoiler * (16383 - 5800) / 10;
     }
 }

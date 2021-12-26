@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="encoder\AltitudeEncoder.cs" />
+    <Compile Include="encoder\AileronTrimEncoder.cs" />
+    <Compile Include="encoder\RudderTrimEncoder.cs" />
     <Compile Include="encoder\ThrottleEncoder.cs" />
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="encoder\SpeedEncoder.cs" />
