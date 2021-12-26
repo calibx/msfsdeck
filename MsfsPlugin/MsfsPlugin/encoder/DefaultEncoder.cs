@@ -8,9 +8,9 @@
 
     public abstract class DefaultEncoder : PluginDynamicAdjustment, Notifiable
     {
-        private readonly Int32 min;
-        private readonly Int32 max;
-        private readonly Int32 step;
+        protected Int32 min;
+        protected Int32 max;
+        protected Int32 step;
         public DefaultEncoder(String name, String desc, String category, Boolean resettable, Int32 min, Int32 max, Int32 step) : base(name, desc, category, resettable)
         {
             MsfsData.Instance.register(this);

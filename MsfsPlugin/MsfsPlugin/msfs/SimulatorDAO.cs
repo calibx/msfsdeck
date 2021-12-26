@@ -63,6 +63,9 @@
         private static readonly Offset<Int32> gearLeft = new Offset<Int32>(0x0BF0);
         private static readonly Offset<Int32> gearRight = new Offset<Int32>(0x0BF4);
 
+        private static readonly Offset<Int16> maxFlap = new Offset<Int16>(0x3BF8);
+        private static readonly Offset<Int16> currentFlap = new Offset<Int16>(0x3BFA);
+
         private static readonly Timer timer = new System.Timers.Timer();
 
         public static void Initialise()
@@ -147,6 +150,7 @@
                             spoilerArm.Value = GetSpoiler(MsfsData.Instance.CurrentSpoiler);
                             aileronTrim.Value = MsfsData.Instance.CurrentAileronTrim;
                             rudderTrim.Value = MsfsData.Instance.CurrentRudderTrim;
+                            currentFlap.Value = (Int16)(16383 / (maxFlap.Value+1) * MsfsData.Instance.CurrentFlap);
                             MsfsData.Instance.SetToMSFS = false;
                         }
                         else
@@ -175,6 +179,7 @@
                             MsfsData.Instance.CurrentAileronTrimFromMSFS = aileronTrim.Value;
                             MsfsData.Instance.CurrentZoom = zoom.Value;
                             MsfsData.Instance.CurrentMixture = mixture1.Value;
+                            MsfsData.Instance.CurrentFlap = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
@@ -190,6 +195,7 @@
                         MsfsData.Instance.ApNextWPETE = apNextWPETE.Value;
                         MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
+                        MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
 
                     }
                 }

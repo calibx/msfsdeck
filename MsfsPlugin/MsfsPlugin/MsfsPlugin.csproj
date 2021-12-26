@@ -60,6 +60,7 @@
     <Compile Include="encoder\DefaultEncoder.cs" />
     <Compile Include="encoder\RefreshRateEncoder.cs" />
     <Compile Include="encoder\MixtureEncoder.cs" />
+    <Compile Include="encoder\FlapEncoder.cs" />
     <Compile Include="encoder\ZoomEncoder.cs" />
     <Compile Include="encoder\AltitudeEncoder.cs" />
     <Compile Include="encoder\AileronTrimEncoder.cs" />
