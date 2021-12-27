@@ -10,12 +10,13 @@
 
     class FlapEncoder : DefaultEncoder
     {
-        public FlapEncoder() : base("Flap", "Current flap level", "Misc", true, 0, 100, 1)
+        public FlapEncoder() : base("Flap", "Current flap level", "Misc", true, 0, 100, 1) => this.max = MsfsData.Instance.MaxFlap;
+        protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentFlap = 0;
+        protected override Int32 GetValue()
         {
             this.max = MsfsData.Instance.MaxFlap;
+            return MsfsData.Instance.CurrentFlap;
         }
-        protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentFlap = 0;
-        protected override Int32 GetValue() => MsfsData.Instance.CurrentFlap;
         protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentFlap = newValue;
     }
 }

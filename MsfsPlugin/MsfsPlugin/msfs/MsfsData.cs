@@ -24,14 +24,14 @@
         private Int32 apNavHoldSwitch;
         private Int32 apSpeedHoldSwitch;
 
-        
+
         private Int32 currentBrakes;
         private Int16 currentTrottle;
         private Int32 currentFlap;
-        
+
         private Int32 currentSpoiler;
         private Int16 currentAileronTrim;
-        private Int16 currentRudderTrim;       
+        private Int16 currentRudderTrim;
         private Int32 currentGearHandle;
 
         private Int32 currentZoom;
@@ -49,7 +49,7 @@
         private Boolean logoLight;
         private Boolean cabinLight;
 
-        private Boolean connected; 
+        private Boolean connected;
         private Boolean tryingToconnect;
         private Boolean setToMSFS;
 
@@ -120,7 +120,7 @@
         public Int32 CurrentMixture { get => this.currentMixture; set { this.currentMixture = value; this.SetToMSFS = true; } }
         public Int32 CurrentMixtureFromMSFS { get => this.currentMixture; set { this.currentMixture = value; } }
         public Int32 CurrentFlap { get => this.currentFlap; set { this.currentFlap = value; this.SetToMSFS = true; } }
-        public Int32 CurrentFlapFromMSFS { get => this.currentFlap; set { this.currentFlap = value; } }
+        public Int32 CurrentFlapFromMSFS { get => this.currentFlap; set => this.currentFlap = value; }
         public Boolean CurrentPitot { get => this.currentPitot; set { this.currentPitot = value; this.SetToMSFS = true; } }
         public Boolean CurrentPitotFromMSFS { get => this.currentPitot; set { this.currentPitot = value; } }
         public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }

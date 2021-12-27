@@ -41,22 +41,9 @@
             }
         }
 
-        private String getDisplay(Int32 gearPos)
-        {
-            if (gearPos == 0)
-            {
-                return "-";
-            }
-            else
-            {
-                return gearPos == 16383 ? "|" : "/";
-            }
-        }
+        private String getDisplay(Int32 gearPos) => gearPos == 0 ? "-" : gearPos == 16383 ? "|" : "/";
 
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentGearHandle = MsfsData.Instance.CurrentGearHandle != 0 ? 0 : 16383;
-        }
+        protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentGearHandle = MsfsData.Instance.CurrentGearHandle != 0 ? 0 : 16383;
     }
 }
 

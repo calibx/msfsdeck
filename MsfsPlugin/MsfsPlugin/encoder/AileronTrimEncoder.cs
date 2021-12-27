@@ -14,7 +14,7 @@
         }
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-            MsfsData.Instance.CurrentAileronTrim += (Int16)ticks;
+            MsfsData.Instance.CurrentAileronTrim += (Int16)(100 * ticks);
             if (MsfsData.Instance.CurrentAileronTrim < -16383)
             { MsfsData.Instance.CurrentAileronTrim = -16383; }
             else if (MsfsData.Instance.CurrentAileronTrim > 16383)
