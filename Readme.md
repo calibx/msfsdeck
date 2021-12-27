@@ -34,13 +34,13 @@ Action : none
 
 # TODO
 ## Code
-* test and doc : master, pitot, trims, flap, mixture, refresh, zoom, rpm, light
+* test and doc : master, pitot, mixture, rpm, light
 * Switch to SimConnect when 64 bits enable
 * Use object for all encoder and input
 * Complete object : color, availability, speed,,...
 
 ## MSFS Controls
-
+trim
 
 ## Loupe deck
 * Icons
@@ -54,4 +54,6 @@ No offset
 No offset
 ## Fuel pump
 Can't find offset
+## Zoom
+Offset doesn't respond
 

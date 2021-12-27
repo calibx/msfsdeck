@@ -14,7 +14,7 @@
         }
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-            MsfsData.Instance.CurrentRudderTrim += (Int16)ticks;
+            MsfsData.Instance.CurrentRudderTrim += (Int16)(100 * ticks);
             if (MsfsData.Instance.CurrentRudderTrim < -16383)
             { MsfsData.Instance.CurrentRudderTrim = -16383; }
             else if (MsfsData.Instance.CurrentRudderTrim > 16383)

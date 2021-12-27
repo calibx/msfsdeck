@@ -19,9 +19,9 @@
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
         private static readonly Offset<Int32> rpm = new Offset<Int32>(0x0908);
-        private static readonly Offset<Int16> zoom = new Offset<Int16>(0x832C);
+        private static readonly Offset<Int16> zoom = new Offset<Int16>(0x8336);
         private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
-        
+
 
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x0574);
         private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
@@ -71,7 +71,7 @@
 
 
         private static readonly Offset<Int16> maxFlap = new Offset<Int16>(0x3BF8);
-        private static readonly Offset<Int16> currentFlap = new Offset<Int16>(0x3BFA);
+        private static readonly Offset<Int16> currentFlap = new Offset<Int16>(0x0BDC);
 
         private static readonly Timer timer = new System.Timers.Timer();
 
@@ -110,15 +110,16 @@
 
         public static void refresh(Object source, EventArgs e)
         {
-            timer.Interval = MsfsData.Instance.RefreshRate;
+
             try
             {
                 if (FSUIPCConnection.IsOpen)
                 {
                     lock (timer)
                     {
+                        timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = throttleLower.Value;
+                        MsfsData.Instance.DebugValue = currentFlap.Value;
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -158,7 +159,7 @@
                             spoilerArm.Value = GetSpoiler(MsfsData.Instance.CurrentSpoiler);
                             aileronTrim.Value = MsfsData.Instance.CurrentAileronTrim;
                             rudderTrim.Value = MsfsData.Instance.CurrentRudderTrim;
-                            currentFlap.Value = (Int16)(16383 / (maxFlap.Value+1) * MsfsData.Instance.CurrentFlap);
+                            currentFlap.Value = (Int16)(16383 / (maxFlap.Value + 1) * MsfsData.Instance.CurrentFlap);
                             pitot.Value = MsfsData.Instance.CurrentPitot ? (Byte)1 : (Byte)0;
                             masterSwitch.Value = (Int16)(MsfsData.Instance.MasterSwitch ? 1 : 0);
                             MsfsData.Instance.SetToMSFS = false;
@@ -223,14 +224,12 @@
             catch (FSUIPCException)
             {
                 MsfsData.Instance.Connected = false;
-                MsfsData.Instance.RefreshRate = 2000;
+                timer.Interval = 2000;
             }
             if (FSUIPCConnection.IsOpen)
             {
                 MsfsData.Instance.Connected = true;
                 MsfsData.Instance.TryConnect = false;
-                MsfsData.Instance.RefreshRate = 500;
-
             }
         }
 
