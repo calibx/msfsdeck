@@ -10,7 +10,7 @@
 
     class MixtureEncoder : DefaultEncoder
     {
-        public MixtureEncoder() : base("Mixture", "Mixture encoder for the 4 engines", "Misc", true, 0, 16383, 100)
+        public MixtureEncoder() : base("Mixture", "Mixture encoder for the 4 engines", "Misc", true, 0, 100, 1)
         {
         }
         protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentMixture = 0;

@@ -34,7 +34,7 @@ Action : none
 
 # TODO
 ## Code
-* test and doc : master, pitot, mixture, rpm, light
+* test and doc : rpm, light
 * Switch to SimConnect when 64 bits enable
 * Use object for all encoder and input
 * Complete object : color, availability, speed,,...
@@ -53,7 +53,8 @@ No offset
 ## Refuel
 No offset
 ## Fuel pump
-Can't find offset
+Can't find the good offset
 ## Zoom
-Offset doesn't respond
-
+Can't find the good offset
+## Master switch
+No simple offset

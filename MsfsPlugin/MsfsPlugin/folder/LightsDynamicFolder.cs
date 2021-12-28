@@ -20,19 +20,17 @@
             return new[]
             {
         PluginDynamicFolder.NavigateUpActionName,
-        this.CreateCommandName("7"),
-        this.CreateCommandName("8"),
-        this.CreateCommandName("9"),
-        this.CreateCommandName("."),
-        this.CreateCommandName("4"),
-        this.CreateCommandName("5"),
-        this.CreateCommandName("6"),
-        this.CreateCommandName("0"),
-        this.CreateCommandName("1"),
-        this.CreateCommandName("2"),
-        this.CreateCommandName("3")
+        this.CreateCommandName("Navigation"),
+        this.CreateCommandName("Beacon"),
+        this.CreateCommandName("Landing"),
+        this.CreateCommandName("Taxi"),
+        this.CreateCommandName("Strobes"),
+        this.CreateCommandName("Instruments"),
+        this.CreateCommandName("Recognition"),
+        this.CreateCommandName("Wing"),
+        this.CreateCommandName("Logo"),
+        this.CreateCommandName("Cabin")
     };
         }
     }
-
 }

@@ -18,7 +18,7 @@
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
-        private static readonly Offset<Int32> rpm = new Offset<Int32>(0x0908);
+        private static readonly Offset<Int16> rpm = new Offset<Int16>(0x0898);
         private static readonly Offset<Int16> zoom = new Offset<Int16>(0x8336);
         private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
 
@@ -67,7 +67,7 @@
         private static readonly Offset<Int32> gearRight = new Offset<Int32>(0x0BF4);
 
         private static readonly Offset<Byte> pitot = new Offset<Byte>(0x029C);
-        private static readonly Offset<Int16> masterSwitch = new Offset<Int16>(0x2E80);
+        private static readonly Offset<Int16> masterSwitch = new Offset<Int16>(0x281C);
 
 
         private static readonly Offset<Int16> maxFlap = new Offset<Int16>(0x3BF8);
@@ -119,7 +119,7 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = currentFlap.Value;
+                        MsfsData.Instance.DebugValue = (Int32)rpm.Value;
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -136,10 +136,10 @@
                             parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
                             light.Value = getLights();
-                            mixture1.Value = (Int16)MsfsData.Instance.CurrentMixture;
-                            mixture2.Value = (Int16)MsfsData.Instance.CurrentMixture;
-                            mixture3.Value = (Int16)MsfsData.Instance.CurrentMixture;
-                            mixture4.Value = (Int16)MsfsData.Instance.CurrentMixture;
+                            mixture1.Value = (Int16)(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            mixture2.Value = (Int16)(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            mixture3.Value = (Int16)(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            mixture4.Value = (Int16)(MsfsData.Instance.CurrentMixture / 100d * 16383);
 
                             if (MsfsData.Instance.CurrentThrottle < 0)
                             {
@@ -189,7 +189,7 @@
                             MsfsData.Instance.CurrentRudderTrimFromMSFS = rudderTrim.Value;
                             MsfsData.Instance.CurrentAileronTrimFromMSFS = aileronTrim.Value;
                             MsfsData.Instance.CurrentZoomFromMSFS = zoom.Value;
-                            MsfsData.Instance.CurrentMixtureFromMSFS = mixture1.Value;
+                            MsfsData.Instance.CurrentMixtureFromMSFS = (Int32)(mixture1.Value / 16383d * 100);
                             MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
                             MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;
@@ -210,7 +210,7 @@
                         MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                         MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
-                        MsfsData.Instance.Rpm = rpm.Value / 16383 * 100;
+                        MsfsData.Instance.Rpm = (Int32)rpm.Value;
 
                     }
                 }

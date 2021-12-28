@@ -10,7 +10,7 @@
 
     class RefreshRateEncoder : DefaultEncoder
     {
-        public RefreshRateEncoder() : base("Refresh", "Current data refresh rate", "Misc", true, 100, 3000, 100)
+        public RefreshRateEncoder() : base("Refresh", "Current data refresh rate", "Misc", true, 100, 1000, 100)
         {
         }
         protected override void RunCommand(String actionParameter) => MsfsData.Instance.RefreshRate = 500;
