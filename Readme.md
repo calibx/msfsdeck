@@ -34,7 +34,7 @@ Action : none
 
 # TODO
 ## Code
-* test and doc : rpm, light
+* test and doc : light
 * Switch to SimConnect when 64 bits enable
 * Use object for all encoder and input
 * Complete object : color, availability, speed,,...

@@ -62,6 +62,10 @@
 
         public Int32 CurrentHeading { get; set; }
         public Int32 Rpm { get; set; }
+        public Double E1N1 { get; set; }
+        public Double E2N1 { get; set; }
+        public Double E3N1 { get; set; }
+        public Double E4N1 { get; set; }
         public Int32 Fps { get; set; }
         public Int32 RefreshRate { get; set; }
         public Int32 DebugValue { get; set; }
