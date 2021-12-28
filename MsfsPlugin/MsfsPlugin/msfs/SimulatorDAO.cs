@@ -18,8 +18,8 @@
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
         private static readonly Offset<Double> debug = new Offset<Double>(0x2000);
-        
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
+
         private static readonly Offset<Int16> rpm = new Offset<Int16>(0x0898);
         private static readonly Offset<Int16> rpmScale = new Offset<Int16>(0x08C8);
         private static readonly Offset<Double> E1N1 = new Offset<Double>(0x2010);
@@ -67,7 +67,8 @@
         private static readonly Offset<Int32> spoilerPosition = new Offset<Int32>(0x0BD4);
         private static readonly Offset<Int16> aileronTrim = new Offset<Int16>(0x0C02);
         private static readonly Offset<Int16> rudderTrim = new Offset<Int16>(0x0C04);
-
+        private static readonly Offset<Int16> elevatorTrim = new Offset<Int16>(0x0BC0);
+        
         private static readonly Offset<Byte> gearOverSpeed = new Offset<Byte>(0x0B4F);
         private static readonly Offset<Int32> gearHandle = new Offset<Int32>(0x0BE8);
         private static readonly Offset<Int32> gearFront = new Offset<Int32>(0x0BEC);
@@ -165,8 +166,9 @@
                             }
                             gearHandle.Value = MsfsData.Instance.CurrentGearHandle;
                             spoilerArm.Value = GetSpoiler(MsfsData.Instance.CurrentSpoiler);
-                            aileronTrim.Value = MsfsData.Instance.CurrentAileronTrim;
-                            rudderTrim.Value = MsfsData.Instance.CurrentRudderTrim;
+                            aileronTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentAileronTrim / 100d * 16383);
+                            rudderTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentRudderTrim / 100d * 16383);
+                            elevatorTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentElevatorTrim / 100d * 16383);
                             currentFlap.Value = (Int16)(16383 / (maxFlap.Value + 1) * MsfsData.Instance.CurrentFlap);
                             pitot.Value = MsfsData.Instance.CurrentPitot ? (Byte)1 : (Byte)0;
                             masterSwitch.Value = (Int16)(MsfsData.Instance.MasterSwitch ? 1 : 0);
@@ -194,9 +196,9 @@
                             MsfsData.Instance.ApHeadHoldSwitchFromMSFS = apHeadHoldSwitch.Value;
                             MsfsData.Instance.ApSpeedHoldSwitchFromMSFS = apSpeedHoldSwitch.Value;
                             MsfsData.Instance.CurrentSpoilerFromMSFS = GetSpoilerFromMSFS(spoilerPosition.Value, spoilerArm.Value);
-                            MsfsData.Instance.CurrentRudderTrimFromMSFS = rudderTrim.Value;
-                            MsfsData.Instance.CurrentAileronTrimFromMSFS = aileronTrim.Value;
-                            MsfsData.Instance.CurrentZoomFromMSFS = zoom.Value;
+                            MsfsData.Instance.CurrentRudderTrimFromMSFS = (Int16)Math.Round(rudderTrim.Value / 16383d * 100);
+                            MsfsData.Instance.CurrentAileronTrimFromMSFS = (Int16)Math.Round(aileronTrim.Value / 16383d * 100);
+                            MsfsData.Instance.CurrentElevatorTrimFromMSFS = (Int16)Math.Round(elevatorTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentMixtureFromMSFS = (Int32)(mixture1.Value / 16383d * 100);
                             MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;

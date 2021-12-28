@@ -32,6 +32,7 @@
         private Int32 currentSpoiler;
         private Int16 currentAileronTrim;
         private Int16 currentRudderTrim;
+        private Int16 currentElevatorTrim;
         private Int32 currentGearHandle;
 
         private Int32 currentZoom;
@@ -119,6 +120,8 @@
         public Int16 CurrentAileronTrimFromMSFS { get => this.currentAileronTrim; set { this.currentAileronTrim = value; } }
         public Int16 CurrentRudderTrim { get => this.currentRudderTrim; set { this.currentRudderTrim = value; this.SetToMSFS = true; } }
         public Int16 CurrentRudderTrimFromMSFS { get => this.currentRudderTrim; set { this.currentRudderTrim = value; } }
+        public Int16 CurrentElevatorTrim { get => this.currentElevatorTrim; set { this.currentElevatorTrim = value; this.SetToMSFS = true; } }
+        public Int16 CurrentElevatorTrimFromMSFS { get => this.currentElevatorTrim; set { this.currentElevatorTrim = value; } }
         public Int32 CurrentZoom { get => this.currentZoom; set { this.currentZoom = value; this.SetToMSFS = true; } }
         public Int32 CurrentZoomFromMSFS { get => this.currentZoom; set { this.currentZoom = value; } }
         public Int32 CurrentMixture { get => this.currentMixture; set { this.currentMixture = value; this.SetToMSFS = true; } }

@@ -37,10 +37,12 @@ Action : none
 * test and doc : light
 * Switch to SimConnect when 64 bits enable
 * Use object for all encoder and input
+* Object for offset, convert and data
 * Complete object : color, availability, speed,,...
+* Prepare deliver rc1
 
 ## MSFS Controls
-trim
+
 
 ## Loupe deck
 * Icons

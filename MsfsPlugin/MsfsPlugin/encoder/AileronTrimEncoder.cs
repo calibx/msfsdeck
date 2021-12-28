@@ -6,31 +6,15 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    class AileronTrimEncoder : PluginDynamicAdjustment, Notifiable
+    using Loupedeck.MsfsPlugin.encoder;
+
+    class AileronTrimEncoder : DefaultEncoder
     {
-        public AileronTrimEncoder() : base("Aileron Trim", "Aileron trim encoder", "Misc", true)
-        {
-            MsfsData.Instance.register(this);
-        }
-        protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
-        {
-            MsfsData.Instance.CurrentAileronTrim += (Int16)(100 * ticks);
-            if (MsfsData.Instance.CurrentAileronTrim < -16383)
-            { MsfsData.Instance.CurrentAileronTrim = -16383; }
-            else if (MsfsData.Instance.CurrentAileronTrim > 16383)
-            { MsfsData.Instance.CurrentAileronTrim = 16383; }
-        }
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentAileronTrim = 0;
-        }
+        public AileronTrimEncoder() : base("Aileron Trim", "Aileron trim encoder", "Misc", true, -100, 100, 1) { }
 
-        protected override String GetAdjustmentValue(String actionParameter)
-        {
+        protected override void RunCommand(String actionParameter) => this.SetValue(0);
+        protected override Int32 GetValue() => MsfsData.Instance.CurrentAileronTrim;
 
-            return MsfsData.Instance.CurrentAileronTrim.ToString();
-
-        }
-        public void Notify() => this.AdjustmentValueChanged();
+        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentAileronTrim = (Int16)newValue;
     }
 }

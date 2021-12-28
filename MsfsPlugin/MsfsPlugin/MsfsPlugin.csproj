@@ -57,11 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="encoder\ElevatorTrimEncoder.cs" />
     <Compile Include="encoder\DefaultEncoder.cs" />
     <Compile Include="encoder\RefreshRateEncoder.cs" />
     <Compile Include="encoder\MixtureEncoder.cs" />
     <Compile Include="encoder\FlapEncoder.cs" />
-    <Compile Include="encoder\ZoomEncoder.cs" />
     <Compile Include="encoder\AltitudeEncoder.cs" />
     <Compile Include="encoder\AileronTrimEncoder.cs" />
     <Compile Include="encoder\RudderTrimEncoder.cs" />
@@ -84,7 +84,6 @@
     <Compile Include="input\nav\AP\APVSStateInput.cs" />
     <Compile Include="input\nav\AP\APStateInput.cs" />
     <Compile Include="input\debug\FPSInput.cs" />
-    <Compile Include="input\nav\MasterInput.cs" />
     <Compile Include="input\nav\RPMInput.cs" />
     <Compile Include="input\nav\PitotInput.cs" />
     <Compile Include="input\nav\LightsInput.cs" />
