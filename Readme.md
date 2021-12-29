@@ -37,25 +37,21 @@ Action : none
 * Use object for all encoder and input
 * Object for offset, convert and data
 * Complete object : color, availability, speed,,...
-* Prepare deliver rc1
+* Prepare deliver rc1 and profile
 
 ## MSFS Controls
 Number of Engines
 AP folder
+Current data in encoders
 
-## Loupe deck
-* Icons
-* Rename profile
-* create dynamic folders : ap, light,..
-
-# Can't do
+# CANTDO
 ## Use SimConnect
-Waiting for a 64 Bits Loupedeck.
+Waiting for a 64 Bits Loupedeck app.
 ## Pause
 No offset
 ## Refuel
 No offset
-## Fuel pump
+## Fuel transfert pump
 Can't find the good offset
 ## Zoom
 Can't find the good offset

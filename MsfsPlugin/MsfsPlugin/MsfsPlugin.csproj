@@ -86,7 +86,6 @@
     <Compile Include="input\debug\FPSInput.cs" />
     <Compile Include="input\nav\RPMInput.cs" />
     <Compile Include="input\nav\PitotInput.cs" />
-    <Compile Include="input\nav\LightsInput.cs" />
     <Compile Include="input\nav\SpeedInput.cs" />
     <Compile Include="input\nav\VerticalSpeedInput.cs" />
     <Compile Include="input\nav\AltitudeInput.cs" />
