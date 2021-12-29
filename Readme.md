@@ -34,15 +34,14 @@ Action : none
 
 # TODO
 ## Code
-* test and doc : light
-* Switch to SimConnect when 64 bits enable
 * Use object for all encoder and input
 * Object for offset, convert and data
 * Complete object : color, availability, speed,,...
 * Prepare deliver rc1
 
 ## MSFS Controls
-
+Number of Engines
+AP folder
 
 ## Loupe deck
 * Icons
@@ -50,6 +49,8 @@ Action : none
 * create dynamic folders : ap, light,..
 
 # Can't do
+## Use SimConnect
+Waiting for a 64 Bits Loupedeck.
 ## Pause
 No offset
 ## Refuel
@@ -58,5 +59,4 @@ No offset
 Can't find the good offset
 ## Zoom
 Can't find the good offset
-## Master switch
-No simple offset
+

@@ -128,7 +128,7 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = (Int32)debug.Value;
+                        MsfsData.Instance.DebugValue = (Int32)light.Value;
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -244,29 +244,30 @@
                 MsfsData.Instance.Connected = true;
                 MsfsData.Instance.TryConnect = false;
             }
+            MsfsData.Instance.changed();
         }
 
         private static void getLightsFromMSFS(Int16 value)
         {
-            MsfsData.Instance.NavigationLightFromMSFS = value >= 512;
+            MsfsData.Instance.CabinLightFromMSFS = value >= 512;
             value %= 512;
-            MsfsData.Instance.BeaconLightFromMSFS = value >= 256;
+            MsfsData.Instance.LogoLightFromMSFS = value >= 256;
             value %= 256;
-            MsfsData.Instance.LandingLightFromMSFS = value >= 128;
+            MsfsData.Instance.WingLightFromMSFS = value >= 128;
             value %= 128;
-            MsfsData.Instance.TaxiLightFromMSFS = value >= 64;
+            MsfsData.Instance.RecognitionLightFromMSFS = value >= 64;
             value %= 64;
-            MsfsData.Instance.StrobesLightFromMSFS = value >= 32;
+            MsfsData.Instance.InstrumentsLightFromMSFS = value >= 32;
             value %= 32;
-            MsfsData.Instance.InstrumentsLightFromMSFS = value >= 16;
+            MsfsData.Instance.StrobesLightFromMSFS = value >= 16;
             value %= 16;
-            MsfsData.Instance.RecognitionLightFromMSFS = value >= 8;
+            MsfsData.Instance.TaxiLightFromMSFS = value >= 8;
             value %= 8;
-            MsfsData.Instance.WingLightFromMSFS = value >= 4;
+            MsfsData.Instance.LandingLightFromMSFS = value >= 4;
             value %= 4;
-            MsfsData.Instance.LogoLightFromMSFS = value >= 2;
+            MsfsData.Instance.BeaconLightFromMSFS = value >= 2;
             value %= 2;
-            MsfsData.Instance.CabinLightFromMSFS = value >= 1;
+            MsfsData.Instance.NavigationLightFromMSFS = value >= 1;
 
         }
         private static Int16 getLights()

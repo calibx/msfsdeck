@@ -14,13 +14,13 @@
 
         protected override void ChangeValue() { }
         protected override String GetValue() {
-            String result = "";
+            var result = "";
             if (MsfsData.Instance.Rpm != 0)
             {
                 result = "RPM\n" + MsfsData.Instance.Rpm.ToString();
             } else
             {
-                result = "E1 " + MsfsData.Instance.E1N1.ToString() + "\nE2 " + MsfsData.Instance.E2N1.ToString() + "\nE3 " + MsfsData.Instance.E3N1.ToString() + "\nE4 " + MsfsData.Instance.E4N1.ToString();
+                result = MsfsData.Instance.E1N1.ToString() + "\n" + MsfsData.Instance.E2N1.ToString() + "\n" + MsfsData.Instance.E3N1.ToString() + "\n" + MsfsData.Instance.E4N1.ToString();
             }
             return result;
         }

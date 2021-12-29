@@ -58,9 +58,7 @@
         private Boolean valuesDisplayed;
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
-
-        public static MsfsData Instance { get { return lazy.Value; } }
-
+        public static MsfsData Instance => lazy.Value;
         public Int32 CurrentHeading { get; set; }
         public Int32 Rpm { get; set; }
         public Double E1N1 { get; set; }
@@ -130,8 +128,8 @@
         public Int32 CurrentFlapFromMSFS { get => this.currentFlap; set => this.currentFlap = value; }
         public Boolean CurrentPitot { get => this.currentPitot; set { this.currentPitot = value; this.SetToMSFS = true; } }
         public Boolean CurrentPitotFromMSFS { get => this.currentPitot; set { this.currentPitot = value; } }
-        public Boolean Connected { get => this.connected; set { this.connected = value; this.changed(); } }
-        public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; this.changed(); } }
+        public Boolean Connected { get => this.connected; set { this.connected = value; } }
+        public Boolean TryConnect { get => this.tryingToconnect; set { this.tryingToconnect = value; } }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
         public Boolean NavigationLight { get => this.navigationLight; set { this.navigationLight = value; this.SetToMSFS = true; } }
         public Boolean NavigationLightFromMSFS { get => this.navigationLight; set { this.navigationLight = value; } }
