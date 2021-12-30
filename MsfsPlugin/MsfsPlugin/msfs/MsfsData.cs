@@ -9,7 +9,7 @@
 
         private Int32 currentAPHeading;
         private Int32 currentAPAltitude;
-        private Int16 currentAPVerticalSpeed;
+        private Int32 currentAPVerticalSpeed;
         private Int32 currentAPSpeed;
 
         private Int32 apSwitch;
@@ -23,13 +23,13 @@
 
 
         private Int32 currentBrakes;
-        private Int16 currentTrottle;
+        private Int32 currentTrottle;
         private Int32 currentFlap;
 
         private Int32 currentSpoiler;
-        private Int16 currentAileronTrim;
-        private Int16 currentRudderTrim;
-        private Int16 currentElevatorTrim;
+        private Int32 currentAileronTrim;
+        private Int32 currentRudderTrim;
+        private Int32 currentElevatorTrim;
         private Int32 currentGearHandle;
 
         private Int32 currentZoom;
@@ -98,8 +98,8 @@
         public Int32 CurrentAPSpeedFromMSFS { get => this.currentAPSpeed; set { this.currentAPSpeed = value; } }
         public Int32 CurrentAPAltitudeFromMSFS { get => this.currentAPAltitude; set { this.currentAPAltitude = value; } }
         public Int32 CurrentVerticalSpeed { get; set; }
-        public Int16 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.SetToMSFS = true; } }
-        public Int16 CurrentAPVerticalSpeedFromMSFS { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; } }
+        public Int32 CurrentAPVerticalSpeed { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; this.SetToMSFS = true; } }
+        public Int32 CurrentAPVerticalSpeedFromMSFS { get => this.currentAPVerticalSpeed; set { this.currentAPVerticalSpeed = value; } }
         public Int64 ApNextWPID { get; set; }
         public Int32 ApNextWPETE { get; set; }
         public Double ApNextWPDist { get; set; }
@@ -107,17 +107,17 @@
         public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; this.changed(); } }
         public Int32 CurrentBrakes { get => this.currentBrakes; set { this.currentBrakes = value; this.SetToMSFS = true; } }
         public Int32 CurrentBrakesFromMSFS { get => this.currentBrakes; set { this.currentBrakes = value; } }
-        public Int16 CurrentThrottle { get => this.currentTrottle; set { this.currentTrottle = value; this.SetToMSFS = true; } }
-        public Int16 CurrentThrottleFromMSFS { get => this.currentTrottle; set { this.currentTrottle = value; } }
+        public Int32 CurrentThrottle { get => this.currentTrottle; set { this.currentTrottle = value; this.SetToMSFS = true; } }
+        public Int32 CurrentThrottleFromMSFS { get => this.currentTrottle; set { this.currentTrottle = value; } }
         public Int32 ThrottleLowerFromMSFS { get; set; }
         public Int32 CurrentSpoiler { get => this.currentSpoiler; set { this.currentSpoiler = value; this.SetToMSFS = true; } }
         public Int32 CurrentSpoilerFromMSFS { get => this.currentSpoiler; set { this.currentSpoiler = value; } }
-        public Int16 CurrentAileronTrim { get => this.currentAileronTrim; set { this.currentAileronTrim = value; this.SetToMSFS = true; } }
-        public Int16 CurrentAileronTrimFromMSFS { get => this.currentAileronTrim; set { this.currentAileronTrim = value; } }
-        public Int16 CurrentRudderTrim { get => this.currentRudderTrim; set { this.currentRudderTrim = value; this.SetToMSFS = true; } }
-        public Int16 CurrentRudderTrimFromMSFS { get => this.currentRudderTrim; set { this.currentRudderTrim = value; } }
-        public Int16 CurrentElevatorTrim { get => this.currentElevatorTrim; set { this.currentElevatorTrim = value; this.SetToMSFS = true; } }
-        public Int16 CurrentElevatorTrimFromMSFS { get => this.currentElevatorTrim; set { this.currentElevatorTrim = value; } }
+        public Int32 CurrentAileronTrim { get => this.currentAileronTrim; set { this.currentAileronTrim = value; this.SetToMSFS = true; } }
+        public Int32 CurrentAileronTrimFromMSFS { get => this.currentAileronTrim; set { this.currentAileronTrim = value; } }
+        public Int32 CurrentRudderTrim { get => this.currentRudderTrim; set { this.currentRudderTrim = value; this.SetToMSFS = true; } }
+        public Int32 CurrentRudderTrimFromMSFS { get => this.currentRudderTrim; set { this.currentRudderTrim = value; } }
+        public Int32 CurrentElevatorTrim { get => this.currentElevatorTrim; set { this.currentElevatorTrim = value; this.SetToMSFS = true; } }
+        public Int32 CurrentElevatorTrimFromMSFS { get => this.currentElevatorTrim; set => this.currentElevatorTrim = value; }
         public Int32 CurrentZoom { get => this.currentZoom; set { this.currentZoom = value; this.SetToMSFS = true; } }
         public Int32 CurrentZoomFromMSFS { get => this.currentZoom; set { this.currentZoom = value; } }
         public Int32 CurrentMixture { get => this.currentMixture; set { this.currentMixture = value; this.SetToMSFS = true; } }

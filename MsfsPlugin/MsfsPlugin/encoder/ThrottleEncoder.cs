@@ -2,52 +2,15 @@
 {
     using System;
 
-    class ThrottleEncoder : PluginDynamicAdjustment, Notifiable
+    using Loupedeck.MsfsPlugin.encoder;
+    class ThrottleEncoder : DefaultEncoder
     {
-
-        public ThrottleEncoder() : base("Throttle", "Current throttle", "Misc", true)
-        {
-            MsfsData.Instance.register(this);
+        public ThrottleEncoder() : base("Throttle", "Current throttle", "Misc", true, -100, 100, 1) {}
+        protected override void RunCommand(String actionParameter) => this.SetValue(MsfsData.Instance.ThrottleLowerFromMSFS < 0 ? -100 : 0);
+        protected override Int32 GetValue() {
+            this.min = MsfsData.Instance.ThrottleLowerFromMSFS < 0 ? -100 : 0;
+            return MsfsData.Instance.CurrentThrottle;
         }
-        protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
-        {
-            var newThrottle = MsfsData.Instance.CurrentThrottle + ticks * 1;
-            if (MsfsData.Instance.ThrottleLowerFromMSFS < 0)
-            {
-                if (newThrottle <= -100)
-                {
-                    newThrottle = -100;
-                }
-                else if (newThrottle > 100)
-                {
-                    newThrottle = 100;
-                }
-            }
-            else
-            {
-                if (newThrottle <= 0)
-                {
-                    newThrottle = 0;
-                }
-                else if (newThrottle > 100)
-                {
-                    newThrottle = 100;
-                }
-            }
-            MsfsData.Instance.CurrentThrottle = (Int16)newThrottle;
-        }
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentThrottle = MsfsData.Instance.ThrottleLowerFromMSFS < 0 ? (Int16)(-100) : (Int16)0;
-        }
-
-        protected override String GetAdjustmentValue(String actionParameter)
-        {
-            MsfsData.Instance.ValuesDisplayed = true;
-            return MsfsData.Instance.CurrentThrottle.ToString();
-        }
-
-
-        public void Notify() => this.AdjustmentValueChanged();
+        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentThrottle = newValue;
     }
 }

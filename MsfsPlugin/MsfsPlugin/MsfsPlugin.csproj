@@ -59,7 +59,6 @@
   <ItemGroup>
     <Compile Include="encoder\ElevatorTrimEncoder.cs" />
     <Compile Include="encoder\DefaultEncoder.cs" />
-    <Compile Include="encoder\RefreshRateEncoder.cs" />
     <Compile Include="encoder\MixtureEncoder.cs" />
     <Compile Include="encoder\FlapEncoder.cs" />
     <Compile Include="encoder\AltitudeEncoder.cs" />

@@ -2,35 +2,15 @@
 {
     using System;
 
-    class HeadingEncoder : PluginDynamicAdjustment, Notifiable
+    using Loupedeck.MsfsPlugin.encoder;
+
+    class HeadingEncoder : DefaultEncoder
     {
 
-        public HeadingEncoder() : base("Head", "heading of the AP", "Nav", true)
-        {
-            MsfsData.Instance.register(this);
-        }
-        protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
-        {
-            var newHeading = (MsfsData.Instance.CurrentAPHeading + ticks) % 360;
-            if (newHeading <= 0)
-            {
-                newHeading += 360;
-            }
-            MsfsData.Instance.CurrentAPHeading = newHeading;
-
-        }
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentHeading;
-        }
-
-        protected override String GetAdjustmentValue(String actionParameter)
-        {
-            MsfsData.Instance.ValuesDisplayed = true;
-            return "[" + MsfsData.Instance.CurrentAPHeading.ToString() + "]\n" + MsfsData.Instance.CurrentHeading;
-        }
-
-
-        public void Notify() => this.AdjustmentValueChanged();
+        public HeadingEncoder() : base("Head", "heading of the AP", "Nav", true, 0, 360, 1) { }
+        protected override String GetDisplayValue() => "[" + this.GetValue().ToString() + "]\n" + MsfsData.Instance.CurrentHeading;
+        protected override void RunCommand(String actionParameter) => this.SetValue(MsfsData.Instance.CurrentHeading);
+        protected override Int32 GetValue() => MsfsData.Instance.CurrentAPHeading;
+        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentAPHeading = newValue;
     }
 }

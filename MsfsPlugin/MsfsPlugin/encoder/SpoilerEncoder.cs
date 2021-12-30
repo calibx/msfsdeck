@@ -2,31 +2,13 @@
 {
     using System;
 
-    class SpoilerEncoder : PluginDynamicAdjustment, Notifiable
+    using Loupedeck.MsfsPlugin.encoder;
+    class SpoilerEncoder : DefaultEncoder
     {
-        public SpoilerEncoder() : base("Spoiler", "Spoiler position", "Misc", true)
-        {
-            MsfsData.Instance.register(this);
-        }
-        protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
-        {
-            MsfsData.Instance.CurrentSpoiler += ticks;
-            if (MsfsData.Instance.CurrentSpoiler < -1)
-            { MsfsData.Instance.CurrentSpoiler = -1; }
-            else if (MsfsData.Instance.CurrentSpoiler > 10)
-            { MsfsData.Instance.CurrentSpoiler = 10; }
-        }
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentSpoiler = 0;
-        }
-
-        protected override String GetAdjustmentValue(String actionParameter)
-        {
-
-            return MsfsData.Instance.CurrentSpoiler == -1 ? "Auto" : MsfsData.Instance.CurrentSpoiler.ToString();
-
-        }
-        public void Notify() => this.AdjustmentValueChanged();
+        public SpoilerEncoder() : base("Spoiler", "Spoiler position", "Misc", true, -1, 10, 1) { }
+        protected override String GetDisplayValue() => this.GetValue() == -1 ? "Auto" : this.GetValue().ToString();
+        protected override void RunCommand(String actionParameter) => this.SetValue(0);
+        protected override Int32 GetValue() => MsfsData.Instance.CurrentSpoiler;
+        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentSpoiler = newValue;
     }
 }

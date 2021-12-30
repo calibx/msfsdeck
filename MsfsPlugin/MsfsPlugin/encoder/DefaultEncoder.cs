@@ -24,12 +24,15 @@
             { value = this.max; }
             this.SetValue(value);
         }
-
-
-        protected override String GetAdjustmentValue(String actionParameter) => this.GetValue().ToString();
+        protected override String GetAdjustmentValue(String actionParameter)
+        {
+            MsfsData.Instance.ValuesDisplayed = true;
+            return this.GetDisplayValue();
+        }
         public void Notify() => this.AdjustmentValueChanged();
-
+        protected virtual String GetDisplayValue() => this.GetValue().ToString();
         protected abstract Int32 GetValue();
         protected abstract Int32 SetValue(Int32 value);
+
     }
 }

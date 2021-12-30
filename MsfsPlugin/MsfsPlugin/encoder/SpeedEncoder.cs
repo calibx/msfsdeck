@@ -2,29 +2,13 @@
 {
     using System;
 
-    class SpeedEncoder : PluginDynamicAdjustment, Notifiable
+    using Loupedeck.MsfsPlugin.encoder;
+    class SpeedEncoder : DefaultEncoder
     {
-
-        public SpeedEncoder() : base("Speed", "Speed of the AP", "AP", true)
-        {
-            MsfsData.Instance.register(this);
-        }
-        protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
-        {
-            MsfsData.Instance.CurrentAPSpeed = MsfsData.Instance.CurrentAPSpeed + ticks;
-        }
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentAPSpeed = MsfsData.Instance.CurrentSpeed;
-        }
-
-        protected override String GetAdjustmentValue(String actionParameter)
-        {
-            MsfsData.Instance.ValuesDisplayed = true;
-            return "[" + MsfsData.Instance.CurrentAPSpeed.ToString() + "]\n" + MsfsData.Instance.CurrentSpeed;
-        }
-
-
-        public void Notify() => this.AdjustmentValueChanged();
+        public SpeedEncoder() : base("Speed", "Speed of the AP", "AP", true, 0, 2000, 1) { }
+        protected override String GetDisplayValue() => "[" + this.GetValue().ToString() + "]\n" + MsfsData.Instance.CurrentSpeed;
+        protected override void RunCommand(String actionParameter) => this.SetValue(MsfsData.Instance.CurrentSpeed);
+        protected override Int32 GetValue() => MsfsData.Instance.CurrentAPSpeed;
+        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentAPSpeed = newValue;
     }
 }

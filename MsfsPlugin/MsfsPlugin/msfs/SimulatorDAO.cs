@@ -94,10 +94,10 @@
                     catch (FSUIPCException)
                     {
                     }
-                    MsfsData.Instance.RefreshRate = 500;
+                    MsfsData.Instance.RefreshRate = 100;
                     timer.Interval = MsfsData.Instance.RefreshRate;
                     timer.Enabled = true;
-                    timer.Elapsed += refresh;
+                    timer.Elapsed += Refresh;
 
                 }
             }
@@ -113,7 +113,7 @@
         }
 
 
-        public static void refresh(Object source, EventArgs e)
+        public static void Refresh(Object source, EventArgs e)
         {
 
             try
@@ -127,7 +127,7 @@
                         MsfsData.Instance.DebugValue = (Int32)light.Value;
                         if (MsfsData.Instance.SetToMSFS)
                         {
-                            verticalSpeedAP.Value = MsfsData.Instance.CurrentAPVerticalSpeed;
+                            verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
                             speedAP.Value = MsfsData.Instance.CurrentAPSpeed;

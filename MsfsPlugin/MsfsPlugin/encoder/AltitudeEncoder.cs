@@ -2,29 +2,14 @@
 {
     using System;
 
-    class AltitudeEncoder : PluginDynamicAdjustment, Notifiable
+    using Loupedeck.MsfsPlugin.encoder;
+
+    class AltitudeEncoder : DefaultEncoder
     {
-
-        public AltitudeEncoder() : base("Alt", "Altitude of the AP", "AP", true)
-        {
-            MsfsData.Instance.register(this);
-        }
-        protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
-        {
-            MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAPAltitude + ticks * 100;
-        }
-        protected override void RunCommand(String actionParameter)
-        {
-            MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100);
-        }
-
-        protected override String GetAdjustmentValue(String actionParameter)
-        {
-            MsfsData.Instance.ValuesDisplayed = true;
-            return "[" + MsfsData.Instance.CurrentAPAltitude.ToString() + "]\n" + MsfsData.Instance.CurrentAltitude;
-        }
-
-
-        public void Notify() => this.AdjustmentValueChanged();
+        public AltitudeEncoder() : base("Alt", "Altitude of the AP", "AP", true, 0, 20000, 100) { }
+        protected override String GetDisplayValue() => "[" + this.GetValue().ToString() + "]\n" + MsfsData.Instance.CurrentAltitude;
+        protected override void RunCommand(String actionParameter) => this.SetValue((Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100));
+        protected override Int32 GetValue() => MsfsData.Instance.CurrentAPAltitude;
+        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentAPAltitude = newValue;
     }
 }
