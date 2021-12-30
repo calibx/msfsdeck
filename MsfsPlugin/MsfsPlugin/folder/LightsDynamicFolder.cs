@@ -17,7 +17,6 @@
         {
             return new[]
             {
-                PluginDynamicFolder.NavigateUpActionName,
                 this.CreateCommandName("Navigation"),
                 this.CreateCommandName("Beacon"),
                 this.CreateCommandName("Landing"),
@@ -33,40 +32,41 @@
 
         public override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-            var ret = actionParameter + " ";
+            var ret = "";
             switch (actionParameter)
             {
                 case "Navigation":
-                    ret += MsfsData.Instance.NavigationLight ? "Off" : "On";
+                    ret += MsfsData.Instance.NavigationLight ? "Disable" : "Enable";
                     break;
                 case "Beacon":
-                    ret += MsfsData.Instance.BeaconLight ? "Off" : "On";
+                    ret += MsfsData.Instance.BeaconLight ? "Disable" : "Enable";
                     break;
                 case "Landing":
-                    ret += MsfsData.Instance.LandingLight ? "Off" : "On";
+                    ret += MsfsData.Instance.LandingLight ? "Disable" : "Enable";
                     break;
                 case "Taxi":
-                    ret += MsfsData.Instance.TaxiLight ? "Off" : "On";
+                    ret += MsfsData.Instance.TaxiLight ? "Disable" : "Enable";
                     break;
                 case "Strobes":
-                    ret += MsfsData.Instance.StrobesLight ? "Off" : "On";
+                    ret += MsfsData.Instance.StrobesLight ? "Disable" : "Enable";
                     break;
                 case "Instruments":
-                    ret += MsfsData.Instance.InstrumentsLight ? "Off" : "On";
+                    ret += MsfsData.Instance.InstrumentsLight ? "Disable" : "Enable";
                     break;
                 case "Recognition":
-                    ret += MsfsData.Instance.RecognitionLight ? "Off" : "On";
+                    ret += MsfsData.Instance.RecognitionLight ? "Disable" : "Enable";
                     break;
                 case "Wing":
-                    ret += MsfsData.Instance.WingLight ? "Off" : "On";
+                    ret += MsfsData.Instance.WingLight ? "Disable" : "Enable";
                     break;
                 case "Logo":
-                    ret += MsfsData.Instance.LogoLight ? "Off" : "On";
+                    ret += MsfsData.Instance.LogoLight ? "Disable" : "Enable";
                     break;
                 case "Cabin":
-                    ret += MsfsData.Instance.CabinLight ? "Off" : "On";
+                    ret += MsfsData.Instance.CabinLight ? "Disable" : "Enable";
                     break;
             }
+            ret += " " + actionParameter;
             return ret;
         }
         public override void RunCommand(String actionParameter)

@@ -5,7 +5,7 @@
     using Loupedeck.MsfsPlugin.input;
     class GearInput : DefaultInput
     {
-        public GearInput() : base("Gear", "Display gears state", "Misc") {}
+        public GearInput() : base("Gear", "Display gears state", "Misc") { }
         protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
         {
             MsfsData.Instance.ValuesDisplayed = true;

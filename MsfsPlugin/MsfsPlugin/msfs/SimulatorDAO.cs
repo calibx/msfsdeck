@@ -141,10 +141,10 @@
                             parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
                             light.Value = getLights();
-                            mixture1.Value = (Int16)(MsfsData.Instance.CurrentMixture / 100d * 16383);
-                            mixture2.Value = (Int16)(MsfsData.Instance.CurrentMixture / 100d * 16383);
-                            mixture3.Value = (Int16)(MsfsData.Instance.CurrentMixture / 100d * 16383);
-                            mixture4.Value = (Int16)(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            mixture1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            mixture2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            mixture3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            mixture4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
 
                             if (MsfsData.Instance.CurrentThrottle < 0)
                             {
@@ -195,7 +195,7 @@
                             MsfsData.Instance.CurrentRudderTrimFromMSFS = (Int16)Math.Round(rudderTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentAileronTrimFromMSFS = (Int16)Math.Round(aileronTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentElevatorTrimFromMSFS = (Int16)Math.Round(elevatorTrim.Value / 16383d * 100);
-                            MsfsData.Instance.CurrentMixtureFromMSFS = (Int32)(mixture1.Value / 16383d * 100);
+                            MsfsData.Instance.CurrentMixtureFromMSFS = (Int32)Math.Round(mixture1.Value / 16383d * 100);
                             MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
                             MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;

@@ -34,12 +34,8 @@ Action : none
 
 # TODO
 ## Code
-* Use object for all input
 * Object for offset, convert and data
 * Prepare deliver rc1 and profile
-
-## MSFS Controls
-AP folder
 
 # CANTDO
 ## Use SimConnect
