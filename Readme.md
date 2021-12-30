@@ -40,9 +40,7 @@ Action : none
 * Prepare deliver rc1 and profile
 
 ## MSFS Controls
-Number of Engines / engine type
 AP folder
-Current data in encoders
 
 # CANTDO
 ## Use SimConnect

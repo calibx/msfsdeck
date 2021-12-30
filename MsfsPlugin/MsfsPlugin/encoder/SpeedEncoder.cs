@@ -25,7 +25,7 @@
         protected override String GetAdjustmentValue(String actionParameter)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            return MsfsData.Instance.CurrentAPSpeed.ToString();
+            return "[" + MsfsData.Instance.CurrentAPSpeed.ToString() + "]\n" + MsfsData.Instance.CurrentSpeed;
         }
 
 

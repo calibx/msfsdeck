@@ -25,7 +25,7 @@
         protected override String GetAdjustmentValue(String actionParameter)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            return MsfsData.Instance.CurrentAPAltitude.ToString();
+            return "[" + MsfsData.Instance.CurrentAPAltitude.ToString() + "]\n" + MsfsData.Instance.CurrentAltitude;
         }
 
 

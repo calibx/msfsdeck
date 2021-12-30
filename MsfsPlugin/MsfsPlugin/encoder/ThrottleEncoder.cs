@@ -42,7 +42,7 @@
         }
         protected override void RunCommand(String actionParameter)
         {
-            MsfsData.Instance.CurrentThrottle = -100;
+            MsfsData.Instance.CurrentThrottle = MsfsData.Instance.ThrottleLowerFromMSFS < 0 ? (Int16)(-100) : (Int16)0;
         }
 
         protected override String GetAdjustmentValue(String actionParameter)

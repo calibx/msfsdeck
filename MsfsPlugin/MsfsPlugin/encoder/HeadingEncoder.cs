@@ -31,7 +31,7 @@
         protected override String GetAdjustmentValue(String actionParameter)
         {
             MsfsData.Instance.ValuesDisplayed = true;
-            return MsfsData.Instance.CurrentAPHeading.ToString() + "\n";
+            return "[" + MsfsData.Instance.CurrentAPHeading.ToString() + "]\n" + MsfsData.Instance.CurrentHeading;
         }
 
 

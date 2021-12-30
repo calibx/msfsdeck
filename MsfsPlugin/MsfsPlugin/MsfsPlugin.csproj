@@ -74,7 +74,7 @@
     <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
-    <Compile Include="input\nav\DefaultInput.cs" />
+    <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\nav\AP\APThrottleStateInput.cs" />
     <Compile Include="input\nav\AP\APWPDisplay.cs" />
     <Compile Include="input\nav\AP\APNavStateInput.cs" />
@@ -84,12 +84,8 @@
     <Compile Include="input\nav\AP\APVSStateInput.cs" />
     <Compile Include="input\nav\AP\APStateInput.cs" />
     <Compile Include="input\debug\FPSInput.cs" />
-    <Compile Include="input\nav\RPMInput.cs" />
-    <Compile Include="input\nav\PitotInput.cs" />
-    <Compile Include="input\nav\SpeedInput.cs" />
-    <Compile Include="input\nav\VerticalSpeedInput.cs" />
-    <Compile Include="input\nav\AltitudeInput.cs" />
-    <Compile Include="input\nav\HeadingInput.cs" />
+    <Compile Include="input\misc\RPMInput.cs" />
+    <Compile Include="input\misc\PitotInput.cs" />
     <Compile Include="input\debug\CnxStateInput.cs" />
     <Compile Include="encoder\HeadingEncoder.cs" />
     <Compile Include="msfs\MsfsData.cs" />
