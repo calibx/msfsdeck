@@ -5,9 +5,14 @@ The aim of this plugin is to use the Loupedeck Live to control MSFS
 * MSFS : https://www.flightsimulator.com/
 * FSUIPC : http://www.fsuipc.com/
 # Installation
-
+Install FSUIPC
+Unzip the plugin's dll in C:\Users\%USERPROFILE%\AppData\Local\Loupedeck\Plugins
+Load the profile in LoupeDeck UI : don't forget to active dynamic mode
 # Usage
-
+Launch MSFS
+FSUIPC should autostart
+The Loupedesk should switch to MSFS profile
+Have Fun
 # Plugin Content
 ## Nac
 ### Heading
