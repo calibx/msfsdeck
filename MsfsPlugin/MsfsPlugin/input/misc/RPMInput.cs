@@ -7,7 +7,6 @@
     class RPMInput : DefaultInput
     {
         public RPMInput() : base("RPM/N1", "Display RPM for or N1", "Misc") { }
-
         protected override void ChangeValue() { }
         protected override String GetValue()
         {

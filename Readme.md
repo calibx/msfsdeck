@@ -34,7 +34,7 @@ Action : none
 
 # TODO
 ## Code
-* Use object for all encoder and input
+* Use object for all input
 * Object for offset, convert and data
 * Prepare deliver rc1 and profile
 
