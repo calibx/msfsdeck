@@ -26,6 +26,8 @@
         private static readonly Offset<Double> E2N1 = new Offset<Double>(0x2110);
         private static readonly Offset<Double> E3N1 = new Offset<Double>(0x2210);
         private static readonly Offset<Double> E4N1 = new Offset<Double>(0x2310);
+        private static readonly Offset<Int16> numberOfEngines = new Offset<Int16>(0x0AEC);
+        
 
         private static readonly Offset<Int16> zoom = new Offset<Int16>(0x8336);
         private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
@@ -225,6 +227,7 @@
                         MsfsData.Instance.E2N1 = Math.Round(E2N1.Value, 1);
                         MsfsData.Instance.E3N1 = Math.Round(E3N1.Value, 1);
                         MsfsData.Instance.E4N1 = Math.Round(E4N1.Value, 1);
+                        MsfsData.Instance.NumberOfEngines = numberOfEngines.Value;
                     }
                 }
                 else

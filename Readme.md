@@ -40,7 +40,7 @@ Action : none
 * Prepare deliver rc1 and profile
 
 ## MSFS Controls
-Number of Engines
+Number of Engines / engine type
 AP folder
 Current data in encoders
 
