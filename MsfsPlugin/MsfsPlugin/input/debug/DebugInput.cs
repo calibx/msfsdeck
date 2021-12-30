@@ -1,14 +1,10 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     class DebugInput : PluginDynamicCommand, Notifiable
     {
-  
+
         public DebugInput() : base("Debug", "Display debugged value ", "Debug")
 
         {

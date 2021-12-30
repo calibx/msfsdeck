@@ -1,10 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin.encoder
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public abstract class DefaultEncoder : PluginDynamicAdjustment, Notifiable
     {
@@ -15,13 +11,13 @@
         {
             MsfsData.Instance.register(this);
             this.min = min;
-            this.max = max; 
-            this.step = step; 
+            this.max = max;
+            this.step = step;
         }
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
             var value = this.GetValue();
-            value += ticks*this.step;
+            value += ticks * this.step;
             if (value < this.min)
             { value = this.min; }
             else if (value > this.max)

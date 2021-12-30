@@ -36,7 +36,6 @@ Action : none
 ## Code
 * Use object for all encoder and input
 * Object for offset, convert and data
-* Complete object : color, availability, speed,,...
 * Prepare deliver rc1 and profile
 
 ## MSFS Controls

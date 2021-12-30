@@ -1,13 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using System;
-
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Timers;
-    using System.Runtime.InteropServices;
-    using System.Threading.Tasks;
 
     using FSUIPC;
 
@@ -27,7 +21,7 @@
         private static readonly Offset<Double> E3N1 = new Offset<Double>(0x2210);
         private static readonly Offset<Double> E4N1 = new Offset<Double>(0x2310);
         private static readonly Offset<Int16> numberOfEngines = new Offset<Int16>(0x0AEC);
-        
+
 
         private static readonly Offset<Int16> zoom = new Offset<Int16>(0x8336);
         private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
@@ -70,7 +64,7 @@
         private static readonly Offset<Int16> aileronTrim = new Offset<Int16>(0x0C02);
         private static readonly Offset<Int16> rudderTrim = new Offset<Int16>(0x0C04);
         private static readonly Offset<Int16> elevatorTrim = new Offset<Int16>(0x0BC0);
-        
+
         private static readonly Offset<Byte> gearOverSpeed = new Offset<Byte>(0x0B4F);
         private static readonly Offset<Int32> gearHandle = new Offset<Int32>(0x0BE8);
         private static readonly Offset<Int32> gearFront = new Offset<Int32>(0x0BEC);

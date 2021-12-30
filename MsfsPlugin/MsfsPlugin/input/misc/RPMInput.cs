@@ -1,10 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using Loupedeck.MsfsPlugin.input;
 
@@ -13,7 +9,8 @@
         public RPMInput() : base("RPM/N1", "Display RPM for or N1", "Misc") { }
 
         protected override void ChangeValue() { }
-        protected override String GetValue() {
+        protected override String GetValue()
+        {
             var result = MsfsData.Instance.Rpm != 0
                 ? "RPM\n" + MsfsData.Instance.Rpm.ToString()
                 : MsfsData.Instance.NumberOfEngines == 4

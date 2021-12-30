@@ -2,9 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class LightsDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -34,7 +31,7 @@
             };
         }
 
-       public override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
+        public override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             var ret = actionParameter + " ";
             switch (actionParameter)
@@ -113,7 +110,7 @@
         {
             this.ButtonActionNamesChanged();
             this.EncoderActionNamesChanged();
-        } 
+        }
     }
 
 }
