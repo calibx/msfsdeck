@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\MsfsPlugin",
-    "\\MsfsPlugin\\MsfsPlugin"
+    "\\MsfsPlugin"
   ],
-  "SelectedNode": "\\MsfsPlugin\\MsfsPlugin\\MsfsPlugin.cs",
   "PreviewInSolutionExplorer": false
 }

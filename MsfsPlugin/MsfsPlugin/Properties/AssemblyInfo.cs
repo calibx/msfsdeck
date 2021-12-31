@@ -1,16 +1,15 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Msfs plugin for Loupedeck")]
+[assembly: AssemblyTitle("Msfs plugin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("LoupeDeck Oy")]
-[assembly: AssemblyProduct("Loupedeck2")]
-[assembly: AssemblyCopyright("Copyright (c) 2018 LoupeDeck Oy. All rights reserved.")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,4 +31,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("4.3.0.7478")]
-[assembly: AssemblyVersion("4.3.0.7478")]
+[assembly: AssemblyVersion("0.0.0.1")]
