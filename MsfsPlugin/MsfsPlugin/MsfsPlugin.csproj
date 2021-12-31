@@ -72,11 +72,15 @@
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
-    <Compile Include="input\nav\AP\APWPDisplay.cs" />
+    <Compile Include="input\nav\APWPDisplay.cs" />
     <Compile Include="input\debug\FPSInput.cs" />
     <Compile Include="input\misc\RPMInput.cs" />
     <Compile Include="input\misc\PitotInput.cs" />
     <Compile Include="input\debug\CnxStateInput.cs" />
+    <Compile Include="input\nav\AltitudeInput.cs" />
+    <Compile Include="input\nav\VerticalSpeedInput.cs" />
+    <Compile Include="input\nav\SpeedInput.cs" />
+    <Compile Include="input\nav\HeadingInput.cs" />
     <Compile Include="msfs\MsfsData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -99,5 +103,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

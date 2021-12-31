@@ -2,26 +2,12 @@
 {
     using System;
 
-    class FPSInput : PluginDynamicCommand, Notifiable
+    using Loupedeck.MsfsPlugin.input;
+
+    class FPSInput : DefaultInput
     {
-        public FPSInput() : base("FPS", "Display current FPS", "Debug")
-
-        {
-            MsfsData.Instance.ValuesDisplayed = true;
-            MsfsData.Instance.register(this);
-        }
-
-        public void Notify() => this.AdjustmentValueChanged();
-
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
-        {
-
-            return MsfsData.Instance.Fps + "\nFPS";
-        }
-
-        protected override void RunCommand(String actionParameter)
-        {
-        }
+        public FPSInput() : base("FPS", "Display current FPS", "Debug"){}
+        protected override String GetValue() => MsfsData.Instance.Fps + "\nFPS";
     }
 }
 

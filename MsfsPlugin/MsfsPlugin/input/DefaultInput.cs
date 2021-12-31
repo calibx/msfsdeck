@@ -16,7 +16,7 @@
 
         protected override void RunCommand(String actionParameter) => this.ChangeValue();
         protected abstract String GetValue();
-        protected abstract void ChangeValue();
+        protected virtual void ChangeValue() { }
     }
 }
 

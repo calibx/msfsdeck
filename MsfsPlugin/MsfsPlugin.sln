@@ -7,6 +7,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{262515A1-02DD-4C59-98CE-9BC4604584EA}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
+		..\msfs.lp4 = ..\msfs.lp4
 		..\Readme.md = ..\Readme.md
 	EndProjectSection
 EndProject

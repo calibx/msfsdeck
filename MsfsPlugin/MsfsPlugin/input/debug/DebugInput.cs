@@ -2,27 +2,13 @@
 {
     using System;
 
-    class DebugInput : PluginDynamicCommand, Notifiable
+    using Loupedeck.MsfsPlugin.input;
+    class DebugInput : DefaultInput
     {
 
-        public DebugInput() : base("Debug", "Display debugged value ", "Debug")
+        public DebugInput() : base("Debug", "Display debugged value ", "Debug"){}
+        protected override String GetValue() => "Debug\n" + MsfsData.Instance.DebugValue;
 
-        {
-            MsfsData.Instance.ValuesDisplayed = true;
-            MsfsData.Instance.register(this);
-        }
-
-        public void Notify() => this.AdjustmentValueChanged();
-
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
-        {
-
-            return MsfsData.Instance.DebugValue + "\nDebug";
-        }
-
-        protected override void RunCommand(String actionParameter)
-        {
-        }
     }
 }
 
