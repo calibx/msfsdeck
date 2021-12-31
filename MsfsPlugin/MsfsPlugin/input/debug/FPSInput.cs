@@ -6,7 +6,7 @@
 
     class FPSInput : DefaultInput
     {
-        public FPSInput() : base("FPS", "Display current FPS", "Debug"){}
+        public FPSInput() : base("FPS", "Display current FPS", "Debug") { }
         protected override String GetValue() => MsfsData.Instance.Fps + "\nFPS";
     }
 }

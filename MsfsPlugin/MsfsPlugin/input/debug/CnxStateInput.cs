@@ -10,8 +10,8 @@
 
         protected override String GetValue()
         {
-                this.heartbeat = !this.heartbeat;
-                return (MsfsData.Instance.Connected ? "Connected" : MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected") + (this.heartbeat ? "\n..." : "\n. .");
+            this.heartbeat = !this.heartbeat;
+            return (MsfsData.Instance.Connected ? "Connected" : MsfsData.Instance.TryConnect ? "Trying to connect" : "Disconnected") + (this.heartbeat ? "\n..." : "\n. .");
         }
 
     }

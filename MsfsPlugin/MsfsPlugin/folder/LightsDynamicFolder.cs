@@ -9,7 +9,7 @@
         {
             this.DisplayName = "Lights";
             this.GroupName = "Folder";
-            this.Navigation = PluginDynamicFolderNavigation.EncoderArea;
+            this.Navigation = PluginDynamicFolderNavigation.None;
             MsfsData.Instance.register(this);
 
         }
@@ -17,6 +17,7 @@
         {
             return new[]
             {
+                PluginDynamicFolder.NavigateUpActionName,
                 this.CreateCommandName("Navigation"),
                 this.CreateCommandName("Beacon"),
                 this.CreateCommandName("Landing"),

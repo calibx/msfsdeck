@@ -17,6 +17,3 @@ The aim of this plugin is to use the Loupedeck Live to control MSFS
 * Have Fun
 # Controls description
 https://github.com/calibx/msfsdeck/wiki
-
-
-
