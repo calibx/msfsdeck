@@ -8,7 +8,7 @@
         public APDynamicFolder()
         {
             this.DisplayName = "AP";
-            this.GroupName = "System";
+            this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.EncoderArea;
             MsfsData.Instance.register(this);
 

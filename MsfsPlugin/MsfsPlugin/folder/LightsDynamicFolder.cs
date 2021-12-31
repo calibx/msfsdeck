@@ -8,7 +8,7 @@
         public LightsDynamicFolder()
         {
             this.DisplayName = "Lights";
-            this.GroupName = "System";
+            this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.EncoderArea;
             MsfsData.Instance.register(this);
 

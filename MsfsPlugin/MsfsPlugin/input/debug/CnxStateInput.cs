@@ -6,7 +6,7 @@
     class CnxStateInput : DefaultInput
     {
         private Boolean heartbeat;
-        public CnxStateInput() : base("Connection", "Display FSUIPC connexion state", "Debug") { }
+        public CnxStateInput() : base("Connection", "Display FSUIPC connection state", "Debug") { }
 
         protected override String GetValue()
         {
