@@ -66,7 +66,7 @@
         public Int32 NumberOfEngines { get; set; }
         public Int32 Fps { get; set; }
         public Int32 RefreshRate { get; set; }
-        public Int32 DebugValue { get; set; }
+        public String DebugValue { get; set; }
         public Int32 MaxFlap { get; set; }
         public Byte GearOverSpeed { get; set; }
         public Int32 CurrentGearHandle { get => this.currentGearHandle; set { this.currentGearHandle = value; this.SetToMSFS = true; } }
