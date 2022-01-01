@@ -11,9 +11,11 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Double> debug = new Offset<Double>(0x2000);
+        private static readonly Offset<String> debug = new Offset<String>(0x3D00, 256);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
+        private static readonly Offset<String> aircraftName = new Offset<String>(0x3D00, 256);
+        private static readonly Offset<Byte> engineType = new Offset<Byte>(0x0609);
         private static readonly Offset<Int16> rpm = new Offset<Int16>(0x0898);
         private static readonly Offset<Int16> rpmScale = new Offset<Int16>(0x08C8);
         private static readonly Offset<Double> E1N1 = new Offset<Double>(0x2010);
@@ -124,7 +126,7 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = (Int32)light.Value;
+                        MsfsData.Instance.DebugValue = debug.Value.ToString();
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -217,6 +219,7 @@
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                         MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
                         MsfsData.Instance.Rpm = (Int32)(rpm.Value * rpmScale.Value / 65536);
+                        MsfsData.Instance.EngineType = engineType.Value;
                         MsfsData.Instance.E1N1 = Math.Round(E1N1.Value, 1);
                         MsfsData.Instance.E2N1 = Math.Round(E2N1.Value, 1);
                         MsfsData.Instance.E3N1 = Math.Round(E3N1.Value, 1);
@@ -246,7 +249,7 @@
 
         private static void getLightsFromMSFS(Int16 value)
         {
-            MsfsData.Instance.CabinLightFromMSFS = value >= 512;
+            MsfsData.Instance.CabinLightFromMSFS = aircraftName.Value == "Airbus A320 Neo Asobo" ? value >= 512 : !(value >= 512);
             value %= 512;
             MsfsData.Instance.LogoLightFromMSFS = value >= 256;
             value %= 256;
@@ -279,7 +282,13 @@
             result += MsfsData.Instance.RecognitionLight ? (Int16)64 : (Int16)0;
             result += MsfsData.Instance.WingLight ? (Int16)128 : (Int16)0;
             result += MsfsData.Instance.LogoLight ? (Int16)256 : (Int16)0;
-            result += MsfsData.Instance.CabinLight ? (Int16)512 : (Int16)0;
+            if (aircraftName.Value == "Airbus A320 Neo Asobo")
+            {
+                result += MsfsData.Instance.CabinLight ? (Int16)512 : (Int16)0;
+            } else
+            { 
+                result += !MsfsData.Instance.CabinLight ? (Int16)512 : (Int16)0;
+            }
             return result;
         }
         private static Int32 GetSpoilerFromMSFS(Int32 msfsValue, Int32 armValue) => armValue == 4800 ? -1 : msfsValue == 0 ? 0 : (Int32)Math.Round((Double)msfsValue / 16383 * 10);
