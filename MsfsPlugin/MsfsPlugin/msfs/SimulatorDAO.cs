@@ -11,9 +11,10 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Double> debug = new Offset<Double>(0x2000);
+        private static readonly Offset<Byte> debug = new Offset<Byte>(0x0609);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
+        private static readonly Offset<Byte> engineType = new Offset<Byte>(0x0609);
         private static readonly Offset<Int16> rpm = new Offset<Int16>(0x0898);
         private static readonly Offset<Int16> rpmScale = new Offset<Int16>(0x08C8);
         private static readonly Offset<Double> E1N1 = new Offset<Double>(0x2010);
@@ -124,7 +125,7 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = (Int32)light.Value;
+                        MsfsData.Instance.DebugValue = (Int32)debug.Value;
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -217,6 +218,7 @@
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                         MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
                         MsfsData.Instance.Rpm = (Int32)(rpm.Value * rpmScale.Value / 65536);
+                        MsfsData.Instance.EngineType = engineType.Value;
                         MsfsData.Instance.E1N1 = Math.Round(E1N1.Value, 1);
                         MsfsData.Instance.E2N1 = Math.Round(E2N1.Value, 1);
                         MsfsData.Instance.E3N1 = Math.Round(E3N1.Value, 1);
