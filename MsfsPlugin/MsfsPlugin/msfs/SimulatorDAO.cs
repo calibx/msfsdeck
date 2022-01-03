@@ -11,8 +11,17 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<String> debug = new Offset<String>(0x3D00, 256);
+        private static readonly Offset<Int16> debug = new Offset<Int16>(0x126C);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
+
+        private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
+        private static readonly Offset<Int16> fuelQuantityLeft = new Offset<Int16>(0x1264);
+        private static readonly Offset<Int16> fuelCapacity = new Offset<Int16>(0x1240);
+        private static readonly Offset<Double> fuelWeightFlowE1 = new Offset<Double>(0x0918);
+        private static readonly Offset<Double> fuelWeightFlowE2 = new Offset<Double>(0x09B0);
+        private static readonly Offset<Double> fuelWeightFlowE3 = new Offset<Double>(0x0A48);
+        private static readonly Offset<Double> fuelWeightFlowE4 = new Offset<Double>(0x0AE0);
+
 
         private static readonly Offset<String> aircraftName = new Offset<String>(0x3D00, 256);
         private static readonly Offset<Byte> engineType = new Offset<Byte>(0x0609);
@@ -126,7 +135,7 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = debug.Value.ToString();
+                        MsfsData.Instance.DebugValue = (fuelWeightLeft.Value).ToString();
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -225,7 +234,10 @@
                         MsfsData.Instance.E3N1 = Math.Round(E3N1.Value, 1);
                         MsfsData.Instance.E4N1 = Math.Round(E4N1.Value, 1);
                         MsfsData.Instance.NumberOfEngines = numberOfEngines.Value;
-                    }
+                        MsfsData.Instance.fuelFlow = (Int32)(fuelWeightFlowE1.Value + fuelWeightFlowE2.Value + fuelWeightFlowE3.Value + fuelWeightFlowE4.Value);
+                        MsfsData.Instance.fuelPercent = (Int32)Math.Round(fuelQuantityLeft.Value * 100d / fuelCapacity.Value);
+                        MsfsData.Instance.fuelTimeLeft = MsfsData.Instance.fuelFlow != 0 ? (Int32)Math.Round((Double)fuelWeightLeft.Value * 3600 / MsfsData.Instance.fuelFlow) : 0 ;
+                        }
                 }
                 else
                 {

@@ -58,6 +58,9 @@
         public static MsfsData Instance => lazy.Value;
         public Int32 CurrentHeading { get; set; }
         public Int32 Rpm { get; set; }
+        public Int32 fuelFlow { get; set; }
+        public Int32 fuelPercent { get; set; }
+        public Int32 fuelTimeLeft { get; set; }
         public Int32 EngineType { get; set; }
         public Double E1N1 { get; set; }
         public Double E2N1 { get; set; }

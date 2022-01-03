@@ -64,6 +64,7 @@
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
+    <Compile Include="input\misc\FuelDisplay.cs" />
     <Compile Include="input\nav\APWPDisplay.cs" />
     <Compile Include="input\debug\FPSInput.cs" />
     <Compile Include="input\misc\RPMInput.cs" />
