@@ -29,6 +29,7 @@
         public String DebugValue { get; set; }
         public Int32 MaxFlap { get; set; }
         public Byte GearOverSpeed { get; set; }
+        public Byte GearRetractable { get; set; }
         public Int32 CurrentGearHandle { get => this.CurrentGearHandleFromMSFS; set { this.CurrentGearHandleFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentGearHandleFromMSFS { get; set; }
         public Int32 GearFront { get; set; }

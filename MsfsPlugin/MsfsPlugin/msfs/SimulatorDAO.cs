@@ -81,6 +81,8 @@
         private static readonly Offset<Int32> gearFront = new Offset<Int32>(0x0BEC);
         private static readonly Offset<Int32> gearLeft = new Offset<Int32>(0x0BF0);
         private static readonly Offset<Int32> gearRight = new Offset<Int32>(0x0BF4);
+        private static readonly Offset<Byte> gearRetractable = new Offset<Byte>(0x060C);
+
 
         private static readonly Offset<Byte> pitot = new Offset<Byte>(0x029C);
         private static readonly Offset<Int16> masterSwitch = new Offset<Int16>(0x281C);
@@ -222,6 +224,7 @@
                         MsfsData.Instance.GearLeft = gearLeft.Value;
                         MsfsData.Instance.GearFront = gearFront.Value;
                         MsfsData.Instance.GearRight = gearRight.Value;
+                        MsfsData.Instance.GearRetractable = gearRetractable.Value;
                         MsfsData.Instance.ApNextWPDist = apNextWPDist.Value * 0.00053996d;
                         MsfsData.Instance.ApNextWPETE = apNextWPETE.Value;
                         MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;

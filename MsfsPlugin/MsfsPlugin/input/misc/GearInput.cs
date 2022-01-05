@@ -11,15 +11,22 @@
             MsfsData.Instance.ValuesDisplayed = true;
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (MsfsData.Instance.GearFront == 0 || MsfsData.Instance.GearFront == 16383)
+                if (MsfsData.Instance.GearRetractable == 1)
                 {
+                    if (MsfsData.Instance.GearFront == 0 || MsfsData.Instance.GearFront == 16383)
+                    {
 
-                    bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), BitmapColor.White);
+                        bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), BitmapColor.White);
+                    }
+                    else
+                    {
+                        // Gear is moving
+                        bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), new BitmapColor(255, 165, 0));
+                    }
                 }
                 else
                 {
-                    // Gear is moving
-                    bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), new BitmapColor(255, 165, 0));
+                    bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), new BitmapColor(0, 0, 255));
                 }
                 return bitmapBuilder.ToImage();
             }
