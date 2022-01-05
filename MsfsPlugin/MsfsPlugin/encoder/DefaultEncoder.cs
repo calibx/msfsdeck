@@ -9,7 +9,7 @@
         protected Int32 step;
         public DefaultEncoder(String name, String desc, String category, Boolean resettable, Int32 min, Int32 max, Int32 step) : base(name, desc, category, resettable)
         {
-            MsfsData.Instance.register(this);
+            MsfsData.Instance.Register(this);
             this.min = min;
             this.max = max;
             this.step = step;

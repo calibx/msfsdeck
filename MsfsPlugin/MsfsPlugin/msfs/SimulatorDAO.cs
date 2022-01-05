@@ -120,7 +120,7 @@
             timer.Enabled = false;
             MsfsData.Instance.Connected = false;
             MsfsData.Instance.TryConnect = false;
-            MsfsData.Instance.changed();
+            MsfsData.Instance.Changed();
         }
 
 
@@ -234,9 +234,9 @@
                         MsfsData.Instance.E3N1 = Math.Round(E3N1.Value, 1);
                         MsfsData.Instance.E4N1 = Math.Round(E4N1.Value, 1);
                         MsfsData.Instance.NumberOfEngines = numberOfEngines.Value;
-                        MsfsData.Instance.fuelFlow = (Int32)(fuelWeightFlowE1.Value + fuelWeightFlowE2.Value + fuelWeightFlowE3.Value + fuelWeightFlowE4.Value);
-                        MsfsData.Instance.fuelPercent = (Int32)Math.Round(fuelQuantityLeft.Value * 100d / fuelCapacity.Value);
-                        MsfsData.Instance.fuelTimeLeft = MsfsData.Instance.fuelFlow != 0 ? (Int32)Math.Round((Double)fuelWeightLeft.Value * 3600 / MsfsData.Instance.fuelFlow) : 0 ;
+                        MsfsData.Instance.FuelFlow = (Int32)(fuelWeightFlowE1.Value + fuelWeightFlowE2.Value + fuelWeightFlowE3.Value + fuelWeightFlowE4.Value);
+                        MsfsData.Instance.FuelPercent = (Int32)Math.Round(fuelQuantityLeft.Value * 100d / fuelCapacity.Value);
+                        MsfsData.Instance.FuelTimeLeft = MsfsData.Instance.FuelFlow != 0 ? (Int32)Math.Round((Double)fuelWeightLeft.Value * 3600 / MsfsData.Instance.FuelFlow) : 0 ;
                         }
                 }
                 else
@@ -256,7 +256,7 @@
                 MsfsData.Instance.Connected = true;
                 MsfsData.Instance.TryConnect = false;
             }
-            MsfsData.Instance.changed();
+            MsfsData.Instance.Changed();
         }
 
         private static void getLightsFromMSFS(Int16 value)
