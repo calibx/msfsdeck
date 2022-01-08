@@ -55,6 +55,7 @@
     <Compile Include="encoder\FlapEncoder.cs" />
     <Compile Include="encoder\AileronTrimEncoder.cs" />
     <Compile Include="encoder\RudderTrimEncoder.cs" />
+    <Compile Include="encoder\PropellerEncoder.cs" />
     <Compile Include="encoder\ThrottleEncoder.cs" />
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="event\Notifiable.cs" />

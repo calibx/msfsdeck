@@ -11,7 +11,7 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Int16> debug = new Offset<Int16>(0x126C);
+        private static readonly Offset<Int32> debug = new Offset<Int32>(0x2F58);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
         private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
@@ -45,6 +45,11 @@
         private static readonly Offset<Int16> throttle3 = new Offset<Int16>(0x09BC);
         private static readonly Offset<Int16> throttle4 = new Offset<Int16>(0x0A54);
         private static readonly Offset<Int16> throttleLower = new Offset<Int16>(0x333A);
+
+        private static readonly Offset<Int16> propeller1 = new Offset<Int16>(0x088E);
+        private static readonly Offset<Int16> propeller2 = new Offset<Int16>(0x0926);
+        private static readonly Offset<Int16> propeller3 = new Offset<Int16>(0x09BE);
+        private static readonly Offset<Int16> propeller4 = new Offset<Int16>(0x0A56);
 
         private static readonly Offset<Int16> mixture1 = new Offset<Int16>(0x0890);
         private static readonly Offset<Int16> mixture2 = new Offset<Int16>(0x0928);
@@ -137,7 +142,7 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = (fuelWeightLeft.Value).ToString();
+                        MsfsData.Instance.DebugValue = debug.Value.ToString();
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -158,6 +163,19 @@
                             mixture2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
                             mixture3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
                             mixture4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            if (MsfsData.Instance.CurrentPropeller < 0)
+                            {
+                                propeller1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 4096d / 100);
+                                propeller2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 4096d / 100);
+                                propeller3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 4096d / 100);
+                                propeller4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 4096d / 100);
+                            } else
+                            {
+                                propeller1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 16383d / 100);
+                                propeller2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 16383d / 100);
+                                propeller3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 16383d / 100);
+                                propeller4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 16383d / 100);
+                            }
 
                             if (MsfsData.Instance.CurrentThrottle < 0)
                             {
@@ -196,7 +214,7 @@
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
                             MsfsData.Instance.ApThrottleSwitchFromMSFS = apThrottleSwitch.Value;
                             MsfsData.Instance.CurrentBrakesFromMSFS = parkingBrakes.Value;
-                            MsfsData.Instance.CurrentThrottleFromMSFS = MsfsData.Instance.CurrentThrottle < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);
+                            MsfsData.Instance.CurrentThrottleFromMSFS = throttle1.Value < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);
                             MsfsData.Instance.ThrottleLowerFromMSFS = throttleLower.Value;
                             MsfsData.Instance.CurrentGearHandleFromMSFS = gearHandle.Value;
                             MsfsData.Instance.ApAltHoldSwitchFromMSFS = apAltHoldSwitch.Value;
@@ -209,6 +227,7 @@
                             MsfsData.Instance.CurrentAileronTrimFromMSFS = (Int16)Math.Round(aileronTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentElevatorTrimFromMSFS = (Int16)Math.Round(elevatorTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentMixtureFromMSFS = (Int32)Math.Round(mixture1.Value / 16383d * 100);
+                            MsfsData.Instance.CurrentPropellerFromMSFS = propeller1.Value < 0 ? (Int16)(propeller1.Value * 100 / 4096) : (Int16)(propeller1.Value * 100 / 16383);
                             MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
                             MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;
@@ -230,7 +249,7 @@
                         MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                         MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
-                        MsfsData.Instance.Rpm = (Int32)(rpm.Value * rpmScale.Value / 65536);
+                        MsfsData.Instance.Rpm = (Int32)Math.Round(rpm.Value * rpmScale.Value / 65536d);
                         MsfsData.Instance.EngineType = engineType.Value;
                         MsfsData.Instance.E1N1 = Math.Round(E1N1.Value, 1);
                         MsfsData.Instance.E2N1 = Math.Round(E2N1.Value, 1);

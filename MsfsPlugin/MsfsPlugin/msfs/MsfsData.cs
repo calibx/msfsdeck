@@ -74,6 +74,8 @@
         public Int32 ThrottleLowerFromMSFS { get; set; }
         public Int32 CurrentSpoiler { get => this.CurrentSpoilerFromMSFS; set { this.CurrentSpoilerFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentSpoilerFromMSFS { get; set; }
+        public Int32 CurrentPropeller { get => this.CurrentPropellerFromMSFS; set { this.CurrentPropellerFromMSFS = value; this.SetToMSFS = true; } }
+        public Int32 CurrentPropellerFromMSFS { get; set; }
         public Int32 CurrentAileronTrim { get => this.CurrentAileronTrimFromMSFS; set { this.CurrentAileronTrimFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentAileronTrimFromMSFS { get; set; }
         public Int32 CurrentRudderTrim { get => this.CurrentRudderTrimFromMSFS; set { this.CurrentRudderTrimFromMSFS = value; this.SetToMSFS = true; } }
