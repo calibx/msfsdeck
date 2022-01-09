@@ -26,7 +26,9 @@
         public Int32 NumberOfEngines { get; set; }
         public Int32 Fps { get; set; }
         public Int32 RefreshRate { get; set; }
-        public String DebugValue { get; set; }
+        public String DebugValue1 { get; set; }
+        public String DebugValue2 { get; set; }
+        public String DebugValue3 { get; set; }
         public Int32 MaxFlap { get; set; }
         public Byte GearOverSpeed { get; set; }
         public Byte GearRetractable { get; set; }

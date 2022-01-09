@@ -11,7 +11,9 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Int32> debug = new Offset<Int32>(0x2F58);
+        private static readonly Offset<Int16> debug1 = new Offset<Int16>(0x832C);
+        private static readonly Offset<Int16> debug2 = new Offset<Int16>(0x832E);
+        private static readonly Offset<Int16> debug3 = new Offset<Int16>(0x8330);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
         private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
@@ -142,7 +144,9 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = debug.Value.ToString();
+                        MsfsData.Instance.DebugValue1 = debug1.Value.ToString();
+                        MsfsData.Instance.DebugValue2 = debug2.Value.ToString();
+                        MsfsData.Instance.DebugValue3 = debug3.Value.ToString();
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
