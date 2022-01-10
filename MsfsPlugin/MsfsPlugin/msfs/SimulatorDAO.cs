@@ -11,8 +11,8 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Int16> debug1 = new Offset<Int16>(0x832C);
-        private static readonly Offset<Int16> debug2 = new Offset<Int16>(0x832E);
+        private static readonly Offset<Int16> debug1 = new Offset<Int16>(0x0264);
+        private static readonly Offset<Int16> debug2 = new Offset<Int16>(0x0264);
         private static readonly Offset<Int16> debug3 = new Offset<Int16>(0x8330);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
@@ -239,6 +239,7 @@
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
+                        MsfsData.Instance.AircraftName = aircraftName.Value;
                         MsfsData.Instance.CurrentSpeed = (Int32)speed.Value / 128;
                         MsfsData.Instance.CurrentVerticalSpeed = (Int32)(verticalSpeed.Value * 60 * 3.28084 / 256);
                         MsfsData.Instance.CurrentAltitude = (Int32)(altitude.Value * 3.28);
@@ -287,7 +288,7 @@
 
         private static void getLightsFromMSFS(Int16 value)
         {
-            MsfsData.Instance.CabinLightFromMSFS = aircraftName.Value == "Airbus A320 Neo Asobo" ? value >= 512 : !(value >= 512);
+            MsfsData.Instance.CabinLightFromMSFS = (aircraftName.Value == "Airbus A320 Neo Asobo" || aircraftName.Value == "DA40-NG Asobo") ? value >= 512 : !(value >= 512);
             value %= 512;
             MsfsData.Instance.LogoLightFromMSFS = value >= 256;
             value %= 256;
@@ -320,7 +321,7 @@
             result += MsfsData.Instance.RecognitionLight ? (Int16)64 : (Int16)0;
             result += MsfsData.Instance.WingLight ? (Int16)128 : (Int16)0;
             result += MsfsData.Instance.LogoLight ? (Int16)256 : (Int16)0;
-            if (aircraftName.Value == "Airbus A320 Neo Asobo")
+            if (aircraftName.Value == "Airbus A320 Neo Asobo" || aircraftName.Value == "DA40-NG Asobo")
             {
                 result += MsfsData.Instance.CabinLight ? (Int16)512 : (Int16)0;
             } else

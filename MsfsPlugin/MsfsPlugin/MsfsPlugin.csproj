@@ -62,6 +62,7 @@
     <Compile Include="folder\APDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
     <Compile Include="input\debug\DebugInput.cs" />
+    <Compile Include="input\debug\AircraftInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
