@@ -11,8 +11,19 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<String> debug = new Offset<String>(0x3D00, 256);
+        private static readonly Offset<Int16> debug1 = new Offset<Int16>(0x0264);
+        private static readonly Offset<Int16> debug2 = new Offset<Int16>(0x0264);
+        private static readonly Offset<Int16> debug3 = new Offset<Int16>(0x8330);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
+
+        private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
+        private static readonly Offset<Int16> fuelQuantityLeft = new Offset<Int16>(0x1264);
+        private static readonly Offset<Int16> fuelCapacity = new Offset<Int16>(0x1240);
+        private static readonly Offset<Double> fuelWeightFlowE1 = new Offset<Double>(0x0918);
+        private static readonly Offset<Double> fuelWeightFlowE2 = new Offset<Double>(0x09B0);
+        private static readonly Offset<Double> fuelWeightFlowE3 = new Offset<Double>(0x0A48);
+        private static readonly Offset<Double> fuelWeightFlowE4 = new Offset<Double>(0x0AE0);
+
 
         private static readonly Offset<String> aircraftName = new Offset<String>(0x3D00, 256);
         private static readonly Offset<Byte> engineType = new Offset<Byte>(0x0609);
@@ -36,6 +47,11 @@
         private static readonly Offset<Int16> throttle3 = new Offset<Int16>(0x09BC);
         private static readonly Offset<Int16> throttle4 = new Offset<Int16>(0x0A54);
         private static readonly Offset<Int16> throttleLower = new Offset<Int16>(0x333A);
+
+        private static readonly Offset<Int16> propeller1 = new Offset<Int16>(0x088E);
+        private static readonly Offset<Int16> propeller2 = new Offset<Int16>(0x0926);
+        private static readonly Offset<Int16> propeller3 = new Offset<Int16>(0x09BE);
+        private static readonly Offset<Int16> propeller4 = new Offset<Int16>(0x0A56);
 
         private static readonly Offset<Int16> mixture1 = new Offset<Int16>(0x0890);
         private static readonly Offset<Int16> mixture2 = new Offset<Int16>(0x0928);
@@ -72,6 +88,8 @@
         private static readonly Offset<Int32> gearFront = new Offset<Int32>(0x0BEC);
         private static readonly Offset<Int32> gearLeft = new Offset<Int32>(0x0BF0);
         private static readonly Offset<Int32> gearRight = new Offset<Int32>(0x0BF4);
+        private static readonly Offset<Byte> gearRetractable = new Offset<Byte>(0x060C);
+
 
         private static readonly Offset<Byte> pitot = new Offset<Byte>(0x029C);
         private static readonly Offset<Int16> masterSwitch = new Offset<Int16>(0x281C);
@@ -111,7 +129,7 @@
             timer.Enabled = false;
             MsfsData.Instance.Connected = false;
             MsfsData.Instance.TryConnect = false;
-            MsfsData.Instance.changed();
+            MsfsData.Instance.Changed();
         }
 
 
@@ -126,7 +144,9 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue = debug.Value.ToString();
+                        MsfsData.Instance.DebugValue1 = debug1.Value.ToString();
+                        MsfsData.Instance.DebugValue2 = debug2.Value.ToString();
+                        MsfsData.Instance.DebugValue3 = debug3.Value.ToString();
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -147,6 +167,19 @@
                             mixture2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
                             mixture3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
                             mixture4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
+                            if (MsfsData.Instance.CurrentPropeller < 0)
+                            {
+                                propeller1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 4096d / 100);
+                                propeller2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 4096d / 100);
+                                propeller3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 4096d / 100);
+                                propeller4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 4096d / 100);
+                            } else
+                            {
+                                propeller1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 16383d / 100);
+                                propeller2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 16383d / 100);
+                                propeller3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 16383d / 100);
+                                propeller4.Value = (Int16)Math.Round(MsfsData.Instance.CurrentPropeller * 16383d / 100);
+                            }
 
                             if (MsfsData.Instance.CurrentThrottle < 0)
                             {
@@ -185,7 +218,7 @@
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
                             MsfsData.Instance.ApThrottleSwitchFromMSFS = apThrottleSwitch.Value;
                             MsfsData.Instance.CurrentBrakesFromMSFS = parkingBrakes.Value;
-                            MsfsData.Instance.CurrentThrottleFromMSFS = MsfsData.Instance.CurrentThrottle < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);
+                            MsfsData.Instance.CurrentThrottleFromMSFS = throttle1.Value < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);
                             MsfsData.Instance.ThrottleLowerFromMSFS = throttleLower.Value;
                             MsfsData.Instance.CurrentGearHandleFromMSFS = gearHandle.Value;
                             MsfsData.Instance.ApAltHoldSwitchFromMSFS = apAltHoldSwitch.Value;
@@ -198,6 +231,7 @@
                             MsfsData.Instance.CurrentAileronTrimFromMSFS = (Int16)Math.Round(aileronTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentElevatorTrimFromMSFS = (Int16)Math.Round(elevatorTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentMixtureFromMSFS = (Int32)Math.Round(mixture1.Value / 16383d * 100);
+                            MsfsData.Instance.CurrentPropellerFromMSFS = propeller1.Value < 0 ? (Int16)(propeller1.Value * 100 / 4096) : (Int16)(propeller1.Value * 100 / 16383);
                             MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
                             MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;
@@ -205,6 +239,7 @@
                         }
 
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
+                        MsfsData.Instance.AircraftName = aircraftName.Value;
                         MsfsData.Instance.CurrentSpeed = (Int32)speed.Value / 128;
                         MsfsData.Instance.CurrentVerticalSpeed = (Int32)(verticalSpeed.Value * 60 * 3.28084 / 256);
                         MsfsData.Instance.CurrentAltitude = (Int32)(altitude.Value * 3.28);
@@ -213,19 +248,23 @@
                         MsfsData.Instance.GearLeft = gearLeft.Value;
                         MsfsData.Instance.GearFront = gearFront.Value;
                         MsfsData.Instance.GearRight = gearRight.Value;
+                        MsfsData.Instance.GearRetractable = gearRetractable.Value;
                         MsfsData.Instance.ApNextWPDist = apNextWPDist.Value * 0.00053996d;
                         MsfsData.Instance.ApNextWPETE = apNextWPETE.Value;
                         MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                         MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
-                        MsfsData.Instance.Rpm = (Int32)(rpm.Value * rpmScale.Value / 65536);
+                        MsfsData.Instance.Rpm = (Int32)Math.Round(rpm.Value * rpmScale.Value / 65536d);
                         MsfsData.Instance.EngineType = engineType.Value;
                         MsfsData.Instance.E1N1 = Math.Round(E1N1.Value, 1);
                         MsfsData.Instance.E2N1 = Math.Round(E2N1.Value, 1);
                         MsfsData.Instance.E3N1 = Math.Round(E3N1.Value, 1);
                         MsfsData.Instance.E4N1 = Math.Round(E4N1.Value, 1);
                         MsfsData.Instance.NumberOfEngines = numberOfEngines.Value;
-                    }
+                        MsfsData.Instance.FuelFlow = (Int32)(fuelWeightFlowE1.Value + fuelWeightFlowE2.Value + fuelWeightFlowE3.Value + fuelWeightFlowE4.Value);
+                        MsfsData.Instance.FuelPercent = (Int32)Math.Round(fuelQuantityLeft.Value * 100d / fuelCapacity.Value);
+                        MsfsData.Instance.FuelTimeLeft = MsfsData.Instance.FuelFlow != 0 ? (Int32)Math.Round((Double)fuelWeightLeft.Value * 3600 / MsfsData.Instance.FuelFlow) : 0 ;
+                        }
                 }
                 else
                 {
@@ -244,12 +283,12 @@
                 MsfsData.Instance.Connected = true;
                 MsfsData.Instance.TryConnect = false;
             }
-            MsfsData.Instance.changed();
+            MsfsData.Instance.Changed();
         }
 
         private static void getLightsFromMSFS(Int16 value)
         {
-            MsfsData.Instance.CabinLightFromMSFS = aircraftName.Value == "Airbus A320 Neo Asobo" ? value >= 512 : !(value >= 512);
+            MsfsData.Instance.CabinLightFromMSFS = (aircraftName.Value == "Airbus A320 Neo Asobo" || aircraftName.Value == "DA40-NG Asobo") ? value >= 512 : !(value >= 512);
             value %= 512;
             MsfsData.Instance.LogoLightFromMSFS = value >= 256;
             value %= 256;
@@ -282,7 +321,7 @@
             result += MsfsData.Instance.RecognitionLight ? (Int16)64 : (Int16)0;
             result += MsfsData.Instance.WingLight ? (Int16)128 : (Int16)0;
             result += MsfsData.Instance.LogoLight ? (Int16)256 : (Int16)0;
-            if (aircraftName.Value == "Airbus A320 Neo Asobo")
+            if (aircraftName.Value == "Airbus A320 Neo Asobo" || aircraftName.Value == "DA40-NG Asobo")
             {
                 result += MsfsData.Instance.CabinLight ? (Int16)512 : (Int16)0;
             } else

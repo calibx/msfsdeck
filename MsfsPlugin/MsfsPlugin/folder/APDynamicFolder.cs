@@ -10,7 +10,7 @@
             this.DisplayName = "AP";
             this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.None;
-            MsfsData.Instance.register(this);
+            MsfsData.Instance.Register(this);
 
         }
 
