@@ -11,8 +11,8 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Int16> debug1 = new Offset<Int16>(0x0264);
-        private static readonly Offset<Int16> debug2 = new Offset<Int16>(0x0264);
+        private static readonly Offset<Int64> debug1 = new Offset<Int64>(0x6020);
+        private static readonly Offset<Int32> debug2 = new Offset<Int32>(0x3324);
         private static readonly Offset<Int16> debug3 = new Offset<Int16>(0x8330);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
@@ -40,7 +40,7 @@
         private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
 
 
-        private static readonly Offset<Int32> altitude = new Offset<Int32>(0x0574);
+        private static readonly Offset<Int32> altitude = new Offset<Int32>(0x3324);
         private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
         private static readonly Offset<Int16> throttle1 = new Offset<Int16>(0x088C);
         private static readonly Offset<Int16> throttle2 = new Offset<Int16>(0x0924);
@@ -242,7 +242,7 @@
                         MsfsData.Instance.AircraftName = aircraftName.Value;
                         MsfsData.Instance.CurrentSpeed = (Int32)speed.Value / 128;
                         MsfsData.Instance.CurrentVerticalSpeed = (Int32)(verticalSpeed.Value * 60 * 3.28084 / 256);
-                        MsfsData.Instance.CurrentAltitude = (Int32)(altitude.Value * 3.28);
+                        MsfsData.Instance.CurrentAltitude = (Int32)altitude.Value;
                         MsfsData.Instance.Fps = 32768 / (fps.Value + 1);
                         MsfsData.Instance.GearOverSpeed = gearOverSpeed.Value;
                         MsfsData.Instance.GearLeft = gearLeft.Value;
