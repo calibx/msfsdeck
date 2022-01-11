@@ -13,7 +13,7 @@
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
         private static readonly Offset<Int64> debug1 = new Offset<Int64>(0x6020);
         private static readonly Offset<Int32> debug2 = new Offset<Int32>(0x3324);
-        private static readonly Offset<Int16> debug3 = new Offset<Int16>(0x8330);
+        private static readonly Offset<Double> debug3 = new Offset<Double>(0x2400);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
         private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
@@ -26,9 +26,9 @@
 
 
         private static readonly Offset<String> aircraftName = new Offset<String>(0x3D00, 256);
+        private static readonly Offset<String> airportsNear = new Offset<String>(0x0658, 120);
         private static readonly Offset<Byte> engineType = new Offset<Byte>(0x0609);
-        private static readonly Offset<Int16> rpm = new Offset<Int16>(0x0898);
-        private static readonly Offset<Int16> rpmScale = new Offset<Int16>(0x08C8);
+        private static readonly Offset<Double> rpm = new Offset<Double>(0x2400);
         private static readonly Offset<Double> E1N1 = new Offset<Double>(0x2010);
         private static readonly Offset<Double> E2N1 = new Offset<Double>(0x2110);
         private static readonly Offset<Double> E3N1 = new Offset<Double>(0x2210);
@@ -144,9 +144,9 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 = debug1.Value.ToString();
-                        MsfsData.Instance.DebugValue2 = debug2.Value.ToString();
-                        MsfsData.Instance.DebugValue3 = debug3.Value.ToString();
+                        MsfsData.Instance.DebugValue1 = airportsNear.Value.ToString().Length < 4 ? "NA": airportsNear.Value.ToString().Substring(0,4);
+                        MsfsData.Instance.DebugValue2 = airportsNear.Value.ToString().Length < 20 ? "NA" : airportsNear.Value.ToString().Substring(16, 4);
+                        MsfsData.Instance.DebugValue3 = ((Int16)debug3.Value).ToString();
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -254,7 +254,7 @@
                         MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                         MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
-                        MsfsData.Instance.Rpm = (Int32)Math.Round(rpm.Value * rpmScale.Value / 65536d);
+                        MsfsData.Instance.Rpm = (Int16)Math.Round(rpm.Value);
                         MsfsData.Instance.EngineType = engineType.Value;
                         MsfsData.Instance.E1N1 = Math.Round(E1N1.Value, 1);
                         MsfsData.Instance.E2N1 = Math.Round(E2N1.Value, 1);
