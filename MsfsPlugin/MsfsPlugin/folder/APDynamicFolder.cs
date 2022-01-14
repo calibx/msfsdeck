@@ -52,20 +52,23 @@
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             var ret = "";
-            switch (actionParameter)
-            {
-                case "Altitude Encoder":
-                    ret = "Alt\n[" + MsfsData.Instance.CurrentAPAltitude + "]\n" + MsfsData.Instance.CurrentAltitude;
-                    break;
-                case "Heading Encoder":
-                    ret = "Head\n[" + MsfsData.Instance.CurrentAPHeading + "]\n" + MsfsData.Instance.CurrentHeading;
-                    break;
-                case "Speed Encoder":
-                    ret = "Speed\n[" + MsfsData.Instance.CurrentAPSpeed + "]\n" + MsfsData.Instance.CurrentSpeed;
-                    break;
-                case "VS Speed Encoder":
-                    ret = "VS\n[" + MsfsData.Instance.CurrentAPVerticalSpeed + "]\n" + MsfsData.Instance.CurrentVerticalSpeed;
-                    break;
+            lock (this)
+            { 
+                switch (actionParameter)
+                {
+                    case "Altitude Encoder":
+                        ret = "Alt\n[" + MsfsData.Instance.CurrentAPAltitude + "]\n" + MsfsData.Instance.CurrentAltitude;
+                        break;
+                    case "Heading Encoder":
+                        ret = "Head\n[" + MsfsData.Instance.CurrentAPHeading + "]\n" + MsfsData.Instance.CurrentHeading;
+                        break;
+                    case "Speed Encoder":
+                        ret = "Speed\n[" + MsfsData.Instance.CurrentAPSpeed + "]\n" + MsfsData.Instance.CurrentSpeed;
+                        break;
+                    case "VS Speed Encoder":
+                        ret = "VS\n[" + MsfsData.Instance.CurrentAPVerticalSpeed + "]\n" + MsfsData.Instance.CurrentVerticalSpeed;
+                        break;
+                }
             }
             return ret;
         }
@@ -102,20 +105,23 @@
 
         public override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-            switch (actionParameter)
+            lock (this)
             {
-                case "Altitude Encoder":
-                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, 0, 20000, 100, ticks);
-                    break;
-                case "Heading Encoder":
-                    MsfsData.Instance.CurrentAPHeading = this.ApplyAdjustment(MsfsData.Instance.CurrentAPHeading, 0, 360, 1, ticks);
-                    break;
-                case "Speed Encoder":
-                    MsfsData.Instance.CurrentAPSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPSpeed, 0, 2000, 1, ticks);
-                    break;
-                case "VS Speed Encoder":
-                    MsfsData.Instance.CurrentAPVerticalSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPVerticalSpeed, -10000, 10000, 100, ticks);
-                    break;
+                switch (actionParameter)
+                {
+                    case "Altitude Encoder":
+                        MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, 0, 20000, 100, ticks);
+                        break;
+                    case "Heading Encoder":
+                        MsfsData.Instance.CurrentAPHeading = this.ApplyAdjustment(MsfsData.Instance.CurrentAPHeading, 0, 360, 1, ticks);
+                        break;
+                    case "Speed Encoder":
+                        MsfsData.Instance.CurrentAPSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPSpeed, 0, 2000, 1, ticks);
+                        break;
+                    case "VS Speed Encoder":
+                        MsfsData.Instance.CurrentAPVerticalSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPVerticalSpeed, -10000, 10000, 100, ticks);
+                        break;
+                }
             }
         }
         public override void RunCommand(String actionParameter)

@@ -8,7 +8,7 @@ The aim of this plugin is to use the Loupedeck Live to control MSFS
 # Installation
 * Install FSUIPC
 * Unzip the plugin
-* Copy the 2 dll in %USERPROFILE%\AppData\Local\Loupedeck\Plugins (Alternative : C:\Program Files (x86)\Loupedeck\Loupedeck2)
+* Copy the 2 dll in %USERPROFILE%\AppData\Local\Loupedeck\Plugins
 * Load the profile msfs.lp4 in LoupeDeck UI : don't forget to active dynamic mode
 # Usage
 * Launch MSFS
