@@ -6,7 +6,10 @@ namespace Loupedeck.MsfsPlugin
     {
         public override void Load()
         {
-
+            this.Info.Icon16x16 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.16.png");
+            this.Info.Icon32x32 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.32.png");
+            this.Info.Icon48x48 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.48.png");
+            this.Info.Icon256x256 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.256.png");
         }
 
         public override void Unload()
