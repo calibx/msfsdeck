@@ -56,8 +56,12 @@
     <Reference Include="System.Design" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="encoder\VSpeedAPEncoder.cs" />
+    <Compile Include="encoder\SpeedAPEncoder.cs" />
+    <Compile Include="encoder\HeadignAPEncoder.cs" />
     <Compile Include="encoder\ElevatorTrimEncoder.cs" />
     <Compile Include="encoder\DefaultEncoder.cs" />
+    <Compile Include="encoder\AltitudeAPEncoder.cs" />
     <Compile Include="encoder\MixtureEncoder.cs" />
     <Compile Include="encoder\FlapEncoder.cs" />
     <Compile Include="encoder\AileronTrimEncoder.cs" />

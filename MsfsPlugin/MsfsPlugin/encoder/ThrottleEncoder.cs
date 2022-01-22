@@ -12,6 +12,6 @@
             this.min = MsfsData.Instance.ThrottleLowerFromMSFS < 0 ? -100 : 0;
             return MsfsData.Instance.CurrentThrottle;
         }
-        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentThrottle = newValue;
+        protected override void SetValue(Int32 newValue) => MsfsData.Instance.CurrentThrottle = newValue;
     }
 }

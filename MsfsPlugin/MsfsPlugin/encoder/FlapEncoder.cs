@@ -13,6 +13,6 @@
             this.max = MsfsData.Instance.MaxFlap;
             return MsfsData.Instance.CurrentFlap;
         }
-        protected override Int32 SetValue(Int32 newValue) => MsfsData.Instance.CurrentFlap = newValue;
+        protected override void SetValue(Int32 newValue) => MsfsData.Instance.CurrentFlap = newValue;
     }
 }
