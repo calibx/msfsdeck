@@ -11,4 +11,3 @@ supportedDevices:
 
 pluginFileName: MsfsPlugin.dll
 pluginFolderWin: bin\win\
-pluginFolderMac: bin\mac\

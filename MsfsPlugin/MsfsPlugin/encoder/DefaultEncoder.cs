@@ -32,7 +32,7 @@
         public void Notify() => this.AdjustmentValueChanged();
         protected virtual String GetDisplayValue() => this.GetValue().ToString();
         protected abstract Int32 GetValue();
-        protected abstract Int32 SetValue(Int32 value);
+        protected abstract void SetValue(Int32 value);
 
     }
 }

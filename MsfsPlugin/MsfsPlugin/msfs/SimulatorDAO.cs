@@ -1,6 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using System;
+    using System.Collections.Generic;
     using System.Timers;
 
     using FSUIPC;
@@ -98,7 +99,9 @@
         private static readonly Offset<Int16> maxFlap = new Offset<Int16>(0x3BF8);
         private static readonly Offset<Int16> currentFlap = new Offset<Int16>(0x0BDC);
 
-        private static readonly Timer timer = new System.Timers.Timer();
+        private static readonly Timer timer = new Timer();
+
+        private static readonly List<String> invertedCabinLightAircrafts = new List<String>(){"Airbus A320 Neo Asobo","DA40-NG Asobo","Bonanza G36 Asobo"};
 
         public static void Initialise()
         {
@@ -288,7 +291,7 @@
 
         private static void getLightsFromMSFS(Int16 value)
         {
-            MsfsData.Instance.CabinLightFromMSFS = (aircraftName.Value == "Airbus A320 Neo Asobo" || aircraftName.Value == "DA40-NG Asobo") ? value >= 512 : !(value >= 512);
+            MsfsData.Instance.CabinLightFromMSFS = invertedCabinLightAircrafts.Contains(aircraftName.Value) ? value >= 512 : !(value >= 512);
             value %= 512;
             MsfsData.Instance.LogoLightFromMSFS = value >= 256;
             value %= 256;
@@ -321,7 +324,7 @@
             result += MsfsData.Instance.RecognitionLight ? (Int16)64 : (Int16)0;
             result += MsfsData.Instance.WingLight ? (Int16)128 : (Int16)0;
             result += MsfsData.Instance.LogoLight ? (Int16)256 : (Int16)0;
-            if (aircraftName.Value == "Airbus A320 Neo Asobo" || aircraftName.Value == "DA40-NG Asobo")
+            if (invertedCabinLightAircrafts.Contains(aircraftName.Value))
             {
                 result += MsfsData.Instance.CabinLight ? (Int16)512 : (Int16)0;
             } else

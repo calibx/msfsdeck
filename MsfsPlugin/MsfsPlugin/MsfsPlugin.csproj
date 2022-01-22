@@ -56,8 +56,12 @@
     <Reference Include="System.Design" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="encoder\VSpeedAPEncoder.cs" />
+    <Compile Include="encoder\SpeedAPEncoder.cs" />
+    <Compile Include="encoder\HeadignAPEncoder.cs" />
     <Compile Include="encoder\ElevatorTrimEncoder.cs" />
     <Compile Include="encoder\DefaultEncoder.cs" />
+    <Compile Include="encoder\AltitudeAPEncoder.cs" />
     <Compile Include="encoder\MixtureEncoder.cs" />
     <Compile Include="encoder\FlapEncoder.cs" />
     <Compile Include="encoder\AileronTrimEncoder.cs" />
@@ -70,6 +74,7 @@
     <Compile Include="folder\LightsDynamicFolder.cs" />
     <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\debug\AircraftInput.cs" />
+    <Compile Include="input\light\LightsMultiInputs.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
@@ -125,12 +130,13 @@
     <PostBuildEvent>$(ILMergeConsolePath) /out:$(OutDir)/bin/win/MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>powershell Remove-Item '$(OutDir)archive' -Recurse -Force
-                                     powershell New-Item -Path '$(OutDir)archive\bin\win' -ItemType Directory -Force
-		$(ILMergeConsolePath) /out:$(OutDir)archive\bin\win\MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll
-		powershell Copy-Item '$(OutDir)Resources\LoupedeckPackage.yaml' -Destination '$(OutDir)archive\' -Force
-		powershell Compress-Archive -Path '$(OutDir)archive\LoupedeckPackage.yaml', '$(OutDir)archive\bin' -DestinationPath '$(OutDir)archive\MSFSPluginPackage.zip' -Force
-                                     powershell Rename-Item -Path '$(OutDir)archive\MSFSPluginPackage.zip' -NewName 'MSFSPluginPackage.lplug4'
-</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release (
+  powershell Remove-Item '$(OutDir)archive' -Recurse -Force
+  powershell New-Item -Path '$(OutDir)archive\bin\win' -ItemType Directory -Force
+  $(ILMergeConsolePath) /out:$(OutDir)archive\bin\win\MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll
+  powershell Copy-Item '$(OutDir)Resources\LoupedeckPackage.yaml' -Destination '$(OutDir)archive\' -Force
+  powershell Compress-Archive -Path '$(OutDir)archive\LoupedeckPackage.yaml', '$(OutDir)archive\bin' -DestinationPath '$(OutDir)archive\MSFSPluginPackage.zip' -Force
+  powershell Rename-Item -Path '$(OutDir)archive\MSFSPluginPackage.zip' -NewName 'MSFSPluginPackage.lplug4'
+)</PostBuildEvent>
   </PropertyGroup>
 </Project>
