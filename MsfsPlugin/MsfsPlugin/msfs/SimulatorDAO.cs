@@ -149,7 +149,7 @@
                         FSUIPCConnection.Process();
                         MsfsData.Instance.DebugValue1 = airportsNear.Value.ToString().Length < 4 ? "NA": airportsNear.Value.ToString().Substring(0,4);
                         MsfsData.Instance.DebugValue2 = airportsNear.Value.ToString().Length < 20 ? "NA" : airportsNear.Value.ToString().Substring(16, 4);
-                        MsfsData.Instance.DebugValue3 = ((Int16)debug3.Value).ToString();
+                        MsfsData.Instance.DebugValue3 = Math.Round(currentFlap.Value * (maxFlap.Value) / 16383d).ToString();
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
@@ -203,7 +203,7 @@
                             aileronTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentAileronTrim / 100d * 16383);
                             rudderTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentRudderTrim / 100d * 16383);
                             elevatorTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentElevatorTrim / 100d * 16383);
-                            currentFlap.Value = (Int16)(16383 / (maxFlap.Value + 1) * MsfsData.Instance.CurrentFlap);
+                            currentFlap.Value = (Int16)(16383 / maxFlap.Value * MsfsData.Instance.CurrentFlap);
                             pitot.Value = MsfsData.Instance.CurrentPitot ? (Byte)1 : (Byte)0;
                             masterSwitch.Value = (Int16)(MsfsData.Instance.MasterSwitch ? 1 : 0);
                             MsfsData.Instance.SetToMSFS = false;
@@ -235,7 +235,7 @@
                             MsfsData.Instance.CurrentElevatorTrimFromMSFS = (Int16)Math.Round(elevatorTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentMixtureFromMSFS = (Int32)Math.Round(mixture1.Value / 16383d * 100);
                             MsfsData.Instance.CurrentPropellerFromMSFS = propeller1.Value < 0 ? (Int16)(propeller1.Value * 100 / 4096) : (Int16)(propeller1.Value * 100 / 16383);
-                            MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
+                            MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * maxFlap.Value / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
                             MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;
                             getLightsFromMSFS(light.Value);
