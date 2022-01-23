@@ -101,7 +101,7 @@
 
         private static readonly Timer timer = new Timer();
 
-        private static readonly List<String> invertedCabinLightAircrafts = new List<String>(){"Airbus A320 Neo Asobo","DA40-NG Asobo","Bonanza G36 Asobo"};
+        private static readonly List<String> invertedCabinLightAircrafts = new List<String>(){"Airbus A320 Neo Asobo","DA40-NG Asobo","Bonanza G36 Asobo", "TBM 930 Asobo"};
 
         public static void Initialise()
         {
