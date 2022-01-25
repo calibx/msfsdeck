@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Timers;
+    using System.Windows.Forms;
 
     using FSUIPC;
 
@@ -99,7 +100,7 @@
         private static readonly Offset<Int16> maxFlap = new Offset<Int16>(0x3BF8);
         private static readonly Offset<Int16> currentFlap = new Offset<Int16>(0x0BDC);
 
-        private static readonly Timer timer = new Timer();
+        private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
         private static readonly List<String> invertedCabinLightAircrafts = new List<String>(){"Airbus A320 Neo Asobo","DA40-NG Asobo","Bonanza G36 Asobo", "TBM 930 Asobo", "Kodiak 100" };
 
@@ -203,7 +204,10 @@
                             aileronTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentAileronTrim / 100d * 16383);
                             rudderTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentRudderTrim / 100d * 16383);
                             elevatorTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentElevatorTrim / 100d * 16383);
-                            currentFlap.Value = (Int16)(16383 / maxFlap.Value * MsfsData.Instance.CurrentFlap);
+                            if (maxFlap.Value != 0)
+                            {
+                                currentFlap.Value = (Int16)(16383 / maxFlap.Value * MsfsData.Instance.CurrentFlap);
+                            }
                             pitot.Value = MsfsData.Instance.CurrentPitot ? (Byte)1 : (Byte)0;
                             masterSwitch.Value = (Int16)(MsfsData.Instance.MasterSwitch ? 1 : 0);
                             MsfsData.Instance.SetToMSFS = false;
@@ -267,7 +271,9 @@
                         MsfsData.Instance.FuelFlow = (Int32)(fuelWeightFlowE1.Value + fuelWeightFlowE2.Value + fuelWeightFlowE3.Value + fuelWeightFlowE4.Value);
                         MsfsData.Instance.FuelPercent = (Int32)Math.Round(fuelQuantityLeft.Value * 100d / fuelCapacity.Value);
                         MsfsData.Instance.FuelTimeLeft = MsfsData.Instance.FuelFlow != 0 ? (Int32)Math.Round((Double)fuelWeightLeft.Value * 3600 / MsfsData.Instance.FuelFlow) : 0 ;
-                        }
+
+                        SendControls();
+                    }
                 }
                 else
                 {
@@ -287,6 +293,66 @@
                 MsfsData.Instance.TryConnect = false;
             }
             MsfsData.Instance.Changed();
+        }
+
+        private static void SendControls()
+        {
+            if (MsfsData.Instance.ATC)
+            {
+                //FSUIPCConnection.SendControlToFS(65564, 0);
+                FSUIPCConnection.SendKeyToFS(Keys.Scroll);
+                MsfsData.Instance.ATC = false;
+            }
+            if (MsfsData.Instance.ATC0)
+            {
+                FSUIPCConnection.SendControlToFS(66181, 0);
+                MsfsData.Instance.ATC0 = false;
+            }
+            if (MsfsData.Instance.ATC1)
+            {
+                FSUIPCConnection.SendControlToFS(66172, 0);
+                MsfsData.Instance.ATC1 = false;
+            }
+            if (MsfsData.Instance.ATC2)
+            {
+                FSUIPCConnection.SendControlToFS(66173, 0);
+                MsfsData.Instance.ATC2 = false;
+            }
+            if (MsfsData.Instance.ATC3)
+            {
+                FSUIPCConnection.SendControlToFS(66174, 0);
+                MsfsData.Instance.ATC3 = false;
+            }
+            if (MsfsData.Instance.ATC4)
+            {
+                FSUIPCConnection.SendControlToFS(66175, 0);
+                MsfsData.Instance.ATC4 = false;
+            }
+            if (MsfsData.Instance.ATC5)
+            {
+                FSUIPCConnection.SendControlToFS(66176, 0);
+                MsfsData.Instance.ATC5 = false;
+            }
+            if (MsfsData.Instance.ATC6)
+            {
+                FSUIPCConnection.SendControlToFS(66177, 0);
+                MsfsData.Instance.ATC6 = false;
+            }
+            if (MsfsData.Instance.ATC7)
+            {
+                FSUIPCConnection.SendControlToFS(66178, 0);
+                MsfsData.Instance.ATC7 = false;
+            }
+            if (MsfsData.Instance.ATC8)
+            {
+                FSUIPCConnection.SendControlToFS(66179, 0);
+                MsfsData.Instance.ATC8 = false;
+            }
+            if (MsfsData.Instance.ATC9)
+            {
+                FSUIPCConnection.SendControlToFS(66180, 0);
+                MsfsData.Instance.ATC9 = false;
+            }
         }
 
         private static void getLightsFromMSFS(Int16 value)

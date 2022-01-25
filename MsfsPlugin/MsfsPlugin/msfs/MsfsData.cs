@@ -13,6 +13,18 @@
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
+        public Boolean ATC { get; set; }
+        public Boolean ATC0 { get; set; }
+        public Boolean ATC1 { get; set; }
+        public Boolean ATC2 { get; set; }
+        public Boolean ATC3 { get; set; }
+        public Boolean ATC4 { get; set; }
+        public Boolean ATC5 { get; set; }
+        public Boolean ATC6 { get; set; }
+        public Boolean ATC7 { get; set; }
+        public Boolean ATC8 { get; set; }
+        public Boolean ATC9 { get; set; }
+
         public Int32 CurrentHeading { get; set; }
         public Int32 Rpm { get; set; }
         public String AircraftName { get; set; }
