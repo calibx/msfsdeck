@@ -13,9 +13,11 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Int64> debug1 = new Offset<Int64>(0x6020);
-        private static readonly Offset<Int32> debug2 = new Offset<Int32>(0x3324);
+        private static readonly Offset<Int16> debug1 = new Offset<Int16>(0x0264);
+        private static readonly Offset<Int16> debug2 = new Offset<Int16>(0x0262);
         private static readonly Offset<Double> debug3 = new Offset<Double>(0x2400);
+
+        private static readonly Offset<Int16> pause = new Offset<Int16>(0x0262);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
         private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
@@ -150,9 +152,11 @@
                         FSUIPCConnection.Process();
                         MsfsData.Instance.DebugValue1 = airportsNear.Value.ToString().Length < 4 ? "NA": airportsNear.Value.ToString().Substring(0,4);
                         MsfsData.Instance.DebugValue2 = airportsNear.Value.ToString().Length < 20 ? "NA" : airportsNear.Value.ToString().Substring(16, 4);
-                        MsfsData.Instance.DebugValue3 = Math.Round(currentFlap.Value * (maxFlap.Value) / 16383d).ToString();
+                        MsfsData.Instance.DebugValue3 = debug1.Value.ToString();
+
                         if (MsfsData.Instance.SetToMSFS)
                         {
+                            pause.Value = (Int16)(MsfsData.Instance.Pause ? 1 : 0);
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
@@ -166,7 +170,7 @@
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch;
                             parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
-                            light.Value = getLights();
+                            light.Value = GetLights();
                             mixture1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
                             mixture2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
                             mixture3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
@@ -214,6 +218,7 @@
                         }
                         else
                         {
+                            MsfsData.Instance.PauseFromMSFS = pause.Value != 0;
                             MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = verticalSpeedAP.Value;
                             MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)speedAP.Value;
                             MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;
@@ -242,9 +247,9 @@
                             MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * maxFlap.Value / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
                             MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;
-                            getLightsFromMSFS(light.Value);
+                            GetLightsFromMSFS(light.Value);
                         }
-
+                        
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
                         MsfsData.Instance.AircraftName = aircraftName.Value;
                         MsfsData.Instance.CurrentSpeed = (Int32)speed.Value / 128;
@@ -355,7 +360,7 @@
             }
         }
 
-        private static void getLightsFromMSFS(Int16 value)
+        private static void GetLightsFromMSFS(Int16 value)
         {
             MsfsData.Instance.CabinLightFromMSFS = invertedCabinLightAircrafts.Contains(aircraftName.Value) ? value >= 512 : !(value >= 512);
             value %= 512;
@@ -378,7 +383,7 @@
             MsfsData.Instance.NavigationLightFromMSFS = value >= 1;
 
         }
-        private static Int16 getLights()
+        private static Int16 GetLights()
         {
             Int16 result = 0;
             result += MsfsData.Instance.NavigationLight ? (Int16)1 : (Int16)0;

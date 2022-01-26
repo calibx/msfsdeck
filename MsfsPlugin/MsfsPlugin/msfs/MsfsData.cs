@@ -13,6 +13,9 @@
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
+        
+        public Boolean Pause { get => this.PauseFromMSFS; set { this.PauseFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean PauseFromMSFS { get; set; }
         public Boolean ATC { get; set; }
         public Boolean ATC0 { get; set; }
         public Boolean ATC1 { get; set; }
