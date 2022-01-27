@@ -112,9 +112,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\DefaultProfile30win.lp4" />
     <None Include="Resources\LoupedeckPackage.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Resources\DefaultProfile20win.lp4" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\16.png" />
