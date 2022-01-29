@@ -13,9 +13,9 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Int16> debug1 = new Offset<Int16>(0x0264);
-        private static readonly Offset<Int16> debug2 = new Offset<Int16>(0x0262);
-        private static readonly Offset<Double> debug3 = new Offset<Double>(0x2400);
+        private static readonly Offset<Double> debug1 = new Offset<Double>(0x0538);
+        private static readonly Offset<Double> debug2 = new Offset<Double>(0x0540);
+        private static readonly Offset<Double> debug3 = new Offset<Double>(0x0548);
 
         private static readonly Offset<Int16> pause = new Offset<Int16>(0x0262);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
@@ -150,9 +150,9 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 = airportsNear.Value.ToString().Length < 4 ? "NA": airportsNear.Value.ToString().Substring(0,4);
-                        MsfsData.Instance.DebugValue2 = airportsNear.Value.ToString().Length < 20 ? "NA" : airportsNear.Value.ToString().Substring(16, 4);
-                        MsfsData.Instance.DebugValue3 = debug1.Value.ToString();
+                        MsfsData.Instance.DebugValue1 = FSUIPCConnection.ReadLVar("ParkingBrake_Position").ToString();
+                        MsfsData.Instance.DebugValue2 = (debug2.Value / 1.68d).ToString();
+                        MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
 
                         if (MsfsData.Instance.SetToMSFS)
                         {
@@ -168,7 +168,7 @@
                             apVSHoldSwitch.Value = MsfsData.Instance.ApVSHoldSwitch;
                             apHeadHoldSwitch.Value = MsfsData.Instance.ApHeadHoldSwitch;
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch;
-                            parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
+                            parkingBrakes.Value = MsfsData.Instance.CurrentBrakes == 1 ? 32767 : 0;
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
                             light.Value = GetLights();
                             mixture1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
@@ -229,7 +229,7 @@
                             MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
                             MsfsData.Instance.ApThrottleSwitchFromMSFS = apThrottleSwitch.Value;
-                            MsfsData.Instance.CurrentBrakesFromMSFS = parkingBrakes.Value;
+                            MsfsData.Instance.CurrentBrakesFromMSFS = FSUIPCConnection.ReadLVar("ParkingBrake_Position") == 100 ? 1 : 0;
                             MsfsData.Instance.CurrentThrottleFromMSFS = throttle1.Value < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);
                             MsfsData.Instance.ThrottleLowerFromMSFS = throttleLower.Value;
                             MsfsData.Instance.CurrentGearHandleFromMSFS = gearHandle.Value;
