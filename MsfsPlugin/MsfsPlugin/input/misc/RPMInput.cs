@@ -9,7 +9,7 @@
         public RPMInput() : base("RPM/N1", "Display RPM for or N1", "Misc") { }
         protected override String GetValue()
         {
-            var result = "0";
+            String result;
             switch (MsfsData.Instance.EngineType)
             {
                 case 0:

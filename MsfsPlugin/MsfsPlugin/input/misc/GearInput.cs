@@ -16,22 +16,22 @@
                     if (MsfsData.Instance.GearFront == 0 || MsfsData.Instance.GearFront == 16383)
                     {
 
-                        bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), BitmapColor.White);
+                        bitmapBuilder.DrawText("\t" + this.GetDisplay(MsfsData.Instance.GearFront) + "\n" + this.GetDisplay(MsfsData.Instance.GearLeft) + "\t" + this.GetDisplay(MsfsData.Instance.GearRight), BitmapColor.White);
                     }
                     else
                     {
                         // Gear is moving
-                        bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), new BitmapColor(255, 165, 0));
+                        bitmapBuilder.DrawText("\t" + this.GetDisplay(MsfsData.Instance.GearFront) + "\n" + this.GetDisplay(MsfsData.Instance.GearLeft) + "\t" + this.GetDisplay(MsfsData.Instance.GearRight), new BitmapColor(255, 165, 0));
                     }
                 }
                 else
                 {
-                    bitmapBuilder.DrawText("\t" + this.getDisplay(MsfsData.Instance.GearFront) + "\n" + this.getDisplay(MsfsData.Instance.GearLeft) + "\t" + this.getDisplay(MsfsData.Instance.GearRight), new BitmapColor(0, 0, 255));
+                    bitmapBuilder.DrawText("\t" + this.GetDisplay(MsfsData.Instance.GearFront) + "\n" + this.GetDisplay(MsfsData.Instance.GearLeft) + "\t" + this.GetDisplay(MsfsData.Instance.GearRight), new BitmapColor(0, 0, 255));
                 }
                 return bitmapBuilder.ToImage();
             }
         }
-        private String getDisplay(Int32 gearPos) => gearPos == 0 ? "-" : gearPos == 16383 ? "|" : "/";
+        private String GetDisplay(Int32 gearPos) => gearPos == 0 ? "-" : gearPos == 16383 ? "|" : "/";
         protected override String GetValue() => MsfsData.Instance.CurrentGearHandle.ToString();
         protected override void ChangeValue() => MsfsData.Instance.CurrentGearHandle = MsfsData.Instance.CurrentGearHandle != 0 ? 0 : 16383;
     }

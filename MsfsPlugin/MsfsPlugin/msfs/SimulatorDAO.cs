@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Timers;
+    using System.Windows.Forms;
 
     using FSUIPC;
 
@@ -12,9 +13,11 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Int64> debug1 = new Offset<Int64>(0x6020);
-        private static readonly Offset<Int32> debug2 = new Offset<Int32>(0x3324);
-        private static readonly Offset<Double> debug3 = new Offset<Double>(0x2400);
+        private static readonly Offset<Double> debug1 = new Offset<Double>(0x0538);
+        private static readonly Offset<Double> debug2 = new Offset<Double>(0x0540);
+        private static readonly Offset<Double> debug3 = new Offset<Double>(0x0548);
+
+        private static readonly Offset<Int16> pause = new Offset<Int16>(0x0262);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
         private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
@@ -99,9 +102,9 @@
         private static readonly Offset<Int16> maxFlap = new Offset<Int16>(0x3BF8);
         private static readonly Offset<Int16> currentFlap = new Offset<Int16>(0x0BDC);
 
-        private static readonly Timer timer = new Timer();
+        private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
-        private static readonly List<String> invertedCabinLightAircrafts = new List<String>(){"Airbus A320 Neo Asobo","DA40-NG Asobo","Bonanza G36 Asobo"};
+        private static readonly List<String> invertedCabinLightAircrafts = new List<String>(){"Airbus A320 Neo Asobo","DA40-NG Asobo","Bonanza G36 Asobo", "TBM 930 Asobo", "Kodiak 100" };
 
         public static void Initialise()
         {
@@ -147,11 +150,13 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 = airportsNear.Value.ToString().Length < 4 ? "NA": airportsNear.Value.ToString().Substring(0,4);
-                        MsfsData.Instance.DebugValue2 = airportsNear.Value.ToString().Length < 20 ? "NA" : airportsNear.Value.ToString().Substring(16, 4);
-                        MsfsData.Instance.DebugValue3 = ((Int16)debug3.Value).ToString();
+                        MsfsData.Instance.DebugValue1 = FSUIPCConnection.ReadLVar("ParkingBrake_Position").ToString();
+                        MsfsData.Instance.DebugValue2 = (debug2.Value / 1.68d).ToString();
+                        MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
+
                         if (MsfsData.Instance.SetToMSFS)
                         {
+                            pause.Value = (Int16)(MsfsData.Instance.Pause ? 1 : 0);
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
@@ -163,9 +168,9 @@
                             apVSHoldSwitch.Value = MsfsData.Instance.ApVSHoldSwitch;
                             apHeadHoldSwitch.Value = MsfsData.Instance.ApHeadHoldSwitch;
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch;
-                            parkingBrakes.Value = MsfsData.Instance.CurrentBrakes;
+                            parkingBrakes.Value = MsfsData.Instance.CurrentBrakes == 1 ? 32767 : 0;
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
-                            light.Value = getLights();
+                            light.Value = GetLights();
                             mixture1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
                             mixture2.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
                             mixture3.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
@@ -203,13 +208,17 @@
                             aileronTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentAileronTrim / 100d * 16383);
                             rudderTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentRudderTrim / 100d * 16383);
                             elevatorTrim.Value = (Int16)Math.Round(MsfsData.Instance.CurrentElevatorTrim / 100d * 16383);
-                            currentFlap.Value = (Int16)(16383 / (maxFlap.Value + 1) * MsfsData.Instance.CurrentFlap);
+                            if (maxFlap.Value != 0)
+                            {
+                                currentFlap.Value = (Int16)(16383 / maxFlap.Value * MsfsData.Instance.CurrentFlap);
+                            }
                             pitot.Value = MsfsData.Instance.CurrentPitot ? (Byte)1 : (Byte)0;
                             masterSwitch.Value = (Int16)(MsfsData.Instance.MasterSwitch ? 1 : 0);
                             MsfsData.Instance.SetToMSFS = false;
                         }
                         else
                         {
+                            MsfsData.Instance.PauseFromMSFS = pause.Value != 0;
                             MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = verticalSpeedAP.Value;
                             MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)speedAP.Value;
                             MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;
@@ -220,7 +229,7 @@
                             MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value;
                             MsfsData.Instance.ApThrottleSwitchFromMSFS = apThrottleSwitch.Value;
-                            MsfsData.Instance.CurrentBrakesFromMSFS = parkingBrakes.Value;
+                            MsfsData.Instance.CurrentBrakesFromMSFS = FSUIPCConnection.ReadLVar("ParkingBrake_Position") == 100 ? 1 : 0;
                             MsfsData.Instance.CurrentThrottleFromMSFS = throttle1.Value < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);
                             MsfsData.Instance.ThrottleLowerFromMSFS = throttleLower.Value;
                             MsfsData.Instance.CurrentGearHandleFromMSFS = gearHandle.Value;
@@ -235,12 +244,12 @@
                             MsfsData.Instance.CurrentElevatorTrimFromMSFS = (Int16)Math.Round(elevatorTrim.Value / 16383d * 100);
                             MsfsData.Instance.CurrentMixtureFromMSFS = (Int32)Math.Round(mixture1.Value / 16383d * 100);
                             MsfsData.Instance.CurrentPropellerFromMSFS = propeller1.Value < 0 ? (Int16)(propeller1.Value * 100 / 4096) : (Int16)(propeller1.Value * 100 / 16383);
-                            MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * (maxFlap.Value + 1) / 16383d);
+                            MsfsData.Instance.CurrentFlapFromMSFS = (Int32)Math.Round(currentFlap.Value * maxFlap.Value / 16383d);
                             MsfsData.Instance.CurrentPitotFromMSFS = pitot.Value == 1;
                             MsfsData.Instance.MasterSwitchFromMSFS = masterSwitch.Value == 1;
-                            getLightsFromMSFS(light.Value);
+                            GetLightsFromMSFS(light.Value);
                         }
-
+                        
                         MsfsData.Instance.CurrentHeading = (Int32)compass.Value;
                         MsfsData.Instance.AircraftName = aircraftName.Value;
                         MsfsData.Instance.CurrentSpeed = (Int32)speed.Value / 128;
@@ -267,7 +276,9 @@
                         MsfsData.Instance.FuelFlow = (Int32)(fuelWeightFlowE1.Value + fuelWeightFlowE2.Value + fuelWeightFlowE3.Value + fuelWeightFlowE4.Value);
                         MsfsData.Instance.FuelPercent = (Int32)Math.Round(fuelQuantityLeft.Value * 100d / fuelCapacity.Value);
                         MsfsData.Instance.FuelTimeLeft = MsfsData.Instance.FuelFlow != 0 ? (Int32)Math.Round((Double)fuelWeightLeft.Value * 3600 / MsfsData.Instance.FuelFlow) : 0 ;
-                        }
+
+                        SendControls();
+                    }
                 }
                 else
                 {
@@ -289,7 +300,67 @@
             MsfsData.Instance.Changed();
         }
 
-        private static void getLightsFromMSFS(Int16 value)
+        private static void SendControls()
+        {
+            if (MsfsData.Instance.ATC)
+            {
+                //FSUIPCConnection.SendControlToFS(65564, 0);
+                FSUIPCConnection.SendKeyToFS(Keys.Scroll);
+                MsfsData.Instance.ATC = false;
+            }
+            if (MsfsData.Instance.ATC0)
+            {
+                FSUIPCConnection.SendControlToFS(66181, 0);
+                MsfsData.Instance.ATC0 = false;
+            }
+            if (MsfsData.Instance.ATC1)
+            {
+                FSUIPCConnection.SendControlToFS(66172, 0);
+                MsfsData.Instance.ATC1 = false;
+            }
+            if (MsfsData.Instance.ATC2)
+            {
+                FSUIPCConnection.SendControlToFS(66173, 0);
+                MsfsData.Instance.ATC2 = false;
+            }
+            if (MsfsData.Instance.ATC3)
+            {
+                FSUIPCConnection.SendControlToFS(66174, 0);
+                MsfsData.Instance.ATC3 = false;
+            }
+            if (MsfsData.Instance.ATC4)
+            {
+                FSUIPCConnection.SendControlToFS(66175, 0);
+                MsfsData.Instance.ATC4 = false;
+            }
+            if (MsfsData.Instance.ATC5)
+            {
+                FSUIPCConnection.SendControlToFS(66176, 0);
+                MsfsData.Instance.ATC5 = false;
+            }
+            if (MsfsData.Instance.ATC6)
+            {
+                FSUIPCConnection.SendControlToFS(66177, 0);
+                MsfsData.Instance.ATC6 = false;
+            }
+            if (MsfsData.Instance.ATC7)
+            {
+                FSUIPCConnection.SendControlToFS(66178, 0);
+                MsfsData.Instance.ATC7 = false;
+            }
+            if (MsfsData.Instance.ATC8)
+            {
+                FSUIPCConnection.SendControlToFS(66179, 0);
+                MsfsData.Instance.ATC8 = false;
+            }
+            if (MsfsData.Instance.ATC9)
+            {
+                FSUIPCConnection.SendControlToFS(66180, 0);
+                MsfsData.Instance.ATC9 = false;
+            }
+        }
+
+        private static void GetLightsFromMSFS(Int16 value)
         {
             MsfsData.Instance.CabinLightFromMSFS = invertedCabinLightAircrafts.Contains(aircraftName.Value) ? value >= 512 : !(value >= 512);
             value %= 512;
@@ -312,7 +383,7 @@
             MsfsData.Instance.NavigationLightFromMSFS = value >= 1;
 
         }
-        private static Int16 getLights()
+        private static Int16 GetLights()
         {
             Int16 result = 0;
             result += MsfsData.Instance.NavigationLight ? (Int16)1 : (Int16)0;

@@ -54,6 +54,7 @@
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Design" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="encoder\VSpeedAPEncoder.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="event\Notifiable.cs" />
     <Compile Include="folder\APDynamicFolder.cs" />
+    <Compile Include="folder\ATCDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
     <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\debug\AircraftInput.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
+    <Compile Include="input\misc\PauseInput.cs" />
     <Compile Include="input\nav\APWPDisplay.cs" />
     <Compile Include="input\debug\FPSInput.cs" />
     <Compile Include="input\misc\RPMInput.cs" />
@@ -109,9 +112,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\DefaultProfile30win.lp4" />
     <None Include="Resources\LoupedeckPackage.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Resources\DefaultProfile20win.lp4" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\16.png" />
@@ -136,7 +141,7 @@
   $(ILMergeConsolePath) /out:$(OutDir)archive\bin\win\MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll
   powershell Copy-Item '$(OutDir)Resources\LoupedeckPackage.yaml' -Destination '$(OutDir)archive\' -Force
   powershell Compress-Archive -Path '$(OutDir)archive\LoupedeckPackage.yaml', '$(OutDir)archive\bin' -DestinationPath '$(OutDir)archive\MSFSPluginPackage.zip' -Force
-  powershell Rename-Item -Path '$(OutDir)archive\MSFSPluginPackage.zip' -NewName 'MSFSPluginPackage.lplug4'
+  powershell Rename-Item -Path '$(OutDir)archive\MSFSPluginPackage.zip' -NewName MSFSPluginPackage.lplug4
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>
