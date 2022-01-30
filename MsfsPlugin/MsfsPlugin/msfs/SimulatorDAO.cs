@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Timers;
     using System.Windows.Forms;
 
@@ -104,7 +106,7 @@
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
-        private static readonly List<String> invertedCabinLightAircrafts = new List<String>(){"Airbus A320 Neo Asobo","DA40-NG Asobo","Bonanza G36 Asobo", "TBM 930 Asobo", "Kodiak 100" };
+        private static readonly List<String> invertedCabinLightAircraftsPatterns = new List<String>(){"Airbus A320 Neo.*","DA40-NG.*","Bonanza G36.*", "TBM 930.*", "Kodiak 100.*" };
 
         public static void Initialise()
         {
@@ -362,7 +364,7 @@
 
         private static void GetLightsFromMSFS(Int16 value)
         {
-            MsfsData.Instance.CabinLightFromMSFS = invertedCabinLightAircrafts.Contains(aircraftName.Value) ? value >= 512 : !(value >= 512);
+            MsfsData.Instance.CabinLightFromMSFS =  IsInList(aircraftName.Value, invertedCabinLightAircraftsPatterns) ? value >= 512 : !(value >= 512);
             value %= 512;
             MsfsData.Instance.LogoLightFromMSFS = value >= 256;
             value %= 256;
@@ -395,7 +397,7 @@
             result += MsfsData.Instance.RecognitionLight ? (Int16)64 : (Int16)0;
             result += MsfsData.Instance.WingLight ? (Int16)128 : (Int16)0;
             result += MsfsData.Instance.LogoLight ? (Int16)256 : (Int16)0;
-            if (invertedCabinLightAircrafts.Contains(aircraftName.Value))
+            if (IsInList(aircraftName.Value, invertedCabinLightAircraftsPatterns))
             {
                 result += MsfsData.Instance.CabinLight ? (Int16)512 : (Int16)0;
             } else
@@ -406,5 +408,6 @@
         }
         private static Int32 GetSpoilerFromMSFS(Int32 msfsValue, Int32 armValue) => armValue == 4800 ? -1 : msfsValue == 0 ? 0 : (Int32)Math.Round((Double)msfsValue / 16383 * 10);
         private static Int32 GetSpoiler(Int32 currentSpoiler) => currentSpoiler == 0 ? 0 : currentSpoiler == -1 ? 4800 : 5800 + currentSpoiler * (16383 - 5800) / 10;
+        private static Boolean IsInList(String aircraftName, List<String> list) => list.Any(i => Regex.Match(aircraftName, i).Success);
     }
 }
