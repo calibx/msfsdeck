@@ -124,6 +124,12 @@
     <EmbeddedResource Include="Resources\32.png" />
     <EmbeddedResource Include="Resources\48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\on.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

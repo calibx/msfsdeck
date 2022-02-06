@@ -1,13 +1,28 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
 
     using Loupedeck.MsfsPlugin.input;
     class ParkingBrakeInput : DefaultInput
     {
         public ParkingBrakeInput() : base("Parking brake", "Display parking brakes state", "Misc") { }
-        protected override String GetValue() => MsfsData.Instance.CurrentBrakes == 0 ? "Enable parking brakes" : "Disable parking brakes";
-        protected override void ChangeValue() => MsfsData.Instance.CurrentBrakes = MsfsData.Instance.CurrentBrakes != 0 ? 0 : 1;
+
+        protected override void ChangeValue() => MsfsData.Instance.CurrentBrakes = !MsfsData.Instance.CurrentBrakes;
+        protected override BitmapImage GetImage(PluginImageSize imageSize)
+        {
+            using (var bitmapBuilder = new BitmapBuilder(imageSize))
+            {
+                if (MsfsData.Instance.CurrentBrakes)
+                {
+                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
+                }
+                else
+                {
+                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                }
+                bitmapBuilder.DrawText("Brakes");
+                return bitmapBuilder.ToImage();
+            }
+        }
     }
 }
 

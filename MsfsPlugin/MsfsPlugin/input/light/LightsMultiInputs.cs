@@ -1,9 +1,12 @@
 ﻿namespace Loupedeck.MsfsPlugin.folder
 {
     using System;
-    
+
     public class LightsMultiInputs : PluginDynamicCommand, Notifiable
     {
+        protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
+        protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
+
         public LightsMultiInputs() : base()
         {
 
@@ -21,45 +24,44 @@
             MsfsData.Instance.Register(this);
 
         }
-
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
+        protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
         {
-            var ret = "";
+            var bitmapBuilder = new BitmapBuilder(imageSize);
             switch (actionParameter)
             {
                 case "Navigation":
-                    ret += MsfsData.Instance.NavigationLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.NavigationLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Beacon":
-                    ret += MsfsData.Instance.BeaconLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.BeaconLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Landing":
-                    ret += MsfsData.Instance.LandingLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LandingLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
-                case "Taxi": 
-                    ret += MsfsData.Instance.TaxiLight ? "Disable" : "Enable";
+                case "Taxi":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.TaxiLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Strobes":
-                    ret += MsfsData.Instance.StrobesLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.StrobesLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Instruments":
-                    ret += MsfsData.Instance.InstrumentsLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.InstrumentsLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Recognition":
-                    ret += MsfsData.Instance.RecognitionLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.RecognitionLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Wing":
-                    ret += MsfsData.Instance.WingLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.WingLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Logo":
-                    ret += MsfsData.Instance.LogoLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LogoLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Cabin":
-                    ret += MsfsData.Instance.CabinLight ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.CabinLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
             }
-            ret += " " + actionParameter;
-            return ret;
+            bitmapBuilder.DrawText(actionParameter);
+            return bitmapBuilder.ToImage();
         }
         protected override void RunCommand(String actionParameter)
         {
