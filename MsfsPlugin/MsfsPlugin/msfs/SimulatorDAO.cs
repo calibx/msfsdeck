@@ -365,8 +365,13 @@
                 FSUIPCConnection.SendControlToFS(66752, 1);
                 MsfsData.Instance.DEBUG = false;
             }
-        }
+            if (MsfsData.Instance.Pushback)
+            {
+                FSUIPCConnection.SendControlToFS(FsControl.TOGGLE_PUSHBACK, 0);
+            }
 
+        }
+        
         private static void GetLightsFromMSFS(Int16 value)
         {
             MsfsData.Instance.CabinLightFromMSFS = IsInList(aircraftName.Value, invertedCabinLightAircraftsPatterns) ? value >= 512 : !(value >= 512);

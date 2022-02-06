@@ -4,15 +4,15 @@
 
     using Loupedeck.MsfsPlugin.input;
 
-    class PauseInput : DefaultInput
+    class PushbackInput : DefaultInput
     {
-        public PauseInput() : base("Pause", "Pause", "Misc") { }
-        protected override void ChangeValue() => MsfsData.Instance.Pause = !MsfsData.Instance.Pause;
+        public PushbackInput() : base("Pushback", "Pushback", "Misc") { }
+        protected override void ChangeValue() => MsfsData.Instance.Pushback = !MsfsData.Instance.Pushback;
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (MsfsData.Instance.Pause)
+                if (MsfsData.Instance.Pushback)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
                 }
@@ -20,7 +20,7 @@
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
                 }
-                bitmapBuilder.DrawText("Pause");
+                bitmapBuilder.DrawText("Pushback");
                 return bitmapBuilder.ToImage();
             }
         }
