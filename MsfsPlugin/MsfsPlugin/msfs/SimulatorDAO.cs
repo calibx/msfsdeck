@@ -306,58 +306,58 @@
         {
             if (MsfsData.Instance.ATC)
             {
-                //FSUIPCConnection.SendControlToFS(65564, 0);
+                //FSUIPCConnection.SendControlToFS(FsControl.ATC, 0);
                 FSUIPCConnection.SendKeyToFS(Keys.Scroll);
                 MsfsData.Instance.ATC = false;
             }
             if (MsfsData.Instance.ATC0)
             {
-                FSUIPCConnection.SendControlToFS(66181, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_0, 0);
                 MsfsData.Instance.ATC0 = false;
             }
             if (MsfsData.Instance.ATC1)
             {
-                FSUIPCConnection.SendControlToFS(66172, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_1, 0);
                 MsfsData.Instance.ATC1 = false;
             }
             if (MsfsData.Instance.ATC2)
             {
-                FSUIPCConnection.SendControlToFS(66173, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_2, 0);
                 MsfsData.Instance.ATC2 = false;
             }
             if (MsfsData.Instance.ATC3)
             {
-                FSUIPCConnection.SendControlToFS(66174, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_3, 0);
                 MsfsData.Instance.ATC3 = false;
             }
             if (MsfsData.Instance.ATC4)
             {
-                FSUIPCConnection.SendControlToFS(66175, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_4, 0);
                 MsfsData.Instance.ATC4 = false;
             }
             if (MsfsData.Instance.ATC5)
             {
-                FSUIPCConnection.SendControlToFS(66176, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_5, 0);
                 MsfsData.Instance.ATC5 = false;
             }
             if (MsfsData.Instance.ATC6)
             {
-                FSUIPCConnection.SendControlToFS(66177, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_6, 0);
                 MsfsData.Instance.ATC6 = false;
             }
             if (MsfsData.Instance.ATC7)
             {
-                FSUIPCConnection.SendControlToFS(66178, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_7, 0);
                 MsfsData.Instance.ATC7 = false;
             }
             if (MsfsData.Instance.ATC8)
             {
-                FSUIPCConnection.SendControlToFS(66179, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_8, 0);
                 MsfsData.Instance.ATC8 = false;
             }
             if (MsfsData.Instance.ATC9)
             {
-                FSUIPCConnection.SendControlToFS(66180, 0);
+                FSUIPCConnection.SendControlToFS(FsControl.ATC_MENU_9, 0);
                 MsfsData.Instance.ATC9 = false;
             }
             if (MsfsData.Instance.DEBUG)
@@ -369,9 +369,13 @@
             {
                 FSUIPCConnection.SendControlToFS(FsControl.TOGGLE_PUSHBACK, 0);
             }
-
+            if (MsfsData.Instance.Menu)
+            {
+                FSUIPCConnection.SendKeyToFS(Keys.Escape);
+                MsfsData.Instance.Menu = false;
+            }
         }
-        
+
         private static void GetLightsFromMSFS(Int16 value)
         {
             MsfsData.Instance.CabinLightFromMSFS = IsInList(aircraftName.Value, invertedCabinLightAircraftsPatterns) ? value >= 512 : !(value >= 512);

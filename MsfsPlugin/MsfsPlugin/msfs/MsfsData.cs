@@ -18,6 +18,7 @@
         public Boolean PauseFromMSFS { get; set; }
         public Boolean DEBUG { get; set; }
         public Boolean Pushback { get; set; }
+        public Boolean Menu { get; set; }
         public Boolean ATC { get; set; }
         public Boolean ATC0 { get; set; }
         public Boolean ATC1 { get; set; }
