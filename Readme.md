@@ -5,15 +5,13 @@ The aim of this plugin is to use the Loupedeck Live to control MSFS
 * MSFS : https://www.flightsimulator.com/
 * FSUIPC : http://www.fsuipc.com/
 # Upgrading
-## From rc3
-* Remove all older files (as now included in the plugin)
-* Restart Loupedeck
-## After
-* Simply uninstall the plugin (replace the name !) with : "C:\Program Files (x86)\Loupedeck\Loupedeck2\LoupedeckPluginPackageInstaller.exe" uninstall -path=NAME_OF_THE_PLUGIN.lplug4
+* Download the latest MSFS Deck plugin: https://github.com/calibx/msfsdeck/releases
+* Doubleclick the downloaded .lplug4 file to install the plugin
 * Validate the elevation requirement
 # Installation
 * Install latest Loupedeck Software from Loupedeck Software - https://fr.support.loupedeck.com/loupedeck-software-download
 * Install FSUIPC: http://www.fsuipc.com/ (Tested with v7.2.14/7.2.14 on Win 10/11)
+* Activate WASM in FSUIPC menu (Add-ons / WASM / Enable) : needed for LVAR
 * Download the latest MSFS Deck plugin: https://github.com/calibx/msfsdeck/releases
 * Doubleclick the downloaded .lplug4 file to install the plugin
 * Check from Loupedeck software that you can see the MSFS profile

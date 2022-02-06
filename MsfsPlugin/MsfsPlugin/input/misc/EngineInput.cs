@@ -4,15 +4,24 @@
 
     using Loupedeck.MsfsPlugin.input;
 
-    class PauseInput : DefaultInput
+    class EngineInput : DefaultInput
     {
-        public PauseInput() : base("Pause", "Pause", "Misc") { }
-        protected override void ChangeValue() => MsfsData.Instance.Pause = !MsfsData.Instance.Pause;
+        public EngineInput() : base("AutoEngine", "Engine auto on/off", "Misc") { }
+        protected override void ChangeValue()
+        {
+            if (this.EngineIsOn())
+            {
+                MsfsData.Instance.EngineAutoOff = true;
+            } else
+            {
+                MsfsData.Instance.EngineAutoOn = true;
+            }
+        } 
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (MsfsData.Instance.Pause)
+                if (this.EngineIsOn())
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
                 }
@@ -20,10 +29,11 @@
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
                 }
-                bitmapBuilder.DrawText("Pause");
+                bitmapBuilder.DrawText("Engines");
                 return bitmapBuilder.ToImage();
             }
         }
+        private Boolean EngineIsOn() => MsfsData.Instance.EngineType == 0 ? MsfsData.Instance.Rpm > 1 : MsfsData.Instance.E1N1 > 0.1;
 
     }
 }

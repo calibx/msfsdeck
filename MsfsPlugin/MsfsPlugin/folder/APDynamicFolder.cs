@@ -5,6 +5,9 @@
 
     public class APDynamicFolder : PluginDynamicFolder, Notifiable
     {
+        protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
+        protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
+
         public APDynamicFolder()
         {
             this.DisplayName = "AP";
@@ -53,7 +56,7 @@
         {
             var ret = "";
             lock (this)
-            { 
+            {
                 switch (actionParameter)
                 {
                     case "Altitude Encoder":
@@ -72,36 +75,37 @@
             }
             return ret;
         }
-        public override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
+        public override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
         {
-            var ret = "";
+            var bitmapBuilder = new BitmapBuilder(imageSize);
             switch (actionParameter)
             {
                 case "Altitude":
-                    ret += MsfsData.Instance.ApAltHoldSwitch == 1 ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApAltHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Heading":
-                    ret += MsfsData.Instance.ApHeadHoldSwitch == 1 ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApHeadHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "GPS":
-                    ret += MsfsData.Instance.ApNavHoldSwitch == 1 ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApNavHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Speed":
-                    ret += MsfsData.Instance.ApSpeedHoldSwitch == 1 ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApSpeedHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "AP":
-                    ret += MsfsData.Instance.ApSwitch == 1 ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Throttle":
-                    ret += MsfsData.Instance.ApThrottleSwitch == 1 ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApThrottleSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "VS Speed":
-                    ret += MsfsData.Instance.ApVSHoldSwitch == 1 ? "Disable" : "Enable";
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApVSHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
             }
-            ret += " " + actionParameter;
-            return ret;
+            bitmapBuilder.DrawText(actionParameter);
+            return bitmapBuilder.ToImage();
         }
+
 
         public override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
@@ -129,25 +133,25 @@
             switch (actionParameter)
             {
                 case "Altitude":
-                    MsfsData.Instance.ApAltHoldSwitch = (MsfsData.Instance.ApAltHoldSwitch + 1) % 2;
+                    MsfsData.Instance.ApAltHoldSwitch = !MsfsData.Instance.ApAltHoldSwitch;
                     break;
                 case "Heading":
-                    MsfsData.Instance.ApHeadHoldSwitch = (MsfsData.Instance.ApHeadHoldSwitch + 1) % 2;
+                    MsfsData.Instance.ApHeadHoldSwitch = !MsfsData.Instance.ApHeadHoldSwitch;
                     break;
                 case "GPS":
-                    MsfsData.Instance.ApNavHoldSwitch = (MsfsData.Instance.ApNavHoldSwitch + 1) % 2;
+                    MsfsData.Instance.ApNavHoldSwitch = !MsfsData.Instance.ApNavHoldSwitch;
                     break;
                 case "Speed":
-                    MsfsData.Instance.ApSpeedHoldSwitch = (MsfsData.Instance.ApSpeedHoldSwitch + 1) % 2;
+                    MsfsData.Instance.ApSpeedHoldSwitch = !MsfsData.Instance.ApSpeedHoldSwitch;
                     break;
                 case "AP":
-                    MsfsData.Instance.ApSwitch = (MsfsData.Instance.ApSwitch + 1) % 2;
+                    MsfsData.Instance.ApSwitch = !MsfsData.Instance.ApSwitch;
                     break;
                 case "Throttle":
-                    MsfsData.Instance.ApThrottleSwitch = (MsfsData.Instance.ApThrottleSwitch + 1) % 2;
+                    MsfsData.Instance.ApThrottleSwitch = !MsfsData.Instance.ApThrottleSwitch;
                     break;
                 case "VS Speed":
-                    MsfsData.Instance.ApVSHoldSwitch = (MsfsData.Instance.ApVSHoldSwitch + 1) % 2;
+                    MsfsData.Instance.ApVSHoldSwitch = !MsfsData.Instance.ApVSHoldSwitch;
                     break;
                 case "Altitude Reset":
                     MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100);
