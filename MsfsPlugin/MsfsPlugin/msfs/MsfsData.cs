@@ -17,7 +17,10 @@
         public Boolean Pause { get => this.PauseFromMSFS; set { this.PauseFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean PauseFromMSFS { get; set; }
         public Boolean DEBUG { get; set; }
-        public Boolean Pushback { get; set; }
+        public Boolean PushbackFromMSFS { get; set; }
+        public Boolean Pushback { get => this.PushbackFromMSFS; set { this.PushbackFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean EngineAutoOn { get; set; }
+        public Boolean EngineAutoOff { get; set; }
         public Boolean Menu { get; set; }
         public Boolean ATC { get; set; }
         public Boolean ATC0 { get; set; }

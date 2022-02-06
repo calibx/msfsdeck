@@ -43,8 +43,9 @@
 
         private static readonly Offset<Int16> zoom = new Offset<Int16>(0x8336);
         private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
-
-
+        private static readonly Offset<Int16> pushback = new Offset<Int16>(0x31F0);
+        private static readonly Offset<Int16> pushbackState = new Offset<Int16>(0x31F4);
+        
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x3324);
         private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
         private static readonly Offset<Int16> throttle1 = new Offset<Int16>(0x088C);
@@ -158,6 +159,7 @@
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             pause.Value = (Int16)(MsfsData.Instance.Pause ? 1 : 0);
+                            pushbackState.Value = (Int16)(MsfsData.Instance.Pushback ? 0 : 3);
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
@@ -221,6 +223,7 @@
                         else
                         {
                             MsfsData.Instance.PauseFromMSFS = pause.Value != 0;
+                            MsfsData.Instance.PushbackFromMSFS = pushback.Value == 0;
                             MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = verticalSpeedAP.Value;
                             MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)speedAP.Value;
                             MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;
@@ -365,15 +368,23 @@
                 FSUIPCConnection.SendControlToFS(66752, 1);
                 MsfsData.Instance.DEBUG = false;
             }
-            if (MsfsData.Instance.Pushback)
-            {
-                FSUIPCConnection.SendControlToFS(FsControl.TOGGLE_PUSHBACK, 0);
-            }
             if (MsfsData.Instance.Menu)
             {
                 FSUIPCConnection.SendKeyToFS(Keys.Escape);
                 MsfsData.Instance.Menu = false;
             }
+            if (MsfsData.Instance.EngineAutoOn)
+            {
+                FSUIPCConnection.SendControlToFS(FsControl.ENGINE_AUTO_START, 0);
+                MsfsData.Instance.EngineAutoOn = false;
+            }
+            if (MsfsData.Instance.EngineAutoOff)
+            {
+                FSUIPCConnection.SendControlToFS(FsControl.ENGINE_AUTO_SHUTDOWN, 0);
+                MsfsData.Instance.EngineAutoOff = false;
+            }
+
+
         }
 
         private static void GetLightsFromMSFS(Int16 value)
