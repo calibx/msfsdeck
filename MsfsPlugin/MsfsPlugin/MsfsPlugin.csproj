@@ -84,6 +84,8 @@
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
     <Compile Include="input\misc\MenuInput.cs" />
+    <Compile Include="input\misc\PushbackRightInput.cs" />
+    <Compile Include="input\misc\PushbackLeftInput.cs" />
     <Compile Include="input\misc\PushbackInput.cs" />
     <Compile Include="input\misc\PauseInput.cs" />
     <Compile Include="input\nav\APWPDisplay.cs" />

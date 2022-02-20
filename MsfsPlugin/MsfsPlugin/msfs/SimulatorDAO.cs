@@ -162,7 +162,7 @@
                         {
                             pause.Value = (Int16)(MsfsData.Instance.Pause ? 1 : 0);
                             barometer.Value = (Int16)(MsfsData.Instance.Barometer * 16);
-                            pushbackState.Value = (Int16)(MsfsData.Instance.Pushback ? 0 : 3);
+                            pushbackState.Value = MsfsData.Instance.Pushback;
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
@@ -227,7 +227,7 @@
                         {
                             MsfsData.Instance.BarometerFromMSFS = (Int16)Math.Round(barometer.Value / 16d);
                             MsfsData.Instance.PauseFromMSFS = pause.Value != 0;
-                            MsfsData.Instance.PushbackFromMSFS = pushback.Value == 0;
+                            MsfsData.Instance.PushbackFromMSFS = pushback.Value;
                             MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = verticalSpeedAP.Value;
                             MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)speedAP.Value;
                             MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;

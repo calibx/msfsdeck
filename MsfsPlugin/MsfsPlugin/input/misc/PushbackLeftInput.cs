@@ -4,15 +4,15 @@
 
     using Loupedeck.MsfsPlugin.input;
 
-    class PushbackInput : DefaultInput
+    class PushbackLeftInput : DefaultInput
     {
-        public PushbackInput() : base("Pushback", "Pushback", "Misc") { }
-        protected override void ChangeValue() => MsfsData.Instance.Pushback = (Int16)(MsfsData.Instance.Pushback != 0 ? 0 : 3); 
+        public PushbackLeftInput() : base("Pushback Left", "Pushback left", "Misc") { }
+        protected override void ChangeValue() => MsfsData.Instance.Pushback = (Int16)(MsfsData.Instance.Pushback == 1 ? 3 : 1); 
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (MsfsData.Instance.Pushback == 0)
+                if (MsfsData.Instance.Pushback == 1)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
                 }
@@ -20,7 +20,7 @@
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
                 }
-                bitmapBuilder.DrawText("Pushback");
+                bitmapBuilder.DrawText("Pushback L");
                 return bitmapBuilder.ToImage();
             }
         }
