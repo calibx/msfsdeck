@@ -23,9 +23,9 @@
 
         private static readonly Offset<Int16> barometer = new Offset<Int16>(0x0330);
 
-        private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
-        private static readonly Offset<Int16> fuelQuantityLeft = new Offset<Int16>(0x1264);
-        private static readonly Offset<Int16> fuelCapacity = new Offset<Int16>(0x1240);
+        private static readonly Offset<Int32> fuelWeightLeft = new Offset<Int32>(0x126C);
+        private static readonly Offset<Int32> fuelQuantityLeft = new Offset<Int32>(0x1264);
+        private static readonly Offset<Int32> fuelCapacity = new Offset<Int32>(0x1240);
         private static readonly Offset<Double> fuelWeightFlowE1 = new Offset<Double>(0x0918);
         private static readonly Offset<Double> fuelWeightFlowE2 = new Offset<Double>(0x09B0);
         private static readonly Offset<Double> fuelWeightFlowE3 = new Offset<Double>(0x0A48);
@@ -154,8 +154,8 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 =  (debug1.Value /16).ToString();
-                        MsfsData.Instance.DebugValue2 = (debug2.Value / 1.68d).ToString();
+                        MsfsData.Instance.DebugValue1 =  (fuelCapacity.Value).ToString();
+                        MsfsData.Instance.DebugValue2 = (fuelQuantityLeft.Value).ToString();
                         MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
 
                         if (MsfsData.Instance.SetToMSFS)
