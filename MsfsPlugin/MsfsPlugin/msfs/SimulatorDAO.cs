@@ -14,12 +14,14 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Double> debug1 = new Offset<Double>(0x0538);
+        private static readonly Offset<Double> debug1 = new Offset<Double>(0x34A0);
         private static readonly Offset<Double> debug2 = new Offset<Double>(0x0540);
         private static readonly Offset<Double> debug3 = new Offset<Double>(0x0548);
 
         private static readonly Offset<Int16> pause = new Offset<Int16>(0x0262);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
+
+        private static readonly Offset<Int16> barometer = new Offset<Int16>(0x0330);
 
         private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
         private static readonly Offset<Int16> fuelQuantityLeft = new Offset<Int16>(0x1264);
@@ -152,13 +154,14 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 = FSUIPCConnection.ReadLVar("ParkingBrake_Position").ToString();
+                        MsfsData.Instance.DebugValue1 =  (debug1.Value /16).ToString();
                         MsfsData.Instance.DebugValue2 = (debug2.Value / 1.68d).ToString();
                         MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
 
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             pause.Value = (Int16)(MsfsData.Instance.Pause ? 1 : 0);
+                            barometer.Value = (Int16)(MsfsData.Instance.Barometer * 16);
                             pushbackState.Value = (Int16)(MsfsData.Instance.Pushback ? 0 : 3);
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
@@ -222,6 +225,7 @@
                         }
                         else
                         {
+                            MsfsData.Instance.BarometerFromMSFS = (Int16)Math.Round(barometer.Value / 16d);
                             MsfsData.Instance.PauseFromMSFS = pause.Value != 0;
                             MsfsData.Instance.PushbackFromMSFS = pushback.Value == 0;
                             MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = verticalSpeedAP.Value;
