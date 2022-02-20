@@ -108,7 +108,7 @@
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
-        private static readonly List<String> invertedCabinLightAircraftsPatterns = new List<String>() { "Airbus A320 Neo.*", "DA40-NG.*", "Bonanza G36.*", "TBM 930.*", "Kodiak 100.*" };
+        private static readonly List<String> invertedCabinLightAircraftsPatterns = new List<String>() { "Airbus A320 Neo.*", "DA40-NG.*", "Bonanza G36.*", "TBM 930.*", "Kodiak 100.*", "Boeing 787-10.*" };
 
         public static void Initialise()
         {
