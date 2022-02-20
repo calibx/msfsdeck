@@ -14,16 +14,18 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Double> debug1 = new Offset<Double>(0x0538);
+        private static readonly Offset<Double> debug1 = new Offset<Double>(0x34A0);
         private static readonly Offset<Double> debug2 = new Offset<Double>(0x0540);
         private static readonly Offset<Double> debug3 = new Offset<Double>(0x0548);
 
         private static readonly Offset<Int16> pause = new Offset<Int16>(0x0262);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
-        private static readonly Offset<Int16> fuelWeightLeft = new Offset<Int16>(0x126C);
-        private static readonly Offset<Int16> fuelQuantityLeft = new Offset<Int16>(0x1264);
-        private static readonly Offset<Int16> fuelCapacity = new Offset<Int16>(0x1240);
+        private static readonly Offset<Int16> barometer = new Offset<Int16>(0x0330);
+
+        private static readonly Offset<Int32> fuelWeightLeft = new Offset<Int32>(0x126C);
+        private static readonly Offset<Int32> fuelQuantityLeft = new Offset<Int32>(0x1264);
+        private static readonly Offset<Int32> fuelCapacity = new Offset<Int32>(0x1240);
         private static readonly Offset<Double> fuelWeightFlowE1 = new Offset<Double>(0x0918);
         private static readonly Offset<Double> fuelWeightFlowE2 = new Offset<Double>(0x09B0);
         private static readonly Offset<Double> fuelWeightFlowE3 = new Offset<Double>(0x0A48);
@@ -106,7 +108,7 @@
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
-        private static readonly List<String> invertedCabinLightAircraftsPatterns = new List<String>() { "Airbus A320 Neo.*", "DA40-NG.*", "Bonanza G36.*", "TBM 930.*", "Kodiak 100.*" };
+        private static readonly List<String> invertedCabinLightAircraftsPatterns = new List<String>() { "Airbus A320 Neo.*", "DA40-NG.*", "Bonanza G36.*", "TBM 930.*", "Kodiak 100.*", "Boeing 787-10.*" };
 
         public static void Initialise()
         {
@@ -152,14 +154,15 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 = FSUIPCConnection.ReadLVar("ParkingBrake_Position").ToString();
-                        MsfsData.Instance.DebugValue2 = (debug2.Value / 1.68d).ToString();
+                        MsfsData.Instance.DebugValue1 =  (fuelCapacity.Value).ToString();
+                        MsfsData.Instance.DebugValue2 = (fuelQuantityLeft.Value).ToString();
                         MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
 
                         if (MsfsData.Instance.SetToMSFS)
                         {
                             pause.Value = (Int16)(MsfsData.Instance.Pause ? 1 : 0);
-                            pushbackState.Value = (Int16)(MsfsData.Instance.Pushback ? 0 : 3);
+                            barometer.Value = (Int16)(MsfsData.Instance.Barometer * 16);
+                            pushbackState.Value = MsfsData.Instance.Pushback;
                             verticalSpeedAP.Value = (Int16)MsfsData.Instance.CurrentAPVerticalSpeed;
                             compassAP.Value = (Int16)(MsfsData.Instance.CurrentAPHeading * 182);
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
@@ -222,8 +225,9 @@
                         }
                         else
                         {
+                            MsfsData.Instance.BarometerFromMSFS = (Int16)Math.Round(barometer.Value / 16d);
                             MsfsData.Instance.PauseFromMSFS = pause.Value != 0;
-                            MsfsData.Instance.PushbackFromMSFS = pushback.Value == 0;
+                            MsfsData.Instance.PushbackFromMSFS = pushback.Value;
                             MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = verticalSpeedAP.Value;
                             MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)speedAP.Value;
                             MsfsData.Instance.CurrentAPHeadingFromMSFS = compassAP.Value / 182;

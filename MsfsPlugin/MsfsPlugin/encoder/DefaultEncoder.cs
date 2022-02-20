@@ -31,7 +31,7 @@
         }
         public void Notify() => this.AdjustmentValueChanged();
         protected virtual String GetDisplayValue() => this.GetValue().ToString();
-        protected abstract Int32 GetValue();
+        protected virtual Int32 GetValue() => 0;
         protected abstract void SetValue(Int32 value);
 
     }

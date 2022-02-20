@@ -17,8 +17,8 @@
         public Boolean Pause { get => this.PauseFromMSFS; set { this.PauseFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean PauseFromMSFS { get; set; }
         public Boolean DEBUG { get; set; }
-        public Boolean PushbackFromMSFS { get; set; }
-        public Boolean Pushback { get => this.PushbackFromMSFS; set { this.PushbackFromMSFS = value; this.SetToMSFS = true; } }
+        public Int16 PushbackFromMSFS { get; set; }
+        public Int16 Pushback { get => this.PushbackFromMSFS; set { this.PushbackFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean EngineAutoOn { get; set; }
         public Boolean EngineAutoOff { get; set; }
         public Boolean Menu { get; set; }
@@ -54,6 +54,8 @@
         public Int32 MaxFlap { get; set; }
         public Byte GearOverSpeed { get; set; }
         public Byte GearRetractable { get; set; }
+        public Int16 Barometer { get => this.BarometerFromMSFS; set { this.BarometerFromMSFS = value; this.SetToMSFS = true; } }
+        public Int16 BarometerFromMSFS { get; set; }
         public Int32 CurrentGearHandle { get => this.CurrentGearHandleFromMSFS; set { this.CurrentGearHandleFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentGearHandleFromMSFS { get; set; }
         public Int32 GearFront { get; set; }
