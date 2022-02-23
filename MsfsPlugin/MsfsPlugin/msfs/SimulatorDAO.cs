@@ -14,7 +14,7 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Double> debug1 = new Offset<Double>(0x6030);
+        private static readonly Offset<String> debug1 = new Offset<String>(0x0658, 4);
         private static readonly Offset<Double> debug2 = new Offset<Double>(0x0540);
         private static readonly Offset<Double> debug3 = new Offset<Double>(0x0548);
 
@@ -160,7 +160,7 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 =  ((Int16)rightBrakes.Value).ToString();
+                        MsfsData.Instance.DebugValue1 = debug1.Value;
                         MsfsData.Instance.DebugValue2 = ((Int16)rightBrakes.Value).ToString();
                         MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
 
@@ -319,16 +319,15 @@
 
         private static void AutoTaxiInput()
         {
-            var changed = false;
             if (ground.Value == 1 && skip != 10 )
             {
-                if (MsfsData.Instance.AutoTaxi == 2)
-                { 
+                if (MsfsData.Instance.AutoTaxiSwitch == 2)
+                {
+                    MsfsData.Instance.AutoTaxi = 2;
                     if (leftBrakes.Value != 0 && groundSpeed.Value * 1.94384449 <= 19)
                     {
                         leftBrakes.Value = 0;
                         rightBrakes.Value = 0;
-                        changed = true;
                         skip = 0;
                     }
                     if (groundSpeed.Value * 1.94384449 > 19)
@@ -339,21 +338,31 @@
                         { leftBrakes.Value = 16383; }
                         if (rightBrakes.Value > 16383)
                         { rightBrakes.Value = 16383; }
-                        changed = true;
                         skip = 0;
                     }
-
-                } else
+                }
+                else
                 {
+                    if (MsfsData.Instance.AutoTaxi == 2)
+                    {
+                        leftBrakes.Value = 0;
+                        rightBrakes.Value = 0;
+                    }
                     MsfsData.Instance.AutoTaxi = 1;
+                    MsfsData.Instance.AutoTaxiSwitch = 1;
                 }
             } else
             {
+                if (MsfsData.Instance.AutoTaxi == 2)
+                {
+                    leftBrakes.Value = 0;
+                    rightBrakes.Value = 0;
+                }
                 MsfsData.Instance.AutoTaxi = 0;
+                MsfsData.Instance.AutoTaxiSwitch = 0;
                 skip++;
             }
             
-            //MsfsData.Instance.SetToMSFS = changed ? changed : MsfsData.Instance.SetToMSFS;
         }
 
         private static void SendControls()

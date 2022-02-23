@@ -23,6 +23,7 @@
         public Boolean EngineAutoOff { get; set; }
         public Boolean Menu { get; set; }
         public Int16 AutoTaxi { get; set; }
+        public Int16 AutoTaxiSwitch { get; set; }
         public Boolean ATC { get; set; }
         public Boolean ATC0 { get; set; }
         public Boolean ATC1 { get; set; }
@@ -93,7 +94,7 @@
         public Int32 ApNextWPETE { get; set; }
         public Double ApNextWPDist { get; set; }
         public Double ApNextWPHeading { get; set; }
-        public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; this.Changed(); } }
+        public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value;} }
         public Boolean CurrentBrakes { get => this.CurrentBrakesFromMSFS; set { this.CurrentBrakesFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean CurrentBrakesFromMSFS { get; set; }
         public Int32 CurrentThrottle { get => this.CurrentThrottleFromMSFS; set { this.CurrentThrottleFromMSFS = value; this.SetToMSFS = true; } }

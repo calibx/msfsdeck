@@ -106,8 +106,6 @@
 
         public override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-            lock (this)
-            {
                 switch (actionParameter)
                 {
                     case "Altitude Encoder":
@@ -123,7 +121,6 @@
                         MsfsData.Instance.CurrentAPVerticalSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPVerticalSpeed, -10000, 10000, 100, ticks);
                         break;
                 }
-            }
         }
         public override void RunCommand(String actionParameter)
         {
