@@ -13,7 +13,7 @@
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
-
+        public Boolean folderDisplayed { get; set; }
         public Boolean Pause { get => this.PauseFromMSFS; set { this.PauseFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean PauseFromMSFS { get; set; }
         public Boolean DEBUG { get; set; }
@@ -22,6 +22,7 @@
         public Boolean EngineAutoOn { get; set; }
         public Boolean EngineAutoOff { get; set; }
         public Boolean Menu { get; set; }
+        public Int16 AutoTaxi { get; set; }
         public Boolean ATC { get; set; }
         public Boolean ATC0 { get; set; }
         public Boolean ATC1 { get; set; }

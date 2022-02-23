@@ -80,6 +80,7 @@
     <Compile Include="input\light\LightsMultiInputs.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\EngineInput.cs" />
+    <Compile Include="input\misc\AutoTaxiInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
@@ -135,6 +136,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\available.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\disable.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

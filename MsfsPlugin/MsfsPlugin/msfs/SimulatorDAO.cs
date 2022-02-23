@@ -14,10 +14,12 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Double> debug1 = new Offset<Double>(0x34A0);
+        private static readonly Offset<Double> debug1 = new Offset<Double>(0x6030);
         private static readonly Offset<Double> debug2 = new Offset<Double>(0x0540);
         private static readonly Offset<Double> debug3 = new Offset<Double>(0x0548);
 
+        private static readonly Offset<Double> groundSpeed = new Offset<Double>(0x6030);
+        private static readonly Offset<Int16> ground = new Offset<Int16>(0x0366);
         private static readonly Offset<Int16> pause = new Offset<Int16>(0x0262);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
@@ -84,7 +86,9 @@
         private static readonly Offset<Double> apNextWPDist = new Offset<Double>(0x6048);
         private static readonly Offset<Double> apNextWPHeading = new Offset<Double>(0x6050);
 
-        private static readonly Offset<Int32> parkingBrakes = new Offset<Int32>(0x0BC8);
+        private static readonly Offset<Int16> parkingBrakes = new Offset<Int16>(0x0BC8);
+        private static readonly Offset<Int16> leftBrakes = new Offset<Int16>(0x0BC4);
+        private static readonly Offset<Int16> rightBrakes = new Offset<Int16>(0x0BC6);
         private static readonly Offset<Int32> spoilerArm = new Offset<Int32>(0x0BD0);
         private static readonly Offset<Int32> spoilerPosition = new Offset<Int32>(0x0BD4);
         private static readonly Offset<Int16> aileronTrim = new Offset<Int16>(0x0C02);
@@ -109,6 +113,8 @@
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
         private static readonly List<String> invertedCabinLightAircraftsPatterns = new List<String>() { "Airbus A320 Neo.*", "DA40-NG.*", "Bonanza G36.*", "TBM 930.*", "Kodiak 100.*", "Boeing 787-10.*" };
+
+        private static Byte skip;
 
         public static void Initialise()
         {
@@ -154,9 +160,11 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 =  (fuelCapacity.Value).ToString();
-                        MsfsData.Instance.DebugValue2 = (fuelQuantityLeft.Value).ToString();
+                        MsfsData.Instance.DebugValue1 =  ((Int16)rightBrakes.Value).ToString();
+                        MsfsData.Instance.DebugValue2 = ((Int16)rightBrakes.Value).ToString();
                         MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
+
+                        AutoTaxiInput();
 
                         if (MsfsData.Instance.SetToMSFS)
                         {
@@ -174,7 +182,7 @@
                             apVSHoldSwitch.Value = MsfsData.Instance.ApVSHoldSwitch ? 1 : 0;
                             apHeadHoldSwitch.Value = MsfsData.Instance.ApHeadHoldSwitch ? 1 : 0;
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch ? 1 : 0;
-                            parkingBrakes.Value = MsfsData.Instance.CurrentBrakes ? 32767 : 0;
+                            parkingBrakes.Value = (Int16)(MsfsData.Instance.CurrentBrakes ? 32767 : 0);
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
                             light.Value = GetLights();
                             mixture1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
@@ -307,6 +315,45 @@
                 MsfsData.Instance.TryConnect = false;
             }
             MsfsData.Instance.Changed();
+        }
+
+        private static void AutoTaxiInput()
+        {
+            var changed = false;
+            if (ground.Value == 1 && skip != 10 )
+            {
+                if (MsfsData.Instance.AutoTaxi == 2)
+                { 
+                    if (leftBrakes.Value != 0 && groundSpeed.Value * 1.94384449 <= 19)
+                    {
+                        leftBrakes.Value = 0;
+                        rightBrakes.Value = 0;
+                        changed = true;
+                        skip = 0;
+                    }
+                    if (groundSpeed.Value * 1.94384449 > 19)
+                    {
+                        leftBrakes.Value = (Int16)(leftBrakes.Value + 2000);
+                        rightBrakes.Value = (Int16)(rightBrakes.Value + 2000);
+                        if (leftBrakes.Value > 16383)
+                        { leftBrakes.Value = 16383; }
+                        if (rightBrakes.Value > 16383)
+                        { rightBrakes.Value = 16383; }
+                        changed = true;
+                        skip = 0;
+                    }
+
+                } else
+                {
+                    MsfsData.Instance.AutoTaxi = 1;
+                }
+            } else
+            {
+                MsfsData.Instance.AutoTaxi = 0;
+                skip++;
+            }
+            
+            //MsfsData.Instance.SetToMSFS = changed ? changed : MsfsData.Instance.SetToMSFS;
         }
 
         private static void SendControls()

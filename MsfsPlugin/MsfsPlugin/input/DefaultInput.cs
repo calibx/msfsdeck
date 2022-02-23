@@ -1,14 +1,16 @@
 ﻿namespace Loupedeck.MsfsPlugin.input
 {
     using System;
-
     public abstract class DefaultInput : PluginDynamicCommand, Notifiable
     {
         protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
         protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
+        protected readonly String _imageAvailableResourcePath = "Loupedeck.MsfsPlugin.Resources.available.png";
+        protected readonly String _imageDisableResourcePath = "Loupedeck.MsfsPlugin.Resources.disable.png";
+
         public DefaultInput(String name, String desc, String category) : base(name, desc, category) => MsfsData.Instance.Register(this);
 
-        public void Notify() => this.AdjustmentValueChanged();
+        public void Notify() { if (!MsfsData.Instance.folderDisplayed) { this.AdjustmentValueChanged(); } }
 
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {

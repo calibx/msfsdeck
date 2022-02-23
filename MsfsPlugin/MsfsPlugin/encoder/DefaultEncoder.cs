@@ -29,7 +29,7 @@
             MsfsData.Instance.ValuesDisplayed = true;
             return this.GetDisplayValue();
         }
-        public void Notify() => this.AdjustmentValueChanged();
+        public void Notify() { if (!MsfsData.Instance.folderDisplayed) { this.AdjustmentValueChanged(); } }
         protected virtual String GetDisplayValue() => this.GetValue().ToString();
         protected virtual Int32 GetValue() => 0;
         protected abstract void SetValue(Int32 value);

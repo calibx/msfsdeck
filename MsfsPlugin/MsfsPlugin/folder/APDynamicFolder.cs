@@ -55,8 +55,6 @@
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
         {
             var ret = "";
-            lock (this)
-            {
                 switch (actionParameter)
                 {
                     case "Altitude Encoder":
@@ -72,7 +70,6 @@
                         ret = "VS\n[" + MsfsData.Instance.CurrentAPVerticalSpeed + "]\n" + MsfsData.Instance.CurrentVerticalSpeed;
                         break;
                 }
-            }
             return ret;
         }
         public override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
@@ -184,6 +181,15 @@
             return value;
 
         }
+        public override Boolean Activate()
+        {
+            MsfsData.Instance.folderDisplayed = true;
+            return base.Activate();
+        }
+        public override Boolean Deactivate()
+        {
+            MsfsData.Instance.folderDisplayed = false;
+            return base.Deactivate();
+        }
     }
-
 }
