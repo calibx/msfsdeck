@@ -94,7 +94,7 @@
         public Int32 ApNextWPETE { get; set; }
         public Double ApNextWPDist { get; set; }
         public Double ApNextWPHeading { get; set; }
-        public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value;} }
+        public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; } }
         public Boolean CurrentBrakes { get => this.CurrentBrakesFromMSFS; set { this.CurrentBrakesFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean CurrentBrakesFromMSFS { get; set; }
         public Int32 CurrentThrottle { get => this.CurrentThrottleFromMSFS; set { this.CurrentThrottleFromMSFS = value; this.SetToMSFS = true; } }

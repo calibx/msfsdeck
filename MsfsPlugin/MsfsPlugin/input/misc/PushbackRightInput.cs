@@ -7,7 +7,7 @@
     class PushbackRightInput : DefaultInput
     {
         public PushbackRightInput() : base("Pushback Right", "Pushback Right", "Misc") { }
-        protected override void ChangeValue() => MsfsData.Instance.Pushback = (Int16)(MsfsData.Instance.Pushback == 2 ? 3 : 2); 
+        protected override void ChangeValue() => MsfsData.Instance.Pushback = (Int16)(MsfsData.Instance.Pushback == 2 ? 3 : 2);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
@@ -16,7 +16,7 @@
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
                 }
-                else 
+                else
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
                 }

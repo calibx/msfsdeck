@@ -1,6 +1,5 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
 
     using Loupedeck.MsfsPlugin.input;
 

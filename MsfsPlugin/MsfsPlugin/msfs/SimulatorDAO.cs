@@ -49,7 +49,7 @@
         private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
         private static readonly Offset<Int16> pushback = new Offset<Int16>(0x31F0);
         private static readonly Offset<Int16> pushbackState = new Offset<Int16>(0x31F4);
-        
+
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x3324);
         private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
         private static readonly Offset<Int16> throttle1 = new Offset<Int16>(0x088C);
@@ -319,7 +319,7 @@
 
         private static void AutoTaxiInput()
         {
-            if (ground.Value == 1 && skip != 10 )
+            if (ground.Value == 1 && skip != 10)
             {
                 if (MsfsData.Instance.AutoTaxiSwitch == 2)
                 {
@@ -351,7 +351,8 @@
                     MsfsData.Instance.AutoTaxi = 1;
                     MsfsData.Instance.AutoTaxiSwitch = 1;
                 }
-            } else
+            }
+            else
             {
                 if (MsfsData.Instance.AutoTaxi == 2)
                 {
@@ -362,7 +363,7 @@
                 MsfsData.Instance.AutoTaxiSwitch = 0;
                 skip++;
             }
-            
+
         }
 
         private static void SendControls()

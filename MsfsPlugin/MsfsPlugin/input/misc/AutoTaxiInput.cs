@@ -7,7 +7,7 @@
     class AutoTaxiInput : DefaultInput
     {
         public AutoTaxiInput() : base("AutoTaxi", "Auto speed to 20 knots on taxi", "Misc") { }
-        protected override void ChangeValue() => MsfsData.Instance.AutoTaxiSwitch = (Int16)(MsfsData.Instance.AutoTaxiSwitch == 1 ?  2 : 1);
+        protected override void ChangeValue() => MsfsData.Instance.AutoTaxiSwitch = (Int16)(MsfsData.Instance.AutoTaxiSwitch == 1 ? 2 : 1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
@@ -20,7 +20,7 @@
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageAvailableResourcePath));
                 }
-                else 
+                else
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
                 }

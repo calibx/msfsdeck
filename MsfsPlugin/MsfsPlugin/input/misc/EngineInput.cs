@@ -12,11 +12,12 @@
             if (this.EngineIsOn())
             {
                 MsfsData.Instance.EngineAutoOff = true;
-            } else
+            }
+            else
             {
                 MsfsData.Instance.EngineAutoOn = true;
             }
-        } 
+        }
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
