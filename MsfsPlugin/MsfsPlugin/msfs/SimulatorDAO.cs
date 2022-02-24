@@ -74,6 +74,8 @@
         private static readonly Offset<Int32> speedAP = new Offset<Int32>(0x07E2);
 
         private static readonly Offset<Int32> apSwitch = new Offset<Int32>(0x07BC);
+        private static readonly Offset<Int32> FDSwitch = new Offset<Int32>(0x2EE0);
+        
         private static readonly Offset<Int32> apThrottleSwitch = new Offset<Int32>(0x0810);
         private static readonly Offset<Int32> apAltHoldSwitch = new Offset<Int32>(0x07D0);
         private static readonly Offset<Int32> apHeadHoldSwitch = new Offset<Int32>(0x07C8);
@@ -176,6 +178,7 @@
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
                             speedAP.Value = MsfsData.Instance.CurrentAPSpeed;
                             apSwitch.Value = MsfsData.Instance.ApSwitch ? 1 : 0;
+                            FDSwitch.Value = MsfsData.Instance.FDSwitch ? 1 : 0;
                             apThrottleSwitch.Value = MsfsData.Instance.ApThrottleSwitch ? 1 : 0;
                             apAltHoldSwitch.Value = MsfsData.Instance.ApAltHoldSwitch ? 1 : 0;
                             apNavHoldSwitch.Value = MsfsData.Instance.ApNavHoldSwitch ? 1 : 0;
@@ -245,6 +248,7 @@
                             }
                             MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value == 1;
+                            MsfsData.Instance.FDSwitchFromMSFS = FDSwitch.Value == 1;
                             MsfsData.Instance.ApThrottleSwitchFromMSFS = apThrottleSwitch.Value == 1;
                             MsfsData.Instance.CurrentBrakesFromMSFS = FSUIPCConnection.ReadLVar("ParkingBrake_Position") == 100;
                             MsfsData.Instance.CurrentThrottleFromMSFS = throttle1.Value < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);

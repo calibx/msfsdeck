@@ -35,7 +35,6 @@
         public Boolean ATC7 { get; set; }
         public Boolean ATC8 { get; set; }
         public Boolean ATC9 { get; set; }
-
         public Int32 CurrentHeading { get; set; }
         public Int32 Rpm { get; set; }
         public String AircraftName { get; set; }
@@ -67,6 +66,8 @@
         public Int32 CurrentAPHeadingFromMSFS { get; set; }
         public Boolean ApSwitch { get => this.ApSwitchFromMSFS; set { this.ApSwitchFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean ApSwitchFromMSFS { get; set; }
+        public Boolean FDSwitch { get => this.FDSwitchFromMSFS; set { this.FDSwitchFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean FDSwitchFromMSFS { get; set; }
         public Boolean MasterSwitch { get => this.MasterSwitchFromMSFS; set { this.MasterSwitchFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean MasterSwitchFromMSFS { get; set; }
         public Boolean ApThrottleSwitch { get => this.ApThrottleSwitchFromMSFS; set { this.ApThrottleSwitchFromMSFS = value; this.SetToMSFS = true; } }
