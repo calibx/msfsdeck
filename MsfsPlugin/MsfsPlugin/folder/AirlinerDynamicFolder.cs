@@ -47,6 +47,9 @@
                 this.CreateCommandName("Altitude"),
                 this.CreateCommandName("AP"),
                 this.CreateCommandName("GPS"),
+                this.CreateCommandName("FLC"),
+                this.CreateCommandName("APP"),
+                this.CreateCommandName("LOC"),
                 this.CreateCommandName("Speed"),
                 this.CreateCommandName("Heading"),
                 this.CreateCommandName("Throttle"),
@@ -78,8 +81,17 @@
             var bitmapBuilder = new BitmapBuilder(imageSize);
             switch (actionParameter)
             {
+                case "LOC":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LOCSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
                 case "FD":
                     bitmapBuilder.SetBackgroundImage(MsfsData.Instance.FDSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "FLC":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.FLCSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "APP":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.APPSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Altitude":
                     bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApAltHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
@@ -113,7 +125,7 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 20000, 100, ticks);
+                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 40000, 100, ticks);
                     break;
                 case "Heading Encoder":
                     MsfsData.Instance.CurrentAPHeading = this.ApplyAdjustment(MsfsData.Instance.CurrentAPHeading, 0, 360, 1, ticks);
@@ -130,8 +142,17 @@
         {
             switch (actionParameter)
             {
+                case "LOC":
+                    MsfsData.Instance.LOCSwitch = !MsfsData.Instance.LOCSwitch;
+                    break;
                 case "FD":
                     MsfsData.Instance.FDSwitch= !MsfsData.Instance.FDSwitch;
+                    break;
+                case "FLC":
+                    MsfsData.Instance.FLCSwitch = !MsfsData.Instance.FLCSwitch;
+                    break;
+                case "APP":
+                    MsfsData.Instance.APPSwitch= !MsfsData.Instance.APPSwitch;
                     break;
                 case "Altitude":
                     MsfsData.Instance.ApAltHoldSwitch = !MsfsData.Instance.ApAltHoldSwitch;
@@ -158,7 +179,7 @@
                     MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100);
                     break;
                 case "Heading Reset":
-                    MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentHeading;
+                    MsfsData.Instance.ApNavHoldSwitch = !MsfsData.Instance.ApNavHoldSwitch;
                     break;
                 case "Speed Reset":
                     MsfsData.Instance.CurrentAPSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentSpeed / 100d, 0) * 100);

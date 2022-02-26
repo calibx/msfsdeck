@@ -66,8 +66,14 @@
         public Int32 CurrentAPHeadingFromMSFS { get; set; }
         public Boolean ApSwitch { get => this.ApSwitchFromMSFS; set { this.ApSwitchFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean ApSwitchFromMSFS { get; set; }
+        public Boolean APPSwitch { get => this.APPSwitchFromMSFS; set { this.APPSwitchFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean APPSwitchFromMSFS { get; set; }
         public Boolean FDSwitch { get => this.FDSwitchFromMSFS; set { this.FDSwitchFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean FDSwitchFromMSFS { get; set; }
+        public Boolean LOCSwitch { get => this.LOCSwitchFromMSFS; set { this.LOCSwitchFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean LOCSwitchFromMSFS { get; set; }
+        public Boolean FLCSwitch { get => this.FLCSwitchFromMSFS; set { this.FLCSwitchFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean FLCSwitchFromMSFS { get; set; }
         public Boolean MasterSwitch { get => this.MasterSwitchFromMSFS; set { this.MasterSwitchFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean MasterSwitchFromMSFS { get; set; }
         public Boolean ApThrottleSwitch { get => this.ApThrottleSwitchFromMSFS; set { this.ApThrottleSwitchFromMSFS = value; this.SetToMSFS = true; } }

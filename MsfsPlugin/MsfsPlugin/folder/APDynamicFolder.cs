@@ -109,7 +109,7 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 20000, 100, ticks);
+                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 40000, 100, ticks);
                     break;
                 case "Heading Encoder":
                     MsfsData.Instance.CurrentAPHeading = this.ApplyAdjustment(MsfsData.Instance.CurrentAPHeading, 0, 360, 1, ticks);
