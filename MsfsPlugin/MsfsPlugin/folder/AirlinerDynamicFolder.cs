@@ -3,14 +3,14 @@
     using System;
     using System.Collections.Generic;
 
-    public class APDynamicFolder : PluginDynamicFolder, Notifiable
+    public class AirlinerDynamicFolder : PluginDynamicFolder, Notifiable
     {
         protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
         protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
 
-        public APDynamicFolder()
+        public AirlinerDynamicFolder()
         {
-            this.DisplayName = "AP";
+            this.DisplayName = "Airliner";
             this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.None;
             MsfsData.Instance.Register(this);
@@ -43,11 +43,15 @@
             return new[]
             {
                 PluginDynamicFolder.NavigateUpActionName,
+                this.CreateCommandName("FD"),
                 this.CreateCommandName("Altitude"),
-                this.CreateCommandName("Heading"),
-                this.CreateCommandName("GPS"),
-                this.CreateCommandName("Speed"),
                 this.CreateCommandName("AP"),
+                this.CreateCommandName("GPS"),
+                this.CreateCommandName("FLC"),
+                this.CreateCommandName("APP"),
+                this.CreateCommandName("LOC"),
+                this.CreateCommandName("Speed"),
+                this.CreateCommandName("Heading"),
                 this.CreateCommandName("Throttle"),
                 this.CreateCommandName("VS Speed"),
             };
@@ -77,6 +81,18 @@
             var bitmapBuilder = new BitmapBuilder(imageSize);
             switch (actionParameter)
             {
+                case "LOC":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LOCSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "FD":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.FDSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "FLC":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.FLCSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "APP":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.APPSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
                 case "Altitude":
                     bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApAltHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
@@ -126,6 +142,18 @@
         {
             switch (actionParameter)
             {
+                case "LOC":
+                    MsfsData.Instance.LOCSwitch = !MsfsData.Instance.LOCSwitch;
+                    break;
+                case "FD":
+                    MsfsData.Instance.FDSwitch= !MsfsData.Instance.FDSwitch;
+                    break;
+                case "FLC":
+                    MsfsData.Instance.FLCSwitch = !MsfsData.Instance.FLCSwitch;
+                    break;
+                case "APP":
+                    MsfsData.Instance.APPSwitch= !MsfsData.Instance.APPSwitch;
+                    break;
                 case "Altitude":
                     MsfsData.Instance.ApAltHoldSwitch = !MsfsData.Instance.ApAltHoldSwitch;
                     break;
@@ -151,7 +179,7 @@
                     MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100);
                     break;
                 case "Heading Reset":
-                    MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentHeading;
+                    MsfsData.Instance.ApNavHoldSwitch = !MsfsData.Instance.ApNavHoldSwitch;
                     break;
                 case "Speed Reset":
                     MsfsData.Instance.CurrentAPSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentSpeed / 100d, 0) * 100);

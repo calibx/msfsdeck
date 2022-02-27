@@ -14,10 +14,12 @@
         private static readonly Offset<Int32> verticalSpeed = new Offset<Int32>(0x02C8);
 
         private static readonly Offset<Double> compass = new Offset<Double>(0x02CC);
-        private static readonly Offset<Double> debug1 = new Offset<Double>(0x34A0);
+        private static readonly Offset<String> debug1 = new Offset<String>(0x0658, 4);
         private static readonly Offset<Double> debug2 = new Offset<Double>(0x0540);
         private static readonly Offset<Double> debug3 = new Offset<Double>(0x0548);
 
+        private static readonly Offset<Double> groundSpeed = new Offset<Double>(0x6030);
+        private static readonly Offset<Int16> ground = new Offset<Int16>(0x0366);
         private static readonly Offset<Int16> pause = new Offset<Int16>(0x0262);
         private static readonly Offset<Int32> fps = new Offset<Int32>(0x0274);
 
@@ -47,7 +49,7 @@
         private static readonly Offset<Int16> light = new Offset<Int16>(0x0D0C);
         private static readonly Offset<Int16> pushback = new Offset<Int16>(0x31F0);
         private static readonly Offset<Int16> pushbackState = new Offset<Int16>(0x31F4);
-        
+
         private static readonly Offset<Int32> altitude = new Offset<Int32>(0x3324);
         private static readonly Offset<Int32> speed = new Offset<Int32>(0x02BC);
         private static readonly Offset<Int16> throttle1 = new Offset<Int16>(0x088C);
@@ -72,6 +74,12 @@
         private static readonly Offset<Int32> speedAP = new Offset<Int32>(0x07E2);
 
         private static readonly Offset<Int32> apSwitch = new Offset<Int32>(0x07BC);
+        private static readonly Offset<Int16> FDSwitch = new Offset<Int16>(0x2EE0);
+        private static readonly Offset<Byte> FLCSwitch = new Offset<Byte>(0x0B49);
+        private static readonly Offset<Byte> LOCSwitch = new Offset<Byte>(0x0C4A);
+        private static readonly Offset<Int32> APPSwitch = new Offset<Int32>(0x0800);
+        private static readonly Offset<Int32> GlideSlopeSwitch = new Offset<Int32>(0x07FC);
+
         private static readonly Offset<Int32> apThrottleSwitch = new Offset<Int32>(0x0810);
         private static readonly Offset<Int32> apAltHoldSwitch = new Offset<Int32>(0x07D0);
         private static readonly Offset<Int32> apHeadHoldSwitch = new Offset<Int32>(0x07C8);
@@ -84,7 +92,9 @@
         private static readonly Offset<Double> apNextWPDist = new Offset<Double>(0x6048);
         private static readonly Offset<Double> apNextWPHeading = new Offset<Double>(0x6050);
 
-        private static readonly Offset<Int32> parkingBrakes = new Offset<Int32>(0x0BC8);
+        private static readonly Offset<Int16> parkingBrakes = new Offset<Int16>(0x0BC8);
+        private static readonly Offset<Int16> leftBrakes = new Offset<Int16>(0x0BC4);
+        private static readonly Offset<Int16> rightBrakes = new Offset<Int16>(0x0BC6);
         private static readonly Offset<Int32> spoilerArm = new Offset<Int32>(0x0BD0);
         private static readonly Offset<Int32> spoilerPosition = new Offset<Int32>(0x0BD4);
         private static readonly Offset<Int16> aileronTrim = new Offset<Int16>(0x0C02);
@@ -109,6 +119,8 @@
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
         private static readonly List<String> invertedCabinLightAircraftsPatterns = new List<String>() { "Airbus A320 Neo.*", "DA40-NG.*", "Bonanza G36.*", "TBM 930.*", "Kodiak 100.*", "Boeing 787-10.*" };
+
+        private static Byte skip;
 
         public static void Initialise()
         {
@@ -154,9 +166,11 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 =  (fuelCapacity.Value).ToString();
-                        MsfsData.Instance.DebugValue2 = (fuelQuantityLeft.Value).ToString();
+                        MsfsData.Instance.DebugValue1 = debug1.Value;
+                        MsfsData.Instance.DebugValue2 = ((Int16)rightBrakes.Value).ToString();
                         MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
+
+                        AutoTaxiInput();
 
                         if (MsfsData.Instance.SetToMSFS)
                         {
@@ -168,13 +182,17 @@
                             altitudeAP.Value = (Int32)(MsfsData.Instance.CurrentAPAltitude * 65536 / 3.28);
                             speedAP.Value = MsfsData.Instance.CurrentAPSpeed;
                             apSwitch.Value = MsfsData.Instance.ApSwitch ? 1 : 0;
+                            FDSwitch.Value = (Int16)(MsfsData.Instance.FDSwitch ? 1 : 0);
+                            FLCSwitch.Value = (Byte)(MsfsData.Instance.FLCSwitch ? 1 : 0);
+                            APPSwitch.Value = MsfsData.Instance.APPSwitch ? 1 : 0;
+                            LOCSwitch.Value = (Byte)(MsfsData.Instance.LOCSwitch ? 1 : 0);
                             apThrottleSwitch.Value = MsfsData.Instance.ApThrottleSwitch ? 1 : 0;
                             apAltHoldSwitch.Value = MsfsData.Instance.ApAltHoldSwitch ? 1 : 0;
                             apNavHoldSwitch.Value = MsfsData.Instance.ApNavHoldSwitch ? 1 : 0;
                             apVSHoldSwitch.Value = MsfsData.Instance.ApVSHoldSwitch ? 1 : 0;
                             apHeadHoldSwitch.Value = MsfsData.Instance.ApHeadHoldSwitch ? 1 : 0;
                             apSpeedHoldSwitch.Value = MsfsData.Instance.ApSpeedHoldSwitch ? 1 : 0;
-                            parkingBrakes.Value = MsfsData.Instance.CurrentBrakes ? 32767 : 0;
+                            parkingBrakes.Value = (Int16)(MsfsData.Instance.CurrentBrakes ? 32767 : 0);
                             zoom.Value = (Int16)MsfsData.Instance.CurrentZoom;
                             light.Value = GetLights();
                             mixture1.Value = (Int16)Math.Round(MsfsData.Instance.CurrentMixture / 100d * 16383);
@@ -237,6 +255,10 @@
                             }
                             MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)Math.Round(altitudeAP.Value / 65536 * 3.28 / 10.0) * 10;
                             MsfsData.Instance.ApSwitchFromMSFS = apSwitch.Value == 1;
+                            MsfsData.Instance.FDSwitchFromMSFS = FDSwitch.Value == 1;
+                            MsfsData.Instance.FLCSwitchFromMSFS = FLCSwitch.Value == 1;
+                            MsfsData.Instance.LOCSwitchFromMSFS = LOCSwitch.Value == 1;
+                            MsfsData.Instance.APPSwitchFromMSFS = APPSwitch.Value == 1;
                             MsfsData.Instance.ApThrottleSwitchFromMSFS = apThrottleSwitch.Value == 1;
                             MsfsData.Instance.CurrentBrakesFromMSFS = FSUIPCConnection.ReadLVar("ParkingBrake_Position") == 100;
                             MsfsData.Instance.CurrentThrottleFromMSFS = throttle1.Value < 0 ? (Int16)(throttle1.Value * 100 / 4096) : (Int16)(throttle1.Value * 100 / 16383);
@@ -307,6 +329,55 @@
                 MsfsData.Instance.TryConnect = false;
             }
             MsfsData.Instance.Changed();
+        }
+
+        private static void AutoTaxiInput()
+        {
+            if (ground.Value == 1 && skip != 10)
+            {
+                if (MsfsData.Instance.AutoTaxiSwitch == 2)
+                {
+                    MsfsData.Instance.AutoTaxi = 2;
+                    if (leftBrakes.Value != 0 && groundSpeed.Value * 1.94384449 <= 19)
+                    {
+                        leftBrakes.Value = 0;
+                        rightBrakes.Value = 0;
+                        skip = 0;
+                    }
+                    if (groundSpeed.Value * 1.94384449 > 19)
+                    {
+                        leftBrakes.Value = (Int16)(leftBrakes.Value + 2000);
+                        rightBrakes.Value = (Int16)(rightBrakes.Value + 2000);
+                        if (leftBrakes.Value > 16383)
+                        { leftBrakes.Value = 16383; }
+                        if (rightBrakes.Value > 16383)
+                        { rightBrakes.Value = 16383; }
+                        skip = 0;
+                    }
+                }
+                else
+                {
+                    if (MsfsData.Instance.AutoTaxi == 2)
+                    {
+                        leftBrakes.Value = 0;
+                        rightBrakes.Value = 0;
+                    }
+                    MsfsData.Instance.AutoTaxi = 1;
+                    MsfsData.Instance.AutoTaxiSwitch = 1;
+                }
+            }
+            else
+            {
+                if (MsfsData.Instance.AutoTaxi == 2)
+                {
+                    leftBrakes.Value = 0;
+                    rightBrakes.Value = 0;
+                }
+                MsfsData.Instance.AutoTaxi = 0;
+                MsfsData.Instance.AutoTaxiSwitch = 0;
+                skip++;
+            }
+
         }
 
         private static void SendControls()
@@ -441,3 +512,4 @@
         private static Boolean IsInList(String aircraftName, List<String> list) => list.Any(i => Regex.Match(aircraftName, i).Success);
     }
 }
+

@@ -74,6 +74,17 @@
         public void Notify()
         {
         }
-    }
 
+        public override Boolean Activate()
+        {
+            MsfsData.Instance.folderDisplayed = true;
+            return base.Activate();
+        }
+        public override Boolean Deactivate()
+        {
+            MsfsData.Instance.folderDisplayed = false;
+            return base.Deactivate();
+        }
+
+    }
 }

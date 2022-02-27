@@ -69,6 +69,7 @@
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
+
             return bitmapBuilder.ToImage();
         }
 
@@ -109,10 +110,16 @@
             }
         }
 
-        public void Notify()
+        public void Notify() => this.ButtonActionNamesChanged();
+        public override Boolean Activate()
         {
-            this.ButtonActionNamesChanged();
-            this.EncoderActionNamesChanged();
+            MsfsData.Instance.folderDisplayed = true;
+            return base.Activate();
+        }
+        public override Boolean Deactivate()
+        {
+            MsfsData.Instance.folderDisplayed = false;
+            return base.Deactivate();
         }
     }
 

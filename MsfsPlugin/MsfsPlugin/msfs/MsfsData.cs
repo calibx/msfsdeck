@@ -13,7 +13,7 @@
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
-
+        public Boolean folderDisplayed { get; set; }
         public Boolean Pause { get => this.PauseFromMSFS; set { this.PauseFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean PauseFromMSFS { get; set; }
         public Boolean DEBUG { get; set; }
@@ -22,6 +22,8 @@
         public Boolean EngineAutoOn { get; set; }
         public Boolean EngineAutoOff { get; set; }
         public Boolean Menu { get; set; }
+        public Int16 AutoTaxi { get; set; }
+        public Int16 AutoTaxiSwitch { get; set; }
         public Boolean ATC { get; set; }
         public Boolean ATC0 { get; set; }
         public Boolean ATC1 { get; set; }
@@ -33,7 +35,6 @@
         public Boolean ATC7 { get; set; }
         public Boolean ATC8 { get; set; }
         public Boolean ATC9 { get; set; }
-
         public Int32 CurrentHeading { get; set; }
         public Int32 Rpm { get; set; }
         public String AircraftName { get; set; }
@@ -65,6 +66,14 @@
         public Int32 CurrentAPHeadingFromMSFS { get; set; }
         public Boolean ApSwitch { get => this.ApSwitchFromMSFS; set { this.ApSwitchFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean ApSwitchFromMSFS { get; set; }
+        public Boolean APPSwitch { get => this.APPSwitchFromMSFS; set { this.APPSwitchFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean APPSwitchFromMSFS { get; set; }
+        public Boolean FDSwitch { get => this.FDSwitchFromMSFS; set { this.FDSwitchFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean FDSwitchFromMSFS { get; set; }
+        public Boolean LOCSwitch { get => this.LOCSwitchFromMSFS; set { this.LOCSwitchFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean LOCSwitchFromMSFS { get; set; }
+        public Boolean FLCSwitch { get => this.FLCSwitchFromMSFS; set { this.FLCSwitchFromMSFS = value; this.SetToMSFS = true; } }
+        public Boolean FLCSwitchFromMSFS { get; set; }
         public Boolean MasterSwitch { get => this.MasterSwitchFromMSFS; set { this.MasterSwitchFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean MasterSwitchFromMSFS { get; set; }
         public Boolean ApThrottleSwitch { get => this.ApThrottleSwitchFromMSFS; set { this.ApThrottleSwitchFromMSFS = value; this.SetToMSFS = true; } }
@@ -92,7 +101,7 @@
         public Int32 ApNextWPETE { get; set; }
         public Double ApNextWPDist { get; set; }
         public Double ApNextWPHeading { get; set; }
-        public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; this.Changed(); } }
+        public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; } }
         public Boolean CurrentBrakes { get => this.CurrentBrakesFromMSFS; set { this.CurrentBrakesFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean CurrentBrakesFromMSFS { get; set; }
         public Int32 CurrentThrottle { get => this.CurrentThrottleFromMSFS; set { this.CurrentThrottleFromMSFS = value; this.SetToMSFS = true; } }

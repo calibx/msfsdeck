@@ -99,7 +99,7 @@
                     break;
             }
         }
-        public void Notify() => this.ActionImageChanged();
+        public void Notify() { if (!MsfsData.Instance.folderDisplayed) { this.ActionImageChanged(); } }
     }
 
 }

@@ -41,11 +41,11 @@
     <OutputPath>..\..\..\..\..\AppData\Local\Loupedeck\Plugins\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="fsuipcClient, Version=3.2.11.380, Culture=neutral, PublicKeyToken=7e7559b53e380b17, processorArchitecture=MSIL">
-      <HintPath>..\packages\FSUIPCClientDLL.3.2.11\lib\net40\fsuipcClient.dll</HintPath>
+    <Reference Include="fsuipcClient, Version=3.2.17.386, Culture=neutral, PublicKeyToken=7e7559b53e380b17, processorArchitecture=MSIL">
+      <HintPath>..\packages\FSUIPCClientDLL.3.2.17\lib\net40\fsuipcClient.dll</HintPath>
     </Reference>
     <Reference Include="PluginApi, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,6 +72,7 @@
     <Compile Include="encoder\ThrottleEncoder.cs" />
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="event\Notifiable.cs" />
+    <Compile Include="folder\AirlinerDynamicFolder.cs" />
     <Compile Include="folder\APDynamicFolder.cs" />
     <Compile Include="folder\ATCDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="input\light\LightsMultiInputs.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\EngineInput.cs" />
+    <Compile Include="input\misc\AutoTaxiInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
@@ -135,6 +137,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\available.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\disable.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
