@@ -176,16 +176,16 @@
                     MsfsData.Instance.ApVSHoldSwitch = !MsfsData.Instance.ApVSHoldSwitch;
                     break;
                 case "Altitude Reset":
-                    MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100);
+                    MsfsData.Instance.ApAltHoldSwitch = !MsfsData.Instance.ApAltHoldSwitch;
                     break;
                 case "Heading Reset":
                     MsfsData.Instance.ApNavHoldSwitch = !MsfsData.Instance.ApNavHoldSwitch;
                     break;
                 case "Speed Reset":
-                    MsfsData.Instance.CurrentAPSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentSpeed / 100d, 0) * 100);
+                    MsfsData.Instance.ApSpeedHoldSwitch = !MsfsData.Instance.ApSpeedHoldSwitch;
                     break;
                 case "VS Speed Reset":
-                    MsfsData.Instance.CurrentAPVerticalSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentVerticalSpeed / 100d, 0) * 100);
+                    MsfsData.Instance.ApVSHoldSwitch = !MsfsData.Instance.ApVSHoldSwitch;
                     break;
             }
         }
