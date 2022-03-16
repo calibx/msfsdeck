@@ -98,8 +98,6 @@
 
     public class SimConnectDAO : ObservableObject
     {
-        #region IBaseSimConnectWrapper implementation
-
         /// User-defined win32 event
         public const int WM_USER_SIMCONNECT = 0x0402;
 
@@ -158,8 +156,6 @@
                 oSimvarRequest.bStillPending = true;
             }
         }
-
-        #endregion
 
         #region UI bindings
 
@@ -311,7 +307,7 @@
             this.m_oTimer.Tick += new EventHandler(this.OnTick);
         }
   
-        private void Connect()
+        public void Connect()
         {
             Console.WriteLine("Connect");
 
