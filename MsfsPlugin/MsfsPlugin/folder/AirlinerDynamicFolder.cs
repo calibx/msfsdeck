@@ -146,13 +146,13 @@
                     MsfsData.Instance.LOCSwitch = !MsfsData.Instance.LOCSwitch;
                     break;
                 case "FD":
-                    MsfsData.Instance.FDSwitch= !MsfsData.Instance.FDSwitch;
+                    MsfsData.Instance.FDSwitch = !MsfsData.Instance.FDSwitch;
                     break;
                 case "FLC":
                     MsfsData.Instance.FLCSwitch = !MsfsData.Instance.FLCSwitch;
                     break;
                 case "APP":
-                    MsfsData.Instance.APPSwitch= !MsfsData.Instance.APPSwitch;
+                    MsfsData.Instance.APPSwitch = !MsfsData.Instance.APPSwitch;
                     break;
                 case "Altitude":
                     MsfsData.Instance.ApAltHoldSwitch = !MsfsData.Instance.ApAltHoldSwitch;
