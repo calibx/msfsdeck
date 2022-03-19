@@ -1,7 +1,7 @@
 namespace Loupedeck.MsfsPlugin
 {
     using System;
-
+    using Loupedeck.MsfsPlugin.msfs;
     public class MsfsPlugin : Plugin
     {
         public override void Load()
@@ -14,7 +14,7 @@ namespace Loupedeck.MsfsPlugin
 
         public override void Unload()
         {
-
+            SimConnectDAO.Instance.Disconnect();
         }
 
 

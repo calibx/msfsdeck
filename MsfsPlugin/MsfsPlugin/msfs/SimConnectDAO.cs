@@ -98,6 +98,10 @@
 
     public class SimConnectDAO : ObservableObject
     {
+        // Singleton
+        private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
+        public static SimConnectDAO Instance => lazy.Value;
+
         /// User-defined win32 event
         public const int WM_USER_SIMCONNECT = 0x0402;
 
@@ -155,6 +159,10 @@
                 oSimvarRequest.bPending = true;
                 oSimvarRequest.bStillPending = true;
             }
+            MsfsData.Instance.Connected = false;
+            MsfsData.Instance.TryConnect = false;
+            MsfsData.Instance.Changed();
+
         }
 
         #region UI bindings
@@ -295,22 +303,28 @@
 
         
 
-        public SimConnectDAO()
+        private SimConnectDAO()
         {
-            lObjectIDs = new ObservableCollection<uint>();
-            lObjectIDs.Add(1);
+            lock (m_oTimer)
+            {
+                if (!MsfsData.Instance.Connected && !MsfsData.Instance.TryConnect)
+                {
+                    lObjectIDs = new ObservableCollection<uint>();
+                    lObjectIDs.Add(1);
 
-            lSimvarRequests = new ObservableCollection<SimvarRequest>();
-            lErrorMessages = new ObservableCollection<string>();
+                    lSimvarRequests = new ObservableCollection<SimvarRequest>();
+                    lErrorMessages = new ObservableCollection<string>();
 
-            m_oTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
-            this.m_oTimer.Tick += new EventHandler(this.OnTick);
+                    m_oTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+                    this.m_oTimer.Tick += new EventHandler(this.OnTick);
+                }
+            }
         }
   
         public void Connect()
         {
             Console.WriteLine("Connect");
-
+            MsfsData.Instance.TryConnect = true;
             try
             {
                 /// The constructor is similar to SimConnect_Open in the native API
@@ -325,11 +339,16 @@
 
                 /// Catch a simobject data request
                 m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(SimConnect_OnRecvSimobjectDataBytype);
+                MsfsData.Instance.Connected = true;
+                MsfsData.Instance.TryConnect = false;
             }
             catch (COMException ex)
             {
-                Console.WriteLine("Connection to KH failed: " + ex.Message);
+                MsfsData.Instance.DebugValue1 = "Error";
+                MsfsData.Instance.TryConnect = true;
+                MsfsData.Instance.Connected = false;
             }
+
         }
 
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)

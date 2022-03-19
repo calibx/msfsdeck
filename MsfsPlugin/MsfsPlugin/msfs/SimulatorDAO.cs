@@ -124,25 +124,6 @@
 
         public static void Initialise()
         {
-            lock (timer)
-            {
-                if (!MsfsData.Instance.Connected && !MsfsData.Instance.TryConnect)
-                {
-                    try
-                    {
-                        MsfsData.Instance.TryConnect = true;
-                        FSUIPCConnection.Open();
-                    }
-                    catch (FSUIPCException)
-                    {
-                    }
-                    MsfsData.Instance.RefreshRate = 100;
-                    timer.Interval = MsfsData.Instance.RefreshRate;
-                    timer.Enabled = true;
-                    timer.Elapsed += Refresh;
-
-                }
-            }
         }
 
         public static void Disconnect()
@@ -166,7 +147,7 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        MsfsData.Instance.DebugValue1 = debug1.Value;
+                        //MsfsData.Instance.DebugValue1 = debug1.Value;
                         MsfsData.Instance.DebugValue2 = ((Int16)rightBrakes.Value).ToString();
                         MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
 

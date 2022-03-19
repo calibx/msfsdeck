@@ -48,9 +48,9 @@
     <Reference Include="fsuipcClient, Version=3.2.17.386, Culture=neutral, PublicKeyToken=7e7559b53e380b17, processorArchitecture=MSIL">
       <HintPath>..\packages\FSUIPCClientDLL.3.2.17\lib\net40\fsuipcClient.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.FlightSimulator.SimConnect, Version=10.0.61259.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.FlightSimulator.SimConnect, Version=11.0.62651.3, Culture=neutral, PublicKeyToken=baf445ffb3a06b5c, processorArchitecture=AMD64">
       <HintPath>..\..\..\..\..\..\..\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="PluginApi, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -131,10 +131,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\DefaultProfile30win.lp4" />
-    <None Include="Resources\LoupedeckPackage.yaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Resources\LoupedeckPackage.yaml" />
     <EmbeddedResource Include="Resources\DefaultProfile20win.lp4" />
+    <None Include="Resources\SimConnect.cfg-old" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\16.png" />
@@ -172,6 +171,7 @@
   powershell Copy-Item '$(OutDir)Resources\LoupedeckPackage.yaml' -Destination '$(OutDir)archive\' -Force
   powershell Compress-Archive -Path '$(OutDir)archive\LoupedeckPackage.yaml', '$(OutDir)archive\bin' -DestinationPath '$(OutDir)archive\MSFSPluginPackage.zip' -Force
   powershell Rename-Item -Path '$(OutDir)archive\MSFSPluginPackage.zip' -NewName MSFSPluginPackage.lplug4
-)</PostBuildEvent>
+)
+xcopy "C:\MSFS SDK\SimConnect SDK\lib\SimConnect.dll" "." /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
