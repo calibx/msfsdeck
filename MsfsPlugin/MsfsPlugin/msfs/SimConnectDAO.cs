@@ -6,33 +6,13 @@
     using System.Globalization;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
-    using System.Windows.Threading;
+    
+    using System.Diagnostics;
 
     using Microsoft.FlightSimulator.SimConnect;
 
 
-    public enum DEFINITION
-    {
-        Dummy = 0
-    };
-
-    public enum REQUEST
-    {
-        Dummy = 0,
-        Struct1
-    };
-
-    // String properties must be packed inside of a struct
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    struct Struct1
-    {
-        // this is how you declare a fixed size string
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-        public String sValue;
-
-        // other definitions can be added to this struct
-        // ...
-    };
+    
     public class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -65,37 +45,6 @@
             return false;
         }
     }
-   public class SimvarRequest : ObservableObject
-    {
-        public DEFINITION eDef = DEFINITION.Dummy;
-        public REQUEST eRequest = REQUEST.Dummy;
-
-        public String sName { get; set; }
-        public Boolean BIsString { get; set; }
-        public Double dValue
-        {
-            get { return this.m_dValue; }
-            set { this.SetProperty(ref m_dValue, value); }
-        }
-        private double m_dValue = 0.0;
-        public string sValue
-        {
-            get { return m_sValue; }
-            set { this.SetProperty(ref m_sValue, value); }
-        }
-        private string m_sValue = null;
-
-        public string sUnits { get; set; }
-
-        public bool bPending = true;
-        public bool bStillPending
-        {
-            get { return m_bStillPending; }
-            set { this.SetProperty(ref m_bStillPending, value); }
-        }
-        private bool m_bStillPending = false;
-    }
-
     public class SimConnectDAO : ObservableObject
     {
         // Singleton
@@ -105,42 +54,17 @@
         /// User-defined win32 event
         public const int WM_USER_SIMCONNECT = 0x0402;
 
-        /// Window handle
-        private IntPtr m_hWnd = new IntPtr(0);
-
         /// SimConnect object
         private SimConnect m_oSimConnect = null;
-
-        public bool bConnected
-        {
-            get { return m_bConnected; }
-            private set { this.SetProperty(ref m_bConnected, value); }
-        }
-        private bool m_bConnected = false;
-
-        private uint m_iCurrentDefinition = 0;
-        private uint m_iCurrentRequest = 0;
 
         public int GetUserSimConnectWinEvent()
         {
             return WM_USER_SIMCONNECT;
         }
 
-        public void ReceiveSimConnectMessage()
-        {
-            m_oSimConnect?.ReceiveMessage();
-        }
-
-        public void SetWindowHandle(IntPtr _hWnd)
-        {
-            m_hWnd = _hWnd;
-        }
-
         public void Disconnect()
         {
-            Console.WriteLine("Disconnect");
-
-            m_oTimer.Stop();
+            timer.Enabled = false;
             bOddTick = false;
 
             if (m_oSimConnect != null)
@@ -150,29 +74,13 @@
                 m_oSimConnect = null;
             }
 
-            sConnectButtonLabel = "Connect";
-            bConnected = false;
-
-            // Set all requests as pending
-            foreach (SimvarRequest oSimvarRequest in lSimvarRequests)
-            {
-                oSimvarRequest.bPending = true;
-                oSimvarRequest.bStillPending = true;
-            }
-            MsfsData.Instance.Connected = false;
-            MsfsData.Instance.TryConnect = false;
+            MsfsData.Instance.SimConnected = false;
+            MsfsData.Instance.SimTryConnect = false;
             MsfsData.Instance.Changed();
 
         }
 
         #region UI bindings
-
-        public string sConnectButtonLabel
-        {
-            get { return m_sConnectButtonLabel; }
-            private set { this.SetProperty(ref m_sConnectButtonLabel, value); }
-        }
-        private string m_sConnectButtonLabel = "Connect";
 
         public bool bObjectIDSelectionEnabled
         {
@@ -180,29 +88,10 @@
             set { this.SetProperty(ref m_bObjectIDSelectionEnabled, value); }
         }
         private bool m_bObjectIDSelectionEnabled = false;
-        public Object eSimObjectType
-         {
-             get { return m_eSimObjectType; }
-             set
-             {
-                 this.SetProperty(ref m_eSimObjectType, value);
-                 bObjectIDSelectionEnabled = (SIMCONNECT_SIMOBJECT_TYPE)m_eSimObjectType != SIMCONNECT_SIMOBJECT_TYPE.USER;
-                 ClearResquestsPendingState();
-             }
-         }
         private Object m_eSimObjectType = SIMCONNECT_SIMOBJECT_TYPE.USER;
         
         public ObservableCollection<uint> lObjectIDs { get; private set; }
-        public uint iObjectIdRequest
-        {
-            get { return m_iObjectIdRequest; }
-            set
-            {
-                this.SetProperty(ref m_iObjectIdRequest, value);
-                ClearResquestsPendingState();
-            }
-        }
-        private uint m_iObjectIdRequest = 0;
+
 
 
         public string[] aSimvarNames
@@ -236,14 +125,6 @@
             set { this.SetProperty(ref m_sSetValue, value); }
         }
         private String m_sSetValue = null;
-
-        public ObservableCollection<SimvarRequest> lSimvarRequests { get; private set; }
-        public SimvarRequest oSelectedSimvarRequest
-        {
-            get { return m_oSelectedSimvarRequest; }
-            set { this.SetProperty(ref m_oSelectedSimvarRequest, value); }
-        }
-        private SimvarRequest m_oSelectedSimvarRequest = null;
 
         public uint[] aIndices
         {
@@ -298,78 +179,84 @@
 
         #endregion
 
+        private static readonly System.Timers.Timer timer = new System.Timers.Timer();
+        private enum DATA_REQUESTS
+        {
+            REQUEST_1
+        }
 
-        private readonly DispatcherTimer m_oTimer = new DispatcherTimer();
+        private enum DEFINITIONS
+        {
+            Struct1
+        }
 
-        
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private struct Struct1
+        {
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
+            public string title;
+            public double latitude;
+            public double longitude;
+            public double trueheading;
+            public double groundaltitude;
+            public double apMaster;
+        }
 
         private SimConnectDAO()
         {
-            lock (m_oTimer)
+            lock (timer)
             {
-                if (!MsfsData.Instance.Connected && !MsfsData.Instance.TryConnect)
+                if (!MsfsData.Instance.SimConnected && !MsfsData.Instance.SimTryConnect)
                 {
-                    lObjectIDs = new ObservableCollection<uint>();
-                    lObjectIDs.Add(1);
+                    this.lObjectIDs = new ObservableCollection<uint>();
+                    this.lObjectIDs.Add(1);
 
-                    lSimvarRequests = new ObservableCollection<SimvarRequest>();
-                    lErrorMessages = new ObservableCollection<string>();
+                    this.lErrorMessages = new ObservableCollection<string>();
 
-                    m_oTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
-                    this.m_oTimer.Tick += new EventHandler(this.OnTick);
+                    timer.Interval = 2000;
+                    timer.Elapsed += Refresh;
                 }
             }
         }
-  
+        public static void Refresh(Object source, EventArgs e) => Instance.OnTick();
+
+
         public void Connect()
         {
-            Console.WriteLine("Connect");
-            MsfsData.Instance.TryConnect = true;
+            Debug.WriteLine("Trying cnx");
+            MsfsData.Instance.SimTryConnect = true;
             try
             {
                 /// The constructor is similar to SimConnect_Open in the native API
-                m_oSimConnect = new SimConnect("Simconnect - Simvar test", this.m_hWnd, WM_USER_SIMCONNECT, null, bFSXcompatible ? (uint)1 : 0);
+                this.m_oSimConnect = new SimConnect("Simconnect - Simvar test", new IntPtr(0), WM_USER_SIMCONNECT, null, 0);
 
                 /// Listen to connect and quit msgs
-                m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(SimConnect_OnRecvOpen);
-                m_oSimConnect.OnRecvQuit += new SimConnect.RecvQuitEventHandler(SimConnect_OnRecvQuit);
+                this.m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(this.SimConnect_OnRecvOpen);
+                this.m_oSimConnect.OnRecvQuit += new SimConnect.RecvQuitEventHandler(this.SimConnect_OnRecvQuit);
 
                 /// Listen to exceptions
                 m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(SimConnect_OnRecvException);
 
                 /// Catch a simobject data request
                 m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(SimConnect_OnRecvSimobjectDataBytype);
-                MsfsData.Instance.Connected = true;
-                MsfsData.Instance.TryConnect = false;
+                Debug.WriteLine("Cnx seems ok");
             }
             catch (COMException ex)
             {
-                MsfsData.Instance.DebugValue1 = "Error";
-                MsfsData.Instance.TryConnect = true;
-                MsfsData.Instance.Connected = false;
+                Debug.WriteLine(ex);
+                MsfsData.Instance.SimTryConnect = true;
+                MsfsData.Instance.SimConnected = false;
             }
-
+            MsfsData.Instance.Changed();
+            AddRequest();
+            timer.Enabled = true;
         }
 
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
-            Console.WriteLine("SimConnect_OnRecvOpen");
-            Console.WriteLine("Connected to KH");
-
-            sConnectButtonLabel = "Disconnect";
-            bConnected = true;
-
-            // Register pending requests
-            foreach (SimvarRequest oSimvarRequest in lSimvarRequests)
-            {
-                if (oSimvarRequest.bPending)
-                {
-                    oSimvarRequest.bPending = !RegisterToSimConnect(oSimvarRequest);
-                    oSimvarRequest.bStillPending = oSimvarRequest.bPending;
-                }
-            }
-
-            m_oTimer.Start();
+            MsfsData.Instance.SimConnected = true;
+            MsfsData.Instance.SimTryConnect = false;
+            Debug.WriteLine("Cnx opened");
             bOddTick = false;
         }
 
@@ -392,155 +279,35 @@
 
         private void SimConnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
-            Console.WriteLine("SimConnect_OnRecvSimobjectDataBytype");
-
-            uint iRequest = data.dwRequestID;
-            uint iObject = data.dwObjectID;
-            if (!lObjectIDs.Contains(iObject))
-            {
-                lObjectIDs.Add(iObject);
-            }
-            foreach (SimvarRequest oSimvarRequest in lSimvarRequests)
-            {
-                if (iRequest == (uint)oSimvarRequest.eRequest && (!bObjectIDSelectionEnabled || iObject == m_iObjectIdRequest))
-                {
-                    if (oSimvarRequest.BIsString)
-                    {
-                        Struct1 result = (Struct1)data.dwData[0];
-                        oSimvarRequest.dValue = 0;
-                        oSimvarRequest.sValue = result.sValue;
-                    }
-                    else
-                    {
-                        double dValue = (double)data.dwData[0];
-                        oSimvarRequest.dValue = dValue;
-                        oSimvarRequest.sValue = dValue.ToString("F9");
-
-                    }
-
-                    oSimvarRequest.bPending = false;
-                    oSimvarRequest.bStillPending = false;
-                }
-            }
+            Debug.WriteLine("SimConnect_OnRecvSimobjectDataBytype");
+            var struct1 = (Struct1)data.dwData[0];
+            Debug.WriteLine(struct1.apMaster);
+            Debug.WriteLine(struct1.trueheading);
+            MsfsData.Instance.Changed();
         }
 
         // May not be the best way to achive regular requests.
         // See SimConnect.RequestDataOnSimObject
-        private void OnTick(object sender, EventArgs e)
+        private void OnTick()
         {
-            Console.WriteLine("OnTick");
-
+            Debug.WriteLine("OnTick");
             bOddTick = !bOddTick;
-
-            foreach (SimvarRequest oSimvarRequest in lSimvarRequests)
-            {
-                if (!oSimvarRequest.bPending)
-                {
-                    m_oSimConnect?.RequestDataOnSimObjectType(oSimvarRequest.eRequest, oSimvarRequest.eDef, 0, (SIMCONNECT_SIMOBJECT_TYPE)m_eSimObjectType);
-                    oSimvarRequest.bPending = true;
-                }
-                else
-                {
-                    oSimvarRequest.bStillPending = true;
-                }
-            }
-        }
-        private void ClearResquestsPendingState()
-        {
-            foreach (SimvarRequest oSimvarRequest in lSimvarRequests)
-            {
-                oSimvarRequest.bPending = false;
-                oSimvarRequest.bStillPending = false;
-            }
+            m_oSimConnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
+            m_oSimConnect?.ReceiveMessage();
         }
 
-        private bool RegisterToSimConnect(SimvarRequest _oSimvarRequest)
-        {
-            if (m_oSimConnect != null)
-            {
-                if (_oSimvarRequest.BIsString)
-                {
-                    /// Define a data structure containing string value
-                    m_oSimConnect.AddToDataDefinition(_oSimvarRequest.eDef, _oSimvarRequest.sName, "", SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                    /// IMPORTANT: Register it with the simconnect managed wrapper marshaller
-                    /// If you skip this step, you will only receive a uint in the .dwData field.
-                    m_oSimConnect.RegisterDataDefineStruct<Struct1>(_oSimvarRequest.eDef);
-                }
-                else
-                {
-                    /// Define a data structure containing numerical value
-                    m_oSimConnect.AddToDataDefinition(_oSimvarRequest.eDef, _oSimvarRequest.sName, _oSimvarRequest.sUnits, SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                    /// IMPORTANT: Register it with the simconnect managed wrapper marshaller
-                    /// If you skip this step, you will only receive a uint in the .dwData field.
-                    m_oSimConnect.RegisterDataDefineStruct<double>(_oSimvarRequest.eDef);
-                }
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private void AddRequest(string _sNewSimvarRequest, string _sNewUnitRequest, bool _bIsString)
+        private void AddRequest()
         {
             Console.WriteLine("AddRequest");
-
-            //string sNewSimvarRequest = _sOverrideSimvarRequest != null ? _sOverrideSimvarRequest : ((m_iIndexRequest == 0) ? m_sSimvarRequest : (m_sSimvarRequest + ":" + m_iIndexRequest));
-            //string sNewUnitRequest = _sOverrideUnitRequest != null ? _sOverrideUnitRequest : m_sUnitRequest;
-            SimvarRequest oSimvarRequest = new SimvarRequest
-            {
-                eDef = (DEFINITION)m_iCurrentDefinition,
-                eRequest = (REQUEST)m_iCurrentRequest,
-                sName = _sNewSimvarRequest,
-                BIsString = _bIsString,
-                sUnits = _bIsString ? null : _sNewUnitRequest
-            };
-
-            oSimvarRequest.bPending = !RegisterToSimConnect(oSimvarRequest);
-            oSimvarRequest.bStillPending = oSimvarRequest.bPending;
-
-            lSimvarRequests.Add(oSimvarRequest);
-
-            ++m_iCurrentDefinition;
-            ++m_iCurrentRequest;
-        }
-
-        private void RemoveSelectedRequest()
-        {
-            lSimvarRequests.Remove(oSelectedSimvarRequest);
-        }
-
-        private void TrySetValue()
-        {
-            Console.WriteLine("TrySetValue");
-
-            if (m_oSelectedSimvarRequest != null && m_sSetValue != null)
-            {
-                if (!m_oSelectedSimvarRequest.BIsString)
-                {
-                    double dValue = 0.0;
-                    if (double.TryParse(m_sSetValue, NumberStyles.Any, null, out dValue))
-                    {
-                        m_oSimConnect.SetDataOnSimObject(m_oSelectedSimvarRequest.eDef, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, dValue);
-                    }
-                }
-                else
-                {
-                    Struct1 sValueStruct = new Struct1()
-                    {
-                        sValue = m_sSetValue
-                    };
-                    m_oSimConnect.SetDataOnSimObject(m_oSelectedSimvarRequest.eDef, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, sValueStruct);
-                }
-            }
-        }
-
-        public void SetTickSliderValue(int _iValue)
-        {
-            m_oTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)(_iValue));
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Title", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Latitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Longitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Heading Degrees True", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Ground Altitude", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT MASTER", "degrees", SIMCONNECT_DATATYPE.STRING8, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
         }
     }
 }
+
 

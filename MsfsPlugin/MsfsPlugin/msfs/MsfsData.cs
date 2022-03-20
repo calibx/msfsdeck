@@ -126,7 +126,9 @@
         public Boolean CurrentPitot { get => this.CurrentPitotFromMSFS; set { this.CurrentPitotFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean CurrentPitotFromMSFS { get; set; }
         public Boolean Connected { get; set; }
+        public Boolean SimConnected { get; set; }
         public Boolean TryConnect { get; set; }
+        public Boolean SimTryConnect { get; set; }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
         public Boolean NavigationLight { get => this.NavigationLightFromMSFS; set { this.NavigationLightFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean NavigationLightFromMSFS { get; set; }

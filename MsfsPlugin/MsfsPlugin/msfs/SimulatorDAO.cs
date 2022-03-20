@@ -124,6 +124,7 @@
 
         public static void Initialise()
         {
+            
         }
 
         public static void Disconnect()
@@ -147,9 +148,6 @@
                     {
                         timer.Interval = MsfsData.Instance.RefreshRate;
                         FSUIPCConnection.Process();
-                        //MsfsData.Instance.DebugValue1 = debug1.Value;
-                        MsfsData.Instance.DebugValue2 = ((Int16)rightBrakes.Value).ToString();
-                        MsfsData.Instance.DebugValue3 = ((Int32)(debug3.Value / 1.69d)).ToString();
 
                         AutoTaxiInput();
 
