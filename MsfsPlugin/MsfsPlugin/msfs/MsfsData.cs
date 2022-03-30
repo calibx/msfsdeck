@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Diagnostics;
     class MsfsData
     {
         private readonly List<Notifiable> notifiables = new List<Notifiable>();
@@ -59,9 +59,9 @@
         public Int16 BarometerFromMSFS { get; set; }
         public Int32 CurrentGearHandle { get => this.CurrentGearHandleFromMSFS; set { this.CurrentGearHandleFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentGearHandleFromMSFS { get; set; }
-        public Int32 GearFront { get; set; }
-        public Int32 GearLeft { get; set; }
-        public Int32 GearRight { get; set; }
+        public Double GearFront { get; set; }
+        public Double GearLeft { get; set; }
+        public Double GearRight { get; set; }
         public Int32 CurrentAPHeading { get => this.CurrentAPHeadingFromMSFS; set { this.CurrentAPHeadingFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentAPHeadingFromMSFS { get; set; }
         public Boolean ApSwitch { get => this.ApSwitchFromMSFS; set { this.ApSwitchFromMSFS = value; this.SetToMSFS = true; } }
@@ -158,9 +158,12 @@
 
         public void Changed()
         {
-            foreach (Notifiable notifiable in this.notifiables)
+            lock (this)
             {
-                notifiable.Notify();
+                foreach (Notifiable notifiable in this.notifiables)
+                {
+                    notifiable.Notify();
+                }
             }
         }
     }

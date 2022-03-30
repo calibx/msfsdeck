@@ -10,7 +10,7 @@
 
         public DefaultInput(String name, String desc, String category) : base(name, desc, category) => MsfsData.Instance.Register(this);
 
-        public void Notify() { if (!MsfsData.Instance.folderDisplayed) { this.AdjustmentValueChanged(); } }
+        public void Notify() => this.ActionImageChanged();
 
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
         {

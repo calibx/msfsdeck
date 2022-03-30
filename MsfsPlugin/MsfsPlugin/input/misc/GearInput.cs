@@ -1,19 +1,20 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using System;
+    using System.Diagnostics;
 
     using Loupedeck.MsfsPlugin.input;
     class GearInput : DefaultInput
     {
         public GearInput() : base("Gear", "Display gears state", "Misc") { }
-        protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
+        protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             MsfsData.Instance.ValuesDisplayed = true;
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
                 if (MsfsData.Instance.GearRetractable == 1)
                 {
-                    if (MsfsData.Instance.GearFront == 0 || MsfsData.Instance.GearFront == 16383)
+                    if (MsfsData.Instance.GearFront == 0 || MsfsData.Instance.GearFront == 1)
                     {
 
                         bitmapBuilder.DrawText("\t" + this.GetDisplay(MsfsData.Instance.GearFront) + "\n" + this.GetDisplay(MsfsData.Instance.GearLeft) + "\t" + this.GetDisplay(MsfsData.Instance.GearRight), BitmapColor.White);
@@ -31,9 +32,8 @@
                 return bitmapBuilder.ToImage();
             }
         }
-        private String GetDisplay(Int32 gearPos) => gearPos == 0 ? "-" : gearPos == 16383 ? "|" : "/";
-        protected override String GetValue() => MsfsData.Instance.CurrentGearHandle.ToString();
-        protected override void ChangeValue() => MsfsData.Instance.CurrentGearHandle = MsfsData.Instance.CurrentGearHandle != 0 ? 0 : 16383;
+        private String GetDisplay(Double gearPos) => gearPos == 0 ? "-" : gearPos == 1 ? "|" : "/";
+        protected override void ChangeValue() => MsfsData.Instance.CurrentGearHandle = MsfsData.Instance.CurrentGearHandle != 0 ? 0 : 1;
     }
 }
 
