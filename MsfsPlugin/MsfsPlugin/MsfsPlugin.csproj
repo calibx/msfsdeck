@@ -108,8 +108,6 @@
     <Compile Include="input\nav\HeadingInput.cs" />
     <Compile Include="msfs\SimConnectDAO.cs" />
     <Compile Include="msfs\MsfsData.cs" />
-    <Compile Include="msfs\textsimvars.cs" />
-    <Compile Include="msfs\units.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

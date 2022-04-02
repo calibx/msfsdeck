@@ -94,7 +94,9 @@
         enum EVENTS
         {
             GEAR,
-            PARKING_BRAKE
+            PARKING_BRAKE,
+            ENGINE_AUTO_START,
+            ENGINE_AUTO_SHUTDOWN
         };
         enum GROUPID
         {
@@ -110,7 +112,7 @@
         private struct Struct1
         {
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
-            public string title;
+            public String title;
             public Double latitude;
             public Double longitude;
             public Double trueheading;
@@ -120,6 +122,11 @@
             public Double gearCenterPos;
             public Int64 gearRetractable;
             public Int64 parkingBrake;
+            public Int64 engineType;
+            public Int64 E1N1;
+            public Int64 E2N1;
+            public Int64 E3N1;
+            public Int64 E4N1;
         }
 
         public enum hSimconnect : int
@@ -137,8 +144,9 @@
 
                     this.lErrorMessages = new ObservableCollection<string>();
 
-                    timer.Interval = 1500;
+                    timer.Interval = 2000;
                     timer.Elapsed += Refresh;
+                    timer.Enabled = true;
                 }
             }
         }
@@ -149,39 +157,31 @@
         {
             Debug.WriteLine("Trying cnx");
             MsfsData.Instance.SimTryConnect = true;
+            MsfsData.Instance.SimConnected = false;
             try
             {
-                /// The constructor is similar to SimConnect_Open in the native API
                 this.m_oSimConnect = new SimConnect("Simconnect - Simvar test", new IntPtr(0), WM_USER_SIMCONNECT, null, 0);
-
-                /// Listen to connect and quit msgs
                 this.m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(this.SimConnect_OnRecvOpen);
                 this.m_oSimConnect.OnRecvQuit += new SimConnect.RecvQuitEventHandler(this.SimConnect_OnRecvQuit);
-
-                /// Listen to exceptions
                 this.m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(this.SimConnect_OnRecvException);
-
-                /// Catch a simobject data request
                 this.m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(this.SimConnect_OnRecvSimobjectDataBytype);
-                Debug.WriteLine("Cnx seems ok");
             }
             catch (COMException ex)
             {
                 Debug.WriteLine(ex);
-                MsfsData.Instance.SimTryConnect = true;
+                MsfsData.Instance.SimTryConnect = false;
                 MsfsData.Instance.SimConnected = false;
             }
             MsfsData.Instance.Changed();
             this.AddRequest();
-            this.OnTick();
         }
 
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
+            Debug.WriteLine("Cnx opened");
             MsfsData.Instance.SimConnected = true;
             MsfsData.Instance.SimTryConnect = false;
-            Debug.WriteLine("Cnx opened");
-            timer.Enabled = true;
+            timer.Interval = 200;
         }
 
         /// The case where the user closes game
@@ -203,13 +203,20 @@
 
         private void SimConnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
+            Debug.WriteLine("Received Data");
             var struct1 = (Struct1)data.dwData[0];
             MsfsData.Instance.GearFront = struct1.gearCenterPos;
             MsfsData.Instance.GearLeft = struct1.gearLeftPos;
             MsfsData.Instance.GearRight = struct1.gearRightPos;
             MsfsData.Instance.GearRetractable = (Byte)struct1.gearRetractable;
             MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
-            Debug.WriteLine("Received Data");
+            MsfsData.Instance.EngineType = (Int32)struct1.engineType;
+            MsfsData.Instance.E1N1 = (Int32)struct1.E1N1;
+            MsfsData.Instance.E2N1 = (Int32)struct1.E2N1;
+            MsfsData.Instance.E3N1 = (Int32)struct1.E3N1;
+            MsfsData.Instance.E4N1 = (Int32)struct1.E4N1;
+
+            Debug.WriteLine(struct1.E1N1);
             if (MsfsData.Instance.SetToMSFS)
             {
 
@@ -219,17 +226,31 @@
                     MsfsData.Instance.CurrentGearHandle = 1;
                 }
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, MsfsData.Instance.CurrentBrakes ? (UInt32)0 : (UInt32)1, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-
-            MsfsData.Instance.SetToMSFS = false;
+                MsfsData.Instance.SetToMSFS = false;
             }
-            MsfsData.Instance.Changed();
+            if (MsfsData.Instance.EngineAutoOff)
+            {
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.ENGINE_AUTO_SHUTDOWN, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                MsfsData.Instance.EngineAutoOff = false;
+            }
+            if (MsfsData.Instance.EngineAutoOn)
+            {
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.ENGINE_AUTO_START, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                MsfsData.Instance.EngineAutoOn = false;
+            }
         }
 
         private void OnTick()
         {
             Debug.WriteLine("OnTick");
+            if (!MsfsData.Instance.SimTryConnect && !MsfsData.Instance.SimConnected)
+            { 
+                this.Connect();
+            }
+            
             m_oSimConnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
             m_oSimConnect?.ReceiveMessage();
+            MsfsData.Instance.Changed();
         }
 
         private void AddRequest()
@@ -245,13 +266,19 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GEAR CENTER POSITION", "Boolean", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "IS GEAR RETRACTABLE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "BRAKE PARKING POSITION", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENGINE TYPE", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG N1 RPM:1", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG N1 RPM:2", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG N1 RPM:3", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG N1 RPM:4", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR, "GEAR_DOWN");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_START, "ENGINE_AUTO_START");
 
             this.m_oSimConnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
         }
     }
 }
-
-
 

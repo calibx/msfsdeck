@@ -110,7 +110,7 @@
             }
         }
 
-        public void Notify() => this.ButtonActionNamesChanged();
+        public void Notify() { } // => this.ButtonActionNamesChanged();
         public override Boolean Activate()
         {
             MsfsData.Instance.folderDisplayed = true;

@@ -164,8 +164,8 @@
 
         public void Notify()
         {
-            this.ButtonActionNamesChanged();
-            this.EncoderActionNamesChanged();
+         //   this.ButtonActionNamesChanged();
+          //  this.EncoderActionNamesChanged();
         }
 
         private Int32 ApplyAdjustment(Int32 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)

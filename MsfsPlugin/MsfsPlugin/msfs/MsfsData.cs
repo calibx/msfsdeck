@@ -6,9 +6,8 @@
     class MsfsData
     {
         private readonly List<Notifiable> notifiables = new List<Notifiable>();
-        private Boolean setToMSFS;
 
-        // Used to know if we try to autoconnect to FSUIPC
+        private Int16 count;
         private Boolean valuesDisplayed;
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
@@ -101,7 +100,7 @@
         public Int32 ApNextWPETE { get; set; }
         public Double ApNextWPDist { get; set; }
         public Double ApNextWPHeading { get; set; }
-        public Boolean SetToMSFS { get => this.setToMSFS; set { this.setToMSFS = value; } }
+        public Boolean SetToMSFS { get; set; }
         public Boolean CurrentBrakes { get => this.CurrentBrakesFromMSFS; set { this.CurrentBrakesFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean CurrentBrakesFromMSFS { get; set; }
         public Int32 CurrentThrottle { get => this.CurrentThrottleFromMSFS; set { this.CurrentThrottleFromMSFS = value; this.SetToMSFS = true; } }
@@ -160,10 +159,12 @@
         {
             lock (this)
             {
+                Debug.WriteLine("Changed " + this.count++);
                 foreach (Notifiable notifiable in this.notifiables)
                 {
                     notifiable.Notify();
                 }
+                Debug.WriteLine("End Changed " + this.count++);
             }
         }
     }
