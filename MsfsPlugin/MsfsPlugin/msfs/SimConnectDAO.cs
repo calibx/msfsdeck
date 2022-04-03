@@ -93,7 +93,7 @@
         }
         enum EVENTS
         {
-            GEAR,
+            GEAR_SET,
             PARKING_BRAKE,
             ENGINE_AUTO_START,
             ENGINE_AUTO_SHUTDOWN
@@ -231,12 +231,8 @@
             if (MsfsData.Instance.SetToMSFS)
             {
 
-                if (MsfsData.Instance.CurrentGearHandle == 0)
-                {
-                    this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                    MsfsData.Instance.CurrentGearHandle = 1;
-                }
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, MsfsData.Instance.CurrentBrakes ? (UInt32)0 : (UInt32)1, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR_SET, (UInt32)MsfsData.Instance.CurrentGearHandle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, (UInt32)(MsfsData.Instance.CurrentBrakes ? 0 : 1), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 MsfsData.Instance.SetToMSFS = false;
             }
             if (MsfsData.Instance.EngineAutoOff)
@@ -289,7 +285,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:3", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:4", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR, "GEAR_DOWN");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_START, "ENGINE_AUTO_START");
