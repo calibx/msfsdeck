@@ -98,7 +98,8 @@
             ENGINE_AUTO_START,
             ENGINE_AUTO_SHUTDOWN,
             PAUSE_ON,
-            PAUSE_OFF
+            PAUSE_OFF,
+            PITOT_HEAT_SET,
         };
         enum GROUPID
         {
@@ -240,7 +241,7 @@
                 {
                     this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_OFF, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 }
-                
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PITOT_HEAT_SET, (UInt32)(MsfsData.Instance.CurrentPitot ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 MsfsData.Instance.SetToMSFS = false;
             } else
             {
@@ -258,7 +259,8 @@
             }
             if (MsfsData.Instance.Menu)
             {
-               // this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_TOGGLE, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                //this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MENU, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                MsfsData.Instance.Menu = false;
             }
 
         }
@@ -307,6 +309,8 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_START, "ENGINE_AUTO_START");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_ON, "PAUSE_ON");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_OFF, "PAUSE_OFF");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PITOT_HEAT_SET, "PITOT_HEAT_SET");
+            
 
             this.m_oSimConnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
         }
