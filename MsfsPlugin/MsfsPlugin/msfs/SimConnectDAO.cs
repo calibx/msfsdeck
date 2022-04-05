@@ -96,7 +96,9 @@
             GEAR_SET,
             PARKING_BRAKE,
             ENGINE_AUTO_START,
-            ENGINE_AUTO_SHUTDOWN
+            ENGINE_AUTO_SHUTDOWN,
+            PAUSE_ON,
+            PAUSE_OFF
         };
         enum GROUPID
         {
@@ -215,7 +217,6 @@
             MsfsData.Instance.GearLeft = struct1.gearLeftPos;
             MsfsData.Instance.GearRight = struct1.gearRightPos;
             MsfsData.Instance.GearRetractable = (Byte)struct1.gearRetractable;
-            MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
             MsfsData.Instance.EngineType = (Int32)struct1.engineType;
             MsfsData.Instance.E1N1 = (Int32)struct1.E1N1;
             MsfsData.Instance.E2N1 = (Int32)struct1.E2N1;
@@ -230,10 +231,20 @@
             Debug.WriteLine(struct1.E1N1);
             if (MsfsData.Instance.SetToMSFS)
             {
-
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR_SET, (UInt32)MsfsData.Instance.CurrentGearHandle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, (UInt32)(MsfsData.Instance.CurrentBrakes ? 0 : 1), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                if (MsfsData.Instance.Pause)
+                {
+                    this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_ON, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                } else
+                {
+                    this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_OFF, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                }
+                
                 MsfsData.Instance.SetToMSFS = false;
+            } else
+            {
+                MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
             }
             if (MsfsData.Instance.EngineAutoOff)
             {
@@ -245,6 +256,11 @@
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.ENGINE_AUTO_START, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 MsfsData.Instance.EngineAutoOn = false;
             }
+            if (MsfsData.Instance.Menu)
+            {
+               // this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_TOGGLE, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+
         }
 
         private void OnTick()
@@ -289,6 +305,8 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_START, "ENGINE_AUTO_START");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_ON, "PAUSE_ON");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_OFF, "PAUSE_OFF");
 
             this.m_oSimConnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
         }

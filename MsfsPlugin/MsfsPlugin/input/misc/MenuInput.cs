@@ -6,7 +6,7 @@
     class MenuInput : DefaultInput
     {
         public MenuInput() : base("Menu", "Menu", "Misc") { }
-        protected override void ChangeValue() => MsfsData.Instance.Menu = !MsfsData.Instance.Menu;
+        protected override void ChangeValue() => MsfsData.Instance.Menu = true;
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
