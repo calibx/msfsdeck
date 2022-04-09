@@ -52,6 +52,7 @@
 
         /// User-defined win32 event
         public const Int32 WM_USER_SIMCONNECT = 0x0402;
+        private const UInt32 TUG_ANGLE = 4294967295;
 
         /// SimConnect object
         private SimConnect m_oSimConnect = null;
@@ -100,6 +101,9 @@
             PAUSE_ON,
             PAUSE_OFF,
             PITOT_HEAT_SET,
+            TOGGLE_PUSHBACK,
+            KEY_TUG_HEADING,
+            TUG_DISABLE
         };
         enum GROUPID
         {
@@ -136,6 +140,8 @@
             public Int64 E2GPH;
             public Int64 E3GPH;
             public Int64 E4GPH;
+            public Int64 pushback;
+
         }
 
         public enum hSimconnect : int
@@ -228,12 +234,46 @@
             MsfsData.Instance.FuelFlow = (Int32)(struct1.E1GPH + struct1.E2GPH + struct1.E3GPH + struct1.E4GPH);
             MsfsData.Instance.FuelTimeLeft = (Int32)(struct1.fuelQuantity / (Double)(struct1.E1GPH + struct1.E2GPH + struct1.E3GPH + struct1.E4GPH) * 3600);
 
+            MsfsData.Instance.PushbackFromMSFS = (Int16)struct1.pushback;
 
-            Debug.WriteLine(struct1.E1N1);
+            Debug.WriteLine(struct1.pushback);
+            var pushChanged = false;
+            UInt32 tug_angle = 0;
+            if (MsfsData.Instance.PushbackLeft == 1)
+            {
+                tug_angle = (UInt32)(TUG_ANGLE * 0.8);
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.KEY_TUG_HEADING, (UInt32)tug_angle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                MsfsData.Instance.PushbackLeft = 0;
+            }
+            if (MsfsData.Instance.PushbackRight == 1)
+            {
+                tug_angle = TUG_ANGLE / 8;
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.KEY_TUG_HEADING, (UInt32)tug_angle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                MsfsData.Instance.PushbackRight = 0;
+            }
+            if (MsfsData.Instance.PushbackClick == 1)
+            {
+                if (MsfsData.Instance.Pushback == 0)
+                {
+                    this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.TUG_DISABLE, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                    pushChanged = true;
+                }
+                else
+                {
+                    tug_angle = 0;
+                    pushChanged = MsfsData.Instance.Pushback == 3;
+                    this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.KEY_TUG_HEADING, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                    if (pushChanged)
+                        this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.TOGGLE_PUSHBACK, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                }
+                MsfsData.Instance.PushbackClick = 0;
+            }
+
             if (MsfsData.Instance.SetToMSFS)
             {
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR_SET, (UInt32)MsfsData.Instance.CurrentGearHandle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, (UInt32)(MsfsData.Instance.CurrentBrakes ? 0 : 1), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+
                 if (MsfsData.Instance.Pause)
                 {
                     this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_ON, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
@@ -241,7 +281,9 @@
                 {
                     this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_OFF, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 }
+
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PITOT_HEAT_SET, (UInt32)(MsfsData.Instance.CurrentPitot ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+
                 MsfsData.Instance.SetToMSFS = false;
             } else
             {
@@ -256,11 +298,6 @@
             {
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.ENGINE_AUTO_START, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 MsfsData.Instance.EngineAutoOn = false;
-            }
-            if (MsfsData.Instance.Menu)
-            {
-                //this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MENU, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                MsfsData.Instance.Menu = false;
             }
 
         }
@@ -302,7 +339,8 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:2", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:3", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:4", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PUSHBACK STATE:0", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
@@ -310,10 +348,13 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_ON, "PAUSE_ON");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_OFF, "PAUSE_OFF");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PITOT_HEAT_SET, "PITOT_HEAT_SET");
-            
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_PUSHBACK, "TOGGLE_PUSHBACK");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KEY_TUG_HEADING, "KEY_TUG_HEADING");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TUG_DISABLE, "TUG_DISABLE");
 
             this.m_oSimConnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
         }
     }
 }
+
 

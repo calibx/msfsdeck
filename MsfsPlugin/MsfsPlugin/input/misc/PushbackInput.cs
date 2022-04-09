@@ -7,7 +7,7 @@
     class PushbackInput : DefaultInput
     {
         public PushbackInput() : base("Pushback", "Pushback", "Misc") { }
-        protected override void ChangeValue() => MsfsData.Instance.Pushback = (Int16)(MsfsData.Instance.Pushback != 0 ? 0 : 3);
+        protected override void ChangeValue() => MsfsData.Instance.PushbackClick = (Int16)(MsfsData.Instance.PushbackClick == 0 ? 1 : 0);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))

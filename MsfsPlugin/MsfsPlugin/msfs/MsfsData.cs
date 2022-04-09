@@ -17,7 +17,10 @@
         public Boolean PauseFromMSFS { get; set; }
         public Boolean DEBUG { get; set; }
         public Int16 PushbackFromMSFS { get; set; }
-        public Int16 Pushback { get => this.PushbackFromMSFS; set { this.PushbackFromMSFS = value; this.SetToMSFS = true; } }
+        public Int16 PushbackClick { get; set; }
+        public Int16 Pushback { get => this.PushbackFromMSFS;}
+        public Int16 PushbackLeft { get; set; }
+        public Int16 PushbackRight { get; set; }
         public Boolean EngineAutoOn { get; set; }
         public Boolean EngineAutoOff { get; set; }
         public Boolean Menu { get; set; }
@@ -169,3 +172,4 @@
         }
     }
 }
+
