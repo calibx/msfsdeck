@@ -141,7 +141,9 @@
             public Int64 E3GPH;
             public Int64 E4GPH;
             public Int64 pushback;
-
+            public Int64 ENG1N1RPM;
+            public Int64 ENG2N1RPM;
+            public Int64 engineNumber;
         }
 
         public enum hSimconnect : int
@@ -229,6 +231,9 @@
             MsfsData.Instance.E2N1 = (Int32)struct1.E2N1;
             MsfsData.Instance.E3N1 = (Int32)struct1.E3N1;
             MsfsData.Instance.E4N1 = (Int32)struct1.E4N1;
+            MsfsData.Instance.NumberOfEngines = (Int32)struct1.engineNumber;
+            MsfsData.Instance.E1Rpm = (Int32)struct1.ENG1N1RPM;
+            MsfsData.Instance.E2Rpm = (Int32)struct1.ENG2N1RPM;
 
             MsfsData.Instance.FuelPercent = (Int32)(struct1.fuelQuantity * 100 / struct1.fuelCapacity);
             MsfsData.Instance.FuelFlow = (Int32)(struct1.E1GPH + struct1.E2GPH + struct1.E3GPH + struct1.E4GPH);
@@ -236,7 +241,7 @@
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)struct1.pushback;
 
-            Debug.WriteLine(struct1.pushback);
+            Debug.WriteLine(struct1.ENG1N1RPM + " " + struct1.ENG2N1RPM + " " + struct1.E1N1 + " " + struct1.engineNumber);
             var pushChanged = false;
             UInt32 tug_angle = 0;
             if (MsfsData.Instance.PushbackLeft == 1)
@@ -256,7 +261,6 @@
                 if (MsfsData.Instance.Pushback == 0)
                 {
                     this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.TUG_DISABLE, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                    pushChanged = true;
                 }
                 else
                 {
@@ -272,7 +276,7 @@
             if (MsfsData.Instance.SetToMSFS)
             {
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR_SET, (UInt32)MsfsData.Instance.CurrentGearHandle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, (UInt32)(MsfsData.Instance.CurrentBrakes ? 0 : 1), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, (UInt32)(MsfsData.Instance.CurrentBrakes ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 
                 if (MsfsData.Instance.Pause)
                 {
@@ -287,7 +291,7 @@
                 MsfsData.Instance.SetToMSFS = false;
             } else
             {
-                MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
+              MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
             }
             if (MsfsData.Instance.EngineAutoOff)
             {
@@ -329,10 +333,10 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "IS GEAR RETRACTABLE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "BRAKE PARKING POSITION", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENGINE TYPE", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG N1 RPM:1", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG N1 RPM:2", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG N1 RPM:3", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG N1 RPM:4", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TURB ENG N1:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TURB ENG N1:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TURB ENG N1:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TURB ENG N1:4", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "FUEL TOTAL CAPACITY", "Gallon", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "FUEL TOTAL QUANTITY", "Gallon", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:1", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -340,6 +344,10 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:3", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:4", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PUSHBACK STATE:0", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PROP RPM:1", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PROP RPM:2", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "NUMBER OF ENGINES", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");

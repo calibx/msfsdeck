@@ -6,7 +6,7 @@
     {
         public ParkingBrakeInput() : base("Parking brake", "Display parking brakes state", "Misc") { }
 
-        protected override void ChangeValue() => MsfsData.Instance.CurrentBrakes = true;
+        protected override void ChangeValue() => MsfsData.Instance.CurrentBrakes = !MsfsData.Instance.CurrentBrakes;
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))

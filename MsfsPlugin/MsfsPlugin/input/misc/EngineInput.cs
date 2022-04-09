@@ -34,7 +34,7 @@
                 return bitmapBuilder.ToImage();
             }
         }
-        private Boolean EngineIsOn() => MsfsData.Instance.EngineType == 0 ? MsfsData.Instance.Rpm > 1 : MsfsData.Instance.E1N1 > 0.1;
+        private Boolean EngineIsOn() => MsfsData.Instance.EngineType == 0 ? MsfsData.Instance.E1Rpm > 1 : MsfsData.Instance.E1N1 > 0.1;
 
     }
 }

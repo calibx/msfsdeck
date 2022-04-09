@@ -38,7 +38,8 @@
         public Boolean ATC8 { get; set; }
         public Boolean ATC9 { get; set; }
         public Int32 CurrentHeading { get; set; }
-        public Int32 Rpm { get; set; }
+        public Int32 E1Rpm { get; set; }
+        public Int32 E2Rpm { get; set; }
         public String AircraftName { get; set; }
         public Int32 FuelFlow { get; set; }
         public Int32 FuelPercent { get; set; }

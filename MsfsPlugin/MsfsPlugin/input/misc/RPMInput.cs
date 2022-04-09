@@ -13,7 +13,9 @@
             switch (MsfsData.Instance.EngineType)
             {
                 case 0:
-                    result = "RPM\n" + MsfsData.Instance.Rpm.ToString();
+                    result = "RPM\n" + (MsfsData.Instance.NumberOfEngines == 2
+                                    ? MsfsData.Instance.E1Rpm.ToString() + "\n" + MsfsData.Instance.E2Rpm.ToString()
+                                    : MsfsData.Instance.E1Rpm.ToString());
                     break;
                 case 1:
                 case 5:

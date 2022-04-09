@@ -276,7 +276,7 @@
                         MsfsData.Instance.ApNextWPHeading = apNextWPHeading.Value * 57.29;
                         MsfsData.Instance.ApNextWPID = apNextWPID.Value;
                         MsfsData.Instance.MaxFlap = maxFlap.Value + 1;
-                        MsfsData.Instance.Rpm = (Int16)Math.Round(rpm.Value);
+                        MsfsData.Instance.E1Rpm = (Int16)Math.Round(rpm.Value);
                         MsfsData.Instance.EngineType = engineType.Value;
                         MsfsData.Instance.E1N1 = Math.Round(E1N1.Value, 1);
                         MsfsData.Instance.E2N1 = Math.Round(E2N1.Value, 1);
