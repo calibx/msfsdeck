@@ -92,7 +92,6 @@
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
-    <Compile Include="input\misc\MenuInput.cs" />
     <Compile Include="input\misc\PushbackRightInput.cs" />
     <Compile Include="input\misc\PushbackLeftInput.cs" />
     <Compile Include="input\misc\PushbackInput.cs" />
@@ -101,7 +100,6 @@
     <Compile Include="input\debug\FPSInput.cs" />
     <Compile Include="input\misc\RPMInput.cs" />
     <Compile Include="input\misc\PitotInput.cs" />
-    <Compile Include="input\debug\CnxStateInput.cs" />
     <Compile Include="input\nav\AltitudeInput.cs" />
     <Compile Include="input\nav\VerticalSpeedInput.cs" />
     <Compile Include="input\nav\SpeedInput.cs" />
