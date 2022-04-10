@@ -144,6 +144,8 @@
             public Int64 ENG1N1RPM;
             public Int64 ENG2N1RPM;
             public Int64 engineNumber;
+            public Int64 planeAltitude;
+            public Int64 apAltitude;
         }
 
         public enum hSimconnect : int
@@ -240,8 +242,9 @@
             MsfsData.Instance.FuelTimeLeft = (Int32)(struct1.fuelQuantity / (Double)(struct1.E1GPH + struct1.E2GPH + struct1.E3GPH + struct1.E4GPH) * 3600);
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)struct1.pushback;
+            MsfsData.Instance.CurrentAltitude = (Int32)struct1.planeAltitude;
 
-            Debug.WriteLine(struct1.ENG1N1RPM + " " + struct1.ENG2N1RPM + " " + struct1.E1N1 + " " + struct1.engineNumber);
+            Debug.WriteLine(struct1.planeAltitude);
             var pushChanged = false;
             UInt32 tug_angle = 0;
             if (MsfsData.Instance.PushbackLeft == 1)
@@ -291,7 +294,8 @@
                 MsfsData.Instance.SetToMSFS = false;
             } else
             {
-              MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
+                MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
+                MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)struct1.apAltitude;
             }
             if (MsfsData.Instance.EngineAutoOff)
             {
@@ -347,6 +351,11 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PROP RPM:1", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PROP RPM:2", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "NUMBER OF ENGINES", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE ALTITUDE", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            
+
+
 
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
