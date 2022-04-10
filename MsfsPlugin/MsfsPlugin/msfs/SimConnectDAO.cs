@@ -146,6 +146,11 @@
             public Int64 engineNumber;
             public Int64 planeAltitude;
             public Int64 apAltitude;
+            public Int64 wpID;
+            public Int64 wpDistance;
+            public Int64 wpETE;
+            public Int64 wpBearing;
+            public Int64 wpCount;
         }
 
         public enum hSimconnect : int
@@ -244,7 +249,12 @@
             MsfsData.Instance.PushbackFromMSFS = (Int16)struct1.pushback;
             MsfsData.Instance.CurrentAltitude = (Int32)struct1.planeAltitude;
 
-            Debug.WriteLine(struct1.planeAltitude);
+            MsfsData.Instance.ApNextWPDist = struct1.wpDistance * 0.00053996f;
+            MsfsData.Instance.ApNextWPETE = (Int32)struct1.wpETE;
+            MsfsData.Instance.ApNextWPHeading = struct1.wpBearing;
+            MsfsData.Instance.ApNextWPID = struct1.wpID;
+
+            Debug.WriteLine(struct1.wpDistance * 0.00053996f);
             var pushChanged = false;
             UInt32 tug_angle = 0;
             if (MsfsData.Instance.PushbackLeft == 1)
@@ -353,11 +363,12 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "NUMBER OF ENGINES", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE ALTITUDE", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS FLIGHT PLAN WP INDEX", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS WP DISTANCE", "Meters", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS WP ETE", "Seconds", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS WP BEARING", "Radians", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS FLIGHT PLAN WP COUNT", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             
-
-
-
-
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
