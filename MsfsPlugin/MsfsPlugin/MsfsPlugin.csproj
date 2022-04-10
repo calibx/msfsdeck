@@ -97,7 +97,6 @@
     <Compile Include="input\misc\PushbackInput.cs" />
     <Compile Include="input\misc\PauseInput.cs" />
     <Compile Include="input\nav\APWPDisplay.cs" />
-    <Compile Include="input\debug\FPSInput.cs" />
     <Compile Include="input\misc\RPMInput.cs" />
     <Compile Include="input\misc\PitotInput.cs" />
     <Compile Include="input\nav\AltitudeInput.cs" />

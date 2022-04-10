@@ -235,6 +235,7 @@
         {
             Debug.WriteLine("Received Data");
             var struct1 = (Struct1)data.dwData[0];
+            MsfsData.Instance.AircraftName = struct1.title;
             MsfsData.Instance.GearFront = struct1.gearCenterPos;
             MsfsData.Instance.GearLeft = struct1.gearLeftPos;
             MsfsData.Instance.GearRight = struct1.gearRightPos;
@@ -348,7 +349,7 @@
         private void AddRequest()
         {
             Console.WriteLine("AddRequest");
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Title", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TITLE", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Latitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Longitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Heading Degrees True", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
