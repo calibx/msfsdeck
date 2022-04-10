@@ -151,6 +151,8 @@
             public Int64 wpETE;
             public Int64 wpBearing;
             public Int64 wpCount;
+            public Int64 apHeading;
+            public Int64 planeHeading;
         }
 
         public enum hSimconnect : int
@@ -248,6 +250,8 @@
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)struct1.pushback;
             MsfsData.Instance.CurrentAltitude = (Int32)struct1.planeAltitude;
+            MsfsData.Instance.CurrentHeading = (Int32)struct1.planeHeading;
+
 
             MsfsData.Instance.ApNextWPDist = struct1.wpDistance * 0.00053996f;
             MsfsData.Instance.ApNextWPETE = (Int32)struct1.wpETE;
@@ -306,6 +310,7 @@
             {
                 MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
                 MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)struct1.apAltitude;
+                MsfsData.Instance.CurrentAPHeadingFromMSFS = (Int32)struct1.apHeading;
             }
             if (MsfsData.Instance.EngineAutoOff)
             {
@@ -368,7 +373,10 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS WP ETE", "Seconds", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS WP BEARING", "Radians", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS FLIGHT PLAN WP COUNT", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT HEADING LOCK DIR", "degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE HEADING DEGREES True", "degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             
+
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
