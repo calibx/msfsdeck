@@ -38,34 +38,34 @@
             switch (actionParameter)
             {
                 case "Navigation":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.NavigationLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.NavigationLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Beacon":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.BeaconLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.BeaconLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Landing":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LandingLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LandingLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Taxi":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.TaxiLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.TaxiLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Strobes":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.StrobesLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.StrobesLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Instruments":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.InstrumentsLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.InstrumentsLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Recognition":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.RecognitionLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.RecognitionLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Wing":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.WingLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.WingLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Logo":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LogoLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LogoLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Cabin":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.CabinLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.CabinLightState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -110,7 +110,7 @@
             }
         }
 
-        public void Notify() { } // => this.ButtonActionNamesChanged();
+        public void Notify()  => this.ButtonActionNamesChanged();
         public override Boolean Activate()
         {
             MsfsData.Instance.folderDisplayed = true;

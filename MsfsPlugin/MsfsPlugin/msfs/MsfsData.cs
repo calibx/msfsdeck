@@ -21,8 +21,9 @@
         public Int16 Pushback { get => this.PushbackFromMSFS;}
         public Int16 PushbackLeft { get; set; }
         public Int16 PushbackRight { get; set; }
-        public Boolean EngineAutoOn { get; set; }
+        public Boolean LandingLightState { get; set; }
         public Boolean EngineAutoOff { get; set; }
+        public Boolean EngineAutoOn { get; set; }
         public Boolean Menu { get; set; }
         public Int16 AutoTaxi { get; set; }
         public Int16 AutoTaxiSwitch { get; set; }
@@ -134,26 +135,25 @@
         public Boolean TryConnect { get; set; }
         public Boolean SimTryConnect { get; set; }
         public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; SimulatorDAO.Initialise(); } }
-        public Boolean NavigationLight { get => this.NavigationLightFromMSFS; set { this.NavigationLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean NavigationLightFromMSFS { get; set; }
-        public Boolean BeaconLight { get => this.BeaconLightFromMSFS; set { this.BeaconLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean BeaconLightFromMSFS { get; set; }
-        public Boolean LandingLight { get => this.LandingLightFromMSFS; set { this.LandingLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean LandingLightFromMSFS { get; set; }
-        public Boolean TaxiLight { get => this.TaxiLightFromMSFS; set { this.TaxiLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean TaxiLightFromMSFS { get; set; }
-        public Boolean StrobesLight { get => this.StrobesLightFromMSFS; set { this.StrobesLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean StrobesLightFromMSFS { get; set; }
-        public Boolean InstrumentsLight { get => this.InstrumentsLightFromMSFS; set { this.InstrumentsLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean InstrumentsLightFromMSFS { get; set; }
-        public Boolean RecognitionLight { get => this.RecognitionLightFromMSFS; set { this.RecognitionLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean RecognitionLightFromMSFS { get; set; }
-        public Boolean WingLight { get => this.WingLightFromMSFS; set { this.WingLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean WingLightFromMSFS { get; set; }
-        public Boolean LogoLight { get => this.LogoLightFromMSFS; set { this.LogoLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean LogoLightFromMSFS { get; set; }
-        public Boolean CabinLight { get => this.CabinLightFromMSFS; set { this.CabinLightFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean CabinLightFromMSFS { get; set; }
+        public Boolean NavigationLight { get; set; }
+        public Boolean BeaconLight { get; set; }
+        public Boolean LandingLight { get; set; }
+        public Boolean TaxiLight { get; set; }
+        public Boolean StrobesLight { get; set; }
+        public Boolean InstrumentsLight { get; set; }
+        public Boolean RecognitionLight { get; set; }
+        public Boolean WingLight { get; set; }
+        public Boolean LogoLight { get; set; }
+        public Boolean CabinLight { get; set; }
+        public Boolean NavigationLightState { get; set; }
+        public Boolean BeaconLightState { get; set; }
+        public Boolean TaxiLightState { get; set; }
+        public Boolean StrobesLightState { get; set; }
+        public Boolean InstrumentsLightState { get; set; }
+        public Boolean RecognitionLightState { get; set; }
+        public Boolean WingLightState { get; set; }
+        public Boolean LogoLightState { get; set; }
+        public Boolean CabinLightState { get; set; }
         private MsfsData()
         {
         }

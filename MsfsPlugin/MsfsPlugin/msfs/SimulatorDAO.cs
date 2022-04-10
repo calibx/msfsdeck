@@ -443,7 +443,7 @@
 
         private static void GetLightsFromMSFS(Int16 value)
         {
-            MsfsData.Instance.CabinLightFromMSFS = IsInList(aircraftName.Value, invertedCabinLightAircraftsPatterns) ? value >= 512 : !(value >= 512);
+           /* MsfsData.Instance.CabinLightFromMSFS = IsInList(aircraftName.Value, invertedCabinLightAircraftsPatterns) ? value >= 512 : !(value >= 512);
             value %= 512;
             MsfsData.Instance.LogoLightFromMSFS = value >= 256;
             value %= 256;
@@ -461,7 +461,7 @@
             value %= 4;
             MsfsData.Instance.BeaconLightFromMSFS = value >= 2;
             value %= 2;
-            MsfsData.Instance.NavigationLightFromMSFS = value >= 1;
+            MsfsData.Instance.NavigationLightFromMSFS = value >= 1;*/
 
         }
         private static Int16 GetLights()

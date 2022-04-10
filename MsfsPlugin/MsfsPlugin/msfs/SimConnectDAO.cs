@@ -103,7 +103,17 @@
             PITOT_HEAT_SET,
             TOGGLE_PUSHBACK,
             KEY_TUG_HEADING,
-            TUG_DISABLE
+            TUG_DISABLE, 
+            NAV_LIGHTS_SET,
+            LANDING_LIGHTS_SET,
+            BEACON_LIGHTS_SET,
+            TAXI_LIGHTS_SET,
+            STROBES_SET,
+            PANEL_LIGHTS_SET,
+            RECOGNITION_LIGHTS_SET,
+            WING_LIGHTS_SET,
+            LOGO_LIGHTS_SET,
+            CABIN_LIGHTS_SET
         };
         enum GROUPID
         {
@@ -158,6 +168,17 @@
             public Int64 apVSpeed;
             public Int64 apSpeed;
             public Int64 E1On;
+
+            public Int64 navLight;
+            public Int64 beaconLight;
+            public Int64 landingLight;
+            public Int64 taxiLight;
+            public Int64 strobeLight;
+            public Int64 panelLight;
+            public Int64 recognitionLight;
+            public Int64 wingLight;
+            public Int64 logoLight;
+            public Int64 cabinLight;
         }
 
         public enum hSimconnect : int
@@ -266,6 +287,17 @@
             MsfsData.Instance.ApNextWPHeading = struct1.wpBearing;
             MsfsData.Instance.ApNextWPID = struct1.wpID;
 
+            MsfsData.Instance.NavigationLightState = struct1.navLight == 1;
+            MsfsData.Instance.LandingLightState = struct1.landingLight == 1;
+            MsfsData.Instance.BeaconLightState = struct1.beaconLight == 1;
+            MsfsData.Instance.TaxiLightState = struct1.taxiLight == 1;
+            MsfsData.Instance.StrobesLightState = struct1.strobeLight == 1;
+            MsfsData.Instance.InstrumentsLightState = struct1.panelLight == 1;
+            MsfsData.Instance.RecognitionLightState = struct1.recognitionLight == 1;
+            MsfsData.Instance.WingLightState = struct1.wingLight == 1;
+            MsfsData.Instance.LogoLightState = struct1.logoLight == 1;
+            MsfsData.Instance.CabinLightState = struct1.cabinLight == 1;
+
             Debug.WriteLine(struct1.E1On);
             
             var pushChanged = false;
@@ -323,17 +355,45 @@
                 MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)struct1.apSpeed;
                 MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = (Int32)struct1.apVSpeed;
             }
-            if (MsfsData.Instance.EngineAutoOff)
-            {
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.ENGINE_AUTO_SHUTDOWN, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                MsfsData.Instance.EngineAutoOff = false;
-            }
-            if (MsfsData.Instance.EngineAutoOn)
-            {
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.ENGINE_AUTO_START, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                MsfsData.Instance.EngineAutoOn = false;
-            }
+            
+            this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_SHUTDOWN, 0);
+            this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_START, 0);
 
+            this.SendEvent(MsfsData.Instance.NavigationLight, EVENTS.NAV_LIGHTS_SET, MsfsData.Instance.NavigationLightState ? 0:1 );
+            this.SendEvent(MsfsData.Instance.LandingLight, EVENTS.LANDING_LIGHTS_SET, MsfsData.Instance.LandingLightState ? 0 : 1);
+            this.SendEvent(MsfsData.Instance.BeaconLight, EVENTS.BEACON_LIGHTS_SET, MsfsData.Instance.BeaconLightState ? 0 : 1);
+            this.SendEvent(MsfsData.Instance.TaxiLight, EVENTS.TAXI_LIGHTS_SET, MsfsData.Instance.TaxiLightState ? 0 : 1);
+            this.SendEvent(MsfsData.Instance.StrobesLight, EVENTS.STROBES_SET, MsfsData.Instance.StrobesLightState ? 0 : 1);
+            this.SendEvent(MsfsData.Instance.InstrumentsLight, EVENTS.PANEL_LIGHTS_SET, MsfsData.Instance.InstrumentsLightState ? 0 : 1);
+            this.SendEvent(MsfsData.Instance.RecognitionLight, EVENTS.RECOGNITION_LIGHTS_SET, MsfsData.Instance.RecognitionLightState ? 0 : 1);
+            this.SendEvent(MsfsData.Instance.WingLight, EVENTS.WING_LIGHTS_SET, MsfsData.Instance.WingLightState ? 0 : 1);
+            this.SendEvent(MsfsData.Instance.LogoLight, EVENTS.LOGO_LIGHTS_SET, MsfsData.Instance.LogoLightState ? 0 : 1);
+            this.SendEvent(MsfsData.Instance.CabinLight, EVENTS.CABIN_LIGHTS_SET, MsfsData.Instance.CabinLightState ? 0 : 1);
+
+            this.ResetEvents();
+        }
+        private void SendEvent(Boolean inputKey, EVENTS eventName, Int64 value)
+        {
+            if (inputKey)
+            {
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, (UInt32)value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+        }
+
+        private void ResetEvents()
+        {
+            MsfsData.Instance.EngineAutoOn = false;
+            MsfsData.Instance.EngineAutoOff = false;
+            MsfsData.Instance.NavigationLight = false;
+            MsfsData.Instance.LandingLight = false;
+            MsfsData.Instance.BeaconLight = false;
+            MsfsData.Instance.TaxiLight = false;
+            MsfsData.Instance.StrobesLight = false;
+            MsfsData.Instance.InstrumentsLight = false;
+            MsfsData.Instance.RecognitionLight = false;
+            MsfsData.Instance.WingLight = false;
+            MsfsData.Instance.LogoLight = false;
+            MsfsData.Instance.CabinLight = false;
         }
 
         private void OnTick()
@@ -392,6 +452,19 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT AIRSPEED HOLD VAR", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG COMBUSTION:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT NAV", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT BEACON", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT LANDING", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT TAXI", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT STROBE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT PANEL", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT RECOGNITION", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT WING", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT LOGO", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT CABIN", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            
+    
+                
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
@@ -403,6 +476,17 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KEY_TUG_HEADING, "KEY_TUG_HEADING");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TUG_DISABLE, "TUG_DISABLE");
 
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.NAV_LIGHTS_SET, "NAV_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.LANDING_LIGHTS_SET, "LANDING_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.BEACON_LIGHTS_SET, "BEACON_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TAXI_LIGHTS_SET, "TAXI_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.STROBES_SET, "STROBES_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PANEL_LIGHTS_SET, "PANEL_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.RECOGNITION_LIGHTS_SET, "RECOGNITION_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.WING_LIGHTS_SET, "WING_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.LOGO_LIGHTS_SET, "LOGO_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.CABIN_LIGHTS_SET, "CABIN_LIGHTS_SET");
+            
             this.m_oSimConnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
         }
     }
