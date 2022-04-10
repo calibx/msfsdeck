@@ -9,7 +9,7 @@
         public EngineInput() : base("AutoEngine", "Engine auto on/off", "Misc") { }
         protected override void ChangeValue()
         {
-            if (this.EngineIsOn())
+            if (MsfsData.Instance.E1On)
             {
                 MsfsData.Instance.EngineAutoOff = true;
             }
@@ -22,7 +22,7 @@
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (this.EngineIsOn())
+                if (MsfsData.Instance.E1On)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
                 }
@@ -34,7 +34,6 @@
                 return bitmapBuilder.ToImage();
             }
         }
-        private Boolean EngineIsOn() => MsfsData.Instance.EngineType == 0 ? MsfsData.Instance.E1Rpm > 1 : MsfsData.Instance.E1N1 > 0.1;
 
     }
 }

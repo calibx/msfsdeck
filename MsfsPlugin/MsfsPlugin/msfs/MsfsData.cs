@@ -46,6 +46,7 @@
         public Int32 FuelTimeLeft { get; set; }
         public Int32 EngineType { get; set; }
         public Double E1N1 { get; set; }
+        public Boolean E1On { get; set; }
         public Double E2N1 { get; set; }
         public Double E3N1 { get; set; }
         public Double E4N1 { get; set; }

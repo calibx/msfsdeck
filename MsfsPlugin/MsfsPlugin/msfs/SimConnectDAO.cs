@@ -157,6 +157,7 @@
             public Double planeVSpeed;
             public Int64 apVSpeed;
             public Int64 apSpeed;
+            public Int64 E1On;
         }
 
         public enum hSimconnect : int
@@ -241,6 +242,7 @@
             MsfsData.Instance.GearRight = struct1.gearRightPos;
             MsfsData.Instance.GearRetractable = (Byte)struct1.gearRetractable;
             MsfsData.Instance.EngineType = (Int32)struct1.engineType;
+            MsfsData.Instance.E1On = struct1.E1On == 1;
             MsfsData.Instance.E1N1 = (Int32)struct1.E1N1;
             MsfsData.Instance.E2N1 = (Int32)struct1.E2N1;
             MsfsData.Instance.E3N1 = (Int32)struct1.E3N1;
@@ -264,7 +266,8 @@
             MsfsData.Instance.ApNextWPHeading = struct1.wpBearing;
             MsfsData.Instance.ApNextWPID = struct1.wpID;
 
-            Debug.WriteLine(struct1.wpDistance * 0.00053996f);
+            Debug.WriteLine(struct1.E1On);
+            
             var pushChanged = false;
             UInt32 tug_angle = 0;
             if (MsfsData.Instance.PushbackLeft == 1)
@@ -387,6 +390,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "VERTICAL SPEED", "feet/second", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT VERTICAL HOLD VAR", "Feet per minute", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT AIRSPEED HOLD VAR", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG COMBUSTION:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
