@@ -11,11 +11,12 @@
         private static int count;
         public DefaultEncoder(String name, String desc, String category, Boolean resettable, Int32 min, Int32 max, Int32 step) : base(name, desc, category, resettable)
         {
-                //MsfsData.Instance.Register(this);
+            //MsfsData.Instance.Register(this);
             this.min = min;
             this.max = max;
             this.step = step;
         }
+
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
             var value = this.GetValue();
@@ -34,12 +35,5 @@
         protected virtual String GetDisplayValue() => this.GetValue().ToString();
         protected virtual Int32 GetValue() => 0;
         protected abstract void SetValue(Int32 value);
-
-        protected override bool OnUnload()
-        {
-            Debug.WriteLine("unload");
-            return true;
-        }
-
     }
 }

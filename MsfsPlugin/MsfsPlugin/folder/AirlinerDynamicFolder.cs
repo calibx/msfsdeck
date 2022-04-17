@@ -62,16 +62,16 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    ret = "Alt\n[" + MsfsData.Instance.CurrentAPAltitude + "]\n" + MsfsData.Instance.CurrentAltitude;
+                    //ret = "Alt\n[" + MsfsData.Instance.CurrentAPAltitude + "]\n" + MsfsData.Instance.CurrentAltitude;
                     break;
                 case "Heading Encoder":
-                    ret = "Head\n[" + MsfsData.Instance.CurrentAPHeading + "]\n" + MsfsData.Instance.CurrentHeading;
+                    //ret = "Head\n[" + MsfsData.Instance.CurrentAPHeading + "]\n" + MsfsData.Instance.CurrentHeading;
                     break;
                 case "Speed Encoder":
-                    ret = "Speed\n[" + MsfsData.Instance.CurrentAPSpeed + "]\n" + MsfsData.Instance.CurrentSpeed;
+                    //ret = "Speed\n[" + MsfsData.Instance.CurrentAPSpeed + "]\n" + MsfsData.Instance.CurrentSpeed;
                     break;
                 case "VS Speed Encoder":
-                    ret = "VS\n[" + MsfsData.Instance.CurrentAPVerticalSpeed + "]\n" + MsfsData.Instance.CurrentVerticalSpeed;
+                    //ret = "VS\n[" + MsfsData.Instance.CurrentAPVerticalSpeed + "]\n" + MsfsData.Instance.CurrentVerticalSpeed;
                     break;
             }
             return ret;
@@ -125,16 +125,16 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 40000, 100, ticks);
+                    //MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 40000, 100, ticks);
                     break;
                 case "Heading Encoder":
-                    MsfsData.Instance.CurrentAPHeading = this.ApplyAdjustment(MsfsData.Instance.CurrentAPHeading, 0, 360, 1, ticks);
+                    //MsfsData.Instance.CurrentAPHeading = this.ApplyAdjustment(MsfsData.Instance.CurrentAPHeading, 0, 360, 1, ticks);
                     break;
                 case "Speed Encoder":
-                    MsfsData.Instance.CurrentAPSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPSpeed, 0, 2000, 1, ticks);
+                    //MsfsData.Instance.CurrentAPSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPSpeed, 0, 2000, 1, ticks);
                     break;
                 case "VS Speed Encoder":
-                    MsfsData.Instance.CurrentAPVerticalSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPVerticalSpeed, -10000, 10000, 100, ticks);
+                    //MsfsData.Instance.CurrentAPVerticalSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPVerticalSpeed, -10000, 10000, 100, ticks);
                     break;
             }
         }

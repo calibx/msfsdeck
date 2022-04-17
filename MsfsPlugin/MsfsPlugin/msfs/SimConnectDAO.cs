@@ -99,7 +99,18 @@
             ATC_MENU_6,
             ATC_MENU_7,
             ATC_MENU_8,
-            ATC_MENU_9
+            ATC_MENU_9,
+            AP_PANEL_MACH_HOLD,
+            AP_PANEL_ALTITUDE_HOLD,
+            AP_PANEL_HEADING_HOLD,
+            AP_MASTER,
+            AP_NAV1_HOLD,
+            AP_N1_HOLD,
+            AP_PANEL_VS_HOLD,
+            AP_ALT_VAR_SET_ENGLISH,
+            HEADING_BUG_SET,
+            AP_SPD_VAR_SET,
+            AP_VS_VAR_SET_ENGLISH,
         };
         enum GROUPID
         {
@@ -108,11 +119,12 @@
 
         private enum DEFINITIONS
         {
-            Struct1
+            Readers,
         }
 
+
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct Struct1
+        private struct Readers
         {
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
             public String title;
@@ -165,6 +177,15 @@
             public Int64 wingLight;
             public Int64 logoLight;
             public Int64 cabinLight;
+
+            public Int64 apAltHold;
+            public Int64 apHeadingHold;
+            public Int64 apSpeedHold;
+            public Int64 apThrottleHold;
+            public Int64 apMasterHold;
+            public Int64 apNavHold;
+            public Int64 apVerticalSpeedHold;
+
         }
 
         public enum hSimconnect : int
@@ -216,7 +237,6 @@
             timer.Enabled = false;
             if (m_oSimConnect != null)
             {
-                /// Dispose serves the same purpose as SimConnect_Close()
                 m_oSimConnect.Dispose();
                 m_oSimConnect = null;
             }
@@ -254,50 +274,55 @@
         private void SimConnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
             Debug.WriteLine("Received Data");
-            var struct1 = (Struct1)data.dwData[0];
-            MsfsData.Instance.AircraftName = struct1.title;
-            MsfsData.Instance.GearFront = struct1.gearCenterPos;
-            MsfsData.Instance.GearLeft = struct1.gearLeftPos;
-            MsfsData.Instance.GearRight = struct1.gearRightPos;
-            MsfsData.Instance.GearRetractable = (Byte)struct1.gearRetractable;
-            MsfsData.Instance.EngineType = (Int32)struct1.engineType;
-            MsfsData.Instance.E1On = struct1.E1On == 1;
-            MsfsData.Instance.E1N1 = (Int32)struct1.E1N1;
-            MsfsData.Instance.E2N1 = (Int32)struct1.E2N1;
-            MsfsData.Instance.E3N1 = (Int32)struct1.E3N1;
-            MsfsData.Instance.E4N1 = (Int32)struct1.E4N1;
-            MsfsData.Instance.NumberOfEngines = (Int32)struct1.engineNumber;
-            MsfsData.Instance.E1Rpm = (Int32)struct1.ENG1N1RPM;
-            MsfsData.Instance.E2Rpm = (Int32)struct1.ENG2N1RPM;
+            var delay = true;
+            var reader = (Readers)data.dwData[0];
+            MsfsData.Instance.AircraftName = reader.title;
+            MsfsData.Instance.GearFront = reader.gearCenterPos;
+            MsfsData.Instance.GearLeft = reader.gearLeftPos;
+            MsfsData.Instance.GearRight = reader.gearRightPos;
+            MsfsData.Instance.GearRetractable = (Byte)reader.gearRetractable;
+            MsfsData.Instance.EngineType = (Int32)reader.engineType;
+            MsfsData.Instance.E1On = reader.E1On == 1;
+            MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
+            MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
+            MsfsData.Instance.E3N1 = (Int32)reader.E3N1;
+            MsfsData.Instance.E4N1 = (Int32)reader.E4N1;
+            MsfsData.Instance.NumberOfEngines = (Int32)reader.engineNumber;
+            MsfsData.Instance.E1Rpm = (Int32)reader.ENG1N1RPM;
+            MsfsData.Instance.E2Rpm = (Int32)reader.ENG2N1RPM;
 
-            MsfsData.Instance.FuelPercent = (Int32)(struct1.fuelQuantity * 100 / struct1.fuelCapacity);
-            MsfsData.Instance.FuelFlow = (Int32)(struct1.E1GPH + struct1.E2GPH + struct1.E3GPH + struct1.E4GPH);
-            MsfsData.Instance.FuelTimeLeft = (Int32)(struct1.fuelQuantity / (Double)(struct1.E1GPH + struct1.E2GPH + struct1.E3GPH + struct1.E4GPH) * 3600);
+            MsfsData.Instance.FuelPercent = (Int32)(reader.fuelQuantity * 100 / reader.fuelCapacity);
+            MsfsData.Instance.FuelFlow = (Int32)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH);
+            MsfsData.Instance.FuelTimeLeft = (Int32)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600);
 
-            MsfsData.Instance.PushbackFromMSFS = (Int16)struct1.pushback;
-            MsfsData.Instance.CurrentAltitude = (Int32)struct1.planeAltitude;
-            MsfsData.Instance.CurrentHeading = (Int32)struct1.planeHeading;
-            MsfsData.Instance.CurrentSpeed = (Int32)struct1.planeSpeed;
-            MsfsData.Instance.CurrentVerticalSpeed = (Int32)(struct1.planeVSpeed * 60f);
+            MsfsData.Instance.PushbackFromMSFS = (Int16)reader.pushback;
+            MsfsData.Instance.CurrentAltitude = (Int32)reader.planeAltitude;
+            MsfsData.Instance.CurrentHeading = (Int32)reader.planeHeading;
+            MsfsData.Instance.CurrentSpeed = (Int32)reader.planeSpeed;
+            MsfsData.Instance.CurrentVerticalSpeed = (Int32)(reader.planeVSpeed * 60f);
 
-            MsfsData.Instance.ApNextWPDist = struct1.wpDistance * 0.00053996f;
-            MsfsData.Instance.ApNextWPETE = (Int32)struct1.wpETE;
-            MsfsData.Instance.ApNextWPHeading = struct1.wpBearing;
-            MsfsData.Instance.ApNextWPID = struct1.wpID;
+            MsfsData.Instance.ApNextWPDist = reader.wpDistance * 0.00053996f;
+            MsfsData.Instance.ApNextWPETE = (Int32)reader.wpETE;
+            MsfsData.Instance.ApNextWPHeading = reader.wpBearing;
+            MsfsData.Instance.ApNextWPID = reader.wpID;
+            MsfsData.Instance.ApAltHoldSwitchState = reader.apAltHold == 1;
+            MsfsData.Instance.ApHeadHoldSwitchState = reader.apHeadingHold == 1;
+            MsfsData.Instance.ApSpeedHoldSwitchState = reader.apSpeedHold == 1;
+            MsfsData.Instance.ApThrottleSwitchState = reader.apThrottleHold == 1;
+            MsfsData.Instance.ApSwitchState = reader.apMasterHold == 1;
+            MsfsData.Instance.ApNavHoldSwitchState = reader.apNavHold == 1;
+            MsfsData.Instance.ApVSHoldSwitchState = reader.apVerticalSpeedHold == 1;
 
-            MsfsData.Instance.NavigationLightState = struct1.navLight == 1;
-            MsfsData.Instance.LandingLightState = struct1.landingLight == 1;
-            MsfsData.Instance.BeaconLightState = struct1.beaconLight == 1;
-            MsfsData.Instance.TaxiLightState = struct1.taxiLight == 1;
-            MsfsData.Instance.StrobesLightState = struct1.strobeLight == 1;
-            MsfsData.Instance.InstrumentsLightState = struct1.panelLight == 1;
-            MsfsData.Instance.RecognitionLightState = struct1.recognitionLight == 1;
-            MsfsData.Instance.WingLightState = struct1.wingLight == 1;
-            MsfsData.Instance.LogoLightState = struct1.logoLight == 1;
-            MsfsData.Instance.CabinLightState = struct1.cabinLight == 1;
-
-            Debug.WriteLine(struct1.E1On);
-            
+            MsfsData.Instance.NavigationLightState = reader.navLight == 1;
+            MsfsData.Instance.LandingLightState = reader.landingLight == 1;
+            MsfsData.Instance.BeaconLightState = reader.beaconLight == 1;
+            MsfsData.Instance.TaxiLightState = reader.taxiLight == 1;
+            MsfsData.Instance.StrobesLightState = reader.strobeLight == 1;
+            MsfsData.Instance.InstrumentsLightState = reader.panelLight == 1;
+            MsfsData.Instance.RecognitionLightState = reader.recognitionLight == 1;
+            MsfsData.Instance.WingLightState = reader.wingLight == 1;
+            MsfsData.Instance.LogoLightState = reader.logoLight == 1;
+            MsfsData.Instance.CabinLightState = reader.cabinLight == 1;
 
             var pushChanged = false;
             UInt32 tug_angle = 0;
@@ -345,14 +370,32 @@
 
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PITOT_HEAT_SET, (UInt32)(MsfsData.Instance.CurrentPitot ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_ALT_VAR_SET_ENGLISH, (UInt32)MsfsData.Instance.CurrentAPAltitude, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.HEADING_BUG_SET, (UInt32)MsfsData.Instance.CurrentAPHeading, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_SPD_VAR_SET, (UInt32)MsfsData.Instance.CurrentAPSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_VS_VAR_SET_ENGLISH, (UInt32)MsfsData.Instance.CurrentAPVerticalSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+
+/*                var writer = new Writers();
+                writer.apAlt = MsfsData.Instance.CurrentAPAltitude;
+                this.m_oSimConnect.SetDataOnSimObject(DEFINITIONS.Writers, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, writer);*/
+                
                 MsfsData.Instance.SetToMSFS = false;
+                delay = true;
             } else
             {
-                MsfsData.Instance.CurrentBrakesFromMSFS = struct1.parkingBrake == 1;
-                MsfsData.Instance.CurrentAPAltitudeFromMSFS = (Int32)struct1.apAltitude;
-                MsfsData.Instance.CurrentAPHeadingFromMSFS = (Int32)struct1.apHeading;
-                MsfsData.Instance.CurrentAPSpeedFromMSFS = (Int32)struct1.apSpeed;
-                MsfsData.Instance.CurrentAPVerticalSpeedFromMSFS = (Int32)struct1.apVSpeed;
+                if (!delay)
+                {
+                    MsfsData.Instance.CurrentBrakesFromMSFS = reader.parkingBrake == 1;
+                    MsfsData.Instance.CurrentAPAltitudeState = (Int32)reader.apAltitude;
+                    MsfsData.Instance.CurrentAPHeadingState = (Int32)reader.apHeading;
+                    MsfsData.Instance.CurrentAPSpeedState = (Int32)reader.apSpeed;
+                    MsfsData.Instance.CurrentAPVerticalSpeedState = (Int32)reader.apVSpeed;
+                    MsfsData.Instance.CurrentAPAltitude = MsfsData.Instance.CurrentAPAltitudeState;
+                    MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentAPHeadingState;
+                    MsfsData.Instance.CurrentAPSpeed = MsfsData.Instance.CurrentAPSpeedState;
+                    MsfsData.Instance.CurrentAPVerticalSpeed = MsfsData.Instance.CurrentAPVerticalSpeedState;
+                }
+                delay = false;
             }
             
             this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_SHUTDOWN, 0);
@@ -381,11 +424,19 @@
             this.SendEvent(MsfsData.Instance.ATC8, EVENTS.ATC_MENU_8, 0);
             this.SendEvent(MsfsData.Instance.ATC9, EVENTS.ATC_MENU_9, 0);
 
+            this.SendEvent(MsfsData.Instance.ApSpeedHoldSwitch, EVENTS.AP_PANEL_MACH_HOLD, 0);
+            this.SendEvent(MsfsData.Instance.ApAltHoldSwitch, EVENTS.AP_PANEL_ALTITUDE_HOLD, 0);
+            this.SendEvent(MsfsData.Instance.ApHeadHoldSwitch, EVENTS.AP_PANEL_HEADING_HOLD, 0);
+            this.SendEvent(MsfsData.Instance.ApSwitch, EVENTS.AP_MASTER, 0);
+            this.SendEvent(MsfsData.Instance.ApNavHoldSwitch, EVENTS.AP_NAV1_HOLD, 0);
+            this.SendEvent(MsfsData.Instance.ApThrottleSwitch, EVENTS.AP_N1_HOLD, 0);
+            this.SendEvent(MsfsData.Instance.ApVSHoldSwitch, EVENTS.AP_PANEL_VS_HOLD, 0);
 
             if (MsfsData.Instance.ATC)
             {
                 this.pluginForKey.ClientApplication.SendKeyboardShortcut((VirtualKeyCode)0x91);
             }
+
 
             this.ResetEvents();
         }
@@ -424,12 +475,21 @@
             MsfsData.Instance.ATC7 = false;
             MsfsData.Instance.ATC8 = false;
             MsfsData.Instance.ATC9 = false;
+
+            MsfsData.Instance.ApSpeedHoldSwitch = false;
+            MsfsData.Instance.ApAltHoldSwitch = false;
+            MsfsData.Instance.ApHeadHoldSwitch = false;
+            MsfsData.Instance.ApSwitch = false;
+            MsfsData.Instance.ApNavHoldSwitch = false;
+            MsfsData.Instance.ApThrottleSwitch = false;
+            MsfsData.Instance.ApVSHoldSwitch = false;
+
         }
 
         private void OnTick()
         {
             Debug.WriteLine("OnTick");
-            m_oSimConnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
+            m_oSimConnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
             m_oSimConnect?.ReceiveMessage();
             MsfsData.Instance.Changed();
         }
@@ -437,59 +497,67 @@
         private void AddRequest()
         {
             Console.WriteLine("AddRequest");
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TITLE", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Latitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Longitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Heading Degrees True", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "Ground Altitude", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GEAR RIGHT POSITION", "Boolean", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GEAR LEFT POSITION", "Boolean", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GEAR CENTER POSITION", "Boolean", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "IS GEAR RETRACTABLE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "BRAKE PARKING POSITION", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENGINE TYPE", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TURB ENG N1:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TURB ENG N1:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TURB ENG N1:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "TURB ENG N1:4", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "FUEL TOTAL CAPACITY", "Gallon", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "FUEL TOTAL QUANTITY", "Gallon", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:1", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:2", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:3", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG FUEL FLOW GPH:4", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PUSHBACK STATE:0", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PROP RPM:1", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PROP RPM:2", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "NUMBER OF ENGINES", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "INDICATED ALTITUDE", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS FLIGHT PLAN WP INDEX", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS WP DISTANCE", "Meters", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS WP ETE", "Seconds", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS WP BEARING", "Radians", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "GPS FLIGHT PLAN WP COUNT", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT HEADING LOCK DIR", "degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE HEADING DEGREES True", "degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AIRSPEED INDICATED", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "VERTICAL SPEED", "feet/second", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT VERTICAL HOLD VAR", "Feet per minute", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT AIRSPEED HOLD VAR", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "ENG COMBUSTION:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "TITLE", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "Plane Latitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "Plane Longitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "Plane Heading Degrees True", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "Ground Altitude", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GEAR RIGHT POSITION", "Boolean", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GEAR LEFT POSITION", "Boolean", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GEAR CENTER POSITION", "Boolean", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "IS GEAR RETRACTABLE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "BRAKE PARKING POSITION", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ENGINE TYPE", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "TURB ENG N1:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "TURB ENG N1:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "TURB ENG N1:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "TURB ENG N1:4", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "FUEL TOTAL CAPACITY", "Gallon", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "FUEL TOTAL QUANTITY", "Gallon", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ENG FUEL FLOW GPH:1", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ENG FUEL FLOW GPH:2", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ENG FUEL FLOW GPH:3", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ENG FUEL FLOW GPH:4", "Gallons per hour", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "PUSHBACK STATE:0", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "PROP RPM:1", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "PROP RPM:2", "RPM", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "NUMBER OF ENGINES", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "INDICATED ALTITUDE", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GPS FLIGHT PLAN WP INDEX", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GPS WP DISTANCE", "Meters", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GPS WP ETE", "Seconds", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GPS WP BEARING", "Radians", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GPS FLIGHT PLAN WP COUNT", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT HEADING LOCK DIR", "degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "PLANE HEADING DEGREES True", "degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AIRSPEED INDICATED", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "VERTICAL SPEED", "feet/second", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT VERTICAL HOLD VAR", "Feet per minute", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT AIRSPEED HOLD VAR", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ENG COMBUSTION:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT NAV", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT BEACON", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT LANDING", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT TAXI", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT STROBE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT PANEL", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT RECOGNITION", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT WING", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT LOGO", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Struct1, "LIGHT CABIN", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
-    
-                
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT NAV", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT BEACON", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT LANDING", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT TAXI", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT STROBE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT PANEL", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT RECOGNITION", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT WING", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT LOGO", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT CABIN", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT ALTITUDE LOCK", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT HEADING LOCK", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT MACH HOLD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT MANAGED THROTTLE ACTIVE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT MASTER", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT NAV1 LOCK", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT VERTICAL HOLD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
+//            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
@@ -525,9 +593,24 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_8, "ATC_MENU_8");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_9, "ATC_MENU_9");
 
-            this.m_oSimConnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_PANEL_MACH_HOLD, "AP_PANEL_MACH_HOLD");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_PANEL_ALTITUDE_HOLD, "AP_PANEL_ALTITUDE_HOLD");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_PANEL_HEADING_HOLD, "AP_PANEL_HEADING_HOLD");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_MASTER, "AP_MASTER");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_NAV1_HOLD, "AP_NAV1_HOLD");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_N1_HOLD, "AP_N1_HOLD");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_PANEL_VS_HOLD, "AP_PANEL_VS_HOLD");
+
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, "AP_ALT_VAR_SET_ENGLISH");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.HEADING_BUG_SET, "HEADING_BUG_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_SPD_VAR_SET, "AP_SPD_VAR_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, "AP_VS_VAR_SET_ENGLISH");
+
+            this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
+            //this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Writers);
         }
     }
 }
+
 
 

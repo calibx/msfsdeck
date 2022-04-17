@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class APDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -45,7 +46,7 @@
                 PluginDynamicFolder.NavigateUpActionName,
                 this.CreateCommandName("Altitude"),
                 this.CreateCommandName("Heading"),
-                this.CreateCommandName("GPS"),
+                this.CreateCommandName("Nav"),
                 this.CreateCommandName("Speed"),
                 this.CreateCommandName("AP"),
                 this.CreateCommandName("Throttle"),
@@ -78,25 +79,25 @@
             switch (actionParameter)
             {
                 case "Altitude":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApAltHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApAltHoldSwitchState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Heading":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApHeadHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApHeadHoldSwitchState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
-                case "GPS":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApNavHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                case "Nav":
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApNavHoldSwitchState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Speed":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApSpeedHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApSpeedHoldSwitchState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "AP":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApSwitchState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Throttle":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApThrottleSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApThrottleSwitchState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "VS Speed":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApVSHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApVSHoldSwitchState ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -109,7 +110,7 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 40000, 100, ticks);
+                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 99900, 100, ticks);
                     break;
                 case "Heading Encoder":
                     MsfsData.Instance.CurrentAPHeading = this.ApplyAdjustment(MsfsData.Instance.CurrentAPHeading, 0, 360, 1, ticks);
@@ -121,6 +122,8 @@
                     MsfsData.Instance.CurrentAPVerticalSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPVerticalSpeed, -10000, 10000, 100, ticks);
                     break;
             }
+            MsfsData.Instance.SetToMSFS = true;
+
         }
         public override void RunCommand(String actionParameter)
         {
@@ -132,7 +135,7 @@
                 case "Heading":
                     MsfsData.Instance.ApHeadHoldSwitch = !MsfsData.Instance.ApHeadHoldSwitch;
                     break;
-                case "GPS":
+                case "Nav":
                     MsfsData.Instance.ApNavHoldSwitch = !MsfsData.Instance.ApNavHoldSwitch;
                     break;
                 case "Speed":
@@ -148,24 +151,28 @@
                     MsfsData.Instance.ApVSHoldSwitch = !MsfsData.Instance.ApVSHoldSwitch;
                     break;
                 case "Altitude Reset":
-                    MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100);
+                    MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude/ 100d, 0) * 100);
+                    MsfsData.Instance.SetToMSFS = true;
                     break;
                 case "Heading Reset":
                     MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentHeading;
+                    MsfsData.Instance.SetToMSFS = true;
                     break;
                 case "Speed Reset":
-                    MsfsData.Instance.CurrentAPSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentSpeed / 100d, 0) * 100);
+                    MsfsData.Instance.CurrentAPSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentSpeed/ 100d, 0) * 100);
+                    MsfsData.Instance.SetToMSFS = true;
                     break;
                 case "VS Speed Reset":
                     MsfsData.Instance.CurrentAPVerticalSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentVerticalSpeed / 100d, 0) * 100);
+                    MsfsData.Instance.SetToMSFS = true;
                     break;
             }
         }
 
         public void Notify()
         {
-         //   this.ButtonActionNamesChanged();
-          //  this.EncoderActionNamesChanged();
+            this.ButtonActionNamesChanged();
+            this.EncoderActionNamesChanged();
         }
 
         private Int32 ApplyAdjustment(Int32 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
@@ -177,16 +184,6 @@
             { value = max; }
             return value;
 
-        }
-        public override Boolean Activate()
-        {
-            MsfsData.Instance.folderDisplayed = true;
-            return base.Activate();
-        }
-        public override Boolean Deactivate()
-        {
-            MsfsData.Instance.folderDisplayed = false;
-            return base.Deactivate();
         }
     }
 }
