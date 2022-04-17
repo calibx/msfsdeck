@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
 
     public class ATCDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -9,7 +10,7 @@
         {
             this.DisplayName = "ATC";
             this.GroupName = "Folder";
-            this.Navigation = PluginDynamicFolderNavigation.None;
+            this.Navigation = PluginDynamicFolderNavigation.EncoderArea;
             MsfsData.Instance.Register(this);
 
         }
@@ -17,8 +18,8 @@
         {
             return new[]
             {
-                PluginDynamicFolder.NavigateUpActionName,
                 this.CreateCommandName("Open/Close"),
+                //this.CreateCommandName("Close"),
                 this.CreateCommandName("0"),
                 this.CreateCommandName("1"),
                 this.CreateCommandName("2"),
@@ -38,6 +39,9 @@
             {
                 case "Open/Close":
                     MsfsData.Instance.ATC = true;
+                    break;
+                case "Close":
+                    MsfsData.Instance.ATCClose = true;
                     break;
                 case "0":
                     MsfsData.Instance.ATC0 = true;
@@ -73,17 +77,6 @@
         }
         public void Notify()
         {
-        }
-
-        public override Boolean Activate()
-        {
-            MsfsData.Instance.folderDisplayed = true;
-            return base.Activate();
-        }
-        public override Boolean Deactivate()
-        {
-            MsfsData.Instance.folderDisplayed = false;
-            return base.Deactivate();
         }
 
     }

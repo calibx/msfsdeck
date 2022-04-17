@@ -28,6 +28,7 @@
         public Int16 AutoTaxi { get; set; }
         public Int16 AutoTaxiSwitch { get; set; }
         public Boolean ATC { get; set; }
+        public Boolean ATCClose { get; set; }
         public Boolean ATC0 { get; set; }
         public Boolean ATC1 { get; set; }
         public Boolean ATC2 { get; set; }

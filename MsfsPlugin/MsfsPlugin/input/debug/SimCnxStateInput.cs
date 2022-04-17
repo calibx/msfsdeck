@@ -17,7 +17,7 @@
             return (MsfsData.Instance.SimConnected ? "Connected" : MsfsData.Instance.SimTryConnect ? "Trying to connect" : "Disconnected") + (this.heartbeat ? "\n..." : "\n. .");
         }
 
-        protected override void ChangeValue() => SimConnectDAO.Instance.Connect();
+        protected override void ChangeValue() => SimConnectDAO.Instance.Connect(this.Plugin);
 
     }
 }

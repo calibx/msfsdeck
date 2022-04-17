@@ -57,35 +57,9 @@
         /// SimConnect object
         private SimConnect m_oSimConnect = null;
 
-        public int GetUserSimConnectWinEvent()
-        {
-            return WM_USER_SIMCONNECT;
-        }
-
-        public void Disconnect()
-        {
-            timer.Enabled = false;
-            if (m_oSimConnect != null)
-            {
-                /// Dispose serves the same purpose as SimConnect_Close()
-                m_oSimConnect.Dispose();
-                m_oSimConnect = null;
-            }
-
-            MsfsData.Instance.SimConnected = false;
-            MsfsData.Instance.SimTryConnect = false;
-            MsfsData.Instance.Changed();
-
-        }
-
-        #region UI bindings
-
-      
-        public ObservableCollection<uint> lObjectIDs { get; private set; }
+        private Plugin pluginForKey;
 
         public ObservableCollection<string> lErrorMessages { get; private set; }
-
-        #endregion
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
         private enum DATA_REQUESTS
@@ -113,7 +87,19 @@
             RECOGNITION_LIGHTS_SET,
             WING_LIGHTS_SET,
             LOGO_LIGHTS_SET,
-            CABIN_LIGHTS_SET
+            CABIN_LIGHTS_SET,
+            ATC_MENU_OPEN,
+            ATC_MENU_CLOSE,
+            ATC_MENU_0,
+            ATC_MENU_1,
+            ATC_MENU_2,
+            ATC_MENU_3,
+            ATC_MENU_4,
+            ATC_MENU_5,
+            ATC_MENU_6,
+            ATC_MENU_7,
+            ATC_MENU_8,
+            ATC_MENU_9
         };
         enum GROUPID
         {
@@ -191,9 +177,6 @@
             {
                 if (!MsfsData.Instance.SimConnected && !MsfsData.Instance.SimTryConnect)
                 {
-                    this.lObjectIDs = new ObservableCollection<uint>();
-                    this.lObjectIDs.Add(1);
-
                     this.lErrorMessages = new ObservableCollection<string>();
 
                     timer.Interval = 2000;
@@ -205,9 +188,10 @@
         public static void Refresh(Object source, EventArgs e) => Instance.OnTick();
 
 
-        public void Connect()
+        public void Connect(Plugin plugin)
         {
             Debug.WriteLine("Trying cnx");
+            this.pluginForKey = plugin;
             MsfsData.Instance.SimTryConnect = true;
             MsfsData.Instance.SimConnected = false;
             try
@@ -227,7 +211,21 @@
             MsfsData.Instance.Changed();
             this.AddRequest();
         }
+        public void Disconnect()
+        {
+            timer.Enabled = false;
+            if (m_oSimConnect != null)
+            {
+                /// Dispose serves the same purpose as SimConnect_Close()
+                m_oSimConnect.Dispose();
+                m_oSimConnect = null;
+            }
 
+            MsfsData.Instance.SimConnected = false;
+            MsfsData.Instance.SimTryConnect = false;
+            MsfsData.Instance.Changed();
+
+        }
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
             Debug.WriteLine("Cnx opened");
@@ -300,6 +298,7 @@
 
             Debug.WriteLine(struct1.E1On);
             
+
             var pushChanged = false;
             UInt32 tug_angle = 0;
             if (MsfsData.Instance.PushbackLeft == 1)
@@ -357,7 +356,7 @@
             }
             
             this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_SHUTDOWN, 0);
-            this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_START, 0);
+            this.SendEvent(MsfsData.Instance.EngineAutoOn, EVENTS.ENGINE_AUTO_START, 0);
 
             this.SendEvent(MsfsData.Instance.NavigationLight, EVENTS.NAV_LIGHTS_SET, MsfsData.Instance.NavigationLightState ? 0:1 );
             this.SendEvent(MsfsData.Instance.LandingLight, EVENTS.LANDING_LIGHTS_SET, MsfsData.Instance.LandingLightState ? 0 : 1);
@@ -369,6 +368,24 @@
             this.SendEvent(MsfsData.Instance.WingLight, EVENTS.WING_LIGHTS_SET, MsfsData.Instance.WingLightState ? 0 : 1);
             this.SendEvent(MsfsData.Instance.LogoLight, EVENTS.LOGO_LIGHTS_SET, MsfsData.Instance.LogoLightState ? 0 : 1);
             this.SendEvent(MsfsData.Instance.CabinLight, EVENTS.CABIN_LIGHTS_SET, MsfsData.Instance.CabinLightState ? 0 : 1);
+            //this.SendEvent(MsfsData.Instance.ATC, EVENTS.ATC_MENU_OPEN, 0); // => with key waiting for simconnect inclusion
+            //this.SendEvent(MsfsData.Instance.ATCClose, EVENTS.ATC_MENU_CLOSE, 0);
+            this.SendEvent(MsfsData.Instance.ATC0, EVENTS.ATC_MENU_0, 0);
+            this.SendEvent(MsfsData.Instance.ATC1, EVENTS.ATC_MENU_1, 0);
+            this.SendEvent(MsfsData.Instance.ATC2, EVENTS.ATC_MENU_2, 0);
+            this.SendEvent(MsfsData.Instance.ATC3, EVENTS.ATC_MENU_3, 0);
+            this.SendEvent(MsfsData.Instance.ATC4, EVENTS.ATC_MENU_4, 0);
+            this.SendEvent(MsfsData.Instance.ATC5, EVENTS.ATC_MENU_5, 0);
+            this.SendEvent(MsfsData.Instance.ATC6, EVENTS.ATC_MENU_6, 0);
+            this.SendEvent(MsfsData.Instance.ATC7, EVENTS.ATC_MENU_7, 0);
+            this.SendEvent(MsfsData.Instance.ATC8, EVENTS.ATC_MENU_8, 0);
+            this.SendEvent(MsfsData.Instance.ATC9, EVENTS.ATC_MENU_9, 0);
+
+
+            if (MsfsData.Instance.ATC)
+            {
+                this.pluginForKey.ClientApplication.SendKeyboardShortcut((VirtualKeyCode)0x91);
+            }
 
             this.ResetEvents();
         }
@@ -376,6 +393,7 @@
         {
             if (inputKey)
             {
+                Debug.WriteLine("Send " + eventName);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, (UInt32)value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
@@ -394,16 +412,23 @@
             MsfsData.Instance.WingLight = false;
             MsfsData.Instance.LogoLight = false;
             MsfsData.Instance.CabinLight = false;
+            MsfsData.Instance.ATC = false;
+            MsfsData.Instance.ATCClose = false;
+            MsfsData.Instance.ATC0 = false;
+            MsfsData.Instance.ATC1 = false;
+            MsfsData.Instance.ATC2 = false;
+            MsfsData.Instance.ATC3 = false;
+            MsfsData.Instance.ATC4 = false;
+            MsfsData.Instance.ATC5 = false;
+            MsfsData.Instance.ATC6 = false;
+            MsfsData.Instance.ATC7 = false;
+            MsfsData.Instance.ATC8 = false;
+            MsfsData.Instance.ATC9 = false;
         }
 
         private void OnTick()
         {
             Debug.WriteLine("OnTick");
-            if (!MsfsData.Instance.SimTryConnect && !MsfsData.Instance.SimConnected)
-            { 
-                this.Connect();
-            }
-            
             m_oSimConnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
             m_oSimConnect?.ReceiveMessage();
             MsfsData.Instance.Changed();
@@ -486,7 +511,20 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.WING_LIGHTS_SET, "WING_LIGHTS_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.LOGO_LIGHTS_SET, "LOGO_LIGHTS_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.CABIN_LIGHTS_SET, "CABIN_LIGHTS_SET");
-            
+
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_OPEN, "ATC_MENU_OPEN");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_CLOSE, "SIMUI_WINDOW_HIDESHOW");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_0, "ATC_MENU_0");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_1, "ATC_MENU_1");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_2, "ATC_MENU_2");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_3, "ATC_MENU_3");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_4, "ATC_MENU_4");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_5, "ATC_MENU_5");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_6, "ATC_MENU_6");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_7, "ATC_MENU_7");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_8, "ATC_MENU_8");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_9, "ATC_MENU_9");
+
             this.m_oSimConnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
         }
     }
