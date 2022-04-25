@@ -111,6 +111,7 @@
             HEADING_BUG_SET,
             AP_SPD_VAR_SET,
             AP_VS_VAR_SET_ENGLISH,
+            KOHLSMAN_SET,
         };
         enum GROUPID
         {
@@ -185,6 +186,8 @@
             public Int64 apMasterHold;
             public Int64 apNavHold;
             public Int64 apVerticalSpeedHold;
+
+            public Double kohlsmanInMb;
 
         }
 
@@ -282,7 +285,11 @@
             MsfsData.Instance.GearRight = reader.gearRightPos;
             MsfsData.Instance.GearRetractable = (Byte)reader.gearRetractable;
             MsfsData.Instance.EngineType = (Int32)reader.engineType;
-            MsfsData.Instance.E1On = reader.E1On == 1;
+            
+            
+            MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On.ToString());
+            MsfsData.Instance.bindings[BindingKeys.KOHLSMAN].SetMsfsValue(reader.kohlsmanInMb.ToString());
+
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
             MsfsData.Instance.E3N1 = (Int32)reader.E3N1;
@@ -432,6 +439,8 @@
             this.SendEvent(MsfsData.Instance.ApThrottleSwitch, EVENTS.AP_N1_HOLD, 0);
             this.SendEvent(MsfsData.Instance.ApVSHoldSwitch, EVENTS.AP_PANEL_VS_HOLD, 0);
 
+            this.SendEvent(EVENTS.KOHLSMAN_SET, MsfsData.Instance.bindings[BindingKeys.KOHLSMAN]);
+
             if (MsfsData.Instance.ATC)
             {
                 this.pluginForKey.ClientApplication.SendKeyboardShortcut((VirtualKeyCode)0x91);
@@ -440,6 +449,17 @@
 
             this.ResetEvents();
         }
+
+        private void SendEvent(EVENTS eventName, Binding binding)
+        {
+            if (binding.ControllerChanged)
+            {
+                Debug.WriteLine("Send " + eventName);
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, (uint)(Double.Parse(binding.ControllerValue) / 0.029529983071 * 16), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                binding.ResetController();
+            }
+        }
+
         private void SendEvent(Boolean inputKey, EVENTS eventName, Int64 value)
         {
             if (inputKey)
@@ -488,7 +508,6 @@
 
         private void OnTick()
         {
-            Debug.WriteLine("OnTick");
             m_oSimConnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
             m_oSimConnect?.ReceiveMessage();
             MsfsData.Instance.Changed();
@@ -496,7 +515,6 @@
 
         private void AddRequest()
         {
-            Console.WriteLine("AddRequest");
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "TITLE", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "Plane Latitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "Plane Longitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -555,7 +573,8 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT MASTER", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT NAV1 LOCK", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT VERTICAL HOLD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "KOHLSMAN SETTING HG:1", "inHg", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            
 //            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
@@ -605,6 +624,7 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.HEADING_BUG_SET, "HEADING_BUG_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_SPD_VAR_SET, "AP_SPD_VAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, "AP_VS_VAR_SET_ENGLISH");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KOHLSMAN_SET, "KOHLSMAN_SET");
 
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             //this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Writers);

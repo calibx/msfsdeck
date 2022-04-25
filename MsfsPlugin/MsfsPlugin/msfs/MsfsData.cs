@@ -7,7 +7,8 @@
     {
         private readonly List<Notifiable> notifiables = new List<Notifiable>();
 
-        private Int16 count;
+        public Dictionary<BindingKeys, Binding> bindings = new Dictionary<BindingKeys, Binding>();
+
         private Boolean valuesDisplayed;
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
@@ -48,7 +49,7 @@
         public Int32 FuelTimeLeft { get; set; }
         public Int32 EngineType { get; set; }
         public Double E1N1 { get; set; }
-        public Boolean E1On { get; set; }
+        //public Boolean E1On { get; set; }
         public Double E2N1 { get; set; }
         public Double E3N1 { get; set; }
         public Double E4N1 { get; set; }
@@ -61,8 +62,8 @@
         public Int32 MaxFlap { get; set; }
         public Byte GearOverSpeed { get; set; }
         public Byte GearRetractable { get; set; }
-        public Int16 Barometer { get => this.BarometerFromMSFS; set { this.BarometerFromMSFS = value; this.SetToMSFS = true; } }
-        public Int16 BarometerFromMSFS { get; set; }
+/*        public Int16 Barometer { get => this.BarometerFromMSFS; set { this.BarometerFromMSFS = value; this.SetToMSFS = true; } }
+        public Int16 BarometerFromMSFS { get; set; }*/
         public Int32 CurrentGearHandle { get => this.CurrentGearHandleFromMSFS; set { this.CurrentGearHandleFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentGearHandleFromMSFS { get; set; }
         public Double GearFront { get; set; }
@@ -161,16 +162,16 @@
 
         public void Register(Notifiable notif) => this.notifiables.Add(notif);
 
+        public void Register(Binding binding) => this.bindings.Add(binding.Key, binding);
+
         public void Changed()
         {
             lock (this)
             {
-                Debug.WriteLine("Changed " + this.count++);
                 foreach (Notifiable notifiable in this.notifiables)
                 {
                     notifiable.Notify();
                 }
-                Debug.WriteLine("End Changed " + this.count++);
             }
         }
     }

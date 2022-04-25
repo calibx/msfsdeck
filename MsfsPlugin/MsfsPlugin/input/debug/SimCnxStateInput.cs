@@ -12,7 +12,6 @@
 
         protected override String GetValue()
         {
-            Debug.WriteLine("Refresh cnx input");
             this.heartbeat = !this.heartbeat;
             return (MsfsData.Instance.SimConnected ? "Connected" : MsfsData.Instance.SimTryConnect ? "Trying to connect" : "Disconnected") + (this.heartbeat ? "\n..." : "\n. .");
         }

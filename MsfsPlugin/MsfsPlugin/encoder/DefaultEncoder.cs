@@ -8,10 +8,10 @@
         protected Int32 min;
         protected Int32 max;
         protected Int32 step;
-        private static int count;
+        protected Binding _binding;
+
         public DefaultEncoder(String name, String desc, String category, Boolean resettable, Int32 min, Int32 max, Int32 step) : base(name, desc, category, resettable)
         {
-            //MsfsData.Instance.Register(this);
             this.min = min;
             this.max = max;
             this.step = step;
@@ -26,12 +26,32 @@
             else if (value > this.max)
             { value = this.max; }
             this.SetValue(value);
+            this.ActionImageChanged();
         }
         protected override String GetAdjustmentValue(String actionParameter)
         {
             return this.GetDisplayValue();
         }
-        public void Notify() => this.AdjustmentValueChanged();
+        public void Notify()
+        {
+            if (this._binding != null && this._binding.Key != null)
+            {
+                if (this._binding.HasMSFSChanged())
+                {
+                    Debug.WriteLine("Refesh " + this._binding.Key);
+                    this._binding.Reset();
+                    this.AdjustmentValueChanged();
+                }
+                else
+                {
+                    Debug.WriteLine("Skipping " + this._binding.Key);
+                }
+            }
+            else
+            {
+                this.ActionImageChanged();
+            }
+        }
         protected virtual String GetDisplayValue() => this.GetValue().ToString();
         protected virtual Int32 GetValue() => 0;
         protected abstract void SetValue(Int32 value);
