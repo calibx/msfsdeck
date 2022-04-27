@@ -259,6 +259,8 @@
             MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On);
             MsfsData.Instance.bindings[BindingKeys.KOHLSMAN].SetMsfsValue((Int64)Math.Round(reader.kohlsmanInHb * 100));
             MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM].SetMsfsValue((Int64)Math.Round(reader.aileronTrim * 100));
+            MsfsData.Instance.bindings[BindingKeys.AP_ALT].SetMsfsValue(reader.apAltitude);
+            MsfsData.Instance.bindings[BindingKeys.ALT].SetMsfsValue(reader.planeAltitude);
 
 
             //MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM].SetMsfsValue(reader.elevatorTrim.ToString());
@@ -276,7 +278,6 @@
             MsfsData.Instance.FuelTimeLeft = (Int32)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600);
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)reader.pushback;
-            MsfsData.Instance.CurrentAltitude = (Int32)reader.planeAltitude;
             MsfsData.Instance.CurrentHeading = (Int32)reader.planeHeading;
             MsfsData.Instance.CurrentSpeed = (Int32)reader.planeSpeed;
             MsfsData.Instance.CurrentVerticalSpeed = (Int32)(reader.planeVSpeed * 60f);
@@ -350,14 +351,10 @@
 
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PITOT_HEAT_SET, (UInt32)(MsfsData.Instance.CurrentPitot ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_ALT_VAR_SET_ENGLISH, (UInt32)MsfsData.Instance.CurrentAPAltitude, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.HEADING_BUG_SET, (UInt32)MsfsData.Instance.CurrentAPHeading, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_SPD_VAR_SET, (UInt32)MsfsData.Instance.CurrentAPSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_VS_VAR_SET_ENGLISH, (UInt32)MsfsData.Instance.CurrentAPVerticalSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 
-/*                var writer = new Writers();
-                writer.apAlt = MsfsData.Instance.CurrentAPAltitude;
-                this.m_oSimConnect.SetDataOnSimObject(DEFINITIONS.Writers, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, writer);*/
                 
                 MsfsData.Instance.SetToMSFS = false;
                 delay = true;
@@ -366,7 +363,6 @@
                 if (!delay)
                 {
                     MsfsData.Instance.CurrentBrakesFromMSFS = reader.parkingBrake == 1;
-                    MsfsData.Instance.CurrentAPAltitudeState = (Int32)reader.apAltitude;
                     MsfsData.Instance.CurrentAPHeadingState = (Int32)reader.apHeading;
                     MsfsData.Instance.CurrentAPSpeedState = (Int32)reader.apSpeed;
                     MsfsData.Instance.CurrentAPVerticalSpeedState = (Int32)reader.apVSpeed;
@@ -413,8 +409,9 @@
             this.SendEvent(MsfsData.Instance.ApVSHoldSwitch, EVENTS.AP_PANEL_VS_HOLD, 0);
 
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
+            this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
             this.SendEvent(EVENTS.KOHLSMAN_SET, MsfsData.Instance.bindings[BindingKeys.KOHLSMAN]);
-            
+                        
 
 
             if (MsfsData.Instance.ATC)
@@ -441,6 +438,9 @@
                         value = (UInt32)(binding.ControllerValue / 0.029529983071 * 16);
                         break;
                     case EVENTS.AILERON_TRIM_SET:
+                        value = (UInt32)binding.ControllerValue;
+                        break;
+                    case EVENTS.AP_ALT_VAR_SET_ENGLISH:
                         value = (UInt32)binding.ControllerValue;
                         break;
                 }

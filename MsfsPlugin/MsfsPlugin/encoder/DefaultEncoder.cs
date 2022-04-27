@@ -1,6 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin.encoder
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
 
     public abstract class DefaultEncoder : PluginDynamicAdjustment, Notifiable
@@ -8,7 +9,7 @@
         protected Int32 min;
         protected Int32 max;
         protected Int32 step;
-        protected Binding _binding;
+        protected readonly List<Binding> _bindings = new List<Binding>();
 
         public DefaultEncoder(String name, String desc, String category, Boolean resettable, Int32 min, Int32 max, Int32 step) : base(name, desc, category, resettable)
         {
@@ -35,23 +36,21 @@
         }
         public void Notify()
         {
-            if (this._binding != null && this._binding.Key != null)
+            foreach  (Binding binding in this._bindings)
             {
-                if (this._binding.HasMSFSChanged())
+                if (binding.HasMSFSChanged())
                 {
-                    Debug.WriteLine("Refesh " + this._binding.Key);
-                    this._binding.Reset();
+                    Debug.WriteLine("Refesh " + binding.Key);
+                    binding.Reset();
                     this.AdjustmentValueChanged();
                 }
                 else
                 {
-                    Debug.WriteLine("Skipping " + this._binding.Key);
+                    Debug.WriteLine("Skipping " + binding.Key);
                 }
             }
-            else
-            {
-                this.ActionImageChanged();
-            }
+
+
         }
         protected virtual String GetDisplayValue() => this.GetValue().ToString();
         protected virtual Int64 GetValue() => 0;
