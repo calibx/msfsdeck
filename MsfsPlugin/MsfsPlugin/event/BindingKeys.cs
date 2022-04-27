@@ -10,5 +10,7 @@ public enum BindingKeys
 {
         ENGINE_AUTO,
         KOHLSMAN,
+        AILERON_TRIM,
+        ELEVATOR_TRIM,
     }
 }

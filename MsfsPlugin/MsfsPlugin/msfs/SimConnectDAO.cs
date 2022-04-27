@@ -10,41 +10,7 @@
 
     using Microsoft.FlightSimulator.SimConnect;
 
-
-    
-    public class ObservableObject : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] String _sPropertyName = null)
-        {
-            PropertyChangedEventHandler hEventHandler = this.PropertyChanged;
-            if (hEventHandler != null && !String.IsNullOrEmpty(_sPropertyName))
-            {
-                hEventHandler(this, new PropertyChangedEventArgs(_sPropertyName));
-            }
-        }
-
-        protected bool SetProperty<T>(ref T _tField, T _tValue, [CallerMemberName] string _sPropertyName = null)
-        {
-            return this.SetProperty(ref _tField, _tValue, out T tPreviousValue, _sPropertyName);
-        }
-
-        protected bool SetProperty<T>(ref T _tField, T _tValue, out T _tPreviousValue, [CallerMemberName] string _sPropertyName = null)
-        {
-            if (!object.Equals(_tField, _tValue))
-            {
-                _tPreviousValue = _tField;
-                _tField = _tValue;
-                this.OnPropertyChanged(_sPropertyName);
-                return true;
-            }
-
-            _tPreviousValue = default(T);
-            return false;
-        }
-    }
-    public class SimConnectDAO : ObservableObject
+    public class SimConnectDAO
     {
         // Singleton
         private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
@@ -112,6 +78,7 @@
             AP_SPD_VAR_SET,
             AP_VS_VAR_SET_ENGLISH,
             KOHLSMAN_SET,
+            AILERON_TRIM_SET,
         };
         enum GROUPID
         {
@@ -187,8 +154,10 @@
             public Int64 apNavHold;
             public Int64 apVerticalSpeedHold;
 
-            public Double kohlsmanInMb;
+            public Double kohlsmanInHb;
 
+            public Double aileronTrim;
+            public Double elevatorTrim;
         }
 
         public enum hSimconnect : int
@@ -287,8 +256,12 @@
             MsfsData.Instance.EngineType = (Int32)reader.engineType;
             
             
-            MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On.ToString());
-            MsfsData.Instance.bindings[BindingKeys.KOHLSMAN].SetMsfsValue(reader.kohlsmanInMb.ToString());
+            MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On);
+            MsfsData.Instance.bindings[BindingKeys.KOHLSMAN].SetMsfsValue((Int64)Math.Round(reader.kohlsmanInHb * 100));
+            MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM].SetMsfsValue((Int64)Math.Round(reader.aileronTrim * 100));
+
+
+            //MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM].SetMsfsValue(reader.elevatorTrim.ToString());
 
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
@@ -439,7 +412,10 @@
             this.SendEvent(MsfsData.Instance.ApThrottleSwitch, EVENTS.AP_N1_HOLD, 0);
             this.SendEvent(MsfsData.Instance.ApVSHoldSwitch, EVENTS.AP_PANEL_VS_HOLD, 0);
 
+            this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.KOHLSMAN_SET, MsfsData.Instance.bindings[BindingKeys.KOHLSMAN]);
+            
+
 
             if (MsfsData.Instance.ATC)
             {
@@ -448,14 +424,27 @@
 
 
             this.ResetEvents();
+            MsfsData.Instance.Changed();
         }
+
+
 
         private void SendEvent(EVENTS eventName, Binding binding)
         {
             if (binding.ControllerChanged)
             {
+                UInt32 value = 0;
                 Debug.WriteLine("Send " + eventName);
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, (uint)(Double.Parse(binding.ControllerValue) / 0.029529983071 * 16), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                switch (eventName)
+                {
+                    case EVENTS.KOHLSMAN_SET:
+                        value = (UInt32)(binding.ControllerValue / 0.029529983071 * 16);
+                        break;
+                    case EVENTS.AILERON_TRIM_SET:
+                        value = (UInt32)binding.ControllerValue;
+                        break;
+                }
+                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 binding.ResetController();
             }
         }
@@ -504,13 +493,14 @@
             MsfsData.Instance.ApThrottleSwitch = false;
             MsfsData.Instance.ApVSHoldSwitch = false;
 
+            
+
         }
 
         private void OnTick()
         {
             m_oSimConnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
             m_oSimConnect?.ReceiveMessage();
-            MsfsData.Instance.Changed();
         }
 
         private void AddRequest()
@@ -574,8 +564,11 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT NAV1 LOCK", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT VERTICAL HOLD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "KOHLSMAN SETTING HG:1", "inHg", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
-//            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AILERON TRIM PCT", "Number", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ELEVATOR TRIM PCT", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
+
+            //            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
@@ -625,7 +618,8 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_SPD_VAR_SET, "AP_SPD_VAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, "AP_VS_VAR_SET_ENGLISH");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KOHLSMAN_SET, "KOHLSMAN_SET");
-
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AILERON_TRIM_SET, "AILERON_TRIM_SET");
+            
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             //this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Writers);
         }

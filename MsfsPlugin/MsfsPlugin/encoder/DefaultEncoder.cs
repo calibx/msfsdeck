@@ -15,6 +15,7 @@
             this.min = min;
             this.max = max;
             this.step = step;
+            MsfsData.Instance.Register(this);
         }
 
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
@@ -53,7 +54,7 @@
             }
         }
         protected virtual String GetDisplayValue() => this.GetValue().ToString();
-        protected virtual Int32 GetValue() => 0;
-        protected abstract void SetValue(Int32 value);
+        protected virtual Int64 GetValue() => 0;
+        protected abstract void SetValue(Int64 value);
     }
 }

@@ -8,7 +8,7 @@
     {
         public MixtureEncoder() : base("Mixture", "Mixture encoder for the 4 engines", "Nav", true, 0, 100, 1) { }
         protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentMixture = 0;
-        protected override Int32 GetValue() => MsfsData.Instance.CurrentMixture;
-        protected override void SetValue(Int32 newValue) => MsfsData.Instance.CurrentMixture = newValue;
+        protected override Int64 GetValue() => MsfsData.Instance.CurrentMixture;
+        protected override void SetValue(Int64 newValue) => MsfsData.Instance.CurrentMixture = (Int32)newValue;
     }
 }
