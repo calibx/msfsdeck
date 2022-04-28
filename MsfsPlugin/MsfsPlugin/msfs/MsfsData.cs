@@ -16,6 +16,7 @@
         public Boolean Pause { get => this.PauseFromMSFS; set { this.PauseFromMSFS = value; this.SetToMSFS = true; } }
         public Boolean PauseFromMSFS { get; set; }
         public Boolean DEBUG { get; set; }
+        public Int16 refreshLimiter { get; set; }
         public Int16 PushbackFromMSFS { get; set; }
         public Int16 PushbackClick { get; set; }
         public Int16 Pushback { get => this.PushbackFromMSFS; }
@@ -171,6 +172,7 @@
                 {
                     notifiable.Notify();
                 }
+                this.refreshLimiter = 0;
             }
         }
     }

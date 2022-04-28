@@ -409,9 +409,6 @@
                 delay = false;
             }
 
-            /*            this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_SHUTDOWN, 0);
-                        this.SendEvent(MsfsData.Instance.EngineAutoOn, EVENTS.ENGINE_AUTO_START, 0);
-            */
             this.SendEvent(MsfsData.Instance.NavigationLight, EVENTS.NAV_LIGHTS_SET, MsfsData.Instance.NavigationLightState ? 0 : 1);
             this.SendEvent(MsfsData.Instance.LandingLight, EVENTS.LANDING_LIGHTS_SET, MsfsData.Instance.LandingLightState ? 0 : 1);
             this.SendEvent(MsfsData.Instance.BeaconLight, EVENTS.BEACON_LIGHTS_SET, MsfsData.Instance.BeaconLightState ? 0 : 1);
@@ -555,8 +552,6 @@
 
         private void ResetEvents()
         {
-            MsfsData.Instance.EngineAutoOn = false;
-            MsfsData.Instance.EngineAutoOff = false;
             MsfsData.Instance.NavigationLight = false;
             MsfsData.Instance.LandingLight = false;
             MsfsData.Instance.BeaconLight = false;
@@ -726,8 +721,6 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.RUDDER_TRIM_SET, "RUDDER_TRIM_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AXIS_SPOILER_SET, "AXIS_SPOILER_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.THROTTLE_SET, "THROTTLE_SET");
-
-
 
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Writers);
