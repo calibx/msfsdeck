@@ -10,22 +10,12 @@
             this._binding = new Binding(BindingKeys.ENGINE_AUTO);
             MsfsData.Instance.Register(this._binding);
         }
-        protected override void ChangeValue()
-        {
-            if (this._binding.MsfsValue.Equals("1"))
-            {
-                MsfsData.Instance.EngineAutoOff = true;
-            }
-            else
-            {
-                MsfsData.Instance.EngineAutoOn = true;
-            }
-        }
+        protected override void ChangeValue() => this._binding.SetControllerValue(1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (this._binding.MsfsValue!= null && this._binding.MsfsValue.Equals("1"))
+                if (this._binding.MsfsValue == 1)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
                 }

@@ -387,10 +387,10 @@
 
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PITOT_HEAT_SET, (UInt32)(MsfsData.Instance.CurrentPitot ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.HEADING_BUG_SET, (UInt32)MsfsData.Instance.CurrentAPHeading, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+/*                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.HEADING_BUG_SET, (UInt32)MsfsData.Instance.CurrentAPHeading, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_SPD_VAR_SET, (UInt32)MsfsData.Instance.CurrentAPSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_VS_VAR_SET_ENGLISH, (UInt32)MsfsData.Instance.CurrentAPVerticalSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-
+*/
                 
                 MsfsData.Instance.SetToMSFS = false;
                 delay = true;
@@ -410,9 +410,9 @@
                 delay = false;
             }
             
-            this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_SHUTDOWN, 0);
+/*            this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_SHUTDOWN, 0);
             this.SendEvent(MsfsData.Instance.EngineAutoOn, EVENTS.ENGINE_AUTO_START, 0);
-
+*/
             this.SendEvent(MsfsData.Instance.NavigationLight, EVENTS.NAV_LIGHTS_SET, MsfsData.Instance.NavigationLightState ? 0:1 );
             this.SendEvent(MsfsData.Instance.LandingLight, EVENTS.LANDING_LIGHTS_SET, MsfsData.Instance.LandingLightState ? 0 : 1);
             this.SendEvent(MsfsData.Instance.BeaconLight, EVENTS.BEACON_LIGHTS_SET, MsfsData.Instance.BeaconLightState ? 0 : 1);
@@ -457,6 +457,14 @@
             this.SendEvent(EVENTS.THROTTLE_SET, MsfsData.Instance.bindings[BindingKeys.THROTTLE]);
             this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED]);
 
+            if (MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].MsfsValue == 1)
+            {
+                this.SendEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO]);
+            } else
+            {
+                this.SendEvent(EVENTS.ENGINE_AUTO_START, MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO]);
+            }
+            
             var writer = new Writers();
             if (MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerChanged)
             {
@@ -522,6 +530,12 @@
                         value = (UInt32)(binding.ControllerValue / 100f * 16383);
                         break;
                     case EVENTS.AP_VS_VAR_SET_ENGLISH:
+                        value = (UInt32)binding.ControllerValue;
+                        break;
+                    case EVENTS.ENGINE_AUTO_SHUTDOWN:
+                        value = (UInt32)binding.ControllerValue;
+                        break;
+                    case EVENTS.ENGINE_AUTO_START:
                         value = (UInt32)binding.ControllerValue;
                         break;
                 }
