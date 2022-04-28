@@ -5,13 +5,16 @@
     using Loupedeck.MsfsPlugin.encoder;
     class ThrottleEncoder : DefaultEncoder
     {
-        public ThrottleEncoder() : base("Throttle", "Current throttle", "Nav", true, -100, 100, 1) { }
-        protected override void RunCommand(String actionParameter) => this.SetValue(MsfsData.Instance.ThrottleLowerFromMSFS < 0 ? -100 : 0);
-        protected override Int64 GetValue()
-        {
-            this.min = MsfsData.Instance.ThrottleLowerFromMSFS < 0 ? -100 : 0;
-            return MsfsData.Instance.CurrentThrottle;
+        public ThrottleEncoder() : base("Throttle", "Current throttle", "Nav", true, 0, 100, 1) {
+            var bind = new Binding(BindingKeys.MIN_THROTTLE);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
+            bind = new Binding(BindingKeys.THROTTLE);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
         }
-        protected override void SetValue(Int64 newValue) => MsfsData.Instance.CurrentThrottle = (Int32)newValue;
+        protected override void RunCommand(String actionParameter) => this.SetValue(0);
+        protected override Int64 GetValue() => this._bindings[1].ControllerValue;
+        protected override void SetValue(Int64 newValue) => this._bindings[1].SetControllerValue(newValue);
     }
 }
