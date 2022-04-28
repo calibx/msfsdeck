@@ -23,6 +23,6 @@ public enum BindingKeys
         PROPELLER,
         AP_SPEED,
         SPEED,
-
+        SPOILER,
     }
 }
