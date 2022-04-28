@@ -257,11 +257,10 @@
             
             
             MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On);
-            MsfsData.Instance.bindings[BindingKeys.KOHLSMAN].SetMsfsValue((Int64)Math.Round(reader.kohlsmanInHb * 100));
             MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM].SetMsfsValue((Int64)Math.Round(reader.aileronTrim * 100));
             MsfsData.Instance.bindings[BindingKeys.AP_ALT].SetMsfsValue(reader.apAltitude);
             MsfsData.Instance.bindings[BindingKeys.ALT].SetMsfsValue(reader.planeAltitude);
-
+            MsfsData.Instance.bindings[BindingKeys.KOHLSMAN].SetMsfsValue((Int64)Math.Round(reader.kohlsmanInHb * 100));
 
             //MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM].SetMsfsValue(reader.elevatorTrim.ToString());
 
@@ -435,7 +434,7 @@
                 switch (eventName)
                 {
                     case EVENTS.KOHLSMAN_SET:
-                        value = (UInt32)(binding.ControllerValue / 0.029529983071 * 16);
+                        value = (UInt32)(binding.ControllerValue / 100f * 33.8639 * 16);
                         break;
                     case EVENTS.AILERON_TRIM_SET:
                         value = (UInt32)binding.ControllerValue;
