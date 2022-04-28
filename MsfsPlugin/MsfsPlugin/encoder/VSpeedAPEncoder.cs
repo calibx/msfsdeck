@@ -6,9 +6,17 @@
 
     class VSpeedAPEncoder : DefaultEncoder
     {
-        public VSpeedAPEncoder() : base("VS", "Autopilot VS encoder", "AP", true, -10000, 10000, 100) { }
-        protected override void RunCommand(String actionParameter) => MsfsData.Instance.CurrentAPVerticalSpeed = MsfsData.Instance.CurrentAPVerticalSpeedState - MsfsData.Instance.CurrentVerticalSpeed;
-        protected override String GetDisplayValue() => "[" + MsfsData.Instance.CurrentAPVerticalSpeedState + "]\n" + MsfsData.Instance.CurrentVerticalSpeed;
-        protected override void SetValue(Int64 newValue) => MsfsData.Instance.CurrentAPVerticalSpeed = (Int32)newValue;
+        public VSpeedAPEncoder() : base("VS", "Autopilot VS encoder", "AP", true, -10000, 10000, 100) {
+            var bind = new Binding(BindingKeys.AP_VSPEED);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
+            bind = new Binding(BindingKeys.VSPEED);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
+        }
+        protected override void RunCommand(String actionParameter) => this.SetValue(this._bindings[1].ControllerValue);
+        protected override String GetDisplayValue() => "[" + this._bindings[0].ControllerValue + "]\n" + this._bindings[1].ControllerValue;
+        protected override Int64 GetValue() => this._bindings[0].ControllerValue;
+        protected override void SetValue(Int64 newValue) => this._bindings[0].SetControllerValue(newValue);
     }
 }

@@ -26,5 +26,7 @@ public enum BindingKeys
         SPOILER,
         MIN_THROTTLE,
         THROTTLE,
+        AP_VSPEED,
+        VSPEED,
     }
 }
