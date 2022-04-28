@@ -44,13 +44,7 @@
                     binding.Reset();
                     this.AdjustmentValueChanged();
                 }
-                else
-                {
-                    Debug.WriteLine("Skipping " + binding.Key);
-                }
             }
-
-
         }
         protected virtual String GetDisplayValue() => this.GetValue().ToString();
         protected virtual Int64 GetValue() => 0;

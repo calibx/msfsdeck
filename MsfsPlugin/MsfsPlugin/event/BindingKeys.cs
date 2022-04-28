@@ -16,5 +16,8 @@ public enum BindingKeys
         ALT,
         MAX_FLAP,
         FLAP,
+        AP_HEADING,
+        HEADING,
+
     }
 }
