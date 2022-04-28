@@ -90,6 +90,7 @@
         private enum DEFINITIONS
         {
             Readers,
+            Writers,
         }
 
 
@@ -162,6 +163,17 @@
 
             public Int64 flapMax;
             public Int64 flapPosition;
+
+            public Int64 mixtureE1;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private struct Writers
+        {
+            public Int64 mixtureE1;
+            public Int64 mixtureE2;
+            public Int64 mixtureE3;
+            public Int64 mixtureE4;
         }
 
         public enum hSimconnect : int
@@ -270,6 +282,7 @@
             MsfsData.Instance.bindings[BindingKeys.FLAP].SetMsfsValue(reader.flapPosition);
             MsfsData.Instance.bindings[BindingKeys.AP_HEADING].SetMsfsValue(reader.apHeading);
             MsfsData.Instance.bindings[BindingKeys.HEADING].SetMsfsValue((Int64)Math.Round(reader.planeHeading));
+            MsfsData.Instance.bindings[BindingKeys.MIXTURE].SetMsfsValue(reader.mixtureE1);
 
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
@@ -420,9 +433,17 @@
             this.SendEvent(EVENTS.ELEVATOR_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM]);
             this.SendEvent(EVENTS.FLAPS_SET, MsfsData.Instance.bindings[BindingKeys.FLAP]);
             this.SendEvent(EVENTS.HEADING_BUG_SET, MsfsData.Instance.bindings[BindingKeys.AP_HEADING]);
-            
 
-
+            var writer = new Writers();
+            if (MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerChanged)
+            {
+                writer.mixtureE1 = MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerValue;
+                writer.mixtureE2 = MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerValue;
+                writer.mixtureE3 = MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerValue;
+                writer.mixtureE4 = MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerValue;
+                this.m_oSimConnect.SetDataOnSimObject(DEFINITIONS.Writers, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, writer);
+                MsfsData.Instance.bindings[BindingKeys.MIXTURE].ResetController();
+            }
 
             if (MsfsData.Instance.ATC)
             {
@@ -511,9 +532,6 @@
             MsfsData.Instance.ApNavHoldSwitch = false;
             MsfsData.Instance.ApThrottleSwitch = false;
             MsfsData.Instance.ApVSHoldSwitch = false;
-
-            
-
         }
 
         private void OnTick()
@@ -586,8 +604,12 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ELEVATOR TRIM PCT", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "FLAPS NUM HANDLE POSITIONS", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "FLAPS HANDLE INDEX", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
-            //            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                     
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:4", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
@@ -642,7 +664,7 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.FLAPS_SET, "FLAPS_SET");
             
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
-            //this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Writers);
+            this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Writers);
         }
     }
 }

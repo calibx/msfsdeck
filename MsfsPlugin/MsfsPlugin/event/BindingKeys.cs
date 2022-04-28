@@ -18,6 +18,7 @@ public enum BindingKeys
         FLAP,
         AP_HEADING,
         HEADING,
+        MIXTURE,
 
     }
 }
