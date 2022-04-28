@@ -12,6 +12,7 @@ public enum BindingKeys
         KOHLSMAN,
         AILERON_TRIM,
         ELEVATOR_TRIM,
+        RUDDER_TRIM,
         AP_ALT,
         ALT,
         MAX_FLAP,
