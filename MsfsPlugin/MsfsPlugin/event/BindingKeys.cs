@@ -19,6 +19,7 @@ public enum BindingKeys
         AP_HEADING,
         HEADING,
         MIXTURE,
+        PROPELLER,
 
     }
 }

@@ -40,7 +40,7 @@
             {
                 if (binding.HasMSFSChanged())
                 {
-                    Debug.WriteLine("Refesh " + binding.Key);
+                    Debug.WriteLine("Refresh " + binding.Key);
                     binding.Reset();
                     this.AdjustmentValueChanged();
                 }
