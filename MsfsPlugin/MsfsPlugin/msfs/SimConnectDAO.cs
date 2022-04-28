@@ -80,6 +80,7 @@
             KOHLSMAN_SET,
             AILERON_TRIM_SET,
             ELEVATOR_TRIM_SET,
+            FLAPS_SET,
         };
         enum GROUPID
         {
@@ -159,6 +160,9 @@
 
             public Double aileronTrim;
             public Double elevatorTrim;
+
+            public Int64 flapMax;
+            public Int64 flapPosition;
         }
 
         public enum hSimconnect : int
@@ -263,6 +267,8 @@
             MsfsData.Instance.bindings[BindingKeys.ALT].SetMsfsValue(reader.planeAltitude);
             MsfsData.Instance.bindings[BindingKeys.KOHLSMAN].SetMsfsValue((Int64)Math.Round(reader.kohlsmanInHb * 100));
             MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM].SetMsfsValue((Int64)Math.Round(reader.elevatorTrim * 100));
+            MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].SetMsfsValue(reader.flapMax);
+            MsfsData.Instance.bindings[BindingKeys.FLAP].SetMsfsValue(reader.flapPosition);
 
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
@@ -411,6 +417,7 @@
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
             this.SendEvent(EVENTS.KOHLSMAN_SET, MsfsData.Instance.bindings[BindingKeys.KOHLSMAN]);
             this.SendEvent(EVENTS.ELEVATOR_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM]);
+            this.SendEvent(EVENTS.FLAPS_SET, MsfsData.Instance.bindings[BindingKeys.FLAP]);
 
 
 
@@ -445,6 +452,9 @@
                         break;
                     case EVENTS.ELEVATOR_TRIM_SET:
                         value = (UInt32)(binding.ControllerValue / 100f * 16383);
+                        break;
+                    case EVENTS.FLAPS_SET:
+                        value = (UInt32)(binding.ControllerValue * 16383 / MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue);
                         break;
                 }
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
@@ -569,8 +579,9 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "KOHLSMAN SETTING HG:1", "inHg", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AILERON TRIM PCT", "Number", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ELEVATOR TRIM PCT", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-
-
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "FLAPS NUM HANDLE POSITIONS", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "FLAPS HANDLE INDEX", "Number", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            
             //            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "AUTOPILOT ALTITUDE LOCK VAR", "Feet", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
@@ -623,6 +634,7 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KOHLSMAN_SET, "KOHLSMAN_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AILERON_TRIM_SET, "AILERON_TRIM_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ELEVATOR_TRIM_SET, "ELEVATOR_TRIM_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.FLAPS_SET, "FLAPS_SET");
             
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             //this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Writers);

@@ -6,13 +6,21 @@
 
     class FlapEncoder : DefaultEncoder
     {
-        public FlapEncoder() : base("Flap", "Current flap level", "Nav", true, 0, 100, 1) => this.max = MsfsData.Instance.MaxFlap - 1;
-        protected override void RunCommand(String actionParameter) => this.SetValue(0);
+        public FlapEncoder() : base("Flap", "Current flap level", "Nav", true, 0, 100, 1) {
+            var bind = new Binding(BindingKeys.MAX_FLAP);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
+            bind = new Binding(BindingKeys.FLAP);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
+        }
         protected override Int64 GetValue()
         {
-            this.max = MsfsData.Instance.MaxFlap - 1;
-            return MsfsData.Instance.CurrentFlap;
+            this.max = (Int32)this._bindings[0].ControllerValue;
+            return this._bindings[1].ControllerValue;
         }
-        protected override void SetValue(Int64 newValue) => MsfsData.Instance.CurrentFlap = (Int32)newValue;
-    }
+        protected override void RunCommand(String actionParameter) => this.SetValue(0);
+        protected override String GetDisplayValue() => this._bindings[1].ControllerValue.ToString();
+        protected override void SetValue(Int64 newValue) => this._bindings[1].SetControllerValue(newValue);
+}
 }

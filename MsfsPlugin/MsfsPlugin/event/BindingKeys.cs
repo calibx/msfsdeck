@@ -14,5 +14,7 @@ public enum BindingKeys
         ELEVATOR_TRIM,
         AP_ALT,
         ALT,
+        MAX_FLAP,
+        FLAP,
     }
 }
