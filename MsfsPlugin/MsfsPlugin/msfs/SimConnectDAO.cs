@@ -79,6 +79,7 @@
             AP_VS_VAR_SET_ENGLISH,
             KOHLSMAN_SET,
             AILERON_TRIM_SET,
+            ELEVATOR_TRIM_SET,
         };
         enum GROUPID
         {
@@ -261,8 +262,7 @@
             MsfsData.Instance.bindings[BindingKeys.AP_ALT].SetMsfsValue(reader.apAltitude);
             MsfsData.Instance.bindings[BindingKeys.ALT].SetMsfsValue(reader.planeAltitude);
             MsfsData.Instance.bindings[BindingKeys.KOHLSMAN].SetMsfsValue((Int64)Math.Round(reader.kohlsmanInHb * 100));
-
-            //MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM].SetMsfsValue(reader.elevatorTrim.ToString());
+            MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM].SetMsfsValue((Int64)Math.Round(reader.elevatorTrim * 100));
 
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
@@ -410,7 +410,8 @@
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
             this.SendEvent(EVENTS.KOHLSMAN_SET, MsfsData.Instance.bindings[BindingKeys.KOHLSMAN]);
-                        
+            this.SendEvent(EVENTS.ELEVATOR_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM]);
+
 
 
             if (MsfsData.Instance.ATC)
@@ -441,6 +442,9 @@
                         break;
                     case EVENTS.AP_ALT_VAR_SET_ENGLISH:
                         value = (UInt32)binding.ControllerValue;
+                        break;
+                    case EVENTS.ELEVATOR_TRIM_SET:
+                        value = (UInt32)(binding.ControllerValue / 100f * 16383);
                         break;
                 }
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
@@ -618,6 +622,7 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, "AP_VS_VAR_SET_ENGLISH");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KOHLSMAN_SET, "KOHLSMAN_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AILERON_TRIM_SET, "AILERON_TRIM_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ELEVATOR_TRIM_SET, "ELEVATOR_TRIM_SET");
             
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             //this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Writers);
