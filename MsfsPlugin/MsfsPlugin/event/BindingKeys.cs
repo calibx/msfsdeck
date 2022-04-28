@@ -21,6 +21,8 @@ public enum BindingKeys
         HEADING,
         MIXTURE,
         PROPELLER,
+        AP_SPEED,
+        SPEED,
 
     }
 }

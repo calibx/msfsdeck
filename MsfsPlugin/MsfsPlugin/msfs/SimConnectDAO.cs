@@ -290,6 +290,8 @@
             MsfsData.Instance.bindings[BindingKeys.MIXTURE].SetMsfsValue(reader.mixtureE1);
             MsfsData.Instance.bindings[BindingKeys.PROPELLER].SetMsfsValue((Int64)Math.Round(reader.propellerE1));
             MsfsData.Instance.bindings[BindingKeys.RUDDER_TRIM].SetMsfsValue((Int64)Math.Round(reader.rudderTrim * 100));
+            MsfsData.Instance.bindings[BindingKeys.AP_SPEED].SetMsfsValue(reader.apSpeed);
+            MsfsData.Instance.bindings[BindingKeys.SPEED].SetMsfsValue(reader.planeSpeed);
 
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
@@ -442,6 +444,7 @@
             this.SendEvent(EVENTS.HEADING_BUG_SET, MsfsData.Instance.bindings[BindingKeys.AP_HEADING]);
             this.SendEvent(EVENTS.AXIS_PROPELLER_SET, MsfsData.Instance.bindings[BindingKeys.PROPELLER]);
             this.SendEvent(EVENTS.RUDDER_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.RUDDER_TRIM]);
+            this.SendEvent(EVENTS.AP_SPD_VAR_SET, MsfsData.Instance.bindings[BindingKeys.AP_SPEED]);
 
             var writer = new Writers();
             if (MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerChanged)
@@ -496,6 +499,9 @@
                         value = (UInt32)Math.Round((binding.ControllerValue -50) * 16383 / 50f );
                         break;
                     case EVENTS.RUDDER_TRIM_SET:
+                        value = (UInt32)binding.ControllerValue;
+                        break;
+                    case EVENTS.AP_SPD_VAR_SET:
                         value = (UInt32)binding.ControllerValue;
                         break;
                 }
