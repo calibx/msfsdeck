@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     class MsfsData
     {
         private readonly List<Notifiable> notifiables = new List<Notifiable>();
@@ -19,7 +18,7 @@
         public Boolean DEBUG { get; set; }
         public Int16 PushbackFromMSFS { get; set; }
         public Int16 PushbackClick { get; set; }
-        public Int16 Pushback { get => this.PushbackFromMSFS;}
+        public Int16 Pushback { get => this.PushbackFromMSFS; }
         public Int16 PushbackLeft { get; set; }
         public Int16 PushbackRight { get; set; }
         public Boolean LandingLightState { get; set; }
@@ -62,14 +61,14 @@
         public Int32 MaxFlap { get; set; }
         public Byte GearOverSpeed { get; set; }
         public Byte GearRetractable { get; set; }
-/*        public Int16 Barometer { get => this.BarometerFromMSFS; set { this.BarometerFromMSFS = value; this.SetToMSFS = true; } }
-        public Int16 BarometerFromMSFS { get; set; }*/
+        /*        public Int16 Barometer { get => this.BarometerFromMSFS; set { this.BarometerFromMSFS = value; this.SetToMSFS = true; } }
+                public Int16 BarometerFromMSFS { get; set; }*/
         public Int32 CurrentGearHandle { get => this.CurrentGearHandleFromMSFS; set { this.CurrentGearHandleFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentGearHandleFromMSFS { get; set; }
         public Double GearFront { get; set; }
         public Double GearLeft { get; set; }
         public Double GearRight { get; set; }
-        public Int32 CurrentAPHeading{ get; set; }
+        public Int32 CurrentAPHeading { get; set; }
         public Int32 CurrentAPHeadingState { get; set; }
         public Boolean ApSwitch { get; set; }
         public Boolean ApSwitchState { get; set; }

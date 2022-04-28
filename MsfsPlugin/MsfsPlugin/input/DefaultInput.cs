@@ -11,7 +11,8 @@
         protected Binding _binding;
         public DefaultInput(String name, String desc, String category) : base(name, desc, category) => MsfsData.Instance.Register(this);
 
-        public void Notify() {
+        public void Notify()
+        {
             if (this._binding != null && this._binding.Key != null)
             {
                 if (this._binding.HasMSFSChanged())
@@ -19,7 +20,8 @@
                     Debug.WriteLine("Refesh " + this._binding.Key);
                     this.ActionImageChanged();
                     this._binding.SetMsfsValue(this._binding.MsfsValue);
-                } else
+                }
+                else
                 {
                     Debug.WriteLine("Skipping " + this._binding.Key);
                 }

@@ -1,14 +1,9 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
+    using System;
 
     public class Binding
-{
+    {
         private Int64 _MSFSPreviousValue;
         private Int64 _ControllerPreviousValue;
         public Int64 ControllerValue { get; set; }

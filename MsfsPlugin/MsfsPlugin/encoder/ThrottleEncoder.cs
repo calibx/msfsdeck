@@ -5,7 +5,8 @@
     using Loupedeck.MsfsPlugin.encoder;
     class ThrottleEncoder : DefaultEncoder
     {
-        public ThrottleEncoder() : base("Throttle", "Current throttle", "Nav", true, 0, 100, 1) {
+        public ThrottleEncoder() : base("Throttle", "Current throttle", "Nav", true, 0, 100, 1)
+        {
             var bind = new Binding(BindingKeys.MIN_THROTTLE);
             this._bindings.Add(bind);
             MsfsData.Instance.Register(bind);

@@ -1,7 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using System;
-    using System.Diagnostics;
 
     using Loupedeck.MsfsPlugin.input;
     class GearInput : DefaultInput

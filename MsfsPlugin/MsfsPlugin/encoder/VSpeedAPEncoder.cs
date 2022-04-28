@@ -6,7 +6,8 @@
 
     class VSpeedAPEncoder : DefaultEncoder
     {
-        public VSpeedAPEncoder() : base("VS", "Autopilot VS encoder", "AP", true, -10000, 10000, 100) {
+        public VSpeedAPEncoder() : base("VS", "Autopilot VS encoder", "AP", true, -10000, 10000, 100)
+        {
             var bind = new Binding(BindingKeys.AP_VSPEED);
             this._bindings.Add(bind);
             MsfsData.Instance.Register(bind);

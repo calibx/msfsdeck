@@ -6,7 +6,8 @@
 
     class FlapEncoder : DefaultEncoder
     {
-        public FlapEncoder() : base("Flap", "Current flap level", "Nav", true, 0, 100, 1) {
+        public FlapEncoder() : base("Flap", "Current flap level", "Nav", true, 0, 100, 1)
+        {
             var bind = new Binding(BindingKeys.MAX_FLAP);
             this._bindings.Add(bind);
             MsfsData.Instance.Register(bind);
@@ -21,5 +22,5 @@
         }
         protected override void RunCommand(String actionParameter) => this.SetValue(0);
         protected override void SetValue(Int64 newValue) => this._bindings[1].SetControllerValue(newValue);
-}
+    }
 }

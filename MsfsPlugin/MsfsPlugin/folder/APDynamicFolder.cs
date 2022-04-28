@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     public class APDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -151,7 +150,7 @@
                     MsfsData.Instance.ApVSHoldSwitch = !MsfsData.Instance.ApVSHoldSwitch;
                     break;
                 case "Altitude Reset":
-                    MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude/ 100d, 0) * 100);
+                    MsfsData.Instance.CurrentAPAltitude = (Int32)(Math.Round(MsfsData.Instance.CurrentAltitude / 100d, 0) * 100);
                     MsfsData.Instance.SetToMSFS = true;
                     break;
                 case "Heading Reset":
@@ -159,7 +158,7 @@
                     MsfsData.Instance.SetToMSFS = true;
                     break;
                 case "Speed Reset":
-                    MsfsData.Instance.CurrentAPSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentSpeed/ 100d, 0) * 100);
+                    MsfsData.Instance.CurrentAPSpeed = (Int32)(Math.Round(MsfsData.Instance.CurrentSpeed / 100d, 0) * 100);
                     MsfsData.Instance.SetToMSFS = true;
                     break;
                 case "VS Speed Reset":

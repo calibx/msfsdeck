@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading;
 
     public class ATCDynamicFolder : PluginDynamicFolder, Notifiable
     {

@@ -5,7 +5,8 @@
     using Loupedeck.MsfsPlugin.encoder;
     class SpoilerEncoder : DefaultEncoder
     {
-        public SpoilerEncoder() : base("Spoiler", "Spoiler position", "Nav", true, 0, 100, 1) {
+        public SpoilerEncoder() : base("Spoiler", "Spoiler position", "Nav", true, 0, 100, 1)
+        {
             var bind = new Binding(BindingKeys.SPOILER);
             this._bindings.Add(bind);
             MsfsData.Instance.Register(bind);

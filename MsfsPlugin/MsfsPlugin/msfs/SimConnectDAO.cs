@@ -2,11 +2,8 @@
 {
     using System;
     using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
-    
     using System.Diagnostics;
+    using System.Runtime.InteropServices;
 
     using Microsoft.FlightSimulator.SimConnect;
 
@@ -43,7 +40,7 @@
             PITOT_HEAT_SET,
             TOGGLE_PUSHBACK,
             KEY_TUG_HEADING,
-            TUG_DISABLE, 
+            TUG_DISABLE,
             NAV_LIGHTS_SET,
             LANDING_LIGHTS_SET,
             BEACON_LIGHTS_SET,
@@ -279,8 +276,8 @@
             MsfsData.Instance.GearRight = reader.gearRightPos;
             MsfsData.Instance.GearRetractable = (Byte)reader.gearRetractable;
             MsfsData.Instance.EngineType = (Int32)reader.engineType;
-            
-            
+
+
             MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On);
             MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM].SetMsfsValue((Int64)Math.Round(reader.aileronTrim * 100));
             MsfsData.Instance.bindings[BindingKeys.AP_ALT].SetMsfsValue(reader.apAltitude);
@@ -380,21 +377,23 @@
                 if (MsfsData.Instance.Pause)
                 {
                     this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_ON, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                } else
+                }
+                else
                 {
                     this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_OFF, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 }
 
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PITOT_HEAT_SET, (UInt32)(MsfsData.Instance.CurrentPitot ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 
-/*                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.HEADING_BUG_SET, (UInt32)MsfsData.Instance.CurrentAPHeading, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_SPD_VAR_SET, (UInt32)MsfsData.Instance.CurrentAPSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_VS_VAR_SET_ENGLISH, (UInt32)MsfsData.Instance.CurrentAPVerticalSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-*/
-                
+                /*                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.HEADING_BUG_SET, (UInt32)MsfsData.Instance.CurrentAPHeading, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_SPD_VAR_SET, (UInt32)MsfsData.Instance.CurrentAPSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_VS_VAR_SET_ENGLISH, (UInt32)MsfsData.Instance.CurrentAPVerticalSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                */
+
                 MsfsData.Instance.SetToMSFS = false;
                 delay = true;
-            } else
+            }
+            else
             {
                 if (!delay)
                 {
@@ -409,11 +408,11 @@
                 }
                 delay = false;
             }
-            
-/*            this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_SHUTDOWN, 0);
-            this.SendEvent(MsfsData.Instance.EngineAutoOn, EVENTS.ENGINE_AUTO_START, 0);
-*/
-            this.SendEvent(MsfsData.Instance.NavigationLight, EVENTS.NAV_LIGHTS_SET, MsfsData.Instance.NavigationLightState ? 0:1 );
+
+            /*            this.SendEvent(MsfsData.Instance.EngineAutoOff, EVENTS.ENGINE_AUTO_SHUTDOWN, 0);
+                        this.SendEvent(MsfsData.Instance.EngineAutoOn, EVENTS.ENGINE_AUTO_START, 0);
+            */
+            this.SendEvent(MsfsData.Instance.NavigationLight, EVENTS.NAV_LIGHTS_SET, MsfsData.Instance.NavigationLightState ? 0 : 1);
             this.SendEvent(MsfsData.Instance.LandingLight, EVENTS.LANDING_LIGHTS_SET, MsfsData.Instance.LandingLightState ? 0 : 1);
             this.SendEvent(MsfsData.Instance.BeaconLight, EVENTS.BEACON_LIGHTS_SET, MsfsData.Instance.BeaconLightState ? 0 : 1);
             this.SendEvent(MsfsData.Instance.TaxiLight, EVENTS.TAXI_LIGHTS_SET, MsfsData.Instance.TaxiLightState ? 0 : 1);
@@ -460,11 +459,12 @@
             if (MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].MsfsValue == 1)
             {
                 this.SendEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO]);
-            } else
+            }
+            else
             {
                 this.SendEvent(EVENTS.ENGINE_AUTO_START, MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO]);
             }
-            
+
             var writer = new Writers();
             if (MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerChanged)
             {
@@ -509,13 +509,13 @@
                         value = (UInt32)(binding.ControllerValue / 100f * 16383);
                         break;
                     case EVENTS.FLAPS_SET:
-                        value = (UInt32)(binding.ControllerValue * 16383 / MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue);
+                        value = (UInt32)(binding.ControllerValue * 16383 / (MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue == 0 ? 1 : MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue));
                         break;
                     case EVENTS.HEADING_BUG_SET:
                         value = (UInt32)binding.ControllerValue;
                         break;
                     case EVENTS.AXIS_PROPELLER_SET:
-                        value = (UInt32)Math.Round((binding.ControllerValue -50) * 16383 / 50f );
+                        value = (UInt32)Math.Round((binding.ControllerValue - 50) * 16383 / 50f);
                         break;
                     case EVENTS.RUDDER_TRIM_SET:
                         value = (UInt32)binding.ControllerValue;
@@ -635,7 +635,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT VERTICAL HOLD VAR", "Feet per minute", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT AIRSPEED HOLD VAR", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ENG COMBUSTION:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
+
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT NAV", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT BEACON", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT LANDING", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -664,7 +664,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "RUDDER TRIM PCT", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "SPOILERS HANDLE POSITION", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GENERAL ENG THROTTLE LEVER POSITION:1", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
+
 
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -726,7 +726,7 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.RUDDER_TRIM_SET, "RUDDER_TRIM_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AXIS_SPOILER_SET, "AXIS_SPOILER_SET");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.THROTTLE_SET, "THROTTLE_SET");
-            
+
 
 
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);

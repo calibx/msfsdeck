@@ -6,7 +6,8 @@
 
     class ElevatorTrimEncoder : DefaultEncoder
     {
-        public ElevatorTrimEncoder() : base("Elevator Trim", "Elevator trim encoder", "Nav", true, -100, 100, 1) { 
+        public ElevatorTrimEncoder() : base("Elevator Trim", "Elevator trim encoder", "Nav", true, -100, 100, 1)
+        {
             var bind = new Binding(BindingKeys.ELEVATOR_TRIM);
             this._bindings.Add(bind);
             MsfsData.Instance.Register(bind);

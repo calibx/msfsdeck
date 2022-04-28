@@ -5,8 +5,9 @@
     using Loupedeck.MsfsPlugin.encoder;
 
     class BarometerEncoder : DefaultEncoder
-    { 
-        public BarometerEncoder() : base("Baro", "Barometer encoder", "Nav", true, 2799, 3201, 1) {
+    {
+        public BarometerEncoder() : base("Baro", "Barometer encoder", "Nav", true, 2799, 3201, 1)
+        {
             var bind = new Binding(BindingKeys.KOHLSMAN);
             this._bindings.Add(bind);
             MsfsData.Instance.Register(bind);
@@ -17,5 +18,5 @@
         protected override void SetValue(Int64 newValue) => this._bindings[0].SetControllerValue(newValue);
 
 
-}
+    }
 }

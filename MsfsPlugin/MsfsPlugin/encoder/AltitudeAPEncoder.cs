@@ -6,7 +6,8 @@
 
     class AltitudeAPEncoder : DefaultEncoder
     {
-        public AltitudeAPEncoder() : base("Alt", "Autopilot altitude encoder", "AP", true, -10000, 99900, 100) {
+        public AltitudeAPEncoder() : base("Alt", "Autopilot altitude encoder", "AP", true, -10000, 99900, 100)
+        {
             var bind = new Binding(BindingKeys.AP_ALT);
             this._bindings.Add(bind);
             MsfsData.Instance.Register(bind);

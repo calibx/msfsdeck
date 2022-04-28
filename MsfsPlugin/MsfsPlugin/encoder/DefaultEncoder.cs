@@ -36,7 +36,7 @@
         }
         public void Notify()
         {
-            foreach  (Binding binding in this._bindings)
+            foreach (Binding binding in this._bindings)
             {
                 if (binding.HasMSFSChanged())
                 {
