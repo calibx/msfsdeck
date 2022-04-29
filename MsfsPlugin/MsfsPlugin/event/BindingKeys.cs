@@ -26,5 +26,10 @@
         PAUSE,
         PITOT,
         CONNECTION,
+        GEAR_FRONT,
+        GEAR_LEFT,
+        GEAR_RIGHT,
+        GEAR_RETRACTABLE,
     }
 }
+

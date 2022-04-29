@@ -21,10 +21,6 @@
                     binding.Reset();
                     this.ActionImageChanged();
                 }
-                else
-                {
-                    Debug.WriteLine("Skipping " + binding.Key);
-                }
             }
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize) => this.GetValue();

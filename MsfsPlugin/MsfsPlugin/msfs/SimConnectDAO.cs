@@ -26,7 +26,7 @@
         }
         enum EVENTS
         {
-            GEAR_SET,
+            GEAR_TOGGLE,
             PARKING_BRAKE,
             ENGINE_AUTO_START,
             ENGINE_AUTO_SHUTDOWN,
@@ -232,10 +232,6 @@
             var delay = true;
             var reader = (Readers)data.dwData[0];
             MsfsData.Instance.AircraftName = reader.title;
-            MsfsData.Instance.GearFront = reader.gearCenterPos;
-            MsfsData.Instance.GearLeft = reader.gearLeftPos;
-            MsfsData.Instance.GearRight = reader.gearRightPos;
-            MsfsData.Instance.GearRetractable = (Byte)reader.gearRetractable;
             MsfsData.Instance.EngineType = (Int32)reader.engineType;
 
             MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On);
@@ -259,6 +255,12 @@
             MsfsData.Instance.bindings[BindingKeys.VSPEED].SetMsfsValue((Int64)Math.Round(reader.planeVSpeed * 60));
             MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES].SetMsfsValue(reader.parkingBrake);
             MsfsData.Instance.bindings[BindingKeys.PITOT].SetMsfsValue(reader.pitot);
+
+
+            MsfsData.Instance.bindings[BindingKeys.GEAR_RETRACTABLE].SetMsfsValue(reader.gearRetractable);
+            MsfsData.Instance.bindings[BindingKeys.GEAR_FRONT].SetMsfsValue((Int64)Math.Round(reader.gearCenterPos * 10));
+            MsfsData.Instance.bindings[BindingKeys.GEAR_LEFT].SetMsfsValue((Int64)Math.Round(reader.gearLeftPos * 10));
+            MsfsData.Instance.bindings[BindingKeys.GEAR_RIGHT].SetMsfsValue((Int64)Math.Round(reader.gearRightPos * 10));
 
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
@@ -329,7 +331,6 @@
 
             if (MsfsData.Instance.SetToMSFS)
             {
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR_SET, (UInt32)MsfsData.Instance.CurrentGearHandle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                 MsfsData.Instance.SetToMSFS = false;
                 delay = true;
             }
@@ -393,6 +394,7 @@
             this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED]);
             this.SendEvent(EVENTS.PARKING_BRAKE, MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES]);
             this.SendEvent(EVENTS.PITOT_HEAT_TOGGLE, MsfsData.Instance.bindings[BindingKeys.PITOT]);
+            this.SendEvent(EVENTS.GEAR_TOGGLE, MsfsData.Instance.bindings[BindingKeys.GEAR_FRONT]);
 
             if (MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].MsfsValue == 1)
             {
@@ -494,6 +496,9 @@
                         value = (UInt32)binding.ControllerValue;
                         break;
                     case EVENTS.PITOT_HEAT_TOGGLE:
+                        value = (UInt32)binding.ControllerValue;
+                        break;
+                    case EVENTS.GEAR_TOGGLE:
                         value = (UInt32)binding.ControllerValue;
                         break;
                 }
@@ -638,7 +643,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:4", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_TOGGLE, "GEAR_TOGGLE");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKES");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_START, "ENGINE_AUTO_START");
