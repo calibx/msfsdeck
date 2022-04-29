@@ -277,7 +277,6 @@
             MsfsData.Instance.GearRetractable = (Byte)reader.gearRetractable;
             MsfsData.Instance.EngineType = (Int32)reader.engineType;
 
-
             MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On);
             MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM].SetMsfsValue((Int64)Math.Round(reader.aileronTrim * 100));
             MsfsData.Instance.bindings[BindingKeys.AP_ALT].SetMsfsValue(reader.apAltitude);
@@ -297,7 +296,8 @@
             MsfsData.Instance.bindings[BindingKeys.THROTTLE].SetMsfsValue((Int64)Math.Round(reader.throttle * 100));
             MsfsData.Instance.bindings[BindingKeys.AP_VSPEED].SetMsfsValue(reader.apVSpeed);
             MsfsData.Instance.bindings[BindingKeys.VSPEED].SetMsfsValue((Int64)Math.Round(reader.planeVSpeed * 60));
-
+            MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES].SetMsfsValue(reader.parkingBrake);
+            
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
             MsfsData.Instance.E3N1 = (Int32)reader.E3N1;
@@ -311,10 +311,10 @@
             MsfsData.Instance.FuelTimeLeft = (Int32)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600);
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)reader.pushback;
-            MsfsData.Instance.CurrentHeading = (Int32)reader.planeHeading;
+/*            MsfsData.Instance.CurrentHeading = (Int32)reader.planeHeading;
             MsfsData.Instance.CurrentSpeed = (Int32)reader.planeSpeed;
             MsfsData.Instance.CurrentVerticalSpeed = (Int32)(reader.planeVSpeed * 60f);
-
+*/
             MsfsData.Instance.ApNextWPDist = reader.wpDistance * 0.00053996f;
             MsfsData.Instance.ApNextWPETE = (Int32)reader.wpETE;
             MsfsData.Instance.ApNextWPHeading = reader.wpBearing;
@@ -372,7 +372,7 @@
             if (MsfsData.Instance.SetToMSFS)
             {
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR_SET, (UInt32)MsfsData.Instance.CurrentGearHandle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, (UInt32)(MsfsData.Instance.CurrentBrakes ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                //this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, (UInt32)(MsfsData.Instance.CurrentBrakes ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 
                 if (MsfsData.Instance.Pause)
                 {
@@ -397,7 +397,7 @@
             {
                 if (!delay)
                 {
-                    MsfsData.Instance.CurrentBrakesFromMSFS = reader.parkingBrake == 1;
+                    //MsfsData.Instance.CurrentBrakesFromMSFS = reader.parkingBrake == 1;
                     MsfsData.Instance.CurrentAPHeadingState = (Int32)reader.apHeading;
                     MsfsData.Instance.CurrentAPSpeedState = (Int32)reader.apSpeed;
                     MsfsData.Instance.CurrentAPVerticalSpeedState = (Int32)reader.apVSpeed;
@@ -452,6 +452,7 @@
             this.SendEvent(EVENTS.AXIS_SPOILER_SET, MsfsData.Instance.bindings[BindingKeys.SPOILER]);
             this.SendEvent(EVENTS.THROTTLE_SET, MsfsData.Instance.bindings[BindingKeys.THROTTLE]);
             this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED]);
+            this.SendEvent(EVENTS.PARKING_BRAKE, MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES]);
 
             if (MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].MsfsValue == 1)
             {
@@ -533,6 +534,9 @@
                         value = (UInt32)binding.ControllerValue;
                         break;
                     case EVENTS.ENGINE_AUTO_START:
+                        value = (UInt32)binding.ControllerValue;
+                        break;
+                    case EVENTS.PARKING_BRAKE:
                         value = (UInt32)binding.ControllerValue;
                         break;
                 }
@@ -667,7 +671,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:4", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_SET, "GEAR_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKE_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKES");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_START, "ENGINE_AUTO_START");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_ON, "PAUSE_ON");

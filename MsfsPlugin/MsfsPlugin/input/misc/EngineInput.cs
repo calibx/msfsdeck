@@ -7,15 +7,16 @@
     {
         public EngineInput() : base("AutoEngine", "Engine auto on/off", "Misc")
         {
-            this._binding = new Binding(BindingKeys.ENGINE_AUTO);
-            MsfsData.Instance.Register(this._binding);
+            var bind = new Binding(BindingKeys.ENGINE_AUTO);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
         }
-        protected override void ChangeValue() => this._binding.SetControllerValue(1);
+        protected override void ChangeValue() => this._bindings[0].SetControllerValue(1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (this._binding.MsfsValue == 1)
+                if (this._bindings[0].MsfsValue == 1)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
                 }

@@ -44,7 +44,8 @@
                     Debug.WriteLine("Refresh " + binding.Key);
                     binding.Reset();
                     this.AdjustmentValueChanged();
-                } else
+                }
+                if (MsfsData.Instance.refreshLimiter > 5)
                 {
                     Debug.WriteLine("Refresh discarded " + binding.Key);
                 }
