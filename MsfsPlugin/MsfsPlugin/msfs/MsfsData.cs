@@ -120,7 +120,14 @@
 
         public void Register(Notifiable notif) => this.notifiables.Add(notif);
 
-        public void Register(Binding binding) => this.bindings.Add(binding.Key, binding);
+        public Binding Register(Binding binding)
+        {
+            if (!this.bindings.ContainsKey(binding.Key))
+            {
+                this.bindings.Add(binding.Key, binding);
+            }
+            return this.bindings[binding.Key];
+        } 
 
         public void Changed()
         {
