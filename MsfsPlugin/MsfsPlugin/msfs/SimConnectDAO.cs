@@ -255,12 +255,13 @@
             MsfsData.Instance.bindings[BindingKeys.VSPEED].SetMsfsValue((Int64)Math.Round(reader.planeVSpeed * 60));
             MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES].SetMsfsValue(reader.parkingBrake);
             MsfsData.Instance.bindings[BindingKeys.PITOT].SetMsfsValue(reader.pitot);
-
-
             MsfsData.Instance.bindings[BindingKeys.GEAR_RETRACTABLE].SetMsfsValue(reader.gearRetractable);
             MsfsData.Instance.bindings[BindingKeys.GEAR_FRONT].SetMsfsValue((Int64)Math.Round(reader.gearCenterPos * 10));
             MsfsData.Instance.bindings[BindingKeys.GEAR_LEFT].SetMsfsValue((Int64)Math.Round(reader.gearLeftPos * 10));
             MsfsData.Instance.bindings[BindingKeys.GEAR_RIGHT].SetMsfsValue((Int64)Math.Round(reader.gearRightPos * 10));
+            MsfsData.Instance.bindings[BindingKeys.FUEL_FLOW].SetMsfsValue((Int64)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH));
+            MsfsData.Instance.bindings[BindingKeys.FUEL_PERCENT].SetMsfsValue((Int64)(reader.fuelQuantity * 100 / reader.fuelCapacity));
+            MsfsData.Instance.bindings[BindingKeys.FUEL_TIME_LEFT].SetMsfsValue((Int64)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600));
 
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
@@ -270,9 +271,6 @@
             MsfsData.Instance.E1Rpm = (Int32)reader.ENG1N1RPM;
             MsfsData.Instance.E2Rpm = (Int32)reader.ENG2N1RPM;
 
-            MsfsData.Instance.FuelPercent = (Int32)(reader.fuelQuantity * 100 / reader.fuelCapacity);
-            MsfsData.Instance.FuelFlow = (Int32)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH);
-            MsfsData.Instance.FuelTimeLeft = (Int32)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600);
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)reader.pushback;
             MsfsData.Instance.ApNextWPDist = reader.wpDistance * 0.00053996f;

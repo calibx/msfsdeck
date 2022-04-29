@@ -30,6 +30,9 @@
         GEAR_LEFT,
         GEAR_RIGHT,
         GEAR_RETRACTABLE,
+        FUEL_FLOW,
+        FUEL_PERCENT,
+        FUEL_TIME_LEFT,
     }
 }
 
