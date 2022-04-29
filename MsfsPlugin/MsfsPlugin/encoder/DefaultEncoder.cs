@@ -42,7 +42,7 @@
                 {
                     MsfsData.Instance.refreshLimiter++;
                     Debug.WriteLine("Refresh " + binding.Key);
-                    //binding.Reset();
+                    binding.Reset();
                     this.AdjustmentValueChanged();
                 }
                 if (MsfsData.Instance.refreshLimiter > 5)

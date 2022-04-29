@@ -18,7 +18,7 @@
                 if (binding.HasMSFSChanged())
                 {
                     Debug.WriteLine("Refresh " + binding.Key);
-                    //binding.Reset();
+                    binding.Reset();
                     this.ActionImageChanged();
                 }
             }

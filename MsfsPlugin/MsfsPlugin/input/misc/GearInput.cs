@@ -24,9 +24,9 @@
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (this._bindings[0].MsfsValue == 1)
+                if (this._bindings[0].ControllerValue == 1)
                 {
-                    if (this._bindings[1].MsfsValue == 0 || this._bindings[1].MsfsValue == 10)
+                    if (this._bindings[1].ControllerValue == 0 || this._bindings[1].ControllerValue == 10)
                     {
                         bitmapBuilder.DrawText("\t" + this.GetDisplay(this._bindings[1].MsfsValue) + "\n" + this.GetDisplay(this._bindings[2].MsfsValue) + "\t" + this.GetDisplay(this._bindings[3].MsfsValue), BitmapColor.White);
                     }

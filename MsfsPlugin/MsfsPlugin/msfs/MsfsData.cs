@@ -138,13 +138,6 @@
                     notifiable.Notify();
                 }
                 this.refreshLimiter = 0;
-                foreach (Binding binding in this.bindings.Values)
-                {
-                    if (binding.HasMSFSChanged())
-                    {
-                        binding.Reset();
-                    }
-                }
             }
         }
     }
