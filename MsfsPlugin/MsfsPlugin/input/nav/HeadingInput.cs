@@ -6,10 +6,13 @@
 
     class HeadingInput : DefaultInput
     {
-        public HeadingInput() : base("Heading", "Display current and AP heading", "Nav") { }
-        protected override String GetValue() => "Head\n" + MsfsData.Instance.CurrentHeading + "\n[" + MsfsData.Instance.CurrentAPHeadingState + "]";
-        protected override void ChangeValue() => MsfsData.Instance.CurrentAPHeading = MsfsData.Instance.CurrentHeading;
+        public HeadingInput() : base("Heading", "Display current and AP heading", "Nav") {
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_HEADING)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.HEADING)));
+        }
+        protected override String GetValue() => "Head\n[" + this._bindings[0].ControllerValue + "]\n" + this._bindings[1].ControllerValue;
 
+        protected override void ChangeValue() => this._bindings[0].SetControllerValue(this._bindings[1].ControllerValue);
     }
 }
 

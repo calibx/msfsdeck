@@ -13,7 +13,6 @@
             MsfsData.Instance.Register(bind);
         }
         protected override String GetValue() => this._bindings[0].MsfsValue == 1 ? "Connected" : this._bindings[0].MsfsValue == 2 ? "Trying to connect" : "Disconnected";
-
     }
 }
 
