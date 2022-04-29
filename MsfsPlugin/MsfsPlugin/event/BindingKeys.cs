@@ -24,5 +24,6 @@
         VSPEED,
         PARKING_BRAKES,
         PAUSE,
+        PITOT,
     }
 }
