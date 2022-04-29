@@ -8,7 +8,6 @@
         public GearInput() : base("Gear", "Display gears state", "Misc") { }
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
-            MsfsData.Instance.ValuesDisplayed = true;
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
                 if (MsfsData.Instance.GearRetractable == 1)

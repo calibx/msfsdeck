@@ -25,5 +25,6 @@
         PARKING_BRAKES,
         PAUSE,
         PITOT,
+        CONNECTION,
     }
 }

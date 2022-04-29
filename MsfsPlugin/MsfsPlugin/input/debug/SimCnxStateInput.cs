@@ -6,16 +6,13 @@
     using Loupedeck.MsfsPlugin.msfs;
     class SimCnxStateInput : DefaultInput
     {
-        private Boolean heartbeat;
-        public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug") { }
-
-        protected override String GetValue()
+       public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug")
         {
-            this.heartbeat = !this.heartbeat;
-            return (MsfsData.Instance.SimConnected ? "Connected" : MsfsData.Instance.SimTryConnect ? "Trying to connect" : "Disconnected") + (this.heartbeat ? "\n..." : "\n. .");
+            var bind = new Binding(BindingKeys.CONNECTION);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
         }
-
-        protected override void ChangeValue() => SimConnectDAO.Instance.Connect(this.Plugin);
+        protected override String GetValue() => this._bindings[0].MsfsValue == 1 ? "Connected" : this._bindings[0].MsfsValue == 2 ? "Trying to connect" : "Disconnected";
 
     }
 }

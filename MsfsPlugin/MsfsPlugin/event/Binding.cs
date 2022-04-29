@@ -1,6 +1,8 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using System;
+       
+    using Loupedeck.MsfsPlugin.msfs;
 
     public class Binding
     {
@@ -28,6 +30,7 @@
             this.ControllerChanged = true;
             this._ControllerPreviousValue = this.ControllerValue;
             this.ControllerValue = newValue;
+            SimConnectDAO.Instance.Connect();
         }
         public void Reset()
         {

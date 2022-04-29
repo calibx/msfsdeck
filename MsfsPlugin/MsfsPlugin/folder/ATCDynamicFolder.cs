@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Loupedeck.MsfsPlugin.msfs;
 
     public class ATCDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -11,14 +12,13 @@
             this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.EncoderArea;
             MsfsData.Instance.Register(this);
-
+            SimConnectDAO.Instance.setPlugin(this.Plugin);
         }
         public override IEnumerable<String> GetButtonPressActionNames()
         {
             return new[]
             {
                 this.CreateCommandName("Open/Close"),
-                //this.CreateCommandName("Close"),
                 this.CreateCommandName("0"),
                 this.CreateCommandName("1"),
                 this.CreateCommandName("2"),

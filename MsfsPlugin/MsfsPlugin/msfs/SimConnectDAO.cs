@@ -9,20 +9,15 @@
 
     public class SimConnectDAO
     {
-        // Singleton
         private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
         public static SimConnectDAO Instance => lazy.Value;
 
-        /// User-defined win32 event
         public const Int32 WM_USER_SIMCONNECT = 0x0402;
         private const UInt32 TUG_ANGLE = 4294967295;
 
-        /// SimConnect object
         private SimConnect m_oSimConnect = null;
 
         private Plugin pluginForKey;
-
-        public ObservableCollection<string> lErrorMessages { get; private set; }
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
         private enum DATA_REQUESTS
@@ -83,17 +78,11 @@
             AXIS_SPOILER_SET,
             THROTTLE_SET,
         };
-        enum GROUPID
-        {
-            SIMCONNECT_GROUP_PRIORITY_DEFAULT = 2000000000,
-        };
-
         private enum DEFINITIONS
         {
             Readers,
             Writers,
         }
-
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         private struct Readers
@@ -187,85 +176,56 @@
         {
             group1
         }
-        private SimConnectDAO()
-        {
-            lock (timer)
-            {
-                if (!MsfsData.Instance.SimConnected && !MsfsData.Instance.SimTryConnect)
-                {
-                    this.lErrorMessages = new ObservableCollection<string>();
 
-                    timer.Interval = 2000;
-                    timer.Elapsed += Refresh;
-                    timer.Enabled = true;
+        private SimConnectDAO() { }
+        public static void Refresh(Object source, EventArgs e) => Instance.OnTick();
+        public void setPlugin(Plugin plugin) => this.pluginForKey = plugin;
+
+        public void Connect()
+        {
+            if (MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 0)
+            {
+                Debug.WriteLine("Trying cnx");
+                MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(2);
+                try
+                {
+                    this.m_oSimConnect = new SimConnect("MSFS Plugin", new IntPtr(0), WM_USER_SIMCONNECT, null, 0);
+                    this.m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(this.SimConnect_OnRecvOpen);
+                    this.m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(this.SimConnect_OnRecvSimobjectDataBytype);
+                    MsfsData.Instance.Changed();
+                    this.AddRequest();
+                    lock (timer)
+                    {
+                        timer.Interval = 200;
+                        timer.Elapsed += Refresh;
+                        timer.Enabled = true;
+                    }
+                }
+                catch (COMException ex)
+                {
+                    Debug.WriteLine(ex);
+                    MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
                 }
             }
-        }
-        public static void Refresh(Object source, EventArgs e) => Instance.OnTick();
-
-
-        public void Connect(Plugin plugin)
-        {
-            Debug.WriteLine("Trying cnx");
-            this.pluginForKey = plugin;
-            MsfsData.Instance.SimTryConnect = true;
-            MsfsData.Instance.SimConnected = false;
-            try
-            {
-                this.m_oSimConnect = new SimConnect("Simconnect - Simvar test", new IntPtr(0), WM_USER_SIMCONNECT, null, 0);
-                this.m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(this.SimConnect_OnRecvOpen);
-                this.m_oSimConnect.OnRecvQuit += new SimConnect.RecvQuitEventHandler(this.SimConnect_OnRecvQuit);
-                this.m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(this.SimConnect_OnRecvException);
-                this.m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(this.SimConnect_OnRecvSimobjectDataBytype);
-            }
-            catch (COMException ex)
-            {
-                Debug.WriteLine(ex);
-                MsfsData.Instance.SimTryConnect = false;
-                MsfsData.Instance.SimConnected = false;
-            }
-            MsfsData.Instance.Changed();
-            this.AddRequest();
         }
         public void Disconnect()
         {
             timer.Enabled = false;
-            if (m_oSimConnect != null)
+            if (this.m_oSimConnect != null)
             {
-                m_oSimConnect.Dispose();
-                m_oSimConnect = null;
+                this.m_oSimConnect.Dispose();
+                this.m_oSimConnect = null;
             }
 
-            MsfsData.Instance.SimConnected = false;
-            MsfsData.Instance.SimTryConnect = false;
+            MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
             MsfsData.Instance.Changed();
-
         }
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
             Debug.WriteLine("Cnx opened");
-            MsfsData.Instance.SimConnected = true;
-            MsfsData.Instance.SimTryConnect = false;
+            MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(1);
             timer.Interval = 200;
         }
-
-        /// The case where the user closes game
-        private void SimConnect_OnRecvQuit(SimConnect sender, SIMCONNECT_RECV data)
-        {
-            Console.WriteLine("SimConnect_OnRecvQuit");
-            Console.WriteLine("KH has exited");
-
-            this.Disconnect();
-        }
-
-        private void SimConnect_OnRecvException(SimConnect sender, SIMCONNECT_RECV_EXCEPTION data)
-        {
-            var eException = (SIMCONNECT_EXCEPTION)data.dwException;
-            Console.WriteLine("SimConnect_OnRecvException: " + eException.ToString());
-
-            lErrorMessages.Add("SimConnect : " + eException.ToString());
-        }
-
         private void SimConnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
             Debug.WriteLine("Received Data");
@@ -370,8 +330,6 @@
             if (MsfsData.Instance.SetToMSFS)
             {
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR_SET, (UInt32)MsfsData.Instance.CurrentGearHandle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                //this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PITOT_HEAT_SET, (UInt32)(MsfsData.Instance.CurrentPitot ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-
                 MsfsData.Instance.SetToMSFS = false;
                 delay = true;
             }
@@ -589,8 +547,19 @@
 
         private void OnTick()
         {
-            m_oSimConnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-            m_oSimConnect?.ReceiveMessage();
+            try
+            { 
+                if (this.m_oSimConnect != null)
+                { 
+                    this.m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
+                    this.m_oSimConnect.ReceiveMessage();
+                }
+            }
+            catch (COMException exception)
+            {
+                Debug.Write(exception.ToString());
+                this.Disconnect();
+            }
         }
 
         private void AddRequest()

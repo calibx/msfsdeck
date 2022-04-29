@@ -8,8 +8,6 @@
 
         public Dictionary<BindingKeys, Binding> bindings = new Dictionary<BindingKeys, Binding>();
 
-        private Boolean valuesDisplayed;
-
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
         public Boolean folderDisplayed { get; set; }
@@ -21,9 +19,6 @@
         public Int16 PushbackLeft { get; set; }
         public Int16 PushbackRight { get; set; }
         public Boolean LandingLightState { get; set; }
-        public Boolean EngineAutoOff { get; set; }
-        public Boolean EngineAutoOn { get; set; }
-        public Boolean Menu { get; set; }
         public Int16 AutoTaxi { get; set; }
         public Int16 AutoTaxiSwitch { get; set; }
         public Boolean ATC { get; set; }
@@ -47,21 +42,14 @@
         public Int32 FuelTimeLeft { get; set; }
         public Int32 EngineType { get; set; }
         public Double E1N1 { get; set; }
-        //public Boolean E1On { get; set; }
         public Double E2N1 { get; set; }
         public Double E3N1 { get; set; }
         public Double E4N1 { get; set; }
         public Int32 NumberOfEngines { get; set; }
-        public Int32 Fps { get; set; }
-        public Int32 RefreshRate { get; set; }
         public String DebugValue1 { get; set; }
         public String DebugValue2 { get; set; }
         public String DebugValue3 { get; set; }
-        public Int32 MaxFlap { get; set; }
-        public Byte GearOverSpeed { get; set; }
         public Byte GearRetractable { get; set; }
-        /*        public Int16 Barometer { get => this.BarometerFromMSFS; set { this.BarometerFromMSFS = value; this.SetToMSFS = true; } }
-                public Int16 BarometerFromMSFS { get; set; }*/
         public Int32 CurrentGearHandle { get => this.CurrentGearHandleFromMSFS; set { this.CurrentGearHandleFromMSFS = value; this.SetToMSFS = true; } }
         public Int32 CurrentGearHandleFromMSFS { get; set; }
         public Double GearFront { get; set; }
@@ -107,34 +95,6 @@
         public Double ApNextWPDist { get; set; }
         public Double ApNextWPHeading { get; set; }
         public Boolean SetToMSFS { get; set; }
-        public Boolean CurrentBrakes { get => this.CurrentBrakesFromMSFS; set { this.CurrentBrakesFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean CurrentBrakesFromMSFS { get; set; }
-        public Int32 CurrentThrottle { get => this.CurrentThrottleFromMSFS; set { this.CurrentThrottleFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentThrottleFromMSFS { get; set; }
-        public Int32 ThrottleLowerFromMSFS { get; set; }
-        public Int32 CurrentSpoiler { get => this.CurrentSpoilerFromMSFS; set { this.CurrentSpoilerFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentSpoilerFromMSFS { get; set; }
-        public Int32 CurrentPropeller { get => this.CurrentPropellerFromMSFS; set { this.CurrentPropellerFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentPropellerFromMSFS { get; set; }
-        public Int32 CurrentAileronTrim { get => this.CurrentAileronTrimFromMSFS; set { this.CurrentAileronTrimFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentAileronTrimFromMSFS { get; set; }
-        public Int32 CurrentRudderTrim { get => this.CurrentRudderTrimFromMSFS; set { this.CurrentRudderTrimFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentRudderTrimFromMSFS { get; set; }
-        public Int32 CurrentElevatorTrim { get => this.CurrentElevatorTrimFromMSFS; set { this.CurrentElevatorTrimFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentElevatorTrimFromMSFS { get; set; }
-        public Int32 CurrentZoom { get => this.CurrentZoomFromMSFS; set { this.CurrentZoomFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentZoomFromMSFS { get; set; }
-        public Int32 CurrentMixture { get => this.CurrentMixtureFromMSFS; set { this.CurrentMixtureFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentMixtureFromMSFS { get; set; }
-        public Int32 CurrentFlap { get => this.CurrentFlapFromMSFS; set { this.CurrentFlapFromMSFS = value; this.SetToMSFS = true; } }
-        public Int32 CurrentFlapFromMSFS { get; set; }
-        public Boolean CurrentPitot { get => this.CurrentPitotFromMSFS; set { this.CurrentPitotFromMSFS = value; this.SetToMSFS = true; } }
-        public Boolean CurrentPitotFromMSFS { get; set; }
-        public Boolean Connected { get; set; }
-        public Boolean SimConnected { get; set; }
-        public Boolean TryConnect { get; set; }
-        public Boolean SimTryConnect { get; set; }
-        public Boolean ValuesDisplayed { get => this.valuesDisplayed; set { this.valuesDisplayed = value; } }
         public Boolean NavigationLight { get; set; }
         public Boolean BeaconLight { get; set; }
         public Boolean LandingLight { get; set; }
