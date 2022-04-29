@@ -311,10 +311,6 @@
             MsfsData.Instance.FuelTimeLeft = (Int32)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600);
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)reader.pushback;
-/*            MsfsData.Instance.CurrentHeading = (Int32)reader.planeHeading;
-            MsfsData.Instance.CurrentSpeed = (Int32)reader.planeSpeed;
-            MsfsData.Instance.CurrentVerticalSpeed = (Int32)(reader.planeVSpeed * 60f);
-*/
             MsfsData.Instance.ApNextWPDist = reader.wpDistance * 0.00053996f;
             MsfsData.Instance.ApNextWPETE = (Int32)reader.wpETE;
             MsfsData.Instance.ApNextWPHeading = reader.wpBearing;
@@ -372,23 +368,7 @@
             if (MsfsData.Instance.SetToMSFS)
             {
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.GEAR_SET, (UInt32)MsfsData.Instance.CurrentGearHandle, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                //this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PARKING_BRAKE, (UInt32)(MsfsData.Instance.CurrentBrakes ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-
-                if (MsfsData.Instance.Pause)
-                {
-                    this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_ON, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                }
-                else
-                {
-                    this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PAUSE_OFF, 0, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                }
-
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.PITOT_HEAT_SET, (UInt32)(MsfsData.Instance.CurrentPitot ? 1 : 0), hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-
-                /*                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.HEADING_BUG_SET, (UInt32)MsfsData.Instance.CurrentAPHeading, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_SPD_VAR_SET, (UInt32)MsfsData.Instance.CurrentAPSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.AP_VS_VAR_SET_ENGLISH, (UInt32)MsfsData.Instance.CurrentAPVerticalSpeed, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-                */
 
                 MsfsData.Instance.SetToMSFS = false;
                 delay = true;
@@ -397,7 +377,6 @@
             {
                 if (!delay)
                 {
-                    //MsfsData.Instance.CurrentBrakesFromMSFS = reader.parkingBrake == 1;
                     MsfsData.Instance.CurrentAPHeadingState = (Int32)reader.apHeading;
                     MsfsData.Instance.CurrentAPSpeedState = (Int32)reader.apSpeed;
                     MsfsData.Instance.CurrentAPVerticalSpeedState = (Int32)reader.apVSpeed;
@@ -462,7 +441,21 @@
             {
                 this.SendEvent(EVENTS.ENGINE_AUTO_START, MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO]);
             }
-
+            if (MsfsData.Instance.bindings[BindingKeys.PAUSE].ControllerChanged)
+            { 
+                if (MsfsData.Instance.bindings[BindingKeys.PAUSE].MsfsValue == 1)
+                {
+                    this.SendEvent(EVENTS.PAUSE_OFF, MsfsData.Instance.bindings[BindingKeys.PAUSE]);
+                    MsfsData.Instance.bindings[BindingKeys.PAUSE].SetMsfsValue(0);
+                    MsfsData.Instance.bindings[BindingKeys.PAUSE].MSFSChanged = true;
+                }
+                else
+                {
+                    this.SendEvent(EVENTS.PAUSE_ON, MsfsData.Instance.bindings[BindingKeys.PAUSE]);
+                    MsfsData.Instance.bindings[BindingKeys.PAUSE].SetMsfsValue(1);
+                    MsfsData.Instance.bindings[BindingKeys.PAUSE].MSFSChanged = true;
+                }
+            }
             var writer = new Writers();
             if (MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerChanged)
             {

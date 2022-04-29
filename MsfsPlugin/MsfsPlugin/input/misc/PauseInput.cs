@@ -5,13 +5,18 @@
 
     class PauseInput : DefaultInput
     {
-        public PauseInput() : base("Pause", "Pause", "Misc") { }
-        protected override void ChangeValue() => MsfsData.Instance.Pause = !MsfsData.Instance.Pause;
+        public PauseInput() : base("Pause", "Pause", "Misc")
+        {
+            var bind = new Binding(BindingKeys.PAUSE);
+            this._bindings.Add(bind);
+            MsfsData.Instance.Register(bind);
+        }
+        protected override void ChangeValue() => this._bindings[0].SetControllerValue(1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (MsfsData.Instance.Pause)
+                if (this._bindings[0].MsfsValue == 1)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
                 }
@@ -23,7 +28,6 @@
                 return bitmapBuilder.ToImage();
             }
         }
-
     }
 }
 

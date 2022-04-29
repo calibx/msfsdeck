@@ -23,5 +23,6 @@
         AP_VSPEED,
         VSPEED,
         PARKING_BRAKES,
+        PAUSE,
     }
 }

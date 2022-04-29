@@ -10,7 +10,7 @@
         public BindingKeys Key { get; set; }
         public Int64 MsfsValue { get; set; }
         public Boolean ControllerChanged { get; set; }
-        private Boolean MSFSChanged { get; set; }
+        public Boolean MSFSChanged { get; set; }
 
         public Binding(BindingKeys Key)
         {
