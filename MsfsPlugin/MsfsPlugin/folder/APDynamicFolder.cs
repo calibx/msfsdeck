@@ -14,6 +14,8 @@
             this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.None;
             MsfsData.Instance.Register(this);
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_ALT)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ALT)));
 
         }
 

@@ -8,12 +8,8 @@
     {
         public FlapEncoder() : base("Flap", "Current flap level", "Nav", true, 0, 100, 1)
         {
-            var bind = new Binding(BindingKeys.MAX_FLAP);
-            this._bindings.Add(bind);
-            MsfsData.Instance.Register(bind);
-            bind = new Binding(BindingKeys.FLAP);
-            this._bindings.Add(bind);
-            MsfsData.Instance.Register(bind);
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.MAX_FLAP)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.FLAP)));
         }
         protected override Int64 GetValue()
         {
