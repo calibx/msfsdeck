@@ -296,6 +296,17 @@
             MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_MULTI].SetMsfsValue(reader.wingLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_MULTI].SetMsfsValue(reader.logoLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_MULTI].SetMsfsValue(reader.cabinLight);
+            
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_FOLDER].SetMsfsValue(reader.navLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_BEACON_FOLDER].SetMsfsValue(reader.beaconLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_LANDING_FOLDER].SetMsfsValue(reader.landingLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_TAXI_FOLDER].SetMsfsValue(reader.taxiLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_STROBE_FOLDER].SetMsfsValue(reader.strobeLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_INSTRUMENT_FOLDER].SetMsfsValue(reader.panelLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_RECOG_FOLDER].SetMsfsValue(reader.recognitionLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_FOLDER].SetMsfsValue(reader.wingLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_FOLDER].SetMsfsValue(reader.logoLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_FOLDER].SetMsfsValue(reader.cabinLight);
 
             MsfsData.Instance.ApAltHoldSwitchState = reader.apAltHold == 1;
             MsfsData.Instance.ApHeadHoldSwitchState = reader.apHeadingHold == 1;
@@ -357,6 +368,16 @@
             this.SendEvent(EVENTS.TOGGLE_WING_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_MULTI]);
             this.SendEvent(EVENTS.TOGGLE_LOGO_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_MULTI]);
             this.SendEvent(EVENTS.TOGGLE_CABIN_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_MULTI]);
+            this.SendEvent(EVENTS.TOGGLE_NAV_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_FOLDER]);
+            this.SendEvent(EVENTS.LANDING_LIGHTS_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_LANDING_FOLDER]);
+            this.SendEvent(EVENTS.TOGGLE_BEACON_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_BEACON_FOLDER]);
+            this.SendEvent(EVENTS.TOGGLE_TAXI_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_TAXI_FOLDER]);
+            this.SendEvent(EVENTS.STROBES_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_STROBE_FOLDER]);
+            this.SendEvent(EVENTS.PANEL_LIGHTS_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_INSTRUMENT_FOLDER]);
+            this.SendEvent(EVENTS.TOGGLE_RECOGNITION_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_RECOG_FOLDER]);
+            this.SendEvent(EVENTS.TOGGLE_WING_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_FOLDER]);
+            this.SendEvent(EVENTS.TOGGLE_LOGO_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_FOLDER]);
+            this.SendEvent(EVENTS.TOGGLE_CABIN_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_FOLDER]);
 
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
             {
@@ -429,18 +450,12 @@
         {
             if (binding.ControllerChanged)
             {
-                UInt32 value = 0;
                 Debug.WriteLine("Send " + eventName);
+                UInt32 value;
                 switch (eventName)
                 {
                     case EVENTS.KOHLSMAN_SET:
                         value = (UInt32)(binding.ControllerValue / 100f * 33.8639 * 16);
-                        break;
-                    case EVENTS.AILERON_TRIM_SET:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
-                    case EVENTS.AP_ALT_VAR_SET_ENGLISH:
-                        value = (UInt32)binding.ControllerValue;
                         break;
                     case EVENTS.ELEVATOR_TRIM_SET:
                         value = (UInt32)(binding.ControllerValue / 100f * 16383);
@@ -448,17 +463,8 @@
                     case EVENTS.FLAPS_SET:
                         value = (UInt32)(binding.ControllerValue * 16383 / (MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue == 0 ? 1 : MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue));
                         break;
-                    case EVENTS.HEADING_BUG_SET:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
                     case EVENTS.AXIS_PROPELLER_SET:
                         value = (UInt32)Math.Round((binding.ControllerValue - 50) * 16383 / 50f);
-                        break;
-                    case EVENTS.RUDDER_TRIM_SET:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
-                    case EVENTS.AP_SPD_VAR_SET:
-                        value = (UInt32)binding.ControllerValue;
                         break;
                     case EVENTS.AXIS_SPOILER_SET:
                         value = (UInt32)Math.Round((binding.ControllerValue - 50) * 16383 / 50f);
@@ -466,30 +472,15 @@
                     case EVENTS.THROTTLE_SET:
                         value = (UInt32)(binding.ControllerValue / 100f * 16383);
                         break;
-                    case EVENTS.AP_VS_VAR_SET_ENGLISH:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
-                    case EVENTS.ENGINE_AUTO_SHUTDOWN:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
-                    case EVENTS.ENGINE_AUTO_START:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
-                    case EVENTS.PARKING_BRAKE:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
-                    case EVENTS.PITOT_HEAT_TOGGLE:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
-                    case EVENTS.GEAR_TOGGLE:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
                     case EVENTS.TOGGLE_PUSHBACK:
                         value = (UInt32)binding.ControllerValue;
                         MsfsData.Instance.bindings[BindingKeys.PUSHBACK_STATE].MSFSChanged = true;
                         break;
                     case EVENTS.KEY_TUG_HEADING:
                         value = (UInt32)(binding.ControllerValue == 1 ? TUG_ANGLE * -0.8f : TUG_ANGLE * 0.8f);
+                        break;
+                    default:
+                        value = (UInt32)binding.ControllerValue;
                         break;
                 }
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
@@ -508,16 +499,6 @@
 
         private void ResetEvents()
         {
-            MsfsData.Instance.NavigationLight = false;
-            MsfsData.Instance.LandingLight = false;
-            MsfsData.Instance.BeaconLight = false;
-            MsfsData.Instance.TaxiLight = false;
-            MsfsData.Instance.StrobesLight = false;
-            MsfsData.Instance.InstrumentsLight = false;
-            MsfsData.Instance.RecognitionLight = false;
-            MsfsData.Instance.WingLight = false;
-            MsfsData.Instance.LogoLight = false;
-            MsfsData.Instance.CabinLight = false;
             MsfsData.Instance.ATC = false;
             MsfsData.Instance.ATCClose = false;
             MsfsData.Instance.ATC0 = false;
