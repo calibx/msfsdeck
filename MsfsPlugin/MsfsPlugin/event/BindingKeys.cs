@@ -41,6 +41,10 @@
         FUEL_FLOW,
         FUEL_PERCENT,
         FUEL_TIME_LEFT,
+        AP_NEXT_WP_ID,
+        AP_NEXT_WP_DIST,
+        AP_NEXT_WP_ETE,
+        AP_NEXT_WP_HEADING,
     }
 }
 

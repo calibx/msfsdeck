@@ -270,6 +270,12 @@
             MsfsData.Instance.bindings[BindingKeys.FUEL_FLOW].SetMsfsValue((Int64)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH));
             MsfsData.Instance.bindings[BindingKeys.FUEL_PERCENT].SetMsfsValue((Int64)(reader.fuelQuantity * 100 / reader.fuelCapacity));
             MsfsData.Instance.bindings[BindingKeys.FUEL_TIME_LEFT].SetMsfsValue((Int64)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600));
+            MsfsData.Instance.bindings[BindingKeys.AP_NEXT_WP_ID].SetMsfsValue(reader.wpID);
+            MsfsData.Instance.bindings[BindingKeys.AP_NEXT_WP_DIST].SetMsfsValue((Int64)Math.Round(reader.wpDistance * 0.00053996f, 1));
+            MsfsData.Instance.bindings[BindingKeys.AP_NEXT_WP_ETE].SetMsfsValue(reader.wpETE);
+            MsfsData.Instance.bindings[BindingKeys.AP_NEXT_WP_HEADING].SetMsfsValue(reader.wpBearing);
+
+
 
             MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
             MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
@@ -281,10 +287,6 @@
 
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)reader.pushback;
-            MsfsData.Instance.ApNextWPDist = reader.wpDistance * 0.00053996f;
-            MsfsData.Instance.ApNextWPETE = (Int32)reader.wpETE;
-            MsfsData.Instance.ApNextWPHeading = reader.wpBearing;
-            MsfsData.Instance.ApNextWPID = reader.wpID;
             MsfsData.Instance.ApAltHoldSwitchState = reader.apAltHold == 1;
             MsfsData.Instance.ApHeadHoldSwitchState = reader.apHeadingHold == 1;
             MsfsData.Instance.ApSpeedHoldSwitchState = reader.apSpeedHold == 1;
