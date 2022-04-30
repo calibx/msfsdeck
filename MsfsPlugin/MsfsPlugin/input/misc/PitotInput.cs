@@ -7,9 +7,7 @@
     {
         public PitotInput() : base("Pitot", "Pitot heating", "Misc")
         {
-            var bind = new Binding(BindingKeys.PITOT);
-            this._bindings.Add(bind);
-            MsfsData.Instance.Register(bind);
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PITOT)));
         }
         protected override void ChangeValue() => this._bindings[0].SetControllerValue(1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)

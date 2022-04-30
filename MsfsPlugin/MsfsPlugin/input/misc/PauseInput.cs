@@ -7,9 +7,7 @@
     {
         public PauseInput() : base("Pause", "Pause", "Misc")
         {
-            var bind = new Binding(BindingKeys.PAUSE);
-            this._bindings.Add(bind);
-            MsfsData.Instance.Register(bind);
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PAUSE)));
         }
         protected override void ChangeValue() => this._bindings[0].SetControllerValue(1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)

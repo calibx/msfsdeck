@@ -6,9 +6,7 @@
     {
         public ParkingBrakeInput() : base("Parking brake", "Display parking brakes state", "Misc")
         {
-            var bind = new Binding(BindingKeys.PARKING_BRAKES);
-            this._bindings.Add(bind);
-            MsfsData.Instance.Register(bind);
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PARKING_BRAKES)));
         }
         protected override void ChangeValue() => this._bindings[0].SetControllerValue(1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
