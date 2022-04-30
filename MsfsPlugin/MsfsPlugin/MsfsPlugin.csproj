@@ -90,12 +90,9 @@
     <Compile Include="input\light\LightsMultiInputs.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\EngineInput.cs" />
-    <Compile Include="input\misc\AutoTaxiInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
-    <Compile Include="input\misc\PushbackRightInput.cs" />
-    <Compile Include="input\misc\PushbackLeftInput.cs" />
     <Compile Include="input\misc\PushbackInput.cs" />
     <Compile Include="input\misc\PauseInput.cs" />
     <Compile Include="input\nav\APWPDisplay.cs" />
@@ -148,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\disable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\wait.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

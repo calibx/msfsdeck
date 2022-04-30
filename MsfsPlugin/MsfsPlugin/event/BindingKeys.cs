@@ -53,6 +53,10 @@
         E2N1,
         E3N1,
         E4N1,
+        PUSHBACK_STATE,
+        PUSHBACK_ANGLE,
+        PUSHBACK_ATTACHED,
+        PUSHBACK_CONTROLLER,
     }
 }
 

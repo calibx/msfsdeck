@@ -12,7 +12,6 @@
             this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.EncoderArea;
             MsfsData.Instance.Register(this);
-            SimConnectDAO.Instance.setPlugin(this.Plugin);
         }
         public override IEnumerable<String> GetButtonPressActionNames()
         {
@@ -34,6 +33,7 @@
         public override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize) => actionParameter;
         public override void RunCommand(String actionParameter)
         {
+            SimConnectDAO.Instance.setPlugin(this.Plugin);
             switch (actionParameter)
             {
                 case "Open/Close":
