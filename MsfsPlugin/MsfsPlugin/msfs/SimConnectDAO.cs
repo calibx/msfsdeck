@@ -35,16 +35,16 @@
             PITOT_HEAT_TOGGLE,
             TOGGLE_PUSHBACK,
             TUG_DISABLE,
-            NAV_LIGHTS_SET,
-            LANDING_LIGHTS_SET,
-            BEACON_LIGHTS_SET,
-            TAXI_LIGHTS_SET,
-            STROBES_SET,
-            PANEL_LIGHTS_SET,
-            RECOGNITION_LIGHTS_SET,
-            WING_LIGHTS_SET,
-            LOGO_LIGHTS_SET,
-            CABIN_LIGHTS_SET,
+            TOGGLE_NAV_LIGHTS,
+            LANDING_LIGHTS_TOGGLE,
+            TOGGLE_BEACON_LIGHTS,
+            TOGGLE_TAXI_LIGHTS,
+            STROBES_TOGGLE,
+            PANEL_LIGHTS_TOGGLE,
+            TOGGLE_RECOGNITION_LIGHTS,
+            TOGGLE_WING_LIGHTS,
+            TOGGLE_LOGO_LIGHTS,
+            TOGGLE_CABIN_LIGHTS,
             ATC_MENU_OPEN,
             ATC_MENU_CLOSE,
             ATC_MENU_0,
@@ -286,6 +286,16 @@
             MsfsData.Instance.bindings[BindingKeys.PUSHBACK_ATTACHED].SetMsfsValue(reader.wheelRPM == 0 ? 0 : 1);
             //MsfsData.Instance.bindings[BindingKeys.PUSHBACK_STATE].SetMsfsValue(reader.pushback);
             //MsfsData.Instance.bindings[BindingKeys.PUSHBACK_ANGLE].SetMsfsValue(reader.pushback); // Can read but set so stay on the controller state
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_MULTI].SetMsfsValue(reader.navLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_BEACON_MULTI].SetMsfsValue(reader.beaconLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_LANDING_MULTI].SetMsfsValue(reader.landingLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_TAXI_MULTI].SetMsfsValue(reader.taxiLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_STROBE_MULTI].SetMsfsValue(reader.strobeLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_INSTRUMENT_MULTI].SetMsfsValue(reader.panelLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_RECOG_MULTI].SetMsfsValue(reader.recognitionLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_MULTI].SetMsfsValue(reader.wingLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_MULTI].SetMsfsValue(reader.logoLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_MULTI].SetMsfsValue(reader.cabinLight);
 
             MsfsData.Instance.ApAltHoldSwitchState = reader.apAltHold == 1;
             MsfsData.Instance.ApHeadHoldSwitchState = reader.apHeadingHold == 1;
@@ -295,27 +305,7 @@
             MsfsData.Instance.ApNavHoldSwitchState = reader.apNavHold == 1;
             MsfsData.Instance.ApVSHoldSwitchState = reader.apVerticalSpeedHold == 1;
 
-            MsfsData.Instance.NavigationLightState = reader.navLight == 1;
-            MsfsData.Instance.LandingLightState = reader.landingLight == 1;
-            MsfsData.Instance.BeaconLightState = reader.beaconLight == 1;
-            MsfsData.Instance.TaxiLightState = reader.taxiLight == 1;
-            MsfsData.Instance.StrobesLightState = reader.strobeLight == 1;
-            MsfsData.Instance.InstrumentsLightState = reader.panelLight == 1;
-            MsfsData.Instance.RecognitionLightState = reader.recognitionLight == 1;
-            MsfsData.Instance.WingLightState = reader.wingLight == 1;
-            MsfsData.Instance.LogoLightState = reader.logoLight == 1;
-            MsfsData.Instance.CabinLightState = reader.cabinLight == 1;
-
-            this.SendEvent(MsfsData.Instance.NavigationLight, EVENTS.NAV_LIGHTS_SET, MsfsData.Instance.NavigationLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.LandingLight, EVENTS.LANDING_LIGHTS_SET, MsfsData.Instance.LandingLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.BeaconLight, EVENTS.BEACON_LIGHTS_SET, MsfsData.Instance.BeaconLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.TaxiLight, EVENTS.TAXI_LIGHTS_SET, MsfsData.Instance.TaxiLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.StrobesLight, EVENTS.STROBES_SET, MsfsData.Instance.StrobesLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.InstrumentsLight, EVENTS.PANEL_LIGHTS_SET, MsfsData.Instance.InstrumentsLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.RecognitionLight, EVENTS.RECOGNITION_LIGHTS_SET, MsfsData.Instance.RecognitionLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.WingLight, EVENTS.WING_LIGHTS_SET, MsfsData.Instance.WingLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.LogoLight, EVENTS.LOGO_LIGHTS_SET, MsfsData.Instance.LogoLightState ? 0 : 1);
-            this.SendEvent(MsfsData.Instance.CabinLight, EVENTS.CABIN_LIGHTS_SET, MsfsData.Instance.CabinLightState ? 0 : 1);
+            
             //this.SendEvent(MsfsData.Instance.ATC, EVENTS.ATC_MENU_OPEN, 0); // => with key waiting for simconnect inclusion
             //this.SendEvent(MsfsData.Instance.ATCClose, EVENTS.ATC_MENU_CLOSE, 0);
             this.SendEvent(MsfsData.Instance.ATC0, EVENTS.ATC_MENU_0, 0);
@@ -356,6 +346,17 @@
             this.SendEvent(EVENTS.PARKING_BRAKE, MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES]);
             this.SendEvent(EVENTS.PITOT_HEAT_TOGGLE, MsfsData.Instance.bindings[BindingKeys.PITOT]);
             this.SendEvent(EVENTS.GEAR_TOGGLE, MsfsData.Instance.bindings[BindingKeys.GEAR_FRONT]);
+
+            this.SendEvent(EVENTS.TOGGLE_NAV_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_MULTI]);
+            this.SendEvent(EVENTS.LANDING_LIGHTS_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_LANDING_MULTI]);
+            this.SendEvent(EVENTS.TOGGLE_BEACON_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_BEACON_MULTI]);
+            this.SendEvent(EVENTS.TOGGLE_TAXI_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_TAXI_MULTI]);
+            this.SendEvent(EVENTS.STROBES_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_STROBE_MULTI]);
+            this.SendEvent(EVENTS.PANEL_LIGHTS_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_INSTRUMENT_MULTI]);
+            this.SendEvent(EVENTS.TOGGLE_RECOGNITION_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_RECOG_MULTI]);
+            this.SendEvent(EVENTS.TOGGLE_WING_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_MULTI]);
+            this.SendEvent(EVENTS.TOGGLE_LOGO_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_MULTI]);
+            this.SendEvent(EVENTS.TOGGLE_CABIN_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_MULTI]);
 
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
             {
@@ -643,16 +644,16 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_PUSHBACK, "TOGGLE_PUSHBACK");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KEY_TUG_HEADING, "KEY_TUG_HEADING");
             
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.NAV_LIGHTS_SET, "NAV_LIGHTS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.LANDING_LIGHTS_SET, "LANDING_LIGHTS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.BEACON_LIGHTS_SET, "BEACON_LIGHTS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TAXI_LIGHTS_SET, "TAXI_LIGHTS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.STROBES_SET, "STROBES_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PANEL_LIGHTS_SET, "PANEL_LIGHTS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.RECOGNITION_LIGHTS_SET, "RECOGNITION_LIGHTS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.WING_LIGHTS_SET, "WING_LIGHTS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.LOGO_LIGHTS_SET, "LOGO_LIGHTS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.CABIN_LIGHTS_SET, "CABIN_LIGHTS_SET");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_NAV_LIGHTS, "TOGGLE_NAV_LIGHTS");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.LANDING_LIGHTS_TOGGLE, "LANDING_LIGHTS_TOGGLE");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_BEACON_LIGHTS, "TOGGLE_BEACON_LIGHTS");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_TAXI_LIGHTS, "TOGGLE_TAXI_LIGHTS");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.STROBES_TOGGLE, "STROBES_TOGGLE");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PANEL_LIGHTS_TOGGLE, "PANEL_LIGHTS_TOGGLE");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_RECOGNITION_LIGHTS, "TOGGLE_RECOGNITION_LIGHTS");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_WING_LIGHTS, "TOGGLE_WING_LIGHTS");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_LOGO_LIGHTS, "TOGGLE_LOGO_LIGHTS");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_CABIN_LIGHTS, "TOGGLE_CABIN_LIGHTS");
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_OPEN, "ATC_MENU_OPEN");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_CLOSE, "SIMUI_WINDOW_HIDESHOW");
