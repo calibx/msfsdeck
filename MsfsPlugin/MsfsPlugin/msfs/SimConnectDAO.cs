@@ -232,7 +232,6 @@
             var delay = true;
             var reader = (Readers)data.dwData[0];
             MsfsData.Instance.AircraftName = reader.title;
-            MsfsData.Instance.EngineType = (Int32)reader.engineType;
 
             MsfsData.Instance.bindings[BindingKeys.ENGINE_AUTO].SetMsfsValue(reader.E1On);
             MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM].SetMsfsValue((Int64)Math.Round(reader.aileronTrim * 100));
@@ -274,17 +273,14 @@
             MsfsData.Instance.bindings[BindingKeys.AP_NEXT_WP_DIST].SetMsfsValue((Int64)Math.Round(reader.wpDistance * 0.00053996f, 1));
             MsfsData.Instance.bindings[BindingKeys.AP_NEXT_WP_ETE].SetMsfsValue(reader.wpETE);
             MsfsData.Instance.bindings[BindingKeys.AP_NEXT_WP_HEADING].SetMsfsValue(reader.wpBearing);
-
-
-
-            MsfsData.Instance.E1N1 = (Int32)reader.E1N1;
-            MsfsData.Instance.E2N1 = (Int32)reader.E2N1;
-            MsfsData.Instance.E3N1 = (Int32)reader.E3N1;
-            MsfsData.Instance.E4N1 = (Int32)reader.E4N1;
-            MsfsData.Instance.NumberOfEngines = (Int32)reader.engineNumber;
-            MsfsData.Instance.E1Rpm = (Int32)reader.ENG1N1RPM;
-            MsfsData.Instance.E2Rpm = (Int32)reader.ENG2N1RPM;
-
+            MsfsData.Instance.bindings[BindingKeys.ENGINE_TYPE].SetMsfsValue(reader.engineType);
+            MsfsData.Instance.bindings[BindingKeys.ENGINE_NUMBER].SetMsfsValue(reader.engineNumber);
+            MsfsData.Instance.bindings[BindingKeys.E1RPM].SetMsfsValue(reader.ENG1N1RPM);
+            MsfsData.Instance.bindings[BindingKeys.E2RPM].SetMsfsValue(reader.ENG2N1RPM);
+            MsfsData.Instance.bindings[BindingKeys.E1N1].SetMsfsValue(reader.E1N1);
+            MsfsData.Instance.bindings[BindingKeys.E2N1].SetMsfsValue(reader.E2N1);
+            MsfsData.Instance.bindings[BindingKeys.E3N1].SetMsfsValue(reader.E3N1);
+            MsfsData.Instance.bindings[BindingKeys.E4N1].SetMsfsValue(reader.E4N1);
 
             MsfsData.Instance.PushbackFromMSFS = (Int16)reader.pushback;
             MsfsData.Instance.ApAltHoldSwitchState = reader.apAltHold == 1;

@@ -45,6 +45,14 @@
         AP_NEXT_WP_DIST,
         AP_NEXT_WP_ETE,
         AP_NEXT_WP_HEADING,
+        ENGINE_TYPE,
+        ENGINE_NUMBER,
+        E1RPM,
+        E2RPM,
+        E1N1,
+        E2N1,
+        E3N1,
+        E4N1,
     }
 }
 
