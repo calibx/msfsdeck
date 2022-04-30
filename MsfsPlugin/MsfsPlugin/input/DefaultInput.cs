@@ -16,16 +16,11 @@
         {
             foreach (Binding binding in this._bindings)
             {
-                if (binding.HasMSFSChanged() && MsfsData.Instance.refreshLimiter <= 5)
+                if (binding.HasMSFSChanged())
                 {
                     MsfsData.Instance.refreshLimiter++;
-                    Debug.WriteLine("Refresh " + binding.Key);
                     binding.Reset();
                     this.ActionImageChanged();
-                }
-                if (MsfsData.Instance.refreshLimiter > 5)
-                {
-                    Debug.WriteLine("Refresh discarded " + binding.Key);
                 }
             }
         }

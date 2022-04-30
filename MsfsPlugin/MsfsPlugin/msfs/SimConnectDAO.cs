@@ -315,8 +315,7 @@
             MsfsData.Instance.ApSwitchState = reader.apMasterHold == 1;
             MsfsData.Instance.ApNavHoldSwitchState = reader.apNavHold == 1;
             MsfsData.Instance.ApVSHoldSwitchState = reader.apVerticalSpeedHold == 1;
-
-            
+                        
             //this.SendEvent(MsfsData.Instance.ATC, EVENTS.ATC_MENU_OPEN, 0); // => with key waiting for simconnect inclusion
             //this.SendEvent(MsfsData.Instance.ATCClose, EVENTS.ATC_MENU_CLOSE, 0);
             this.SendEvent(MsfsData.Instance.ATC0, EVENTS.ATC_MENU_0, 0);
@@ -439,7 +438,6 @@
                 this.pluginForKey.ClientApplication.SendKeyboardShortcut((VirtualKeyCode)0x91);
             }
 
-
             this.ResetEvents();
             MsfsData.Instance.Changed();
         }
@@ -526,9 +524,20 @@
             try
             { 
                 if (this.m_oSimConnect != null)
-                { 
-                    this.m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-                    this.m_oSimConnect.ReceiveMessage();
+                {
+                    
+                    if (!MsfsData.Instance.overflow)
+                    {
+                        MsfsData.Instance.refreshLimiter = 0;
+                        this.m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
+                        this.m_oSimConnect.ReceiveMessage();
+                    } else
+                    {
+                        Debug.WriteLine("Overflow handling " + MsfsData.Instance.refreshLimiter);
+                        MsfsData.Instance.refreshLimiter = 0;
+                        MsfsData.Instance.Changed();
+                        MsfsData.Instance.overflow = MsfsData.Instance.refreshLimiter >= 25;
+                    }
                 }
             }
             catch (COMException exception)

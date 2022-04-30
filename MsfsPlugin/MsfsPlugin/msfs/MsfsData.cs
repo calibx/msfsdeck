@@ -11,6 +11,7 @@
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
         public Boolean folderDisplayed { get; set; }
+        public Boolean overflow { get; set; }
         public Boolean DEBUG { get; set; }
         public Int16 refreshLimiter { get; set; }
         public Int16 PushbackFromMSFS { get; set; }
@@ -135,9 +136,14 @@
             {
                 foreach (Notifiable notifiable in this.notifiables)
                 {
-                    notifiable.Notify();
+                    if (MsfsData.Instance.refreshLimiter <= 25)
+                    {
+                        notifiable.Notify();
+                    } else
+                    {
+                        MsfsData.Instance.overflow = true;
+                    }
                 }
-                this.refreshLimiter = 0;
             }
         }
     }
