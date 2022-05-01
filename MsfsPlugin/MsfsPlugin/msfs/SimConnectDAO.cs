@@ -308,14 +308,22 @@
             MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_FOLDER].SetMsfsValue(reader.logoLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_FOLDER].SetMsfsValue(reader.cabinLight);
 
-            MsfsData.Instance.ApAltHoldSwitchState = reader.apAltHold == 1;
-            MsfsData.Instance.ApHeadHoldSwitchState = reader.apHeadingHold == 1;
-            MsfsData.Instance.ApSpeedHoldSwitchState = reader.apSpeedHold == 1;
-            MsfsData.Instance.ApThrottleSwitchState = reader.apThrottleHold == 1;
-            MsfsData.Instance.ApSwitchState = reader.apMasterHold == 1;
-            MsfsData.Instance.ApNavHoldSwitchState = reader.apNavHold == 1;
-            MsfsData.Instance.ApVSHoldSwitchState = reader.apVerticalSpeedHold == 1;
-                        
+            MsfsData.Instance.bindings[BindingKeys.AP_ALT_AP_FOLDER].SetMsfsValue(reader.apAltitude);
+            MsfsData.Instance.bindings[BindingKeys.ALT_AP_FOLDER].SetMsfsValue(reader.planeAltitude);
+            MsfsData.Instance.bindings[BindingKeys.AP_HEADING_AP_FOLDER].SetMsfsValue(reader.apHeading);
+            MsfsData.Instance.bindings[BindingKeys.HEADING_AP_FOLDER].SetMsfsValue((Int64)Math.Round(reader.planeHeading));
+            MsfsData.Instance.bindings[BindingKeys.AP_SPEED_AP_FOLDER].SetMsfsValue(reader.apSpeed);
+            MsfsData.Instance.bindings[BindingKeys.SPEED_AP_FOLDER].SetMsfsValue(reader.planeSpeed);
+            MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_AP_FOLDER].SetMsfsValue(reader.apVSpeed);
+            MsfsData.Instance.bindings[BindingKeys.VSPEED_AP_FOLDER].SetMsfsValue((Int64)Math.Round(reader.planeVSpeed * 60));
+            MsfsData.Instance.bindings[BindingKeys.AP_ALT_SWITCH_AP_FOLDER].SetMsfsValue(reader.apAltHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_HEAD_SWITCH_AP_FOLDER].SetMsfsValue(reader.apHeadingHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_NAV_SWITCH_AP_FOLDER].SetMsfsValue(reader.apNavHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_SPEED_SWITCH_AP_FOLDER].SetMsfsValue(reader.apSpeedHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_MASTER_SWITCH_AP_FOLDER].SetMsfsValue(reader.apMasterHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER].SetMsfsValue(reader.apThrottleHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER].SetMsfsValue(reader.apVerticalSpeedHold);
+            
             //this.SendEvent(MsfsData.Instance.ATC, EVENTS.ATC_MENU_OPEN, 0); // => with key waiting for simconnect inclusion
             //this.SendEvent(MsfsData.Instance.ATCClose, EVENTS.ATC_MENU_CLOSE, 0);
             this.SendEvent(MsfsData.Instance.ATC0, EVENTS.ATC_MENU_0, 0);
@@ -340,23 +348,26 @@
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT_INPUT]);
+            this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT_AP_FOLDER]);
             this.SendEvent(EVENTS.KOHLSMAN_SET, MsfsData.Instance.bindings[BindingKeys.KOHLSMAN]);
             this.SendEvent(EVENTS.ELEVATOR_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.ELEVATOR_TRIM]);
             this.SendEvent(EVENTS.FLAPS_SET, MsfsData.Instance.bindings[BindingKeys.FLAP]);
             this.SendEvent(EVENTS.HEADING_BUG_SET, MsfsData.Instance.bindings[BindingKeys.AP_HEADING]);
             this.SendEvent(EVENTS.HEADING_BUG_SET, MsfsData.Instance.bindings[BindingKeys.AP_HEADING_INPUT]);
+            this.SendEvent(EVENTS.HEADING_BUG_SET, MsfsData.Instance.bindings[BindingKeys.AP_HEADING_AP_FOLDER]);
             this.SendEvent(EVENTS.AXIS_PROPELLER_SET, MsfsData.Instance.bindings[BindingKeys.PROPELLER]);
             this.SendEvent(EVENTS.RUDDER_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.RUDDER_TRIM]);
             this.SendEvent(EVENTS.AP_SPD_VAR_SET, MsfsData.Instance.bindings[BindingKeys.AP_SPEED]);
             this.SendEvent(EVENTS.AP_SPD_VAR_SET, MsfsData.Instance.bindings[BindingKeys.AP_SPEED_INPUT]);
+            this.SendEvent(EVENTS.AP_SPD_VAR_SET, MsfsData.Instance.bindings[BindingKeys.AP_SPEED_AP_FOLDER]);
             this.SendEvent(EVENTS.AXIS_SPOILER_SET, MsfsData.Instance.bindings[BindingKeys.SPOILER]);
             this.SendEvent(EVENTS.THROTTLE_SET, MsfsData.Instance.bindings[BindingKeys.THROTTLE]);
             this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED]);
             this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_INPUT]);
+            this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_AP_FOLDER]);
             this.SendEvent(EVENTS.PARKING_BRAKE, MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES]);
             this.SendEvent(EVENTS.PITOT_HEAT_TOGGLE, MsfsData.Instance.bindings[BindingKeys.PITOT]);
             this.SendEvent(EVENTS.GEAR_TOGGLE, MsfsData.Instance.bindings[BindingKeys.GEAR_FRONT]);
-
             this.SendEvent(EVENTS.TOGGLE_NAV_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_MULTI]);
             this.SendEvent(EVENTS.LANDING_LIGHTS_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_LANDING_MULTI]);
             this.SendEvent(EVENTS.TOGGLE_BEACON_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_BEACON_MULTI]);
@@ -377,6 +388,13 @@
             this.SendEvent(EVENTS.TOGGLE_WING_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_FOLDER]);
             this.SendEvent(EVENTS.TOGGLE_LOGO_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_FOLDER]);
             this.SendEvent(EVENTS.TOGGLE_CABIN_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_FOLDER]);
+            this.SendEvent(EVENTS.AP_PANEL_ALTITUDE_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_ALT_SWITCH_AP_FOLDER]);
+            this.SendEvent(EVENTS.AP_PANEL_HEADING_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_HEAD_SWITCH_AP_FOLDER]);
+            this.SendEvent(EVENTS.AP_NAV1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_NAV_SWITCH_AP_FOLDER]);
+            this.SendEvent(EVENTS.AP_PANEL_MACH_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_SPEED_SWITCH_AP_FOLDER]);
+            this.SendEvent(EVENTS.AP_MASTER, MsfsData.Instance.bindings[BindingKeys.AP_MASTER_SWITCH_AP_FOLDER]);
+            this.SendEvent(EVENTS.AP_N1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER]);
+            this.SendEvent(EVENTS.AP_PANEL_VS_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER]);
 
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
             {
@@ -509,14 +527,6 @@
             MsfsData.Instance.ATC7 = false;
             MsfsData.Instance.ATC8 = false;
             MsfsData.Instance.ATC9 = false;
-
-            MsfsData.Instance.ApSpeedHoldSwitch = false;
-            MsfsData.Instance.ApAltHoldSwitch = false;
-            MsfsData.Instance.ApHeadHoldSwitch = false;
-            MsfsData.Instance.ApSwitch = false;
-            MsfsData.Instance.ApNavHoldSwitch = false;
-            MsfsData.Instance.ApThrottleSwitch = false;
-            MsfsData.Instance.ApVSHoldSwitch = false;
         }
 
         private void OnTick()
