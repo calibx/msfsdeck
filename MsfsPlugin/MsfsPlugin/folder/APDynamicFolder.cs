@@ -137,8 +137,7 @@
                     this._bindings[6].SetControllerValue(this.ApplyAdjustment(this._bindings[6].ControllerValue, -10000, 10000, 100, ticks));
                     break;
             }
-            MsfsData.Instance.SetToMSFS = true;
-
+            this.EncoderActionNamesChanged();
         }
         public override void RunCommand(String actionParameter)
         {
