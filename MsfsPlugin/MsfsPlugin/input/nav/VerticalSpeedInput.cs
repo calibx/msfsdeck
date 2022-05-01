@@ -6,9 +6,12 @@
 
     class VerticalSpeedInput : DefaultInput
     {
-        public VerticalSpeedInput() : base("VS", "Display current and AP vertical speed", "Nav") { }
-        protected override String GetValue() => "VS\n" + MsfsData.Instance.CurrentVerticalSpeed + "\n[" + MsfsData.Instance.CurrentAPVerticalSpeed + "]";
-        protected override void ChangeValue() => MsfsData.Instance.CurrentAPVerticalSpeed = (Int16)(Math.Round(MsfsData.Instance.CurrentVerticalSpeed / 100d, 0) * 100);
+        public VerticalSpeedInput() : base("VS", "Display current and AP vertical speed", "Nav") {
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_INPUT)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.VSPEED_INPUT)));
+        }
+        protected override String GetValue() => "VSpeed\n[" + this._bindings[0].ControllerValue + "]\n" + this._bindings[1].ControllerValue;
+        protected override void ChangeValue() => this._bindings[0].SetControllerValue(this._bindings[1].ControllerValue);
     }
 }
 

@@ -6,10 +6,12 @@
 
     class BarometerEncoder : DefaultEncoder
     {
-        public BarometerEncoder() : base("Baro", "Barometer encoder", "Nav", true, 948, 1084, 1) { }
-        protected override void RunCommand(String actionParameter) => this.SetValue(0);
-        protected override String GetDisplayValue() => Math.Round(MsfsData.Instance.Barometer * 0.02952998751, 2).ToString();
-        protected override Int32 GetValue() => MsfsData.Instance.Barometer;
-        protected override void SetValue(Int32 newValue) => MsfsData.Instance.Barometer = (Int16)newValue;
+        public BarometerEncoder() : base("Baro", "Barometer encoder", "Nav", true, 2799, 3201, 1) => this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.KOHLSMAN)));
+        protected override void RunCommand(String actionParameter) => this.SetValue(this._bindings[0].ControllerValue);
+        protected override String GetDisplayValue() => (this._bindings[0].ControllerValue / 100f).ToString();
+        protected override Int64 GetValue() => this._bindings[0].ControllerValue;
+        protected override void SetValue(Int64 newValue) => this._bindings[0].SetControllerValue(newValue);
+
+
     }
 }

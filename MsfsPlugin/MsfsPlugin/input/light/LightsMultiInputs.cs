@@ -1,14 +1,26 @@
 ﻿namespace Loupedeck.MsfsPlugin.folder
 {
     using System;
+    using System.Collections.Generic;
 
     public class LightsMultiInputs : PluginDynamicCommand, Notifiable
     {
         protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
         protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
+        protected readonly List<Binding> _bindings = new List<Binding>();
 
         public LightsMultiInputs() : base()
         {
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_NAV_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_BEACON_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_LANDING_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_TAXI_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_STROBE_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_INSTRUMENT_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_RECOG_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_WING_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_LOGO_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_CABIN_MULTI)));
 
             this.AddParameter("Navigation", "Navigation light", "Lights");
             this.AddParameter("Beacon", "Beacon light", "Lights");
@@ -30,34 +42,34 @@
             switch (actionParameter)
             {
                 case "Navigation":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.NavigationLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[0].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Beacon":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.BeaconLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[1].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Landing":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LandingLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[2].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Taxi":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.TaxiLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[3].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Strobes":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.StrobesLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[4].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Instruments":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.InstrumentsLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[5].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Recognition":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.RecognitionLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[6].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Wing":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.WingLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[7].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Logo":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LogoLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[8].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Cabin":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.CabinLight ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -68,38 +80,48 @@
             switch (actionParameter)
             {
                 case "Navigation":
-                    MsfsData.Instance.NavigationLight = !MsfsData.Instance.NavigationLight;
+                    this._bindings[0].SetControllerValue(1);
                     break;
                 case "Beacon":
-                    MsfsData.Instance.BeaconLight = !MsfsData.Instance.BeaconLight;
+                    this._bindings[1].SetControllerValue(1);
                     break;
                 case "Landing":
-                    MsfsData.Instance.LandingLight = !MsfsData.Instance.LandingLight;
+                    this._bindings[2].SetControllerValue(1);
                     break;
                 case "Taxi":
-                    MsfsData.Instance.TaxiLight = !MsfsData.Instance.TaxiLight;
+                    this._bindings[3].SetControllerValue(1);
                     break;
                 case "Strobes":
-                    MsfsData.Instance.StrobesLight = !MsfsData.Instance.StrobesLight;
+                    this._bindings[4].SetControllerValue(1);
                     break;
                 case "Instruments":
-                    MsfsData.Instance.InstrumentsLight = !MsfsData.Instance.InstrumentsLight;
+                    this._bindings[5].SetControllerValue(1);
                     break;
                 case "Recognition":
-                    MsfsData.Instance.RecognitionLight = !MsfsData.Instance.RecognitionLight;
+                    this._bindings[6].SetControllerValue(1);
                     break;
                 case "Wing":
-                    MsfsData.Instance.WingLight = !MsfsData.Instance.WingLight;
+                    this._bindings[7].SetControllerValue(1);
                     break;
                 case "Logo":
-                    MsfsData.Instance.LogoLight = !MsfsData.Instance.LogoLight;
+                    this._bindings[8].SetControllerValue(1);
                     break;
                 case "Cabin":
-                    MsfsData.Instance.CabinLight = !MsfsData.Instance.CabinLight;
+                    this._bindings[9].SetControllerValue(1);
                     break;
             }
         }
-        public void Notify() { if (!MsfsData.Instance.folderDisplayed) { this.ActionImageChanged(); } }
+        public void Notify()
+        {
+            foreach (Binding binding in this._bindings)
+            {
+                if (binding.HasMSFSChanged())
+                {
+                    binding.Reset();
+                    this.ActionImageChanged();
+                }
+            }
+        }
     }
 
 }
