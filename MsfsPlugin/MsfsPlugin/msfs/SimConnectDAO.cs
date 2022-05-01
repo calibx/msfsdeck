@@ -536,41 +536,35 @@
                 binding.ResetController();
             }
         }
-
-        private void SendEvent(Boolean inputKey, EVENTS eventName, Int64 value)
-        {
-            if (inputKey)
-            {
-                Debug.WriteLine("Send " + eventName);
-                this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, (UInt32)value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-            }
-        }
-
         private void OnTick()
         {
-            try
-            { 
-                if (this.m_oSimConnect != null)
+            lock (this)
+            {
+                try
                 {
-                    
-                    if (!MsfsData.Instance.overflow)
+                    if (this.m_oSimConnect != null)
                     {
-                        MsfsData.Instance.refreshLimiter = 0;
-                        this.m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-                        this.m_oSimConnect.ReceiveMessage();
-                    } else
-                    {
-                        MsfsData.Instance.refreshLimiter = 0;
-                        MsfsData.Instance.Changed();
-                        Debug.WriteLine("Overflow handling " + MsfsData.Instance.refreshLimiter);
-                        MsfsData.Instance.overflow = MsfsData.Instance.refreshLimiter >= 25;
+
+                        if (!MsfsData.Instance.overflow)
+                        {
+                            MsfsData.Instance.refreshLimiter = 0;
+                            this.m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
+                            this.m_oSimConnect.ReceiveMessage();
+                        }
+                        else
+                        {
+                            MsfsData.Instance.refreshLimiter = 0;
+                            MsfsData.Instance.Changed();
+                            Debug.WriteLine("Overflow handling " + MsfsData.Instance.refreshLimiter);
+                            MsfsData.Instance.overflow = MsfsData.Instance.refreshLimiter >= 10;
+                        }
                     }
                 }
-            }
-            catch (COMException exception)
-            {
-                Debug.Write(exception.ToString());
-                this.Disconnect();
+                catch (COMException exception)
+                {
+                    Debug.Write(exception.ToString());
+                    this.Disconnect();
+                }
             }
         }
 

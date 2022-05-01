@@ -136,7 +136,7 @@
             {
                 foreach (Notifiable notifiable in this.notifiables)
                 {
-                    if (MsfsData.Instance.refreshLimiter <= 25)
+                    if (MsfsData.Instance.refreshLimiter <= 10)
                     {
                         notifiable.Notify();
                     } else
