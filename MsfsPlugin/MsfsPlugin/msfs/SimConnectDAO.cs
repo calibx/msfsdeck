@@ -324,27 +324,6 @@
             MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER].SetMsfsValue(reader.apThrottleHold);
             MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER].SetMsfsValue(reader.apVerticalSpeedHold);
             
-            //this.SendEvent(MsfsData.Instance.ATC, EVENTS.ATC_MENU_OPEN, 0); // => with key waiting for simconnect inclusion
-            //this.SendEvent(MsfsData.Instance.ATCClose, EVENTS.ATC_MENU_CLOSE, 0);
-            this.SendEvent(MsfsData.Instance.ATC0, EVENTS.ATC_MENU_0, 0);
-            this.SendEvent(MsfsData.Instance.ATC1, EVENTS.ATC_MENU_1, 0);
-            this.SendEvent(MsfsData.Instance.ATC2, EVENTS.ATC_MENU_2, 0);
-            this.SendEvent(MsfsData.Instance.ATC3, EVENTS.ATC_MENU_3, 0);
-            this.SendEvent(MsfsData.Instance.ATC4, EVENTS.ATC_MENU_4, 0);
-            this.SendEvent(MsfsData.Instance.ATC5, EVENTS.ATC_MENU_5, 0);
-            this.SendEvent(MsfsData.Instance.ATC6, EVENTS.ATC_MENU_6, 0);
-            this.SendEvent(MsfsData.Instance.ATC7, EVENTS.ATC_MENU_7, 0);
-            this.SendEvent(MsfsData.Instance.ATC8, EVENTS.ATC_MENU_8, 0);
-            this.SendEvent(MsfsData.Instance.ATC9, EVENTS.ATC_MENU_9, 0);
-
-            this.SendEvent(MsfsData.Instance.ApSpeedHoldSwitch, EVENTS.AP_PANEL_MACH_HOLD, 0);
-            this.SendEvent(MsfsData.Instance.ApAltHoldSwitch, EVENTS.AP_PANEL_ALTITUDE_HOLD, 0);
-            this.SendEvent(MsfsData.Instance.ApHeadHoldSwitch, EVENTS.AP_PANEL_HEADING_HOLD, 0);
-            this.SendEvent(MsfsData.Instance.ApSwitch, EVENTS.AP_MASTER, 0);
-            this.SendEvent(MsfsData.Instance.ApNavHoldSwitch, EVENTS.AP_NAV1_HOLD, 0);
-            this.SendEvent(MsfsData.Instance.ApThrottleSwitch, EVENTS.AP_N1_HOLD, 0);
-            this.SendEvent(MsfsData.Instance.ApVSHoldSwitch, EVENTS.AP_PANEL_VS_HOLD, 0);
-
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT_INPUT]);
@@ -395,6 +374,17 @@
             this.SendEvent(EVENTS.AP_MASTER, MsfsData.Instance.bindings[BindingKeys.AP_MASTER_SWITCH_AP_FOLDER]);
             this.SendEvent(EVENTS.AP_N1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER]);
             this.SendEvent(EVENTS.AP_PANEL_VS_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_OPEN, MsfsData.Instance.bindings[BindingKeys.ATC_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_0, MsfsData.Instance.bindings[BindingKeys.ATC_0_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_1, MsfsData.Instance.bindings[BindingKeys.ATC_1_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_2, MsfsData.Instance.bindings[BindingKeys.ATC_2_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_3, MsfsData.Instance.bindings[BindingKeys.ATC_3_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_4, MsfsData.Instance.bindings[BindingKeys.ATC_4_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_5, MsfsData.Instance.bindings[BindingKeys.ATC_5_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_6, MsfsData.Instance.bindings[BindingKeys.ATC_6_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_7, MsfsData.Instance.bindings[BindingKeys.ATC_7_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_8, MsfsData.Instance.bindings[BindingKeys.ATC_8_ATC_FOLDER]);
+            this.SendEvent(EVENTS.ATC_MENU_9, MsfsData.Instance.bindings[BindingKeys.ATC_9_ATC_FOLDER]);
 
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
             {
@@ -451,13 +441,7 @@
                 MsfsData.Instance.bindings[BindingKeys.MIXTURE].ResetController();
             }
 
-            if (MsfsData.Instance.ATC)
-            {
-                this.pluginForKey.ClientApplication.SendKeyboardShortcut((VirtualKeyCode)0x91);
-            }
-
-            this.ResetEvents();
-            MsfsData.Instance.Changed();
+           MsfsData.Instance.Changed();
         }
 
 
@@ -495,6 +479,10 @@
                     case EVENTS.KEY_TUG_HEADING:
                         value = (UInt32)(binding.ControllerValue == 1 ? TUG_ANGLE * -0.8f : TUG_ANGLE * 0.8f);
                         break;
+                    case EVENTS.ATC_MENU_OPEN:
+                         this.pluginForKey.ClientApplication.SendKeyboardShortcut((VirtualKeyCode)0x91);
+                        value = 0;
+                        break;
                     default:
                         value = (UInt32)binding.ControllerValue;
                         break;
@@ -511,22 +499,6 @@
                 Debug.WriteLine("Send " + eventName);
                 this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, (UInt32)value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
-        }
-
-        private void ResetEvents()
-        {
-            MsfsData.Instance.ATC = false;
-            MsfsData.Instance.ATCClose = false;
-            MsfsData.Instance.ATC0 = false;
-            MsfsData.Instance.ATC1 = false;
-            MsfsData.Instance.ATC2 = false;
-            MsfsData.Instance.ATC3 = false;
-            MsfsData.Instance.ATC4 = false;
-            MsfsData.Instance.ATC5 = false;
-            MsfsData.Instance.ATC6 = false;
-            MsfsData.Instance.ATC7 = false;
-            MsfsData.Instance.ATC8 = false;
-            MsfsData.Instance.ATC9 = false;
         }
 
         private void OnTick()

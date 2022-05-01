@@ -92,6 +92,17 @@
         AP_MASTER_SWITCH_AP_FOLDER,
         AP_THROTTLE_SWITCH_AP_FOLDER,
         AP_VSPEED_SWITCH_AP_FOLDER,
+        ATC_ATC_FOLDER,
+        ATC_0_ATC_FOLDER,
+        ATC_1_ATC_FOLDER,
+        ATC_2_ATC_FOLDER,
+        ATC_3_ATC_FOLDER,
+        ATC_4_ATC_FOLDER,
+        ATC_5_ATC_FOLDER,
+        ATC_6_ATC_FOLDER,
+        ATC_7_ATC_FOLDER,
+        ATC_8_ATC_FOLDER,
+        ATC_9_ATC_FOLDER,
     }
 }
 
