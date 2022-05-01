@@ -12,6 +12,7 @@ The aim of this plugin is to use the Loupedeck Live to control MSFS
 * Download the latest MSFS Deck plugin: https://github.com/calibx/msfsdeck/releases
 * Doubleclick the downloaded .lplug4 file to install the plugin
 * Check from Loupedeck software that you can see the MSFS profile
+* If an error is displayed after installing just close the window
 * No need to install FSUIPC since 1.0.0
 # Usage
 * Launch MSFS
