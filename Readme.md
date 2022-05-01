@@ -15,7 +15,8 @@ The aim of this plugin is to use the Loupedeck Live to control MSFS
 * No need to install FSUIPC since 1.0.0
 # Usage
 * Launch MSFS
-* The Loupedesk should switch to MSFS profile
+* The Loupedesk should switch to MSFS profile (or do it manually)
+* Move a dial of the Loupedeck to init connection
 * Have Fun
 # Controls description
 https://github.com/calibx/msfsdeck/wiki
