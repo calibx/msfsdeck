@@ -9,5 +9,5 @@ supportedDevices:
     - LoupedeckCt  
     - LoupedeckLive
 
-pluginFileName: MsfsPlugin.dll
+pluginFileName: MSFSPlugin.dll
 pluginFolderWin: bin\win\

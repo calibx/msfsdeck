@@ -45,9 +45,6 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="fsuipcClient, Version=3.2.17.386, Culture=neutral, PublicKeyToken=7e7559b53e380b17, processorArchitecture=MSIL">
-      <HintPath>..\packages\FSUIPCClientDLL.3.2.17\lib\net40\fsuipcClient.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.FlightSimulator.SimConnect, Version=11.0.62651.3, Culture=neutral, PublicKeyToken=baf445ffb3a06b5c, processorArchitecture=AMD64">
       <HintPath>..\..\..\..\..\..\..\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -124,7 +121,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\DefaultProfile30win.lp4" />
-    <None Include="Resources\LoupedeckPackage.yaml" />
+    <None Include="Resources\LoupedeckPackage.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="Resources\DefaultProfile20win.lp4" />
     <None Include="Resources\SimConnect.cfg-old" />
   </ItemGroup>
@@ -160,14 +159,17 @@
     <PostBuildEvent>$(ILMergeConsolePath) /out:$(OutDir)/bin/win/MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release (
+    <PostBuildEvent>xcopy "C:\MSFS SDK\SimConnect SDK\lib\SimConnect.dll" "." /Y
+if $(ConfigurationName) == Release (
   powershell Remove-Item '$(OutDir)archive' -Recurse -Force
   powershell New-Item -Path '$(OutDir)archive\bin\win' -ItemType Directory -Force
-  $(ILMergeConsolePath) /out:$(OutDir)archive\bin\win\MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll
-  powershell Copy-Item '$(OutDir)Resources\LoupedeckPackage.yaml' -Destination '$(OutDir)archive\' -Force
-  powershell Compress-Archive -Path '$(OutDir)archive\LoupedeckPackage.yaml', '$(OutDir)archive\bin' -DestinationPath '$(OutDir)archive\MSFSPluginPackage.zip' -Force
+  powershell Copy-Item '$(OutDir)MSFSPlugin.dll' -Destination '$(OutDir)archive\bin\win'
+  powershell Copy-Item '$(OutDir)Microsoft.FlightSimulator.SimConnect.dll' -Destination '$(OutDir)archive\bin\win'
+  powershell Copy-Item '$(OutDir)\SimConnect.dll' -Destination '$(OutDir)archive\bin\win'
+  powershell Copy-Item '$(OutDir)Resources\LoupedeckPackage.yaml' -Destination '$(OutDir)archive\'
+  powershell Compress-Archive -Path '$(OutDir)archive\*', '$(OutDir)archive\bin' -DestinationPath '$(OutDir)archive\MSFSPluginPackage.zip'
   powershell Rename-Item -Path '$(OutDir)archive\MSFSPluginPackage.zip' -NewName MSFSPluginPackage.lplug4
 )
-xcopy "C:\MSFS SDK\SimConnect SDK\lib\SimConnect.dll" "." /Y</PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
