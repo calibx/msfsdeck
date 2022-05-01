@@ -1,7 +1,7 @@
 type: plugin4
 name: MSFSPlugin
 displayName: Microsoft Flight Simulator Plugin
-version: 0.1.0.10
+version: 1.0.0.0
 author: CaliBx
 copyright: CaliBx
 
