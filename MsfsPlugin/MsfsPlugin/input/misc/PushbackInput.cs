@@ -26,10 +26,15 @@
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (this._bindings[1].MsfsValue == 1)
+                if (this._bindings[0].MsfsValue == 0)
+                {
+                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
+                }
+                else if (this._bindings[1].MsfsValue == 1)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
-                } else if (this._bindings[2].ControllerValue == 3)
+                }
+                else if (this._bindings[2].ControllerValue == 3)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
                 } else

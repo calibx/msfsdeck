@@ -14,10 +14,7 @@
         public Boolean ControllerChanged { get; set; }
         public Boolean MSFSChanged { get; set; }
 
-        public Binding(BindingKeys Key)
-        {
-            this.Key = Key;
-        }
+        public Binding(BindingKeys Key) => this.Key = Key;
         public Boolean HasMSFSChanged() => this.MSFSChanged;
         public void SetMsfsValue(Int64 newValue)
         {

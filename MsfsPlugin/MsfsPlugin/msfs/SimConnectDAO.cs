@@ -81,8 +81,8 @@
             AP_FLIGHT_LEVEL_CHANGE,
             AP_APR_HOLD,
             AP_LOC_HOLD,
-
-    };
+            BRAKES,
+        };
         private enum DEFINITIONS
         {
             Readers,
@@ -171,6 +171,9 @@
             public Int64 apFLC;
             public Int64 apAPP;
             public Int64 apLOC;
+            public Int64 onGround;
+            public Int64 groundSpeed;
+            public Int64 pushbackAttached;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -292,8 +295,8 @@
             MsfsData.Instance.bindings[BindingKeys.E2N1].SetMsfsValue(reader.E2N1);
             MsfsData.Instance.bindings[BindingKeys.E3N1].SetMsfsValue(reader.E3N1);
             MsfsData.Instance.bindings[BindingKeys.E4N1].SetMsfsValue(reader.E4N1);
-            MsfsData.Instance.bindings[BindingKeys.PUSHBACK_ATTACHED].SetMsfsValue(reader.wheelRPM == 0 ? 0 : 1);
-            //MsfsData.Instance.bindings[BindingKeys.PUSHBACK_STATE].SetMsfsValue(reader.pushback);
+            MsfsData.Instance.bindings[BindingKeys.PUSHBACK_ATTACHED].SetMsfsValue((reader.pushbackAttached == 1 && reader.wheelRPM != 0) ? 1 : 0);
+            MsfsData.Instance.bindings[BindingKeys.PUSHBACK_STATE].SetMsfsValue(reader.onGround);
             //MsfsData.Instance.bindings[BindingKeys.PUSHBACK_ANGLE].SetMsfsValue(reader.pushback); // Can read but set so stay on the controller state
             MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_MULTI].SetMsfsValue(reader.navLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_BEACON_MULTI].SetMsfsValue(reader.beaconLight);
@@ -485,7 +488,7 @@
                 this.m_oSimConnect.SetDataOnSimObject(DEFINITIONS.Writers, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, writer);
                 MsfsData.Instance.bindings[BindingKeys.MIXTURE].ResetController();
             }
-
+            AutoTaxiInput(reader);
            MsfsData.Instance.Changed();
         }
 
@@ -643,7 +646,13 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT APPROACH HOLD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT APPROACH IS LOCALIZER", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "SIM ON GROUND", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GROUND VELOCITY", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "PUSHBACK ATTACHED", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            
+
+
+
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -707,9 +716,36 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_FLIGHT_LEVEL_CHANGE, "AP_FLIGHT_LEVEL_CHANGE");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_APR_HOLD, "AP_APR_HOLD");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_LOC_HOLD, "AP_LOC_HOLD");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.BRAKES, "BRAKES");
+            
 
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             this.m_oSimConnect.RegisterDataDefineStruct<Writers>(DEFINITIONS.Writers);
+        }
+
+        private void AutoTaxiInput(Readers reader)
+        {
+            if (reader.onGround == 1)
+            {
+                if (MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].ControllerValue >= 2)
+                {
+                    if (reader.groundSpeed > 19)
+                    {
+                        MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(3);
+                        this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.BRAKES, 1, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                    } else
+                    {
+                        MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(2);
+                    }
+                } else
+                {
+                    MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(1);
+                }
+            }
+            else
+            {
+                MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(0);
+            }
         }
     }
 }

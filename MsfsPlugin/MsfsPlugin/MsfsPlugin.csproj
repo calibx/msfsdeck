@@ -85,6 +85,7 @@
     <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\debug\AircraftInput.cs" />
     <Compile Include="input\light\LightsMultiInputs.cs" />
+    <Compile Include="input\misc\AutoTaxiInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\EngineInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
