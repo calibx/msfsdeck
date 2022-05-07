@@ -82,6 +82,7 @@
             AP_APR_HOLD,
             AP_LOC_HOLD,
             BRAKES,
+            THROTTLE_REVERSE_THRUST_TOGGLE,
         };
         private enum DEFINITIONS
         {
@@ -488,7 +489,7 @@
                 this.m_oSimConnect.SetDataOnSimObject(DEFINITIONS.Writers, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, writer);
                 MsfsData.Instance.bindings[BindingKeys.MIXTURE].ResetController();
             }
-            AutoTaxiInput(reader);
+           this.AutoTaxiInput(reader);
            MsfsData.Instance.Changed();
         }
 
@@ -717,8 +718,8 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_APR_HOLD, "AP_APR_HOLD");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_LOC_HOLD, "AP_LOC_HOLD");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.BRAKES, "BRAKES");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.THROTTLE_REVERSE_THRUST_TOGGLE, "THROTTLE_REVERSE_THRUST_TOGGLE");
             
-
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             this.m_oSimConnect.RegisterDataDefineStruct<Writers>(DEFINITIONS.Writers);
         }
