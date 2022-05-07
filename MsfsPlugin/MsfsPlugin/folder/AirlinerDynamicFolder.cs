@@ -7,13 +7,33 @@
     {
         protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
         protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
-
+        protected readonly List<Binding> _bindings = new List<Binding>();
         public AirlinerDynamicFolder()
         {
             this.DisplayName = "Airliner";
             this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.None;
             MsfsData.Instance.Register(this);
+
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_ALT_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ALT_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_HEADING_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.HEADING_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_SPEED_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.SPEED_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.VSPEED_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_FD_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_ALT_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_GPS_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_FLC_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_APP_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_LOC_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_SPEED_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_HEAD_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER)));
 
         }
 
@@ -62,16 +82,16 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    ret = "Alt\n[" + MsfsData.Instance.CurrentAPAltitude + "]\n" + MsfsData.Instance.CurrentAltitude;
+                    ret = "Alt\n[" + this._bindings[0].ControllerValue + "]\n" + this._bindings[1].ControllerValue;
                     break;
                 case "Heading Encoder":
-                    ret = "Head\n[" + MsfsData.Instance.CurrentAPHeading + "]\n" + MsfsData.Instance.CurrentHeading;
+                    ret = "Head\n[" + this._bindings[2].ControllerValue + "]\n" + this._bindings[3].ControllerValue;
                     break;
                 case "Speed Encoder":
-                    ret = "Speed\n[" + MsfsData.Instance.CurrentAPSpeed + "]\n" + MsfsData.Instance.CurrentSpeed;
+                    ret = "Speed\n[" + this._bindings[4].ControllerValue + "]\n" + this._bindings[5].ControllerValue;
                     break;
                 case "VS Speed Encoder":
-                    ret = "VS\n[" + MsfsData.Instance.CurrentAPVerticalSpeed + "]\n" + MsfsData.Instance.CurrentVerticalSpeed;
+                    ret = "VS\n[" + this._bindings[6].ControllerValue + "]\n" + this._bindings[7].ControllerValue;
                     break;
             }
             return ret;
@@ -82,37 +102,37 @@
             switch (actionParameter)
             {
                 case "LOC":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.LOCSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[14].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "FD":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.FDSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[8].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "FLC":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.FLCSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[12].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "APP":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.APPSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[13].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Altitude":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApAltHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Heading":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApHeadHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[16].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "GPS":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApNavHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[11].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Speed":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApSpeedHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[15].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "AP":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "Throttle":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApThrottleSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[17].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
                 case "VS Speed":
-                    bitmapBuilder.SetBackgroundImage(MsfsData.Instance.ApVSHoldSwitch ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(this._bindings[18].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -125,78 +145,106 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    MsfsData.Instance.CurrentAPAltitude = this.ApplyAdjustment(MsfsData.Instance.CurrentAPAltitude, -10000, 40000, 100, ticks);
+                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, -10000, 99900, 100, ticks));
                     break;
                 case "Heading Encoder":
-                    MsfsData.Instance.CurrentAPHeading = this.ApplyAdjustment(MsfsData.Instance.CurrentAPHeading, 0, 360, 1, ticks);
+                    this._bindings[2].SetControllerValue(this.ApplyAdjustment(this._bindings[2].ControllerValue, 0, 360, 1, ticks));
                     break;
                 case "Speed Encoder":
-                    MsfsData.Instance.CurrentAPSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPSpeed, 0, 2000, 1, ticks);
+                    this._bindings[4].SetControllerValue(this.ApplyAdjustment(this._bindings[4].ControllerValue, 0, 2000, 1, ticks));
                     break;
                 case "VS Speed Encoder":
-                    MsfsData.Instance.CurrentAPVerticalSpeed = this.ApplyAdjustment(MsfsData.Instance.CurrentAPVerticalSpeed, -10000, 10000, 100, ticks);
+                    this._bindings[6].SetControllerValue(this.ApplyAdjustment(this._bindings[6].ControllerValue, -10000, 10000, 100, ticks));
                     break;
             }
+            this.EncoderActionNamesChanged();
         }
         public override void RunCommand(String actionParameter)
         {
             switch (actionParameter)
             {
                 case "LOC":
-                    MsfsData.Instance.LOCSwitch = !MsfsData.Instance.LOCSwitch;
+                    this._bindings[14].SetControllerValue(1);
                     break;
                 case "FD":
-                    MsfsData.Instance.FDSwitch= !MsfsData.Instance.FDSwitch;
+                    this._bindings[8].SetControllerValue(1);
                     break;
                 case "FLC":
-                    MsfsData.Instance.FLCSwitch = !MsfsData.Instance.FLCSwitch;
+                    this._bindings[12].SetControllerValue(1);
                     break;
                 case "APP":
-                    MsfsData.Instance.APPSwitch= !MsfsData.Instance.APPSwitch;
+                    this._bindings[13].SetControllerValue(1);
                     break;
                 case "Altitude":
-                    MsfsData.Instance.ApAltHoldSwitch = !MsfsData.Instance.ApAltHoldSwitch;
+                    this._bindings[9].SetControllerValue(1);
                     break;
                 case "Heading":
-                    MsfsData.Instance.ApHeadHoldSwitch = !MsfsData.Instance.ApHeadHoldSwitch;
+                    this._bindings[16].SetControllerValue(1);
                     break;
                 case "GPS":
-                    MsfsData.Instance.ApNavHoldSwitch = !MsfsData.Instance.ApNavHoldSwitch;
+                    this._bindings[11].SetControllerValue(1);
                     break;
                 case "Speed":
-                    MsfsData.Instance.ApSpeedHoldSwitch = !MsfsData.Instance.ApSpeedHoldSwitch;
+                    this._bindings[15].SetControllerValue(1);
                     break;
                 case "AP":
-                    MsfsData.Instance.ApSwitch = !MsfsData.Instance.ApSwitch;
+                    this._bindings[10].SetControllerValue(1);
                     break;
                 case "Throttle":
-                    MsfsData.Instance.ApThrottleSwitch = !MsfsData.Instance.ApThrottleSwitch;
+                    this._bindings[17].SetControllerValue(1);
                     break;
                 case "VS Speed":
-                    MsfsData.Instance.ApVSHoldSwitch = !MsfsData.Instance.ApVSHoldSwitch;
+                    this._bindings[18].SetControllerValue(1);
                     break;
                 case "Altitude Reset":
-                    MsfsData.Instance.ApAltHoldSwitch = !MsfsData.Instance.ApAltHoldSwitch;
+                    //this._bindings[18].SetControllerValue(1);
                     break;
                 case "Heading Reset":
-                    MsfsData.Instance.ApNavHoldSwitch = !MsfsData.Instance.ApNavHoldSwitch;
+                    //this._bindings[18].SetControllerValue(1);
                     break;
                 case "Speed Reset":
-                    MsfsData.Instance.ApSpeedHoldSwitch = !MsfsData.Instance.ApSpeedHoldSwitch;
+                    //this._bindings[18].SetControllerValue(1);
                     break;
                 case "VS Speed Reset":
-                    MsfsData.Instance.ApVSHoldSwitch = !MsfsData.Instance.ApVSHoldSwitch;
+                    //this._bindings[18].SetControllerValue(1);
                     break;
             }
         }
-
         public void Notify()
         {
-            this.ButtonActionNamesChanged();
-            this.EncoderActionNamesChanged();
+            foreach (Binding binding in this._bindings)
+            {
+                if (binding.HasMSFSChanged())
+                {
+                    MsfsData.Instance.refreshLimiter++;
+                    binding.Reset();
+                    switch (binding.Key)
+                    {
+                        case BindingKeys.AP_ALT_AL_FOLDER:
+                        case BindingKeys.ALT_AL_FOLDER:
+                            this.AdjustmentValueChanged("Altitude Encoder");
+                            break;
+                        case BindingKeys.AP_HEADING_AL_FOLDER:
+                        case BindingKeys.HEADING_AL_FOLDER:
+                            this.AdjustmentValueChanged("Heading Encoder");
+                            break;
+                        case BindingKeys.AP_SPEED_AL_FOLDER:
+                        case BindingKeys.SPEED_AL_FOLDER:
+                            this.AdjustmentValueChanged("Speed Encoder");
+                            break;
+                        case BindingKeys.AP_VSPEED_AL_FOLDER:
+                        case BindingKeys.VSPEED_AL_FOLDER:
+                            this.AdjustmentValueChanged("VS Speed Encoder");
+                            break;
+                        default:
+                            this.ButtonActionNamesChanged();
+                            break;
+                    }
+                }
+            }
         }
 
-        private Int32 ApplyAdjustment(Int32 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
+        private Int64 ApplyAdjustment(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
         {
             value += ticks * steps;
             if (value < min)
@@ -204,17 +252,6 @@
             else if (value > max)
             { value = max; }
             return value;
-
-        }
-        public override Boolean Activate()
-        {
-            MsfsData.Instance.folderDisplayed = true;
-            return base.Activate();
-        }
-        public override Boolean Deactivate()
-        {
-            MsfsData.Instance.folderDisplayed = false;
-            return base.Deactivate();
         }
     }
 }

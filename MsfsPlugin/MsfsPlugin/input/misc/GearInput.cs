@@ -5,35 +5,37 @@
     using Loupedeck.MsfsPlugin.input;
     class GearInput : DefaultInput
     {
-        public GearInput() : base("Gear", "Display gears state", "Misc") { }
-        protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
+        public GearInput() : base("Gear", "Display gears state", "Misc")
         {
-            MsfsData.Instance.ValuesDisplayed = true;
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.GEAR_RETRACTABLE)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.GEAR_FRONT)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.GEAR_LEFT)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.GEAR_RIGHT)));
+        }
+        protected override BitmapImage GetImage(PluginImageSize imageSize)
+        {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (MsfsData.Instance.GearRetractable == 1)
+                if (this._bindings[0].ControllerValue == 1)
                 {
-                    if (MsfsData.Instance.GearFront == 0 || MsfsData.Instance.GearFront == 16383)
+                    if (this._bindings[1].ControllerValue == 0 || this._bindings[1].ControllerValue == 10)
                     {
-
-                        bitmapBuilder.DrawText("\t" + this.GetDisplay(MsfsData.Instance.GearFront) + "\n" + this.GetDisplay(MsfsData.Instance.GearLeft) + "\t" + this.GetDisplay(MsfsData.Instance.GearRight), BitmapColor.White);
+                        bitmapBuilder.DrawText("\t" + this.GetDisplay(this._bindings[1].MsfsValue) + "\n" + this.GetDisplay(this._bindings[2].MsfsValue) + "\t" + this.GetDisplay(this._bindings[3].MsfsValue), BitmapColor.White);
                     }
                     else
                     {
-                        // Gear is moving
-                        bitmapBuilder.DrawText("\t" + this.GetDisplay(MsfsData.Instance.GearFront) + "\n" + this.GetDisplay(MsfsData.Instance.GearLeft) + "\t" + this.GetDisplay(MsfsData.Instance.GearRight), new BitmapColor(255, 165, 0));
+                        bitmapBuilder.DrawText("\t" + this.GetDisplay(this._bindings[1].MsfsValue) + "\n" + this.GetDisplay(this._bindings[2].MsfsValue) + "\t" + this.GetDisplay(this._bindings[3].MsfsValue), new BitmapColor(255, 165, 0));
                     }
                 }
                 else
                 {
-                    bitmapBuilder.DrawText("\t" + this.GetDisplay(MsfsData.Instance.GearFront) + "\n" + this.GetDisplay(MsfsData.Instance.GearLeft) + "\t" + this.GetDisplay(MsfsData.Instance.GearRight), new BitmapColor(0, 0, 255));
+                    bitmapBuilder.DrawText("\t" + this.GetDisplay(this._bindings[1].MsfsValue) + "\n" + this.GetDisplay(this._bindings[2].MsfsValue) + "\t" + this.GetDisplay(this._bindings[3].MsfsValue), new BitmapColor(0, 0, 255));
                 }
                 return bitmapBuilder.ToImage();
             }
         }
-        private String GetDisplay(Int32 gearPos) => gearPos == 0 ? "-" : gearPos == 16383 ? "|" : "/";
-        protected override String GetValue() => MsfsData.Instance.CurrentGearHandle.ToString();
-        protected override void ChangeValue() => MsfsData.Instance.CurrentGearHandle = MsfsData.Instance.CurrentGearHandle != 0 ? 0 : 16383;
+        private String GetDisplay(Double gearPos) => gearPos == 0 ? "-" : gearPos == 10 ? "|" : "/";
+        protected override void ChangeValue() => this._bindings[1].SetControllerValue(1);
     }
 }
 
