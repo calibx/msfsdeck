@@ -128,7 +128,7 @@
                 this.bindings.Add(binding.Key, binding);
             }
             return this.bindings[binding.Key];
-        } 
+        }
 
         public void Changed()
         {
@@ -139,7 +139,8 @@
                     if (MsfsData.Instance.refreshLimiter <= 10)
                     {
                         notifiable.Notify();
-                    } else
+                    }
+                    else
                     {
                         MsfsData.Instance.overflow = true;
                     }

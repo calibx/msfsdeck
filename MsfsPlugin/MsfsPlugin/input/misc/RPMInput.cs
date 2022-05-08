@@ -6,7 +6,8 @@
 
     class RPMInput : DefaultInput
     {
-        public RPMInput() : base("RPM/N1", "Display RPM for or N1", "Misc") {
+        public RPMInput() : base("RPM/N1", "Display RPM for or N1", "Misc")
+        {
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ENGINE_TYPE)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ENGINE_NUMBER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.E1RPM)));

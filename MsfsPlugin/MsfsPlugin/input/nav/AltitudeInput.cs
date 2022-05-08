@@ -6,7 +6,8 @@
 
     class AltitudeInput : DefaultInput
     {
-        public AltitudeInput() : base("Altitude", "Display current and AP altitude", "Nav") {
+        public AltitudeInput() : base("Altitude", "Display current and AP altitude", "Nav")
+        {
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_ALT_INPUT)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ALT_INPUT)));
         }
