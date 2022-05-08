@@ -3,7 +3,6 @@
     using System;
 
     using Loupedeck.MsfsPlugin.input;
-    using Loupedeck.MsfsPlugin.msfs;
     class SimCnxStateInput : DefaultInput
     {
         public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug") => this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.CONNECTION)));

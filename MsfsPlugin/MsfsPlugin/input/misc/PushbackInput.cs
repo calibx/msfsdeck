@@ -1,12 +1,12 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
 
     using Loupedeck.MsfsPlugin.input;
 
     class PushbackInput : DefaultInput
     {
-        public PushbackInput() : base("Pushback", "Pushback", "Misc") {
+        public PushbackInput() : base("Pushback", "Pushback", "Misc")
+        {
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PUSHBACK_STATE)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PUSHBACK_ATTACHED)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PUSHBACK_CONTROLLER)));
@@ -17,22 +17,29 @@
             if (this._bindings[1].MsfsValue == 1)
             {
                 this._bindings[2].SetControllerValue((this._bindings[2].ControllerValue + 1) % 4);
-            } else
+            }
+            else
             {
                 this._bindings[2].SetControllerValue(this._bindings[2].ControllerValue == 0 ? 3 : 0);
             }
-        } 
+        }
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (this._bindings[1].MsfsValue == 1)
+                if (this._bindings[0].MsfsValue == 0)
+                {
+                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
+                }
+                else if (this._bindings[1].MsfsValue == 1)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
-                } else if (this._bindings[2].ControllerValue == 3)
+                }
+                else if (this._bindings[2].ControllerValue == 3)
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
-                } else
+                }
+                else
                 {
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageWaitResourcePath));
                 }

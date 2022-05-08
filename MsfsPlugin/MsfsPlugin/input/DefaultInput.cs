@@ -1,7 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin.input
 {
     using System;
-    using System.Diagnostics;
     using System.Collections.Generic;
     public abstract class DefaultInput : PluginDynamicCommand, Notifiable
     {

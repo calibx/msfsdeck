@@ -6,7 +6,8 @@
 
     class SpeedInput : DefaultInput
     {
-        public SpeedInput() : base("Speed", "Display current and AP speed", "Nav") {
+        public SpeedInput() : base("Speed", "Display current and AP speed", "Nav")
+        {
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_SPEED_INPUT)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.SPEED_INPUT)));
         }

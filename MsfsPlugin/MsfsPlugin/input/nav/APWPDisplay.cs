@@ -5,7 +5,8 @@
     using Loupedeck.MsfsPlugin.input;
     class APWPDisplay : DefaultInput
     {
-        public APWPDisplay() : base("WP", "Display next WP data", "Nav") {
+        public APWPDisplay() : base("WP", "Display next WP data", "Nav")
+        {
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_NEXT_WP_ID)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_NEXT_WP_DIST)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_NEXT_WP_ETE)));

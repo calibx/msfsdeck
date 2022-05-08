@@ -6,7 +6,8 @@
 
     class VerticalSpeedInput : DefaultInput
     {
-        public VerticalSpeedInput() : base("VS", "Display current and AP vertical speed", "Nav") {
+        public VerticalSpeedInput() : base("VS", "Display current and AP vertical speed", "Nav")
+        {
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_INPUT)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.VSPEED_INPUT)));
         }

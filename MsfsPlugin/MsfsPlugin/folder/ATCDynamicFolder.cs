@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Loupedeck.MsfsPlugin.msfs;
 
     public class ATCDynamicFolder : PluginDynamicFolder, Notifiable
@@ -83,7 +84,7 @@
                     break;
             }
         }
-        public void Notify() {}
+        public void Notify() { }
 
     }
 }
