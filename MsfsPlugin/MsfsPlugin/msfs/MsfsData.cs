@@ -138,6 +138,7 @@
                 {
                     if (MsfsData.Instance.refreshLimiter <= 10)
                     {
+                        MsfsData.Instance.overflow = false;
                         notifiable.Notify();
                     }
                     else

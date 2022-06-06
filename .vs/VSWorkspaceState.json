@@ -1,7 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\MsfsPlugin\\MsfsPlugin",
+    "\\MsfsPlugin\\MsfsPlugin\\input",
+    "\\MsfsPlugin\\MsfsPlugin\\input\\light",
+    "\\MsfsPlugin\\MsfsPlugin\\input\\misc",
+    "\\MsfsPlugin\\MsfsPlugin\\input\\nav",
+    "\\MsfsPlugin\\MsfsPlugin\\msfs",
+    "\\MsfsPlugin\\MsfsPlugin\\Resources"
   ],
-  "SelectedNode": "\\MsfsPlugin.sln",
+  "SelectedNode": "\\MsfsPlugin",
   "PreviewInSolutionExplorer": false
 }
