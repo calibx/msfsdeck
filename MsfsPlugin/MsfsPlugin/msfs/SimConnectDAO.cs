@@ -201,12 +201,18 @@
             {
                 Debug.WriteLine("Trying cnx");
                 MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(2);
+                foreach (Binding binding in MsfsData.Instance.bindings.Values)
+                {
+                    binding.MSFSChanged = true;
+                }
+                MsfsData.Instance.Changed();
                 try
                 {
                     this.m_oSimConnect = new SimConnect("MSFS Plugin", new IntPtr(0), WM_USER_SIMCONNECT, null, 0);
                     this.m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(this.SimConnect_OnRecvOpen);
                     this.m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(this.SimConnect_OnRecvSimobjectDataBytype);
-                    MsfsData.Instance.Changed();
+
+
                     this.AddRequest();
                     lock (timer)
                     {
@@ -219,12 +225,16 @@
                 {
                     Debug.WriteLine(ex);
                     MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
+                    foreach (Binding binding in MsfsData.Instance.bindings.Values)
+                    {
+                        binding.MSFSChanged = true;
+                    }
+                    MsfsData.Instance.Changed();
                 }
             }
         }
         public void Disconnect()
         {
-            timer.Enabled = false;
             if (this.m_oSimConnect != null)
             {
                 this.m_oSimConnect.Dispose();
@@ -232,18 +242,25 @@
             }
 
             MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
+            foreach (Binding binding in MsfsData.Instance.bindings.Values)
+            {
+                binding.MSFSChanged = true;
+            }
             MsfsData.Instance.Changed();
         }
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
             Debug.WriteLine("Cnx opened");
             MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(1);
+            foreach (Binding binding in MsfsData.Instance.bindings.Values)
+            {
+                binding.MSFSChanged = true;
+            }
+            MsfsData.Instance.Changed();
             timer.Interval = 200;
         }
         private void SimConnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
-            Debug.WriteLine("Received Data");
-            var delay = true;
             var reader = (Readers)data.dwData[0];
             MsfsData.Instance.AircraftName = reader.title;
 
@@ -559,7 +576,20 @@
                             MsfsData.Instance.refreshLimiter = 0;
                             MsfsData.Instance.Changed();
                             Debug.WriteLine("Overflow handling " + MsfsData.Instance.refreshLimiter);
-                            MsfsData.Instance.overflow = MsfsData.Instance.refreshLimiter >= 10;
+                            //MsfsData.Instance.overflow = MsfsData.Instance.refreshLimiter > 0;
+                        }
+                    } else
+                    {
+                        if (!MsfsData.Instance.overflow)
+                        {
+                            timer.Enabled = false;
+                        }
+                        else
+                        {
+                            MsfsData.Instance.refreshLimiter = 0;
+                            MsfsData.Instance.Changed();
+                            Debug.WriteLine("Overflow handling " + MsfsData.Instance.refreshLimiter);
+                            //MsfsData.Instance.overflow = MsfsData.Instance.refreshLimiter > 0;
                         }
                     }
                 }
