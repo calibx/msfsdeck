@@ -11,6 +11,5 @@ namespace Loupedeck.MsfsPlugin
 
         protected override String GetProcessName() => "FlightSimulator";
 
-        protected override String GetBundleName() => "MSFS";
     }
 }
