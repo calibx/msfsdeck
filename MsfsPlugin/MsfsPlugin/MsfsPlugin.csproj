@@ -153,6 +153,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\trying.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\disableBorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\onBorder.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PostBuildEvent>$(ILMergeConsolePath) /out:$(OutDir)/bin/win/MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll</PostBuildEvent>

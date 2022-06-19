@@ -5,8 +5,8 @@
 
     public class ComDynamicFolder : PluginDynamicFolder, Notifiable
     {
-        protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
-        protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
+        protected readonly String _imageDisableResourcePath = "Loupedeck.MsfsPlugin.Resources.disableBorder.png";
+        protected readonly String _imageAvailableResourcePath = "Loupedeck.MsfsPlugin.Resources.onBorder.png";
         protected readonly List<Binding> _bindings = new List<Binding>();
         public ComDynamicFolder()
         {
@@ -95,13 +95,21 @@
             switch (actionParameter)
             {
                 case "COM1 Active":
+                    if (this._bindings[9].MsfsValue == 1)
+                    {
+                        bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageAvailableResourcePath));
+                    }
+                    else
+                    {
+                        bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
+                    }
                     bitmapBuilder.DrawText("COM 1\n" + this.bcd2dbl(this._bindings[0].ControllerValue));
                     break;
                 case "COM1 Standby":
                     bitmapBuilder.DrawText("COM 1 STB\n" + this.bcd2dbl(this._bindings[12].ControllerValue));
                     break;
                 case "COM1 Status":
-                    bitmapBuilder.DrawText("COM 1 Status\n" + this._bindings[6].ControllerValue + "\nType\n" + this._bindings[3].ControllerValue;
+                    bitmapBuilder.DrawText("COM 1 Status\n" + this._bindings[6].ControllerValue + "\nType\n" + this._bindings[3].ControllerValue);
                     break;
             }
             return bitmapBuilder.ToImage();
@@ -127,10 +135,10 @@
             switch (actionParameter)
             {
                 case "COM1 Int Encoder":
-                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, -10000, 99900, 100, ticks));
+                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, -0, 999, 1, ticks));
                     break;
                 case "COM1 Float Encoder":
-                    this._bindings[2].SetControllerValue(this.ApplyAdjustment(this._bindings[2].ControllerValue, 0, 360, 1, ticks));
+                    this._bindings[2].SetControllerValue(this.ApplyAdjustment(this._bindings[2].ControllerValue, 0, 999, 1, ticks));
                     break;
             }
             this.EncoderActionNamesChanged();
