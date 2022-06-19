@@ -174,6 +174,8 @@
             public Int64 onGround;
             public Int64 groundSpeed;
             public Int64 pushbackAttached;
+
+            public Int64 COM1StoredFreq;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -372,6 +374,8 @@
             MsfsData.Instance.bindings[BindingKeys.AP_HEAD_SWITCH_AL_FOLDER].SetMsfsValue(reader.apHeadingHold);
             MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER].SetMsfsValue(reader.apThrottleHold);
             MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER].SetMsfsValue(reader.apVerticalSpeedHold);
+
+            MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY].SetMsfsValue(reader.COM1StoredFreq);
 
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
@@ -679,10 +683,8 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "SIM ON GROUND", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GROUND VELOCITY", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "PUSHBACK ATTACHED", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-
-
-
-
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQUENCY:1", "Frequency BCD16", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);

@@ -79,6 +79,7 @@
     <Compile Include="folder\AirlinerDynamicFolder.cs" />
     <Compile Include="folder\APDynamicFolder.cs" />
     <Compile Include="folder\ATCDynamicFolder.cs" />
+    <Compile Include="folder\ComDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
     <Compile Include="input\debug\SimCnxStateInput.cs" />
     <Compile Include="input\debug\DebugInput.cs" />
