@@ -43,6 +43,7 @@
                 PluginDynamicFolder.NavigateUpActionName,
                 this.CreateCommandName("COM1 Active"),
                 this.CreateCommandName("COM1 Standby"),
+                this.CreateCommandName("COM1 Status"),
 /*                this.CreateCommandName("COM2 Active"),
                 this.CreateCommandName("COM2 Standby"),
                 this.CreateCommandName("COM3 Active"),
@@ -67,11 +68,11 @@
             return new[]
             {
                 this.CreateCommandName("COM1 Int Reset"),
-                this.CreateCommandName("COM1 Float Reset"),
-/*                this.CreateCommandName("COM2 Int Reset"),
-                this.CreateCommandName("COM2 Float Reset"),
+                this.CreateCommandName("COM2 Int Reset"),
                 this.CreateCommandName("COM3 Int Reset"),
-                this.CreateCommandName("COM3 Float Reset"),*/
+                this.CreateCommandName("COM1 Float Reset"),
+                this.CreateCommandName("COM2 Float Reset"),
+                this.CreateCommandName("COM3 Float Reset"),
             };
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -94,12 +95,13 @@
             switch (actionParameter)
             {
                 case "COM1 Active":
-                    //bitmapBuilder.SetBackgroundImage(this._bindings[1].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     bitmapBuilder.DrawText("COM 1\n" + this.bcd2dbl(this._bindings[0].ControllerValue));
                     break;
                 case "COM1 Standby":
-                    //bitmapBuilder.SetBackgroundImage(this._bindings[1].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     bitmapBuilder.DrawText("COM 1 STB\n" + this.bcd2dbl(this._bindings[12].ControllerValue));
+                    break;
+                case "COM1 Status":
+                    bitmapBuilder.DrawText("COM 1 Status\n" + this._bindings[6].ControllerValue + "\nType\n" + this._bindings[3].ControllerValue;
                     break;
             }
             return bitmapBuilder.ToImage();
@@ -110,14 +112,12 @@
             switch (actionParameter)
             {
                 case "COM1 Active":
-                    this._bindings[1].SetControllerValue(1);
                     break;
                 case "COM1 Standby":
-                    this._bindings[2].SetControllerValue(1);
                     break;
                 case "COM1 Int Reset":
                 case "COM1 Float Reset":
-                    this._bindings[2].SetControllerValue(1);
+                    this._bindings[16].SetControllerValue(1);
                     break;
             }
         }
