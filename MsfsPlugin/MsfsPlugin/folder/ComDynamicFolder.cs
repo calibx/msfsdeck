@@ -84,7 +84,7 @@
                     ret = "COM1\n" + Math.Truncate(this.bcd2dbl(this._bindings[0].ControllerValue)) + ".";
                     break;
                 case "COM1 Float Encoder":
-                    ret = "COM1\n" + Math.Round((this.bcd2dbl(this._bindings[0].ControllerValue) - Math.Truncate(this.bcd2dbl(this._bindings[0].ControllerValue))), 3);
+                    ret = "COM1\n" + Math.Round(this.bcd2dbl(this._bindings[0].ControllerValue) - Math.Truncate(this.bcd2dbl(this._bindings[0].ControllerValue)), 3);
                     break;
             }
             return ret;
