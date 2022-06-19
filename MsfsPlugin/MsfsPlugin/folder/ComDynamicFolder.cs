@@ -95,24 +95,31 @@
             switch (actionParameter)
             {
                 case "COM1 Active":
-                    if (this._bindings[9].MsfsValue == 1)
-                    {
-                        bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageAvailableResourcePath));
-                    }
-                    else
-                    {
-                        bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
-                    }
+                    this.SetBackground(bitmapBuilder, this._bindings[9]);
                     bitmapBuilder.DrawText("COM 1\n" + this.bcd2dbl(this._bindings[0].ControllerValue));
                     break;
                 case "COM1 Standby":
+                    this.SetBackground(bitmapBuilder, this._bindings[9]);
                     bitmapBuilder.DrawText("COM 1 STB\n" + this.bcd2dbl(this._bindings[12].ControllerValue));
                     break;
                 case "COM1 Status":
+                    this.SetBackground(bitmapBuilder, this._bindings[9]);
                     bitmapBuilder.DrawText("COM 1 Status\n" + this._bindings[6].ControllerValue + "\nType\n" + this._bindings[3].ControllerValue);
                     break;
             }
             return bitmapBuilder.ToImage();
+        }
+
+        private void SetBackground(BitmapBuilder bitmapBuilder, Binding binding)
+        {
+            if (binding.MsfsValue == 1)
+            {
+                bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageAvailableResourcePath));
+            }
+            else
+            {
+                bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
+            }
         }
 
         public override void RunCommand(String actionParameter)
