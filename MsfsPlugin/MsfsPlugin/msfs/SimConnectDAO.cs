@@ -82,6 +82,7 @@
             AP_LOC_HOLD,
             BRAKES,
             THROTTLE_REVERSE_THRUST_TOGGLE,
+            COM_RADIO_SET_HZ,
         };
         private enum DEFINITIONS
         {
@@ -175,7 +176,8 @@
             public Int64 groundSpeed;
             public Int64 pushbackAttached;
 
-            public Int64 COM1StoredFreq;
+            public Int64 COM1ActiveFreq;
+            public Int64 COM1StbFreq;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -375,7 +377,8 @@
             MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER].SetMsfsValue(reader.apThrottleHold);
             MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER].SetMsfsValue(reader.apVerticalSpeedHold);
 
-            MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY].SetMsfsValue(reader.COM1StoredFreq);
+            MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY].SetMsfsValue(reader.COM1ActiveFreq);
+            MsfsData.Instance.bindings[BindingKeys.COM1_STBY].SetMsfsValue(reader.COM1StbFreq);
 
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
@@ -455,6 +458,8 @@
             this.SendEvent(EVENTS.AP_APR_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_APP_SWITCH_AL_FOLDER]);
             this.SendEvent(EVENTS.AP_LOC_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_LOC_SWITCH_AL_FOLDER]);
 
+            this.SendEvent(EVENTS.COM_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY]);
+            
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
             {
                 switch (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerValue)
@@ -523,6 +528,9 @@
                 UInt32 value;
                 switch (eventName)
                 {
+                    case EVENTS.COM_RADIO_SET_HZ:
+                        value = (UInt32)binding.ControllerValue * 1000;
+                        break;
                     case EVENTS.KOHLSMAN_SET:
                         value = (UInt32)(binding.ControllerValue / 100f * 33.8639 * 16);
                         break;
@@ -683,8 +691,9 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "SIM ON GROUND", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "GROUND VELOCITY", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "PUSHBACK ATTACHED", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQUENCY:1", "Frequency BCD16", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQUENCY:1", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM STANDBY FREQUENCY:1", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -751,6 +760,9 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.BRAKES, "BRAKES");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.THROTTLE_REVERSE_THRUST_TOGGLE, "THROTTLE_REVERSE_THRUST_TOGGLE");
 
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM_RADIO_SET_HZ, "COM_RADIO_SET_HZ");
+            
+
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             this.m_oSimConnect.RegisterDataDefineStruct<Writers>(DEFINITIONS.Writers);
         }
@@ -780,6 +792,13 @@
             {
                 MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(0);
             }
+        }
+        private Double bcd2dbl(Int64 bcd)
+        {
+            string bcdstr = "1" + (bcd).ToString("X5");
+            int bcdint = Convert.ToInt32(bcdstr);
+            double freq = (double)bcdint / 100f;
+            return freq;
         }
     }
 }

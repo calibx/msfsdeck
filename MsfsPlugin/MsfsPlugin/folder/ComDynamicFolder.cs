@@ -81,11 +81,11 @@
             switch (actionParameter)
             {
                 case "COM1 Int Encoder":
-                    ret = "COM1\n" + Math.Truncate(this.bcd2dbl(this._bindings[0].ControllerValue)) + ".";
+                    ret = "COM1\n" + Math.Truncate(this._bindings[0].ControllerValue / 1000000f) + ".";
                     break;
                 case "COM1 Float Encoder":
-                    ret = "COM1\n" + Math.Round(this.bcd2dbl(this._bindings[0].ControllerValue) - Math.Truncate(this.bcd2dbl(this._bindings[0].ControllerValue)), 3);
-                    break;
+                    var com1dbl = Math.Round(this._bindings[0].ControllerValue / 1000000f - Math.Truncate(this._bindings[0].ControllerValue / 1000000f), 3).ToString();
+                    ret = "COM1\n" + (com1dbl.Length > 1 ? com1dbl.Substring(1) : com1dbl);                    break;
             }
             return ret;
         }
@@ -96,11 +96,11 @@
             {
                 case "COM1 Active":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText("COM 1\n" + this.bcd2dbl(this._bindings[0].ControllerValue));
+                    bitmapBuilder.DrawText("COM 1\n" +this._bindings[0].ControllerValue / 1000000f);
                     break;
                 case "COM1 Standby":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText("COM 1 STB\n" + this.bcd2dbl(this._bindings[12].ControllerValue));
+                    bitmapBuilder.DrawText("COM 1 STB\n" + this._bindings[12].ControllerValue / 1000000f);
                     break;
                 case "COM1 Status":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
@@ -139,13 +139,14 @@
 
         public override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
+
             switch (actionParameter)
             {
                 case "COM1 Int Encoder":
-                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, -0, 999, 1, ticks));
+                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, 118000, 136000, 1000, ticks));
                     break;
                 case "COM1 Float Encoder":
-                    this._bindings[2].SetControllerValue(this.ApplyAdjustment(this._bindings[2].ControllerValue, 0, 999, 1, ticks));
+                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, 118000, 136000, 5, ticks));
                     break;
             }
             this.EncoderActionNamesChanged();
@@ -179,16 +180,6 @@
             else if (value > max)
             { value = max; }
             return value;
-        }
-
-        private Double bcd2dbl(Int64 bcd)
-
-        {
-            string bcdstr = "1" + (bcd).ToString("X4");
-            int bcdint = Convert.ToInt32(bcdstr);
-            double freq = (double)bcdint / 100;
-            return freq;
-
         }
     }
 
