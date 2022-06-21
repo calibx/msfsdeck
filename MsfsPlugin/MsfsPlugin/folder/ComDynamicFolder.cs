@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Globalization;
 
     public class ComDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -10,7 +12,7 @@
         protected readonly List<Binding> _bindings = new List<Binding>();
         public ComDynamicFolder()
         {
-            this.DisplayName = "Com";
+            this.DisplayName = "COM";
             this.GroupName = "Folder";
             this.Navigation = PluginDynamicFolderNavigation.None;
 
@@ -81,11 +83,12 @@
             switch (actionParameter)
             {
                 case "COM1 Int Encoder":
-                    ret = "COM1\n" + Math.Truncate(this._bindings[0].ControllerValue / 1000000f) + ".";
+                    ret = "COM1\n" + Math.Truncate(this._bindings[12].ControllerValue / 1000000f) + ".";
                     break;
                 case "COM1 Float Encoder":
-                    var com1dbl = Math.Round(this._bindings[0].ControllerValue / 1000000f - Math.Truncate(this._bindings[0].ControllerValue / 1000000f), 3).ToString();
-                    ret = "COM1\n" + (com1dbl.Length > 1 ? com1dbl.Substring(1) : com1dbl);                    break;
+                    var com1dbl = Math.Round(this._bindings[12].ControllerValue / 1000000f - Math.Truncate(this._bindings[12].ControllerValue / 1000000f), 3).ToString();
+                    ret = "COM1\n" + (com1dbl.Length > 2 ? com1dbl.Substring(2) : com1dbl).PadRight(3, '0');
+                    break;
             }
             return ret;
         }
@@ -96,15 +99,15 @@
             {
                 case "COM1 Active":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText("COM 1\n" +this._bindings[0].ControllerValue / 1000000f);
+                    bitmapBuilder.DrawText("COM 1\n" + (this._bindings[0].ControllerValue / 1000000f).ToString("F3", CultureInfo.InvariantCulture));
                     break;
                 case "COM1 Standby":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText("COM 1 STB\n" + this._bindings[12].ControllerValue / 1000000f);
+                    bitmapBuilder.DrawText("Standby\n" + (this._bindings[12].ControllerValue / 1000000f).ToString("F3", CultureInfo.InvariantCulture));
                     break;
                 case "COM1 Status":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText("COM 1 Status\n" + this._bindings[6].ControllerValue + "\nType\n" + this._bindings[3].ControllerValue);
+                    bitmapBuilder.DrawText("Status\n" + this.IntToCOMStatus(this._bindings[6].ControllerValue) + "\nType\n" + this.IntToCOMType(this._bindings[3].ControllerValue));
                     break;
             }
             return bitmapBuilder.ToImage();
@@ -127,29 +130,27 @@
             switch (actionParameter)
             {
                 case "COM1 Active":
-                    break;
                 case "COM1 Standby":
-                    break;
                 case "COM1 Int Reset":
                 case "COM1 Float Reset":
-                    this._bindings[16].SetControllerValue(1);
+                    this._bindings[15].SetControllerValue(1);
                     break;
             }
         }
 
         public override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-
             switch (actionParameter)
             {
                 case "COM1 Int Encoder":
-                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, 118000, 136000, 1000, ticks));
+                    this._bindings[12].SetControllerValue(this.ApplyAdjustment(this._bindings[12].ControllerValue, 118000000, 136000000, 1000000, ticks));
                     break;
                 case "COM1 Float Encoder":
-                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, 118000, 136000, 5, ticks));
+                    this._bindings[12].SetControllerValue(this.ApplyAdjustment(this._bindings[12].ControllerValue, 118000000, 136000000, 5000, ticks));
                     break;
             }
             this.EncoderActionNamesChanged();
+            this.ButtonActionNamesChanged();
         }
         public void Notify()
         {
@@ -181,6 +182,73 @@
             { value = max; }
             return value;
         }
-    }
+        private String IntToCOMStatus(Int64 comStatus)
+        {
+            String type;
+            switch (comStatus)
+            {
+                case -1:
+                    type = "INVALID";
+                    break;
+                case 0:
+                    type = "OK";
+                    break;
+                case 1:
+                    type = "NOT EXIST";
+                    break;
+                case 2:
+                    type = "NO ELEC";
+                    break;
+                case 3:
+                    type = "FAILED";
+                    break;
+                default:
+                    type = "Unknown";
+                    break;
+            }
+            return type;
+        }
+        private String IntToCOMType(Int64 comType)
+        {
+            String type;
+            switch (comType)
+            {
+                case 0 :
+                    type = "ATIS";
+                    break;
+                case 1 :
+                    type = "UNICOM";
+                    break;
+                case 2 :
+                    type = "CTAF";
+                    break;
+                case 3 :
+                    type = "GROUND";
+                    break;
+                case 4 :
+                    type = "TOWER";
+                    break;
+                case 5 :
+                    type = "CLR";
+                    break;
+                case 6 :
+                    type = "APPR";
+                    break;
+                case 7 :
+                    type = "DEP";
+                    break;
+                case 8 :
+                    type = "FSS";
+                    break;
+                case 9 :
+                    type = "AWOS";
+                    break;
+                default:
+                    type = "Unknow";
+                    break;
+            }
+            return type;
+        }
 
+    }
 }

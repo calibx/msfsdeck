@@ -82,7 +82,8 @@
             AP_LOC_HOLD,
             BRAKES,
             THROTTLE_REVERSE_THRUST_TOGGLE,
-            COM_RADIO_SET_HZ,
+            COM_STBY_RADIO_SET_HZ,
+            COM1_RADIO_SWAP,
         };
         private enum DEFINITIONS
         {
@@ -178,6 +179,10 @@
 
             public Int64 COM1ActiveFreq;
             public Int64 COM1StbFreq;
+            public Int64 COM1Available;
+            public Int64 COM1Status;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
+            public String COM1Type;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -379,6 +384,9 @@
 
             MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY].SetMsfsValue(reader.COM1ActiveFreq);
             MsfsData.Instance.bindings[BindingKeys.COM1_STBY].SetMsfsValue(reader.COM1StbFreq);
+            MsfsData.Instance.bindings[BindingKeys.COM1_AVAILABLE].SetMsfsValue(reader.COM1Available);
+            MsfsData.Instance.bindings[BindingKeys.COM1_STATUS].SetMsfsValue(reader.COM1Status);
+            MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY_TYPE].SetMsfsValue(this.COMtypeToInt(reader.COM1Type));
 
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
@@ -458,8 +466,11 @@
             this.SendEvent(EVENTS.AP_APR_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_APP_SWITCH_AL_FOLDER]);
             this.SendEvent(EVENTS.AP_LOC_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_LOC_SWITCH_AL_FOLDER]);
 
-            this.SendEvent(EVENTS.COM_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY]);
+            this.SendEvent(EVENTS.COM_STBY_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM1_STBY]);
+            this.SendEvent(EVENTS.COM1_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.COM1_RADIO_SWAP]);
             
+
+
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
             {
                 switch (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerValue)
@@ -528,8 +539,8 @@
                 UInt32 value;
                 switch (eventName)
                 {
-                    case EVENTS.COM_RADIO_SET_HZ:
-                        value = (UInt32)binding.ControllerValue * 1000;
+                    case EVENTS.COM_STBY_RADIO_SET_HZ:
+                        value = (UInt32)binding.ControllerValue;
                         break;
                     case EVENTS.KOHLSMAN_SET:
                         value = (UInt32)(binding.ControllerValue / 100f * 33.8639 * 16);
@@ -693,7 +704,10 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "PUSHBACK ATTACHED", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQUENCY:1", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM STANDBY FREQUENCY:1", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM AVAILABLE:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM STATUS:1", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQ TYPE:1", null, SIMCONNECT_DATATYPE.STRINGV, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -760,9 +774,9 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.BRAKES, "BRAKES");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.THROTTLE_REVERSE_THRUST_TOGGLE, "THROTTLE_REVERSE_THRUST_TOGGLE");
 
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM_RADIO_SET_HZ, "COM_RADIO_SET_HZ");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM_STBY_RADIO_SET_HZ, "COM_STBY_RADIO_SET_HZ");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM1_RADIO_SWAP, "COM1_RADIO_SWAP");
             
-
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             this.m_oSimConnect.RegisterDataDefineStruct<Writers>(DEFINITIONS.Writers);
         }
@@ -799,6 +813,48 @@
             int bcdint = Convert.ToInt32(bcdstr);
             double freq = (double)bcdint / 100f;
             return freq;
+        }
+
+        private Int64 COMtypeToInt(String comType)
+        {
+            Int64 type = 0;
+            switch (comType)
+            {
+                case "ATIS":
+                    type = 0;
+                    break;
+                case "UNI":
+                    type = 1;
+                    break;
+                case "CTAF":
+                    type = 2;
+                    break;
+                case "GND":
+                    type = 3;
+                    break;
+                case "TWR":
+                    type = 4;
+                    break;
+                case "CLR":
+                    type = 5;
+                    break;
+                case "APPR":
+                    type = 6;
+                    break;
+                case "DEP":
+                    type = 7;
+                    break;
+                case "FSS":
+                    type = 8;
+                    break;
+                case "AWS":
+                    type = 9;
+                    break;
+                default:
+                    type = -1;
+                    break;
+                }
+            return type;
         }
     }
 }
