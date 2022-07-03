@@ -209,9 +209,9 @@
         {
             value += ticks * steps;
             if (value < min)
-            { value = min; }
-            else if (value > max)
             { value = max; }
+            else if (value > max)
+            { value = min; }
             return value;
         }
         private String IntToCOMStatus(Int64 comStatus)
