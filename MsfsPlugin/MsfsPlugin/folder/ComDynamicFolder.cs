@@ -42,10 +42,15 @@
         {
             return new[]
             {
-                PluginDynamicFolder.NavigateUpActionName,
-                this.CreateCommandName("COM1 Active"),
+/*                this.CreateCommandName("COM1 Active"),
                 this.CreateCommandName("COM1 Standby"),
                 this.CreateCommandName("COM1 Status"),
+*/                this.CreateCommandName("COM1 Active Int"),
+                this.CreateCommandName("COM1 Active Float"),
+                this.CreateCommandName("COM1 Standby Int"),
+                this.CreateCommandName("COM1 Standby Float"),
+                PluginDynamicFolder.NavigateUpActionName,
+
 /*                this.CreateCommandName("COM2 Active"),
                 this.CreateCommandName("COM2 Standby"),
                 this.CreateCommandName("COM3 Active"),
@@ -57,11 +62,11 @@
             return new[]
             {
                 this.CreateAdjustmentName ("COM1 Int Encoder"),
-                this.CreateAdjustmentName ("COM2 Int Encoder"),
-                this.CreateAdjustmentName ("COM3 Int Encoder"),
+                this.CreateAdjustmentName (""),
+                this.CreateAdjustmentName (""),
                 this.CreateAdjustmentName ("COM1 Float Encoder"),
-                this.CreateAdjustmentName ("COM2 Float Encoder"),
-                this.CreateAdjustmentName ("COM3 Float Encoder"),
+ /*               this.CreateAdjustmentName ("COM1 Float Encoder"),
+ */               //this.CreateAdjustmentName ("COM3 Float Encoder"),
             };
         }
 
@@ -70,11 +75,11 @@
             return new[]
             {
                 this.CreateCommandName("COM1 Int Reset"),
-                this.CreateCommandName("COM2 Int Reset"),
-                this.CreateCommandName("COM3 Int Reset"),
+                //this.CreateCommandName("COM2 Int Reset"),
+                //this.CreateCommandName("COM3 Int Reset"),
                 this.CreateCommandName("COM1 Float Reset"),
-                this.CreateCommandName("COM2 Float Reset"),
-                this.CreateCommandName("COM3 Float Reset"),
+                //this.CreateCommandName("COM1 Float Reset"),
+                //this.CreateCommandName("COM3 Float Reset"),
             };
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -109,6 +114,23 @@
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
                     bitmapBuilder.DrawText("Status\n" + this.IntToCOMStatus(this._bindings[6].ControllerValue) + "\nType\n" + this.IntToCOMType(this._bindings[3].ControllerValue));
                     break;
+                case "COM1 Active Int":
+                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue.ToString().Substring(0,3) +".", new BitmapColor(0, 255, 0), 40);
+                    break;
+                case "COM1 Active Float":
+                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
+                    break;
+                case "COM1 Standby Int":
+                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.DrawText(this._bindings[12].ControllerValue.ToString().Substring(0, 3) + ".", new BitmapColor(255, 255, 0), 40);
+                    break;
+                case "COM1 Standby Float":
+                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.DrawText(this._bindings[12].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
+                    break;
+
             }
             return bitmapBuilder.ToImage();
         }
@@ -130,7 +152,11 @@
             switch (actionParameter)
             {
                 case "COM1 Active":
+                case "COM1 Active Int":
+                case "COM1 Active Float":
                 case "COM1 Standby":
+                case "COM1 Standby Int":
+                case "COM1 Standby Float":
                 case "COM1 Int Reset":
                 case "COM1 Float Reset":
                     this._bindings[15].SetControllerValue(1);
@@ -143,10 +169,16 @@
             switch (actionParameter)
             {
                 case "COM1 Int Encoder":
-                    this._bindings[12].SetControllerValue(this.ApplyAdjustment(this._bindings[12].ControllerValue, 118000000, 136000000, 1000000, ticks));
+                    var com1int = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(0, 3));
+                    var com1dbl = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(3, 3));
+                    var newInt = this.ApplyAdjustment(com1int, 118, 136, 1, ticks);
+                    this._bindings[12].SetControllerValue(newInt * 1000000 + com1dbl * 1000);
                     break;
                 case "COM1 Float Encoder":
-                    this._bindings[12].SetControllerValue(this.ApplyAdjustment(this._bindings[12].ControllerValue, 118000000, 136000000, 5000, ticks));
+                    var com1dbl1 = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(3, 3));
+                    var com1int1 = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(0, 3));
+                    var newFloat = this.ApplyAdjustment(com1dbl1, 0, 995, 5, ticks);
+                    this._bindings[12].SetControllerValue(com1int1 * 1000000 + newFloat * 1000);
                     break;
             }
             this.EncoderActionNamesChanged();
