@@ -116,19 +116,19 @@
                     break;
                 case "COM1 Active Int":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue.ToString().Substring(0,3) +".", new BitmapColor(0, 255, 0), 40);
+                    bitmapBuilder.DrawText((this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(0,3)) +".", new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM1 Active Float":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
+                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM1 Standby Int":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText(this._bindings[12].ControllerValue.ToString().Substring(0, 3) + ".", new BitmapColor(255, 255, 0), 40);
+                    bitmapBuilder.DrawText((this._bindings[12].ControllerValue == 0 ? "0" : this._bindings[12].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
                     break;
                 case "COM1 Standby Float":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText(this._bindings[12].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
+                    bitmapBuilder.DrawText(this._bindings[12].ControllerValue == 0 ? "0" : this._bindings[12].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
                     break;
 
             }
