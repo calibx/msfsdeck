@@ -172,7 +172,7 @@ if $(ConfigurationName) == Release (
   powershell Copy-Item '$(OutDir)Microsoft.FlightSimulator.SimConnect.dll' -Destination '$(OutDir)archive\bin\win'
   powershell Copy-Item '$(OutDir)\SimConnect.dll' -Destination '$(OutDir)archive\bin\win'
   powershell Copy-Item '$(OutDir)Resources\LoupedeckPackage.yaml' -Destination '$(OutDir)archive\'
-  powershell Compress-Archive -Path '$(OutDir)archive\*', '$(OutDir)archive\bin' -DestinationPath '$(OutDir)archive\MSFSPluginPackage.zip'
+  powershell Compress-Archive -Path '$(OutDir)archive\*' -DestinationPath '$(OutDir)archive\MSFSPluginPackage.zip'
   powershell Rename-Item -Path '$(OutDir)archive\MSFSPluginPackage.zip' -NewName MSFSPluginPackage.lplug4
 )
 </PostBuildEvent>
