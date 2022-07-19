@@ -128,7 +128,7 @@
                     this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, -10000, 99900, 100, ticks));
                     break;
                 case "Heading Encoder":
-                    this._bindings[2].SetControllerValue(this.ApplyAdjustment(this._bindings[2].ControllerValue, 0, 360, 1, ticks));
+                    this._bindings[2].SetControllerValue(this.ApplyAdjustmentForHeading(this._bindings[2].ControllerValue, 1, 360, 1, ticks));
                     break;
                 case "Speed Encoder":
                     this._bindings[4].SetControllerValue(this.ApplyAdjustment(this._bindings[4].ControllerValue, 0, 2000, 1, ticks));
@@ -185,6 +185,16 @@
             { value = min; }
             else if (value > max)
             { value = max; }
+            return value;
+        }
+        
+        private Int64 ApplyAdjustmentForHeading(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
+        {
+            value += ticks * steps;
+            if (value < min)
+            { value = max; }
+            else if (value > max)
+            { value = min; }
             return value;
         }
 
