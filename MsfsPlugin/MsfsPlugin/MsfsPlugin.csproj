@@ -82,6 +82,7 @@
     <Compile Include="folder\ATCDynamicFolder.cs" />
     <Compile Include="folder\ComDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
+    <Compile Include="input\ap\APMultiInputs.cs" />
     <Compile Include="input\debug\SimCnxStateInput.cs" />
     <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\debug\AircraftInput.cs" />
