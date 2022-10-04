@@ -42,19 +42,15 @@
         {
             return new[]
             {
-/*                this.CreateCommandName("COM1 Active"),
-                this.CreateCommandName("COM1 Standby"),
-                this.CreateCommandName("COM1 Status"),
-*/                this.CreateCommandName("COM1 Active Int"),
+                this.CreateCommandName("COM1 Active Int"),
                 this.CreateCommandName("COM1 Active Float"),
                 this.CreateCommandName("COM1 Standby Int"),
                 this.CreateCommandName("COM1 Standby Float"),
+                this.CreateCommandName("COM2 Active Int"),
+                this.CreateCommandName("COM2 Active Float"),
+                this.CreateCommandName("COM2 Standby Int"),
+                this.CreateCommandName("COM2 Standby Float"),
                 PluginDynamicFolder.NavigateUpActionName,
-
-/*                this.CreateCommandName("COM2 Active"),
-                this.CreateCommandName("COM2 Standby"),
-                this.CreateCommandName("COM3 Active"),
-                this.CreateCommandName("COM3 Standby"),*/
             };
         }
         public override IEnumerable<String> GetEncoderRotateActionNames()
@@ -62,11 +58,10 @@
             return new[]
             {
                 this.CreateAdjustmentName ("COM1 Int Encoder"),
-                this.CreateAdjustmentName (""),
+                this.CreateAdjustmentName ("COM2 Int Encoder"),
                 this.CreateAdjustmentName (""),
                 this.CreateAdjustmentName ("COM1 Float Encoder"),
- /*               this.CreateAdjustmentName ("COM1 Float Encoder"),
- */               //this.CreateAdjustmentName ("COM3 Float Encoder"),
+                this.CreateAdjustmentName ("COM2 Float Encoder"),
             };
         }
 
@@ -75,10 +70,10 @@
             return new[]
             {
                 this.CreateCommandName("COM1 Int Reset"),
-                //this.CreateCommandName("COM2 Int Reset"),
+                this.CreateCommandName("COM2 Int Reset"),
                 //this.CreateCommandName("COM3 Int Reset"),
                 this.CreateCommandName("COM1 Float Reset"),
-                //this.CreateCommandName("COM1 Float Reset"),
+                this.CreateCommandName("COM2 Float Reset"),
                 //this.CreateCommandName("COM3 Float Reset"),
             };
         }
@@ -93,6 +88,13 @@
                 case "COM1 Float Encoder":
                     var com1dbl = Math.Round(this._bindings[12].ControllerValue / 1000000f - Math.Truncate(this._bindings[12].ControllerValue / 1000000f), 3).ToString();
                     ret = "COM1\n" + (com1dbl.Length > 2 ? com1dbl.Substring(2) : com1dbl).PadRight(3, '0');
+                    break;
+                case "COM2 Int Encoder":
+                    ret = "COM2\n" + Math.Truncate(this._bindings[13].ControllerValue / 1000000f) + ".";
+                    break;
+                case "COM2 Float Encoder":
+                    var com2dbl = Math.Round(this._bindings[13].ControllerValue / 1000000f - Math.Truncate(this._bindings[13].ControllerValue / 1000000f), 3).ToString();
+                    ret = "COM2\n" + (com2dbl.Length > 2 ? com2dbl.Substring(2) : com2dbl).PadRight(3, '0');
                     break;
             }
             return ret;
@@ -116,19 +118,47 @@
                     break;
                 case "COM1 Active Int":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue.ToString().Substring(0,3) +".", new BitmapColor(0, 255, 0), 40);
+                    bitmapBuilder.DrawText((this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(0,3)) +".", new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM1 Active Float":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
+                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM1 Standby Int":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText(this._bindings[12].ControllerValue.ToString().Substring(0, 3) + ".", new BitmapColor(255, 255, 0), 40);
+                    bitmapBuilder.DrawText((this._bindings[12].ControllerValue == 0 ? "0" : this._bindings[12].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
                     break;
                 case "COM1 Standby Float":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText(this._bindings[12].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
+                    bitmapBuilder.DrawText(this._bindings[12].ControllerValue == 0 ? "0" : this._bindings[12].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
+                    break;
+                case "COM2 Active":
+                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.DrawText("COM 2\n" + (this._bindings[1].ControllerValue / 1000000f).ToString("F3", CultureInfo.InvariantCulture));
+                    break;
+                case "COM2 Standby":
+                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.DrawText("Standby\n" + (this._bindings[13].ControllerValue / 1000000f).ToString("F3", CultureInfo.InvariantCulture));
+                    break;
+                case "COM2 Status":
+                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.DrawText("Status\n" + this.IntToCOMStatus(this._bindings[7].ControllerValue) + "\nType\n" + this.IntToCOMType(this._bindings[3].ControllerValue));
+                    break;
+                case "COM2 Active Int":
+                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.DrawText((this._bindings[1].ControllerValue == 0 ? "0" : this._bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
+                    break;
+                case "COM2 Active Float":
+                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.DrawText(this._bindings[1].ControllerValue == 0 ? "0" : this._bindings[1].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
+                    break;
+                case "COM2 Standby Int":
+                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.DrawText((this._bindings[13].ControllerValue == 0 ? "0" : this._bindings[13].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
+                    break;
+                case "COM2 Standby Float":
+                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.DrawText(this._bindings[13].ControllerValue == 0 ? "0" : this._bindings[13].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
                     break;
 
             }
@@ -161,6 +191,17 @@
                 case "COM1 Float Reset":
                     this._bindings[15].SetControllerValue(1);
                     break;
+                case "COM2 Active":
+                case "COM2 Active Int":
+                case "COM2 Active Float":
+                case "COM2 Standby":
+                case "COM2 Standby Int":
+                case "COM2 Standby Float":
+                case "COM2 Int Reset":
+                case "COM2 Float Reset":
+                    this._bindings[16].SetControllerValue(1);
+                    break;
+
             }
         }
 
@@ -180,6 +221,19 @@
                     var newFloat = this.ApplyAdjustment(com1dbl1, 0, 995, 5, ticks);
                     this._bindings[12].SetControllerValue(com1int1 * 1000000 + newFloat * 1000);
                     break;
+                case "COM2 Int Encoder":
+                    var com2int = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(0, 3));
+                    var com2dbl = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(3, 3));
+                    var newInt2 = this.ApplyAdjustment(com2int, 118, 136, 1, ticks);
+                    this._bindings[13].SetControllerValue(newInt2 * 1000000 + com2dbl * 1000);
+                    break;
+                case "COM2 Float Encoder":
+                    var com2dbl2 = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(3, 3));
+                    var com2int2 = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(0, 3));
+                    var newFloat2 = this.ApplyAdjustment(com2dbl2, 0, 995, 5, ticks);
+                    this._bindings[13].SetControllerValue(com2int2 * 1000000 + newFloat2 * 1000);
+                    break;
+
             }
             this.EncoderActionNamesChanged();
             this.ButtonActionNamesChanged();
@@ -197,6 +251,10 @@
                         case BindingKeys.COM1_ACTIVE_FREQUENCY:
                             this.AdjustmentValueChanged("COM1 Int Encoder");
                             this.AdjustmentValueChanged("COM1 Float Encoder");
+                            break;
+                        case BindingKeys.COM2_ACTIVE_FREQUENCY:
+                            this.AdjustmentValueChanged("COM2 Int Encoder");
+                            this.AdjustmentValueChanged("COM2 Float Encoder");
                             break;
                         default:
                             break;

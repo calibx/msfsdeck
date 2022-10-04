@@ -84,6 +84,9 @@
             THROTTLE_REVERSE_THRUST_TOGGLE,
             COM_STBY_RADIO_SET_HZ,
             COM1_RADIO_SWAP,
+            COM2_STBY_RADIO_SET_HZ,
+            COM2_RADIO_SWAP,
+
         };
         private enum DEFINITIONS
         {
@@ -181,8 +184,16 @@
             public Int64 COM1StbFreq;
             public Int64 COM1Available;
             public Int64 COM1Status;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
-            public String COM1Type;
+            //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
+            //public String COM1Type;
+
+            public Int64 COM2ActiveFreq;
+            public Int64 COM2StbFreq;
+            public Int64 COM2Available;
+            public Int64 COM2Status;
+            //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
+            //public String COM2Type;
+
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -362,6 +373,14 @@
             MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER].SetMsfsValue(reader.apThrottleHold);
             MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER].SetMsfsValue(reader.apVerticalSpeedHold);
 
+            MsfsData.Instance.bindings[BindingKeys.AP_ALT_SWITCH].SetMsfsValue(reader.apAltHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_HEAD_SWITCH].SetMsfsValue(reader.apHeadingHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_NAV_SWITCH].SetMsfsValue(reader.apNavHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_SPEED_SWITCH].SetMsfsValue(reader.apSpeedHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_MASTER_SWITCH].SetMsfsValue(reader.apMasterHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH].SetMsfsValue(reader.apThrottleHold);
+            MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH].SetMsfsValue(reader.apVerticalSpeedHold);
+
             MsfsData.Instance.bindings[BindingKeys.AP_ALT_AL_FOLDER].SetMsfsValue(reader.apAltitude);
             MsfsData.Instance.bindings[BindingKeys.ALT_AL_FOLDER].SetMsfsValue(reader.planeAltitude);
             MsfsData.Instance.bindings[BindingKeys.AP_HEADING_AL_FOLDER].SetMsfsValue(reader.apHeading);
@@ -386,7 +405,13 @@
             MsfsData.Instance.bindings[BindingKeys.COM1_STBY].SetMsfsValue(reader.COM1StbFreq);
             MsfsData.Instance.bindings[BindingKeys.COM1_AVAILABLE].SetMsfsValue(reader.COM1Available);
             MsfsData.Instance.bindings[BindingKeys.COM1_STATUS].SetMsfsValue(reader.COM1Status);
-            MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY_TYPE].SetMsfsValue(this.COMtypeToInt(reader.COM1Type));
+            //MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY_TYPE].SetMsfsValue(this.COMtypeToInt(reader.COM1Type));
+
+            MsfsData.Instance.bindings[BindingKeys.COM2_ACTIVE_FREQUENCY].SetMsfsValue(reader.COM2ActiveFreq);
+            MsfsData.Instance.bindings[BindingKeys.COM2_STBY].SetMsfsValue(reader.COM2StbFreq);
+            MsfsData.Instance.bindings[BindingKeys.COM2_AVAILABLE].SetMsfsValue(reader.COM2Available);
+            MsfsData.Instance.bindings[BindingKeys.COM2_STATUS].SetMsfsValue(reader.COM2Status);
+            //MsfsData.Instance.bindings[BindingKeys.COM2_ACTIVE_FREQUENCY_TYPE].SetMsfsValue(this.COMtypeToInt(reader.COM2Type));
 
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
@@ -442,6 +467,15 @@
             this.SendEvent(EVENTS.AP_MASTER, MsfsData.Instance.bindings[BindingKeys.AP_MASTER_SWITCH_AP_FOLDER]);
             this.SendEvent(EVENTS.AP_N1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER]);
             this.SendEvent(EVENTS.AP_PANEL_VS_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER]);
+
+            this.SendEvent(EVENTS.AP_PANEL_ALTITUDE_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_ALT_SWITCH]);
+            this.SendEvent(EVENTS.AP_PANEL_HEADING_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_HEAD_SWITCH]);
+            this.SendEvent(EVENTS.AP_NAV1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_NAV_SWITCH]);
+            this.SendEvent(EVENTS.AP_PANEL_MACH_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_SPEED_SWITCH]);
+            this.SendEvent(EVENTS.AP_MASTER, MsfsData.Instance.bindings[BindingKeys.AP_MASTER_SWITCH]);
+            this.SendEvent(EVENTS.AP_N1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH]);
+            this.SendEvent(EVENTS.AP_PANEL_VS_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH]);
+
             this.SendEvent(EVENTS.ATC_MENU_OPEN, MsfsData.Instance.bindings[BindingKeys.ATC_ATC_FOLDER]);
             this.SendEvent(EVENTS.ATC_MENU_0, MsfsData.Instance.bindings[BindingKeys.ATC_0_ATC_FOLDER]);
             this.SendEvent(EVENTS.ATC_MENU_1, MsfsData.Instance.bindings[BindingKeys.ATC_1_ATC_FOLDER]);
@@ -468,7 +502,9 @@
 
             this.SendEvent(EVENTS.COM_STBY_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM1_STBY]);
             this.SendEvent(EVENTS.COM1_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.COM1_RADIO_SWAP]);
-            
+            this.SendEvent(EVENTS.COM2_STBY_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM2_STBY]);
+            this.SendEvent(EVENTS.COM2_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.COM2_RADIO_SWAP]);
+
 
 
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
@@ -539,9 +575,6 @@
                 UInt32 value;
                 switch (eventName)
                 {
-                    case EVENTS.COM_STBY_RADIO_SET_HZ:
-                        value = (UInt32)binding.ControllerValue;
-                        break;
                     case EVENTS.KOHLSMAN_SET:
                         value = (UInt32)(binding.ControllerValue / 100f * 33.8639 * 16);
                         break;
@@ -706,8 +739,13 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM STANDBY FREQUENCY:1", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM AVAILABLE:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM STATUS:1", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQ TYPE:1", null, SIMCONNECT_DATATYPE.STRINGV, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
+            //this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQ TYPE:1", null, SIMCONNECT_DATATYPE.STRINGV, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQUENCY:2", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM STANDBY FREQUENCY:2", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM AVAILABLE:2", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM STATUS:2", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            //this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQ TYPE:2", null, SIMCONNECT_DATATYPE.STRINGV, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -776,7 +814,10 @@
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM_STBY_RADIO_SET_HZ, "COM_STBY_RADIO_SET_HZ");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM1_RADIO_SWAP, "COM1_RADIO_SWAP");
-            
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM2_STBY_RADIO_SET_HZ, "COM2_STBY_RADIO_SET_HZ");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM2_RADIO_SWAP, "COM2_RADIO_SWAP");
+
+
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             this.m_oSimConnect.RegisterDataDefineStruct<Writers>(DEFINITIONS.Writers);
         }
