@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Loupedeck.MsfsPlugin.tools;
 
     public abstract class DefaultEncoder : PluginDynamicAdjustment, Notifiable
     {
@@ -20,13 +21,7 @@
 
         protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-            var value = this.GetValue();
-            value += ticks * this.step;
-            if (value < this.min)
-            { value = this.min; }
-            else if (value > this.max)
-            { value = this.max; }
-            this.SetValue(value);
+            this.SetValue(ConvertTool.ApplyAdjustment(this.GetValue(), ticks, this.min, this.max, this.step));
             this.ActionImageChanged();
         }
         protected override String GetAdjustmentValue(String actionParameter)
