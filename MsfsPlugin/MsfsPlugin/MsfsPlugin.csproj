@@ -170,12 +170,10 @@
 if $(ConfigurationName) == Release (
   powershell Remove-Item 'archive' -Recurse -Force
   powershell New-Item -Path 'archive\bin\win' -ItemType Directory -Force
-powershell New-Item -Path 'archive\metadata' -ItemType Directory -Force
   powershell Copy-Item 'MSFSPlugin.dll' -Destination 'archive\bin\win'
   powershell Copy-Item 'Microsoft.FlightSimulator.SimConnect.dll' -Destination 'archive\bin\win'
   powershell Copy-Item 'SimConnect.dll' -Destination 'archive\bin\win'
   powershell Copy-Item 'Resources\LoupedeckPackage.yaml' -Destination 'archive\'
-  powershell Copy-Item 'Resources\LoupedeckPackage.yaml' -Destination 'archive\metadata\'
   powershell Compress-Archive -Path 'archive\*' -DestinationPath 'archive\MSFSPluginPackage.zip'
   powershell Rename-Item -Path 'archive\MSFSPluginPackage.zip' -NewName MSFSPluginPackage.lplug4
 ) else (

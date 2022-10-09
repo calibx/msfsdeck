@@ -11,3 +11,7 @@ supportedDevices:
 
 pluginFileName: MSFSPlugin.dll
 pluginFolderWin: ./bin/win/
+license: Apache-2.0 license
+licenseUrl:  http://www.apache.org/licenses/
+homePageUrl: https://github.com/calibx/msfsdeck
+supportPageUrl: https://github.com/calibx/msfsdeck/discussions
