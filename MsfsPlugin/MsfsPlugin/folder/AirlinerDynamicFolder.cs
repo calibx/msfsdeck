@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Loupedeck.MsfsPlugin.tools;
 
     public class AirlinerDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -138,23 +139,21 @@
             bitmapBuilder.DrawText(actionParameter);
             return bitmapBuilder.ToImage();
         }
-
-
         public override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, -10000, 99900, 100, ticks));
+                    this._bindings[0].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[0].ControllerValue, ticks, -10000, 99900, 100));
                     break;
                 case "Heading Encoder":
-                    this._bindings[2].SetControllerValue(this.ApplyAdjustment(this._bindings[2].ControllerValue, 0, 360, 1, ticks));
+                    this._bindings[2].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[2].ControllerValue, ticks, 1, 360, 1, true));
                     break;
                 case "Speed Encoder":
-                    this._bindings[4].SetControllerValue(this.ApplyAdjustment(this._bindings[4].ControllerValue, 0, 2000, 1, ticks));
+                    this._bindings[4].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[4].ControllerValue, ticks, 0, 2000, 1));
                     break;
                 case "VS Speed Encoder":
-                    this._bindings[6].SetControllerValue(this.ApplyAdjustment(this._bindings[6].ControllerValue, -10000, 10000, 100, ticks));
+                    this._bindings[6].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[6].ControllerValue, ticks, -10000, 10000, 100));
                     break;
             }
             this.EncoderActionNamesChanged();
