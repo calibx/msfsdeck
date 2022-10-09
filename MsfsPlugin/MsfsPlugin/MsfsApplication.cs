@@ -2,9 +2,9 @@ namespace Loupedeck.MsfsPlugin
 {
     using System;
 
-    public class MsfsApplication : ClientApplication
+    public class MSFSApplication : ClientApplication
     {
-        public MsfsApplication()
+        public MSFSApplication()
         {
 
         }

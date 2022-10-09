@@ -110,8 +110,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MsfsApplication.cs" />
-    <Compile Include="MsfsPlugin.cs" />
+    <Compile Include="MSFSApplication.cs" />
+    <Compile Include="MSFSPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PluginConfiguration.json" />
