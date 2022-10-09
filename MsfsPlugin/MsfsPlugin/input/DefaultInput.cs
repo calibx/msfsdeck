@@ -20,9 +20,9 @@
             {
                 if (binding.HasMSFSChanged())
                 {
-                    MsfsData.Instance.refreshLimiter++;
+                    //MsfsData.Instance.refreshLimiter++;
                     binding.Reset();
-                    this.ActionImageChanged();
+                   // this.ActionImageChanged();
                 }
             }
         }

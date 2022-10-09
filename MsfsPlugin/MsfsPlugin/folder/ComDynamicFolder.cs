@@ -242,25 +242,7 @@
         {
             foreach (Binding binding in this._bindings)
             {
-                if (binding.HasMSFSChanged())
-                {
-                    MsfsData.Instance.refreshLimiter++;
                     binding.Reset();
-                    switch (binding.Key)
-                    {
-                        case BindingKeys.COM1_ACTIVE_FREQUENCY:
-                            this.AdjustmentValueChanged("COM1 Int Encoder");
-                            this.AdjustmentValueChanged("COM1 Float Encoder");
-                            break;
-                        case BindingKeys.COM2_ACTIVE_FREQUENCY:
-                            this.AdjustmentValueChanged("COM2 Int Encoder");
-                            this.AdjustmentValueChanged("COM2 Float Encoder");
-                            break;
-                        default:
-                            break;
-                    }
-                    this.ButtonActionNamesChanged();
-                }
             }
         }
         private Int64 ApplyAdjustment(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)

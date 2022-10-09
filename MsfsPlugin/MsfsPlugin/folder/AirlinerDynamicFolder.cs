@@ -214,33 +214,7 @@
         {
             foreach (Binding binding in this._bindings)
             {
-                if (binding.HasMSFSChanged())
-                {
-                    MsfsData.Instance.refreshLimiter++;
                     binding.Reset();
-                    switch (binding.Key)
-                    {
-                        case BindingKeys.AP_ALT_AL_FOLDER:
-                        case BindingKeys.ALT_AL_FOLDER:
-                            this.AdjustmentValueChanged("Altitude Encoder");
-                            break;
-                        case BindingKeys.AP_HEADING_AL_FOLDER:
-                        case BindingKeys.HEADING_AL_FOLDER:
-                            this.AdjustmentValueChanged("Heading Encoder");
-                            break;
-                        case BindingKeys.AP_SPEED_AL_FOLDER:
-                        case BindingKeys.SPEED_AL_FOLDER:
-                            this.AdjustmentValueChanged("Speed Encoder");
-                            break;
-                        case BindingKeys.AP_VSPEED_AL_FOLDER:
-                        case BindingKeys.VSPEED_AL_FOLDER:
-                            this.AdjustmentValueChanged("VS Speed Encoder");
-                            break;
-                        default:
-                            this.ButtonActionNamesChanged();
-                            break;
-                    }
-                }
             }
         }
 
