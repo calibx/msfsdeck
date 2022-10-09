@@ -130,12 +130,6 @@
     <EmbeddedResource Include="Resources\DefaultProfile20win.lp4" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\16.png" />
-    <EmbeddedResource Include="Resources\256.png" />
-    <EmbeddedResource Include="Resources\32.png" />
-    <EmbeddedResource Include="Resources\48.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\off.png" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +155,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\onBorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\16.png" />
+    <EmbeddedResource Include="Resources\256.png" />
+    <EmbeddedResource Include="Resources\32.png" />
+    <EmbeddedResource Include="Resources\48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
