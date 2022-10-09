@@ -27,5 +27,5 @@ https://github.com/calibx/msfsdeck/wiki
 The DLL isn't install correctly, verify logs, reinstall the plugin
 ## A break icon is displayed on all input
 The plugin is not connected to MSFS, move a dial or an input to init the connexion
-# Donate
+# Buy me a coffee
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/calibxmsfsplugin)
