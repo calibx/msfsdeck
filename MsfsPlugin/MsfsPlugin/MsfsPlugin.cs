@@ -3,7 +3,7 @@ namespace Loupedeck.MsfsPlugin
     using System;
 
     using Loupedeck.MsfsPlugin.msfs;
-    public class MsfsPlugin : Plugin
+    public class MSFSPlugin : Plugin
     {
         public override void Load()
         {
