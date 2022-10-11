@@ -157,8 +157,6 @@
                 if (binding.HasMSFSChanged())
                 {
                     binding.Reset();
-                    Debug.WriteLine(binding.Key);
-                    this.ActionImageChanged();
                 }
             }
         }
