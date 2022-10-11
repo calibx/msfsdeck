@@ -10,6 +10,7 @@
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
+        public MSFSPlugin plugin { get; set; }
         public Boolean folderDisplayed { get; set; }
         public Boolean overflow { get; set; }
         public Boolean DEBUG { get; set; }
@@ -134,18 +135,20 @@
         {
             lock (this)
             {
-                foreach (Notifiable notifiable in this.notifiables)
-                {
-                    if (MsfsData.Instance.refreshLimiter <= 10)
-                    {
-                        MsfsData.Instance.overflow = false;
-                        notifiable.Notify();
-                    }
-                    else
-                    {
-                        MsfsData.Instance.overflow = true;
-                    }
-                }
+                plugin.OnActionImageChanged(null, null, true);
+                               foreach (Notifiable notifiable in this.notifiables)
+                                {
+                               /*     if (MsfsData.Instance.refreshLimiter <= 10)
+                                    {
+                                        MsfsData.Instance.overflow = false;
+                               */         notifiable.Notify();
+                                 /*   }
+                                    else
+                                    {
+                                        MsfsData.Instance.overflow = true;
+                                    }
+                                */}
+               
             }
         }
     }

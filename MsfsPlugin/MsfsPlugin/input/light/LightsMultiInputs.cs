@@ -118,7 +118,6 @@
                 if (binding.HasMSFSChanged())
                 {
                     binding.Reset();
-                    this.ActionImageChanged();
                 }
             }
         }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Loupedeck.MsfsPlugin.tools;
 
     public class APDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -118,23 +119,21 @@
             bitmapBuilder.DrawText(actionParameter);
             return bitmapBuilder.ToImage();
         }
-
-
         public override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    this._bindings[0].SetControllerValue(this.ApplyAdjustment(this._bindings[0].ControllerValue, -10000, 99900, 100, ticks));
+                    this._bindings[0].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[0].ControllerValue, ticks, -10000, 99900, 100));
                     break;
                 case "Heading Encoder":
-                    this._bindings[2].SetControllerValue(this.ApplyAdjustmentForHeading(this._bindings[2].ControllerValue, 1, 360, 1, ticks));
+                    this._bindings[2].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[2].ControllerValue, ticks,1, 360, 1, true));
                     break;
                 case "Speed Encoder":
-                    this._bindings[4].SetControllerValue(this.ApplyAdjustment(this._bindings[4].ControllerValue, 0, 2000, 1, ticks));
+                    this._bindings[4].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[4].ControllerValue, ticks, 0, 2000, 1));
                     break;
                 case "VS Speed Encoder":
-                    this._bindings[6].SetControllerValue(this.ApplyAdjustment(this._bindings[6].ControllerValue, -10000, 10000, 100, ticks));
+                    this._bindings[6].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[6].ControllerValue, ticks, -10000, 10000, 100));
                     break;
             }
             this.EncoderActionNamesChanged();
@@ -178,25 +177,6 @@
                     break;
             }
         }
-        private Int64 ApplyAdjustment(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
-        {
-            value += ticks * steps;
-            if (value < min)
-            { value = min; }
-            else if (value > max)
-            { value = max; }
-            return value;
-        }
-        
-        private Int64 ApplyAdjustmentForHeading(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
-        {
-            value += ticks * steps;
-            if (value < min)
-            { value = max; }
-            else if (value > max)
-            { value = min; }
-            return value;
-        }
 
         public void Notify()
         {
@@ -204,32 +184,7 @@
             {
                 if (binding.HasMSFSChanged())
                 {
-                    MsfsData.Instance.refreshLimiter++;
                     binding.Reset();
-                    switch (binding.Key)
-                    {
-                        case BindingKeys.AP_ALT_AP_FOLDER:
-                        case BindingKeys.ALT_AP_FOLDER:
-                            this.AdjustmentValueChanged("Altitude Encoder");
-                            break;
-                        case BindingKeys.AP_HEADING_AP_FOLDER:
-                        case BindingKeys.HEADING_AP_FOLDER:
-                            this.AdjustmentValueChanged("Heading Encoder");
-                            break;
-                        case BindingKeys.AP_SPEED_AP_FOLDER:
-                        case BindingKeys.SPEED_AP_FOLDER:
-                            this.AdjustmentValueChanged("Speed Encoder");
-                            break;
-                        case BindingKeys.AP_VSPEED_AP_FOLDER:
-                        case BindingKeys.VSPEED_AP_FOLDER:
-                            this.AdjustmentValueChanged("VS Speed Encoder");
-                            break;
-                        default:
-                            this.ButtonActionNamesChanged();
-                            break;
-                    }
-
-
                 }
             }
         }

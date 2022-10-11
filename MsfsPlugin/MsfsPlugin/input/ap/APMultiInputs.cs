@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class APMultiInputs : PluginDynamicCommand, Notifiable
     {
@@ -22,6 +23,11 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_MASTER_SWITCH)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_THROTTLE_SWITCH)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_SWITCH)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_FD_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_FLC_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_APP_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_LOC_SWITCH_AL_FOLDER)));
+
 
             this.AddParameter("AP Alt", "Autopilot Altitude Switch", "AP");
             this.AddParameter("AP Head", "Autopilot Heading Switch", "AP");
@@ -30,7 +36,10 @@
             this.AddParameter("AP Master", "Autopilot Master Switch", "AP");
             this.AddParameter("AP Throttle", "Autopilot ThrottleSwitch", "AP");
             this.AddParameter("AP VSpeed", "Autopilot VSpeed Switch", "AP");
-
+            this.AddParameter("AP FD", "Autopilot FD Switch", "AP");
+            this.AddParameter("AP FLC", "Autopilot FLC Switch", "AP");
+            this.AddParameter("AP APP", "Autopilot APP Switch", "AP");
+            this.AddParameter("AP LOC", "Autopilot LOC Switch", "AP");
             MsfsData.Instance.Register(this);
 
         }
@@ -86,6 +95,18 @@
                 case "AP VSpeed":
                     bitmapBuilder.SetBackgroundImage(this._bindings[6].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
+                case "AP FD":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[7].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "AP FLC":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[8].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "AP APP":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "AP LOC":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
             }
             bitmapBuilder.DrawText(actionParameter);
             return bitmapBuilder.ToImage();
@@ -115,6 +136,18 @@
                 case "AP VSpeed":
                     this._bindings[6].SetControllerValue(1);
                     break;
+                case "AP FD":
+                    this._bindings[7].SetControllerValue(1);
+                    break;
+                case "AP FLC":
+                    this._bindings[8].SetControllerValue(1);
+                    break;
+                case "AP APP":
+                    this._bindings[9].SetControllerValue(1);
+                    break;
+                case "AP LOC":
+                    this._bindings[10].SetControllerValue(1);
+                    break;
             }
         }
         public void Notify()
@@ -124,7 +157,6 @@
                 if (binding.HasMSFSChanged())
                 {
                     binding.Reset();
-                    this.ActionImageChanged();
                 }
             }
         }
