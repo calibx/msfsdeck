@@ -242,7 +242,10 @@
         {
             foreach (Binding binding in this._bindings)
             {
+                if (binding.HasMSFSChanged())
+                {
                     binding.Reset();
+                }
             }
         }
         private Int64 ApplyAdjustment(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)

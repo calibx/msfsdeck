@@ -202,7 +202,10 @@
         {
             foreach (Binding binding in this._bindings)
             {
+                if (binding.HasMSFSChanged())
+                {
                     binding.Reset();
+                }
             }
         }
     }

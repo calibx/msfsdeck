@@ -39,9 +39,7 @@
             {
                 if (binding.HasMSFSChanged())
                 {
-                   // MsfsData.Instance.refreshLimiter++;
                     binding.Reset();
-                   // this.AdjustmentValueChanged();
                 }
             }
         }
