@@ -86,6 +86,7 @@
             COM1_RADIO_SWAP,
             COM2_STBY_RADIO_SET_HZ,
             COM2_RADIO_SWAP,
+            PEDESTRAL_LIGHTS_TOGGLE,
 
         };
         private enum DEFINITIONS
@@ -193,7 +194,7 @@
             public Int64 COM2Status;
             //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
             //public String COM2Type;
-
+            public Int64 pedestralLight;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -345,6 +346,7 @@
             MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_MULTI].SetMsfsValue(reader.wingLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_MULTI].SetMsfsValue(reader.logoLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_MULTI].SetMsfsValue(reader.cabinLight);
+            //MsfsData.Instance.bindings[BindingKeys.LIGHT_PEDESTRAL_MULTI].SetMsfsValue(reader.pedestralLight);
 
             MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_FOLDER].SetMsfsValue(reader.navLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_BEACON_FOLDER].SetMsfsValue(reader.beaconLight);
@@ -356,6 +358,7 @@
             MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_FOLDER].SetMsfsValue(reader.wingLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_FOLDER].SetMsfsValue(reader.logoLight);
             MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_FOLDER].SetMsfsValue(reader.cabinLight);
+            MsfsData.Instance.bindings[BindingKeys.LIGHT_PEDESTRAL_FOLDER].SetMsfsValue(reader.pedestralLight);
 
             MsfsData.Instance.bindings[BindingKeys.AP_ALT_AP_FOLDER].SetMsfsValue(reader.apAltitude);
             MsfsData.Instance.bindings[BindingKeys.ALT_AP_FOLDER].SetMsfsValue(reader.planeAltitude);
@@ -450,6 +453,7 @@
             this.SendEvent(EVENTS.TOGGLE_WING_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_MULTI]);
             this.SendEvent(EVENTS.TOGGLE_LOGO_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_MULTI]);
             this.SendEvent(EVENTS.TOGGLE_CABIN_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_MULTI]);
+            //this.SendEvent(EVENTS.PEDESTRAL_LIGHTS_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_PEDESTRAL_FOLDER]);
             this.SendEvent(EVENTS.TOGGLE_NAV_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_FOLDER]);
             this.SendEvent(EVENTS.LANDING_LIGHTS_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_LANDING_FOLDER]);
             this.SendEvent(EVENTS.TOGGLE_BEACON_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_BEACON_FOLDER]);
@@ -460,6 +464,7 @@
             this.SendEvent(EVENTS.TOGGLE_WING_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_WING_FOLDER]);
             this.SendEvent(EVENTS.TOGGLE_LOGO_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_LOGO_FOLDER]);
             this.SendEvent(EVENTS.TOGGLE_CABIN_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_CABIN_FOLDER]);
+            this.SendEvent(EVENTS.PEDESTRAL_LIGHTS_TOGGLE, MsfsData.Instance.bindings[BindingKeys.LIGHT_PEDESTRAL_FOLDER]);
             this.SendEvent(EVENTS.AP_PANEL_ALTITUDE_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_ALT_SWITCH_AP_FOLDER]);
             this.SendEvent(EVENTS.AP_PANEL_HEADING_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_HEAD_SWITCH_AP_FOLDER]);
             this.SendEvent(EVENTS.AP_NAV1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_NAV_SWITCH_AP_FOLDER]);
@@ -745,6 +750,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM AVAILABLE:2", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM STATUS:2", "Enum", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             //this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "COM ACTIVE FREQ TYPE:2", null, SIMCONNECT_DATATYPE.STRINGV, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT PEDESTRAL", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -771,6 +777,7 @@
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_WING_LIGHTS, "TOGGLE_WING_LIGHTS");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_LOGO_LIGHTS, "TOGGLE_LOGO_LIGHTS");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_CABIN_LIGHTS, "TOGGLE_CABIN_LIGHTS");
+            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PEDESTRAL_LIGHTS_TOGGLE, "PEDESTRAL_LIGHTS_TOGGLE");
 
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_OPEN, "ATC_MENU_OPEN");
             this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_CLOSE, "SIMUI_WINDOW_HIDESHOW");

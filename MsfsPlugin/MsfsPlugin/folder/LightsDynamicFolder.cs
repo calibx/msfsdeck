@@ -24,7 +24,7 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_WING_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_LOGO_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_CABIN_FOLDER)));
-
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_PEDESTRAL_FOLDER)));
             MsfsData.Instance.Register(this);
 
         }
@@ -42,7 +42,8 @@
                 this.CreateCommandName("Recognition"),
                 this.CreateCommandName("Wing"),
                 this.CreateCommandName("Logo"),
-                this.CreateCommandName("Cabin")
+                this.CreateCommandName("Cabin"),
+                this.CreateCommandName("Pedestral")
             };
         }
         public override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
@@ -79,6 +80,9 @@
                     break;
                 case "Cabin":
                     bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "Pedestral":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -119,6 +123,9 @@
                     break;
                 case "Cabin":
                     this._bindings[9].SetControllerValue(1);
+                    break;
+                case "Pedestral":
+                    this._bindings[10].SetControllerValue(1);
                     break;
             }
         }
