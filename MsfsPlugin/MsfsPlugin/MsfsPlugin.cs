@@ -28,6 +28,6 @@ namespace Loupedeck.MsfsPlugin
         public override void ApplyAdjustment(String adjustmentName, String parameter, Int32 diff)
         {
         }
-
+        public override Boolean UsesApplicationApiOnly => true;
     }
 }
