@@ -158,7 +158,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\16.png" />
-    <EmbeddedResource Include="Resources\256.png" />
+    <EmbeddedResource Include="Resources\256.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\32.png" />
     <EmbeddedResource Include="Resources\48.png" />
   </ItemGroup>
@@ -176,6 +178,7 @@ if $(ConfigurationName) == Release (
   powershell Copy-Item 'SimConnect.dll' -Destination 'archive\bin\win'
   powershell New-Item -Path 'archive\metadata' -ItemType Directory -Force
   powershell Copy-Item 'Resources\LoupedeckPackage.yaml' -Destination 'archive\metadata'
+  powershell Copy-Item 'Resources\256.png' -Destination 'archive\metadata\Icon256x256.png'
   powershell Compress-Archive -Path 'archive\*' -DestinationPath 'archive\MSFSPluginPackage.zip'
   powershell Rename-Item -Path 'archive\MSFSPluginPackage.zip' -NewName MSFSPluginPackage.lplug4
 ) else (
