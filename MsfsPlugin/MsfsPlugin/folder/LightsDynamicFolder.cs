@@ -12,7 +12,6 @@
         {
             this.DisplayName = "Lights";
             this.GroupName = "Folder";
-            this.Navigation = PluginDynamicFolderNavigation.None;
 
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_NAV_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_BEACON_FOLDER)));
@@ -30,11 +29,12 @@
             MsfsData.Instance.Register(this);
 
         }
-        public override IEnumerable<String> GetButtonPressActionNames()
+
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
+        public override IEnumerable<String> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
             {
-                PluginDynamicFolder.NavigateUpActionName,
                 this.CreateCommandName("Navigation"),
                 this.CreateCommandName("Beacon"),
                 this.CreateCommandName("Landing"),
