@@ -21,6 +21,9 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_WING_MULTI)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_LOGO_MULTI)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_CABIN_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_PEDESTRAL_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_GLARESHIELD_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_ALL_SWITCH_MULTI)));
 
             this.AddParameter("Navigation", "Navigation light", "Lights");
             this.AddParameter("Beacon", "Beacon light", "Lights");
@@ -32,6 +35,9 @@
             this.AddParameter("Wing", "Wing light", "Lights");
             this.AddParameter("Logo", "Logo light", "Lights");
             this.AddParameter("Cabin", "Cabin light", "Lights");
+            this.AddParameter("Pedestral", "Pedestral light", "Lights");
+            this.AddParameter("Glareshield", "Glareshield light", "Lights");
+            this.AddParameter("All lights", "All lights", "Lights");
 
             MsfsData.Instance.Register(this);
 
@@ -71,6 +77,14 @@
                 case "Cabin":
                     bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
+                case "Pedestral":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "Glareshield":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[11].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "All":
+                    break;
             }
             bitmapBuilder.DrawText(actionParameter);
             return bitmapBuilder.ToImage();
@@ -108,6 +122,15 @@
                     break;
                 case "Cabin":
                     this._bindings[9].SetControllerValue(1);
+                    break;
+                case "Pedestral":
+                    this._bindings[10].SetControllerValue(1);
+                    break;
+                case "Glareshield":
+                    this._bindings[11].SetControllerValue(1);
+                    break;
+                case "All":
+                    this._bindings[12].SetControllerValue(1);
                     break;
             }
         }
