@@ -12,7 +12,6 @@
         {
             this.DisplayName = "ATC";
             this.GroupName = "Folder";
-            this.Navigation = PluginDynamicFolderNavigation.EncoderArea;
             MsfsData.Instance.Register(this);
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ATC_ATC_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ATC_0_ATC_FOLDER)));
@@ -26,7 +25,9 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ATC_8_ATC_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ATC_9_ATC_FOLDER)));
         }
-        public override IEnumerable<String> GetButtonPressActionNames()
+
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.EncoderArea;
+        public override IEnumerable<String> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
             {

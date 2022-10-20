@@ -14,7 +14,6 @@
         {
             this.DisplayName = "COM";
             this.GroupName = "Folder";
-            this.Navigation = PluginDynamicFolderNavigation.None;
 
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM1_ACTIVE_FREQUENCY)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM2_ACTIVE_FREQUENCY)));
@@ -38,7 +37,9 @@
             MsfsData.Instance.Register(this);
 
         }
-        public override IEnumerable<String> GetButtonPressActionNames()
+
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
+        public override IEnumerable<String> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
             {
@@ -53,7 +54,7 @@
                 PluginDynamicFolder.NavigateUpActionName,
             };
         }
-        public override IEnumerable<String> GetEncoderRotateActionNames()
+        public override IEnumerable<String> GetEncoderRotateActionNames(DeviceType deviceType)
         {
             return new[]
             {
@@ -65,16 +66,15 @@
             };
         }
 
-        public override IEnumerable<String> GetEncoderPressActionNames()
+        public override IEnumerable<String> GetEncoderPressActionNames(DeviceType deviceType)
         {
             return new[]
             {
                 this.CreateCommandName("COM1 Int Reset"),
                 this.CreateCommandName("COM2 Int Reset"),
-                //this.CreateCommandName("COM3 Int Reset"),
+                this.CreateCommandName (""),
                 this.CreateCommandName("COM1 Float Reset"),
                 this.CreateCommandName("COM2 Float Reset"),
-                //this.CreateCommandName("COM3 Float Reset"),
             };
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)

@@ -12,7 +12,6 @@
         {
             this.DisplayName = "Lights";
             this.GroupName = "Folder";
-            this.Navigation = PluginDynamicFolderNavigation.None;
 
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_NAV_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_BEACON_FOLDER)));
@@ -24,15 +23,18 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_WING_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_LOGO_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_CABIN_FOLDER)));
-
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_PEDESTRAL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_GLARESHIELD_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_ALL_SWITCH_FOLDER)));
             MsfsData.Instance.Register(this);
 
         }
-        public override IEnumerable<String> GetButtonPressActionNames()
+
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
+        public override IEnumerable<String> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
             {
-                PluginDynamicFolder.NavigateUpActionName,
                 this.CreateCommandName("Navigation"),
                 this.CreateCommandName("Beacon"),
                 this.CreateCommandName("Landing"),
@@ -42,7 +44,10 @@
                 this.CreateCommandName("Recognition"),
                 this.CreateCommandName("Wing"),
                 this.CreateCommandName("Logo"),
-                this.CreateCommandName("Cabin")
+                this.CreateCommandName("Cabin"),
+                this.CreateCommandName("Pedestral"),
+                this.CreateCommandName("Glareshield"),
+                this.CreateCommandName("All")
             };
         }
         public override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
@@ -79,6 +84,14 @@
                     break;
                 case "Cabin":
                     bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "Pedestral":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "Glareshield":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[11].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "All":
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -120,6 +133,16 @@
                 case "Cabin":
                     this._bindings[9].SetControllerValue(1);
                     break;
+                case "Pedestral":
+                    this._bindings[10].SetControllerValue(1);
+                    break;
+                case "Glareshield":
+                    this._bindings[11].SetControllerValue(1);
+                    break;
+                case "All":
+                    this._bindings[12].SetControllerValue(1);
+                    break;
+
             }
         }
 

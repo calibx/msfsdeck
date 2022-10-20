@@ -13,7 +13,6 @@
         {
             this.DisplayName = "Airliner";
             this.GroupName = "Folder";
-            this.Navigation = PluginDynamicFolderNavigation.None;
             MsfsData.Instance.Register(this);
 
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_ALT_AL_FOLDER)));
@@ -38,7 +37,8 @@
 
         }
 
-        public override IEnumerable<String> GetEncoderRotateActionNames()
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
+        public override IEnumerable<String> GetEncoderRotateActionNames(DeviceType deviceType)
         {
             return new[]
             {
@@ -49,7 +49,7 @@
             };
         }
 
-        public override IEnumerable<String> GetEncoderPressActionNames()
+        public override IEnumerable<String> GetEncoderPressActionNames(DeviceType deviceType)
         {
             return new[]
             {
@@ -59,7 +59,7 @@
                 this.CreateCommandName("VS Speed Reset"),
             };
         }
-        public override IEnumerable<String> GetButtonPressActionNames()
+        public override IEnumerable<String> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
             {
