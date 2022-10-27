@@ -8,6 +8,10 @@ copyright: CaliBx
 supportedDevices:
     - LoupedeckCt  
     - LoupedeckLive
+    - LoupedeckLiveS
+    - RazorStreamController
+
+
 
 pluginFileName: MSFSPlugin.dll
 pluginFolderWin: ./bin/win/
