@@ -154,6 +154,7 @@
         COM1_RADIO_SWAP,
         COM2_RADIO_SWAP,
         COM3_RADIO_SWAP,
+        FLASHLIGHT,
     }
 }
 
