@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
 
+    using Loupedeck.MsfsPlugin.msfs;
+
     public class LightsMultiInputs : PluginDynamicCommand, Notifiable
     {
         protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
@@ -24,6 +26,7 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_PEDESTRAL_MULTI)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_GLARESHIELD_MULTI)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_ALL_SWITCH_MULTI)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.FLASHLIGHT)));
 
             this.AddParameter("Navigation", "Navigation light", "Lights");
             this.AddParameter("Beacon", "Beacon light", "Lights");
@@ -37,10 +40,10 @@
             this.AddParameter("Cabin", "Cabin light", "Lights");
             this.AddParameter("Pedestral", "Pedestral light", "Lights");
             this.AddParameter("Glareshield", "Glareshield light", "Lights");
+            this.AddParameter("Flashlight", "Flashlight", "Lights");
             this.AddParameter("All lights", "All lights", "Lights");
 
             MsfsData.Instance.Register(this);
-
         }
         protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
         {
@@ -91,6 +94,7 @@
         }
         protected override void RunCommand(String actionParameter)
         {
+            SimConnectDAO.Instance.setPlugin(this.Plugin);
             switch (actionParameter)
             {
                 case "Navigation":
@@ -131,6 +135,9 @@
                     break;
                 case "All":
                     this._bindings[12].SetControllerValue(1);
+                    break;
+                case "Flashlight":
+                    this._bindings[13].SetControllerValue(1);
                     break;
             }
         }

@@ -89,6 +89,7 @@
             PEDESTRAL_LIGHTS_TOGGLE,
             GLARESHIELD_LIGHTS_TOGGLE,
             ALL_LIGHTS_TOGGLE,
+            FLASHLIGHT,
         };
         private enum DEFINITIONS
         {
@@ -517,6 +518,7 @@
             this.SendEvent(EVENTS.COM1_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.COM1_RADIO_SWAP]);
             this.SendEvent(EVENTS.COM2_STBY_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM2_STBY]);
             this.SendEvent(EVENTS.COM2_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.COM2_RADIO_SWAP]);
+            this.SendEvent(EVENTS.FLASHLIGHT, MsfsData.Instance.bindings[BindingKeys.FLASHLIGHT]);
 
 
 
@@ -614,7 +616,11 @@
                         value = (UInt32)(binding.ControllerValue == 1 ? TUG_ANGLE * -0.8f : TUG_ANGLE * 0.8f);
                         break;
                     case EVENTS.ATC_MENU_OPEN:
-                        this.pluginForKey.ClientApplication.SendKeyboardShortcut((VirtualKeyCode)0x91);
+                        this.pluginForKey.KeyboardApi.SendShortcut((VirtualKeyCode)0x91, ModifierKey.None);
+                        value = 0;
+                        break;
+                    case EVENTS.FLASHLIGHT:
+                        this.pluginForKey.KeyboardApi.SendShortcut(VirtualKeyCode.KeyL, ModifierKey.Alt);
                         value = 0;
                         break;
                     default:

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Loupedeck.MsfsPlugin.msfs;
 
     public class LightsDynamicFolder : PluginDynamicFolder, Notifiable
     {
@@ -26,6 +27,7 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_PEDESTRAL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_GLARESHIELD_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.LIGHT_ALL_SWITCH_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.FLASHLIGHT)));
             MsfsData.Instance.Register(this);
 
         }
@@ -47,6 +49,7 @@
                 this.CreateCommandName("Cabin"),
                 this.CreateCommandName("Pedestral"),
                 this.CreateCommandName("Glareshield"),
+                this.CreateCommandName("Flashlight"),
                 this.CreateCommandName("All")
             };
         }
@@ -101,6 +104,7 @@
 
         public override void RunCommand(String actionParameter)
         {
+            SimConnectDAO.Instance.setPlugin(this.Plugin);
             switch (actionParameter)
             {
                 case "Navigation":
@@ -141,6 +145,9 @@
                     break;
                 case "All":
                     this._bindings[12].SetControllerValue(1);
+                    break;
+                case "Flashlight":
+                    this._bindings[13].SetControllerValue(1);
                     break;
 
             }
