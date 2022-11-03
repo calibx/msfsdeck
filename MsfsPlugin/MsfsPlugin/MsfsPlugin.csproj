@@ -124,6 +124,8 @@
   <ItemGroup>
     <None Include="App.config" />
     <EmbeddedResource Include="Resources\DefaultProfile30win.lp4" />
+    <EmbeddedResource Include="Resources\DefaultProfile40win.lp4" />
+    <EmbeddedResource Include="Resources\DefaultProfile50win.lp4" />
     <None Include="Resources\LoupedeckPackage.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
