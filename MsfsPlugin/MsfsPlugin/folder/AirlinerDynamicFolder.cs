@@ -34,6 +34,7 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_HEAD_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_YAW_DAMPER_AL_FOLDER)));
 
         }
 
@@ -75,6 +76,7 @@
                 this.CreateCommandName("Heading"),
                 this.CreateCommandName("Throttle"),
                 this.CreateCommandName("VS Speed"),
+                this.CreateCommandName("Yaw Damper"),
             };
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -134,6 +136,9 @@
                     break;
                 case "VS Speed":
                     bitmapBuilder.SetBackgroundImage(this._bindings[18].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
+                case "Yaw Damper":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[19].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -195,6 +200,9 @@
                 case "VS Speed":
                     this._bindings[18].SetControllerValue(1);
                     break;
+                case "Yaw Damper":
+                    this._bindings[19].SetControllerValue(1);
+                    break;
                 case "Altitude Reset":
                     //this._bindings[18].SetControllerValue(1);
                     break;
@@ -220,14 +228,5 @@
             }
         }
 
-        private Int64 ApplyAdjustment(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
-        {
-            value += ticks * steps;
-            if (value < min)
-            { value = min; }
-            else if (value > max)
-            { value = max; }
-            return value;
-        }
     }
 }

@@ -27,6 +27,7 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_FLC_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_APP_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_LOC_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_YAW_DAMPER_SWITCH)));
 
 
             this.AddParameter("AP Alt", "Autopilot Altitude Switch", "AP");
@@ -40,6 +41,7 @@
             this.AddParameter("AP FLC", "Autopilot FLC Switch", "AP");
             this.AddParameter("AP APP", "Autopilot APP Switch", "AP");
             this.AddParameter("AP LOC", "Autopilot LOC Switch", "AP");
+            this.AddParameter("AP YD", "Autopilot Yaw Damper Switch", "AP");
             MsfsData.Instance.Register(this);
 
         }
@@ -107,6 +109,9 @@
                 case "AP LOC":
                     bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
+                case "AP YD":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[11].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
             }
             bitmapBuilder.DrawText(actionParameter);
             return bitmapBuilder.ToImage();
@@ -148,6 +153,10 @@
                 case "AP LOC":
                     this._bindings[10].SetControllerValue(1);
                     break;
+                case "AP YD":
+                    this._bindings[11].SetControllerValue(1);
+                    break;
+
             }
         }
         public void Notify()
