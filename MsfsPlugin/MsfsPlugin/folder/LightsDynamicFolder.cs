@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Loupedeck.MsfsPlugin.msfs;
 
     public class LightsDynamicFolder : PluginDynamicFolder, Notifiable

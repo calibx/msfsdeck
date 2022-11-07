@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     public class APMultiInputs : PluginDynamicCommand, Notifiable
     {
@@ -118,7 +117,7 @@
         }
         protected override void RunCommand(String actionParameter)
         {
-             switch (actionParameter)
+            switch (actionParameter)
             {
                 case "AP Alt":
                     this._bindings[0].SetControllerValue(1);

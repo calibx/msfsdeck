@@ -649,32 +649,12 @@
                     if (this.m_oSimConnect != null)
                     {
 
-                        if (!MsfsData.Instance.overflow)
-                        {
-                            MsfsData.Instance.refreshLimiter = 0;
-                            this.m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-                            this.m_oSimConnect.ReceiveMessage();
-                        }
-                        else
-                        {
-                            MsfsData.Instance.refreshLimiter = 0;
-                            MsfsData.Instance.Changed();
-                            Debug.WriteLine("Overflow handling " + MsfsData.Instance.refreshLimiter);
-                            //MsfsData.Instance.overflow = MsfsData.Instance.refreshLimiter > 0;
-                        }
-                    } else
+                        this.m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
+                        this.m_oSimConnect.ReceiveMessage();
+                    }
+                    else
                     {
-                        if (!MsfsData.Instance.overflow)
-                        {
-                            timer.Enabled = false;
-                        }
-                        else
-                        {
-                            MsfsData.Instance.refreshLimiter = 0;
-                            MsfsData.Instance.Changed();
-                            Debug.WriteLine("Overflow handling " + MsfsData.Instance.refreshLimiter);
-                            //MsfsData.Instance.overflow = MsfsData.Instance.refreshLimiter > 0;
-                        }
+                        timer.Enabled = false;
                     }
                 }
                 catch (COMException exception)
@@ -782,77 +762,9 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:4", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GEAR_TOGGLE, "GEAR_TOGGLE");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PARKING_BRAKE, "PARKING_BRAKES");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_SHUTDOWN, "ENGINE_AUTO_SHUTDOWN");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ENGINE_AUTO_START, "ENGINE_AUTO_START");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_ON, "PAUSE_ON");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PAUSE_OFF, "PAUSE_OFF");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PITOT_HEAT_TOGGLE, "PITOT_HEAT_TOGGLE");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_PUSHBACK, "TOGGLE_PUSHBACK");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KEY_TUG_HEADING, "KEY_TUG_HEADING");
-
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_NAV_LIGHTS, "TOGGLE_NAV_LIGHTS");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.LANDING_LIGHTS_TOGGLE, "LANDING_LIGHTS_TOGGLE");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_BEACON_LIGHTS, "TOGGLE_BEACON_LIGHTS");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_TAXI_LIGHTS, "TOGGLE_TAXI_LIGHTS");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.STROBES_TOGGLE, "STROBES_TOGGLE");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PANEL_LIGHTS_TOGGLE, "PANEL_LIGHTS_TOGGLE");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_RECOGNITION_LIGHTS, "TOGGLE_RECOGNITION_LIGHTS");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_WING_LIGHTS, "TOGGLE_WING_LIGHTS");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_LOGO_LIGHTS, "TOGGLE_LOGO_LIGHTS");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_CABIN_LIGHTS, "TOGGLE_CABIN_LIGHTS");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.PEDESTRAL_LIGHTS_TOGGLE, "PEDESTRAL_LIGHTS_TOGGLE");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.GLARESHIELD_LIGHTS_TOGGLE, "GLARESHIELD_LIGHTS_TOGGLE");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ALL_LIGHTS_TOGGLE, "ALL_LIGHTS_TOGGLE");
-
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_OPEN, "ATC_MENU_OPEN");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_CLOSE, "SIMUI_WINDOW_HIDESHOW");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_0, "ATC_MENU_0");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_1, "ATC_MENU_1");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_2, "ATC_MENU_2");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_3, "ATC_MENU_3");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_4, "ATC_MENU_4");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_5, "ATC_MENU_5");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_6, "ATC_MENU_6");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_7, "ATC_MENU_7");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_8, "ATC_MENU_8");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ATC_MENU_9, "ATC_MENU_9");
-
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_PANEL_MACH_HOLD, "AP_PANEL_MACH_HOLD");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_PANEL_ALTITUDE_HOLD, "AP_PANEL_ALTITUDE_HOLD");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_PANEL_HEADING_HOLD, "AP_PANEL_HEADING_HOLD");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_MASTER, "AP_MASTER");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_NAV1_HOLD, "AP_NAV1_HOLD");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_N1_HOLD, "AP_N1_HOLD");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_PANEL_VS_HOLD, "AP_PANEL_VS_HOLD");
-
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, "AP_ALT_VAR_SET_ENGLISH");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.HEADING_BUG_SET, "HEADING_BUG_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_SPD_VAR_SET, "AP_SPD_VAR_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, "AP_VS_VAR_SET_ENGLISH");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.KOHLSMAN_SET, "KOHLSMAN_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AILERON_TRIM_SET, "AILERON_TRIM_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.ELEVATOR_TRIM_SET, "ELEVATOR_TRIM_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.FLAPS_SET, "FLAPS_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AXIS_PROPELLER_SET, "AXIS_PROPELLER_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.RUDDER_TRIM_SET, "RUDDER_TRIM_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AXIS_SPOILER_SET, "AXIS_SPOILER_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.THROTTLE_SET, "THROTTLE_SET");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.TOGGLE_FLIGHT_DIRECTOR, "TOGGLE_FLIGHT_DIRECTOR");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_FLIGHT_LEVEL_CHANGE, "AP_FLIGHT_LEVEL_CHANGE");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_APR_HOLD, "AP_APR_HOLD");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.AP_LOC_HOLD, "AP_LOC_HOLD");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.BRAKES, "BRAKES");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.THROTTLE_REVERSE_THRUST_TOGGLE, "THROTTLE_REVERSE_THRUST_TOGGLE");
-
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM_STBY_RADIO_SET_HZ, "COM_STBY_RADIO_SET_HZ");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM1_RADIO_SWAP, "COM1_RADIO_SWAP");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM2_STBY_RADIO_SET_HZ, "COM2_STBY_RADIO_SET_HZ");
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.COM2_RADIO_SWAP, "COM2_RADIO_SWAP");
-
-            this.m_oSimConnect.MapClientEventToSimEvent(EVENTS.YAW_DAMPER_TOGGLE, "YAW_DAMPER_TOGGLE");
-
+            foreach (EVENTS evt in Enum.GetValues(typeof(EVENTS))) {
+                this.m_oSimConnect.MapClientEventToSimEvent(evt, evt.ToString());
+            }
 
             this.m_oSimConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             this.m_oSimConnect.RegisterDataDefineStruct<Writers>(DEFINITIONS.Writers);
@@ -883,55 +795,6 @@
             {
                 MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(0);
             }
-        }
-        private Double bcd2dbl(Int64 bcd)
-        {
-            string bcdstr = "1" + (bcd).ToString("X5");
-            int bcdint = Convert.ToInt32(bcdstr);
-            double freq = (double)bcdint / 100f;
-            return freq;
-        }
-
-        private Int64 COMtypeToInt(String comType)
-        {
-            Int64 type = 0;
-            switch (comType)
-            {
-                case "ATIS":
-                    type = 0;
-                    break;
-                case "UNI":
-                    type = 1;
-                    break;
-                case "CTAF":
-                    type = 2;
-                    break;
-                case "GND":
-                    type = 3;
-                    break;
-                case "TWR":
-                    type = 4;
-                    break;
-                case "CLR":
-                    type = 5;
-                    break;
-                case "APPR":
-                    type = 6;
-                    break;
-                case "DEP":
-                    type = 7;
-                    break;
-                case "FSS":
-                    type = 8;
-                    break;
-                case "AWS":
-                    type = 9;
-                    break;
-                default:
-                    type = -1;
-                    break;
-                }
-            return type;
         }
     }
 }

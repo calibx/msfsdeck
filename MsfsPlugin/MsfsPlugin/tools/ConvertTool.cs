@@ -1,10 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin.tools
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class ConvertTool
     {
@@ -15,7 +11,8 @@
             if (value < min)
             {
                 value = cycle ? max : min;
-            } else if (value > max)
+            }
+            else if (value > max)
             {
                 value = cycle ? min : max;
             }

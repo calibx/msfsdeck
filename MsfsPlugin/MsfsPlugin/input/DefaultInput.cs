@@ -35,7 +35,8 @@
                     bitmapBuilder.DrawText(this.DisplayName);
                     return bitmapBuilder.ToImage();
                 }
-            } else if (this._bindingCnx.MsfsValue == 2)
+            }
+            else if (this._bindingCnx.MsfsValue == 2)
             {
                 using (var bitmapBuilder = new BitmapBuilder(imageSize))
                 {
@@ -49,7 +50,7 @@
                 return this.GetImage(imageSize);
             }
         }
-        
+
         protected override void RunCommand(String actionParameter) => this.ChangeValue();
         protected virtual String GetValue() => null;
         protected virtual BitmapImage GetImage(PluginImageSize imageSize) => null;

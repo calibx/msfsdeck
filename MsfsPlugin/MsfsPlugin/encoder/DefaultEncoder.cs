@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Loupedeck.MsfsPlugin.tools;
 
     public abstract class DefaultEncoder : PluginDynamicAdjustment, Notifiable
