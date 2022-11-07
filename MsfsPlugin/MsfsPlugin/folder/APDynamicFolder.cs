@@ -31,6 +31,8 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_MASTER_SWITCH_AP_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_YAW_DAMPER_AP_FOLDER)));
+
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
@@ -67,6 +69,7 @@
                 this.CreateCommandName("AP"),
                 this.CreateCommandName("Throttle"),
                 this.CreateCommandName("VS Speed"),
+                this.CreateCommandName("Yaw Damper"),
             };
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -115,6 +118,9 @@
                 case "VS Speed":
                     bitmapBuilder.SetBackgroundImage(this._bindings[14].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
                     break;
+                case "Yaw Damper":
+                    bitmapBuilder.SetBackgroundImage(this._bindings[15].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    break;
             }
             bitmapBuilder.DrawText(actionParameter);
             return bitmapBuilder.ToImage();
@@ -162,6 +168,9 @@
                     break;
                 case "VS Speed":
                     this._bindings[14].SetControllerValue(1);
+                    break;
+                case "Yaw Damper":
+                    this._bindings[15].SetControllerValue(1);
                     break;
                 case "Altitude Reset":
                     this._bindings[0].SetControllerValue((Int64)(Math.Round(this._bindings[1].ControllerValue / 100d, 0) * 100));
