@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
 
     public class ComDynamicFolder : PluginDynamicFolder, Notifiable
@@ -118,7 +117,7 @@
                     break;
                 case "COM1 Active Int":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText((this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(0,3)) +".", new BitmapColor(0, 255, 0), 40);
+                    bitmapBuilder.DrawText((this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM1 Active Float":
                     this.SetBackground(bitmapBuilder, this._bindings[9]);
@@ -288,34 +287,34 @@
             String type;
             switch (comType)
             {
-                case 0 :
+                case 0:
                     type = "ATIS";
                     break;
-                case 1 :
+                case 1:
                     type = "UNICOM";
                     break;
-                case 2 :
+                case 2:
                     type = "CTAF";
                     break;
-                case 3 :
+                case 3:
                     type = "GROUND";
                     break;
-                case 4 :
+                case 4:
                     type = "TOWER";
                     break;
-                case 5 :
+                case 5:
                     type = "CLR";
                     break;
-                case 6 :
+                case 6:
                     type = "APPR";
                     break;
-                case 7 :
+                case 7:
                     type = "DEP";
                     break;
-                case 8 :
+                case 8:
                     type = "FSS";
                     break;
-                case 9 :
+                case 9:
                     type = "AWOS";
                     break;
                 default:

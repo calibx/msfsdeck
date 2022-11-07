@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Loupedeck.MsfsPlugin.tools;
 
     public class APDynamicFolder : PluginDynamicFolder, Notifiable
@@ -133,7 +134,7 @@
                     this._bindings[0].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[0].ControllerValue, ticks, -10000, 99900, 100));
                     break;
                 case "Heading Encoder":
-                    this._bindings[2].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[2].ControllerValue, ticks,1, 360, 1, true));
+                    this._bindings[2].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[2].ControllerValue, ticks, 1, 360, 1, true));
                     break;
                 case "Speed Encoder":
                     this._bindings[4].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[4].ControllerValue, ticks, 0, 2000, 1));

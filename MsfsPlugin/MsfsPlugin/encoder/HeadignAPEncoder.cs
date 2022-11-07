@@ -1,6 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using System;
+
     using Loupedeck.MsfsPlugin.encoder;
     using Loupedeck.MsfsPlugin.tools;
 
