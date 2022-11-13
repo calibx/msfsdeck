@@ -2,7 +2,7 @@
 {
 
     using Loupedeck.MsfsPlugin.input;
-
+    using Loupedeck.MsfsPlugin.tools;
     class PitotInput : DefaultInput
     {
         public PitotInput() : base("Pitot", "Pitot heating", "Misc")
@@ -14,14 +14,7 @@
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (this._bindings[0].ControllerValue == 1)
-                {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
-                }
-                else
-                {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
-                }
+                bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[0].ControllerValue));
                 bitmapBuilder.DrawText("Pitot");
                 return bitmapBuilder.ToImage();
             }

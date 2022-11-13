@@ -4,11 +4,10 @@
     using System.Collections.Generic;
 
     using Loupedeck.MsfsPlugin.msfs;
+    using Loupedeck.MsfsPlugin.tools;
 
     public class LightsMultiInputs : PluginDynamicCommand, Notifiable
     {
-        protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
-        protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
         protected readonly List<Binding> _bindings = new List<Binding>();
 
         public LightsMultiInputs() : base()
@@ -51,40 +50,40 @@
             switch (actionParameter)
             {
                 case "Navigation":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[0].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[0].ControllerValue));
                     break;
                 case "Beacon":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[1].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[1].ControllerValue));
                     break;
                 case "Landing":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[2].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[2].ControllerValue));
                     break;
                 case "Taxi":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[3].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[3].ControllerValue));
                     break;
                 case "Strobes":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[4].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[4].ControllerValue));
                     break;
                 case "Instruments":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[5].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[5].ControllerValue));
                     break;
                 case "Recognition":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[6].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[6].ControllerValue));
                     break;
                 case "Wing":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[7].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[7].ControllerValue));
                     break;
                 case "Logo":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[8].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[8].ControllerValue));
                     break;
                 case "Cabin":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[9].ControllerValue));
                     break;
                 case "Pedestral":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[10].ControllerValue));
                     break;
                 case "Glareshield":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[11].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[11].ControllerValue));
                     break;
                 case "All":
                     break;
