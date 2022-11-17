@@ -18,31 +18,42 @@
 
         public static readonly BitmapImage _imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
 
-        public static BitmapImage GetOnOffImage(Int64 value) => value == 1 ? _imageOn : _imageOff;
-        public static BitmapImage GetAvailableDisableImage(Int64 value) => value == 1 ? _imageAvailable : _imageDisable;
+        public static BitmapImage GetOnOffImage(Int64 value) => ImageTool.IsConnected() ? value == 1 ? _imageOn : _imageOff : ImageTool.IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetAvailableDisableImage(Int64 value) => ImageTool.IsConnected() ? value == 1 ? _imageAvailable : _imageDisable : ImageTool.IsTryingToConnect() ? _imageTrying : _imageDisconnect;
 
         public static BitmapImage GetOnAvailableWaitDisableImage(Int64 value)
         {
             BitmapImage state;
-            switch (value)
+            if (ImageTool.IsTryingToConnect()) {
+                state = _imageTrying;
+            } else if (!ImageTool.IsConnected())
             {
-                case 1:
-                    state = ImageTool._imageAvailable;
-                    break;
-                case 2:
-                    state = ImageTool._imageOn;
-                    break;
-                case 3:
-                    state = ImageTool._imageWait;
-                    break;
-                case 4:
-                    state = ImageTool._imageOff;
-                    break;
-                default:
-                    state = ImageTool._imageDisable;
-                    break;
+                state = _imageDisconnect;
+            } else
+            { 
+                switch (value)
+                {
+                    case 1:
+                        state = ImageTool._imageAvailable;
+                        break;
+                    case 2:
+                        state = ImageTool._imageOn;
+                        break;
+                    case 3:
+                        state = ImageTool._imageWait;
+                        break;
+                    case 4:
+                        state = ImageTool._imageOff;
+                        break;
+                    default:
+                        state = ImageTool._imageDisable;
+                        break;
+                }
             }
             return state;
-        } 
+        }
+
+        private static Boolean IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
+        private static Boolean IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
     }
 }
