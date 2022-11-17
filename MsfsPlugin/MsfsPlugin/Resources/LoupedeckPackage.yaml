@@ -1,13 +1,17 @@
 type: plugin4
 name: MSFS
 displayName: Microsoft Flight Simulator
-version: 2.1.0
+version: 2.2.0
 author: CaliBx
 copyright: CaliBx
 
 supportedDevices:
     - LoupedeckCt  
     - LoupedeckLive
+    - LoupedeckLiveS
+    - RazorStreamController
+
+
 
 pluginFileName: MSFSPlugin.dll
 pluginFolderWin: ./bin/win/

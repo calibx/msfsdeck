@@ -2,6 +2,7 @@
 {
 
     using Loupedeck.MsfsPlugin.input;
+    using Loupedeck.MsfsPlugin.tools;
 
     class AutoTaxiInput : DefaultInput
     {
@@ -13,19 +14,19 @@
             {
                 if (this._bindings[0].MsfsValue == 2)
                 {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(2));
                 }
                 else if (this._bindings[0].MsfsValue == 1)
                 {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageAvailableResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(1));
                 }
                 else if (this._bindings[0].MsfsValue == 3)
                 {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageWaitResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(3));
                 }
                 else
                 {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(0));
                 }
                 bitmapBuilder.DrawText("AutoTaxi");
                 return bitmapBuilder.ToImage();

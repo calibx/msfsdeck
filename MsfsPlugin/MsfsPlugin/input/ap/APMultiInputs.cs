@@ -2,18 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
+
+    using Loupedeck.MsfsPlugin.tools;
 
     public class APMultiInputs : PluginDynamicCommand, Notifiable
     {
-        protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
-        protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
-        protected readonly String _imageDisconnectResourcePath = "Loupedeck.MsfsPlugin.Resources.disconnect.png";
-        protected readonly String _imageTryingResourcePath = "Loupedeck.MsfsPlugin.Resources.trying.png";
-
         protected readonly List<Binding> _bindings = new List<Binding>();
-        protected readonly Binding _bindingCnx = MsfsData.Instance.Register(new Binding(BindingKeys.CONNECTION));
-
         public APMultiInputs() : base()
         {
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_ALT_SWITCH)));
@@ -27,6 +21,7 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_FLC_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_APP_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_LOC_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_YAW_DAMPER_SWITCH)));
 
 
             this.AddParameter("AP Alt", "Autopilot Altitude Switch", "AP");
@@ -40,80 +35,59 @@
             this.AddParameter("AP FLC", "Autopilot FLC Switch", "AP");
             this.AddParameter("AP APP", "Autopilot APP Switch", "AP");
             this.AddParameter("AP LOC", "Autopilot LOC Switch", "AP");
+            this.AddParameter("AP YD", "Autopilot Yaw Damper Switch", "AP");
             MsfsData.Instance.Register(this);
 
         }
         protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
         {
-            if (this._bindingCnx.MsfsValue == 0)
-            {
-                using (var bitmapBuilder = new BitmapBuilder(imageSize))
-                {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisconnectResourcePath));
-                    bitmapBuilder.DrawText(actionParameter);
-                    return bitmapBuilder.ToImage();
-                }
-            }
-            else if (this._bindingCnx.MsfsValue == 2)
-            {
-                using (var bitmapBuilder = new BitmapBuilder(imageSize))
-                {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageTryingResourcePath));
-                    bitmapBuilder.DrawText(actionParameter);
-                    return bitmapBuilder.ToImage();
-                }
-            }
-            else
-            {
-                return this.GetImage(actionParameter, imageSize);
-            }
-        }
-
-        private BitmapImage GetImage(String actionParameter, PluginImageSize imageSize)
-        {
             var bitmapBuilder = new BitmapBuilder(imageSize);
             switch (actionParameter)
             {
                 case "AP Alt":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[0].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[0].ControllerValue));
                     break;
                 case "AP Head":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[1].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[1].ControllerValue));
                     break;
                 case "AP Nav":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[2].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[2].ControllerValue));
                     break;
                 case "AP Speed":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[3].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[3].ControllerValue));
                     break;
                 case "AP Master":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[4].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[4].ControllerValue));
                     break;
                 case "AP Throttle":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[5].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[5].ControllerValue));
                     break;
                 case "AP VSpeed":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[6].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[6].ControllerValue));
                     break;
                 case "AP FD":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[7].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[7].ControllerValue));
                     break;
                 case "AP FLC":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[8].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[8].ControllerValue));
                     break;
                 case "AP APP":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[9].ControllerValue));
                     break;
                 case "AP LOC":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[10].ControllerValue));
+                    break;
+                case "AP YD":
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[11].ControllerValue));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
             return bitmapBuilder.ToImage();
         }
+
         protected override void RunCommand(String actionParameter)
         {
-             switch (actionParameter)
+            switch (actionParameter)
             {
                 case "AP Alt":
                     this._bindings[0].SetControllerValue(1);
@@ -148,6 +122,10 @@
                 case "AP LOC":
                     this._bindings[10].SetControllerValue(1);
                     break;
+                case "AP YD":
+                    this._bindings[11].SetControllerValue(1);
+                    break;
+
             }
         }
         public void Notify()

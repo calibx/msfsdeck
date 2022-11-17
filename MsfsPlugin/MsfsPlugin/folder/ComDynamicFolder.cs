@@ -2,13 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
+
+    using Loupedeck.MsfsPlugin.tools;
 
     public class ComDynamicFolder : PluginDynamicFolder, Notifiable
     {
-        protected readonly String _imageDisableResourcePath = "Loupedeck.MsfsPlugin.Resources.disableBorder.png";
-        protected readonly String _imageAvailableResourcePath = "Loupedeck.MsfsPlugin.Resources.onBorder.png";
         protected readonly List<Binding> _bindings = new List<Binding>();
         public ComDynamicFolder()
         {
@@ -105,76 +104,64 @@
             switch (actionParameter)
             {
                 case "COM1 Active":
-                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[9].MsfsValue));
                     bitmapBuilder.DrawText("COM 1\n" + (this._bindings[0].ControllerValue / 1000000f).ToString("F3", CultureInfo.InvariantCulture));
                     break;
                 case "COM1 Standby":
-                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[9].MsfsValue));
                     bitmapBuilder.DrawText("Standby\n" + (this._bindings[12].ControllerValue / 1000000f).ToString("F3", CultureInfo.InvariantCulture));
                     break;
                 case "COM1 Status":
-                    this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText("Status\n" + this.IntToCOMStatus(this._bindings[6].ControllerValue) + "\nType\n" + this.IntToCOMType(this._bindings[3].ControllerValue));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[9].MsfsValue));
+                    bitmapBuilder.DrawText("Status\n" + ConvertTool.IntToCOMStatus(this._bindings[6].ControllerValue) + "\nType\n" + ConvertTool.IntToCOMType(this._bindings[3].ControllerValue));
                     break;
                 case "COM1 Active Int":
-                    this.SetBackground(bitmapBuilder, this._bindings[9]);
-                    bitmapBuilder.DrawText((this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(0,3)) +".", new BitmapColor(0, 255, 0), 40);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[9].MsfsValue));
+                    bitmapBuilder.DrawText((this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM1 Active Float":
-                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[9].MsfsValue));
                     bitmapBuilder.DrawText(this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM1 Standby Int":
-                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[9].MsfsValue));
                     bitmapBuilder.DrawText((this._bindings[12].ControllerValue == 0 ? "0" : this._bindings[12].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
                     break;
                 case "COM1 Standby Float":
-                    this.SetBackground(bitmapBuilder, this._bindings[9]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[9].MsfsValue));
                     bitmapBuilder.DrawText(this._bindings[12].ControllerValue == 0 ? "0" : this._bindings[12].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
                     break;
                 case "COM2 Active":
-                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[10].MsfsValue));
                     bitmapBuilder.DrawText("COM 2\n" + (this._bindings[1].ControllerValue / 1000000f).ToString("F3", CultureInfo.InvariantCulture));
                     break;
                 case "COM2 Standby":
-                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[10].MsfsValue));
                     bitmapBuilder.DrawText("Standby\n" + (this._bindings[13].ControllerValue / 1000000f).ToString("F3", CultureInfo.InvariantCulture));
                     break;
                 case "COM2 Status":
-                    this.SetBackground(bitmapBuilder, this._bindings[10]);
-                    bitmapBuilder.DrawText("Status\n" + this.IntToCOMStatus(this._bindings[7].ControllerValue) + "\nType\n" + this.IntToCOMType(this._bindings[3].ControllerValue));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[10].MsfsValue));
+                    bitmapBuilder.DrawText("Status\n" + ConvertTool.IntToCOMStatus(this._bindings[7].ControllerValue) + "\nType\n" + ConvertTool.IntToCOMType(this._bindings[3].ControllerValue));
                     break;
                 case "COM2 Active Int":
-                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[10].MsfsValue));
                     bitmapBuilder.DrawText((this._bindings[1].ControllerValue == 0 ? "0" : this._bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM2 Active Float":
-                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[10].MsfsValue));
                     bitmapBuilder.DrawText(this._bindings[1].ControllerValue == 0 ? "0" : this._bindings[1].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
                     break;
                 case "COM2 Standby Int":
-                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[10].MsfsValue));
                     bitmapBuilder.DrawText((this._bindings[13].ControllerValue == 0 ? "0" : this._bindings[13].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
                     break;
                 case "COM2 Standby Float":
-                    this.SetBackground(bitmapBuilder, this._bindings[10]);
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[10].MsfsValue));
                     bitmapBuilder.DrawText(this._bindings[13].ControllerValue == 0 ? "0" : this._bindings[13].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
                     break;
 
             }
             return bitmapBuilder.ToImage();
-        }
-
-        private void SetBackground(BitmapBuilder bitmapBuilder, Binding binding)
-        {
-            if (binding.MsfsValue == 1)
-            {
-                bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageAvailableResourcePath));
-            }
-            else
-            {
-                bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
-            }
         }
 
         public override void RunCommand(String actionParameter)
@@ -212,25 +199,25 @@
                 case "COM1 Int Encoder":
                     var com1int = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(0, 3));
                     var com1dbl = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(3, 3));
-                    var newInt = this.ApplyAdjustment(com1int, 118, 136, 1, ticks);
+                    var newInt = ConvertTool.ApplyAdjustment(com1int, ticks, 118, 136, 1);
                     this._bindings[12].SetControllerValue(newInt * 1000000 + com1dbl * 1000);
                     break;
                 case "COM1 Float Encoder":
                     var com1dbl1 = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(3, 3));
                     var com1int1 = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(0, 3));
-                    var newFloat = this.ApplyAdjustment(com1dbl1, 0, 995, 5, ticks);
+                    var newFloat = ConvertTool.ApplyAdjustment(com1dbl1, ticks, 0, 995, 5);
                     this._bindings[12].SetControllerValue(com1int1 * 1000000 + newFloat * 1000);
                     break;
                 case "COM2 Int Encoder":
                     var com2int = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(0, 3));
                     var com2dbl = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(3, 3));
-                    var newInt2 = this.ApplyAdjustment(com2int, 118, 136, 1, ticks);
+                    var newInt2 = ConvertTool.ApplyAdjustment(com2int, ticks, 118, 136, 1);
                     this._bindings[13].SetControllerValue(newInt2 * 1000000 + com2dbl * 1000);
                     break;
                 case "COM2 Float Encoder":
                     var com2dbl2 = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(3, 3));
                     var com2int2 = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(0, 3));
-                    var newFloat2 = this.ApplyAdjustment(com2dbl2, 0, 995, 5, ticks);
+                    var newFloat2 = ConvertTool.ApplyAdjustment(com2dbl2, ticks, 0, 995, 5);
                     this._bindings[13].SetControllerValue(com2int2 * 1000000 + newFloat2 * 1000);
                     break;
 
@@ -248,82 +235,5 @@
                 }
             }
         }
-        private Int64 ApplyAdjustment(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
-        {
-            value += ticks * steps;
-            if (value < min)
-            { value = max; }
-            else if (value > max)
-            { value = min; }
-            return value;
-        }
-        private String IntToCOMStatus(Int64 comStatus)
-        {
-            String type;
-            switch (comStatus)
-            {
-                case -1:
-                    type = "INVALID";
-                    break;
-                case 0:
-                    type = "OK";
-                    break;
-                case 1:
-                    type = "NOT EXIST";
-                    break;
-                case 2:
-                    type = "NO ELEC";
-                    break;
-                case 3:
-                    type = "FAILED";
-                    break;
-                default:
-                    type = "Unknown";
-                    break;
-            }
-            return type;
-        }
-        private String IntToCOMType(Int64 comType)
-        {
-            String type;
-            switch (comType)
-            {
-                case 0 :
-                    type = "ATIS";
-                    break;
-                case 1 :
-                    type = "UNICOM";
-                    break;
-                case 2 :
-                    type = "CTAF";
-                    break;
-                case 3 :
-                    type = "GROUND";
-                    break;
-                case 4 :
-                    type = "TOWER";
-                    break;
-                case 5 :
-                    type = "CLR";
-                    break;
-                case 6 :
-                    type = "APPR";
-                    break;
-                case 7 :
-                    type = "DEP";
-                    break;
-                case 8 :
-                    type = "FSS";
-                    break;
-                case 9 :
-                    type = "AWOS";
-                    break;
-                default:
-                    type = "Unknow";
-                    break;
-            }
-            return type;
-        }
-
     }
 }

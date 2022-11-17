@@ -2,12 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Loupedeck.MsfsPlugin.tools;
 
     public class AirlinerDynamicFolder : PluginDynamicFolder, Notifiable
     {
-        protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
-        protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
         protected readonly List<Binding> _bindings = new List<Binding>();
         public AirlinerDynamicFolder()
         {
@@ -34,6 +33,7 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_HEAD_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_YAW_DAMPER_AL_FOLDER)));
 
         }
 
@@ -75,6 +75,7 @@
                 this.CreateCommandName("Heading"),
                 this.CreateCommandName("Throttle"),
                 this.CreateCommandName("VS Speed"),
+                this.CreateCommandName("Yaw Damper"),
             };
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -103,37 +104,40 @@
             switch (actionParameter)
             {
                 case "LOC":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[14].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[14].ControllerValue));
                     break;
                 case "FD":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[8].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[8].ControllerValue));
                     break;
                 case "FLC":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[12].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[12].ControllerValue));
                     break;
                 case "APP":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[13].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[13].ControllerValue));
                     break;
                 case "Altitude":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[9].ControllerValue));
                     break;
                 case "Heading":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[16].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[16].ControllerValue));
                     break;
                 case "GPS":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[11].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[11].ControllerValue));
                     break;
                 case "Speed":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[15].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[15].ControllerValue));
                     break;
                 case "AP":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[10].ControllerValue));
                     break;
                 case "Throttle":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[17].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[17].ControllerValue));
                     break;
                 case "VS Speed":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[18].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[18].ControllerValue));
+                    break;
+                case "Yaw Damper":
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[19].ControllerValue));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -195,6 +199,9 @@
                 case "VS Speed":
                     this._bindings[18].SetControllerValue(1);
                     break;
+                case "Yaw Damper":
+                    this._bindings[19].SetControllerValue(1);
+                    break;
                 case "Altitude Reset":
                     //this._bindings[18].SetControllerValue(1);
                     break;
@@ -220,14 +227,5 @@
             }
         }
 
-        private Int64 ApplyAdjustment(Int64 value, Int32 min, Int32 max, Int32 steps, Int32 ticks)
-        {
-            value += ticks * steps;
-            if (value < min)
-            { value = min; }
-            else if (value > max)
-            { value = max; }
-            return value;
-        }
     }
 }

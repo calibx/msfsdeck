@@ -2,12 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Loupedeck.MsfsPlugin.tools;
 
     public class APDynamicFolder : PluginDynamicFolder, Notifiable
     {
-        protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
-        protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
         protected readonly List<Binding> _bindings = new List<Binding>();
         public APDynamicFolder()
         {
@@ -31,6 +30,8 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_MASTER_SWITCH_AP_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_YAW_DAMPER_AP_FOLDER)));
+
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
@@ -67,6 +68,7 @@
                 this.CreateCommandName("AP"),
                 this.CreateCommandName("Throttle"),
                 this.CreateCommandName("VS Speed"),
+                this.CreateCommandName("Yaw Damper"),
             };
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -95,25 +97,28 @@
             switch (actionParameter)
             {
                 case "Altitude":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[8].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[8].ControllerValue));
                     break;
                 case "Heading":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[9].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[9].ControllerValue));
                     break;
                 case "Nav":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[10].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[10].ControllerValue));
                     break;
                 case "Speed":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[11].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[11].ControllerValue));
                     break;
                 case "AP":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[12].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[12].ControllerValue));
                     break;
                 case "Throttle":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[13].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[13].ControllerValue));
                     break;
                 case "VS Speed":
-                    bitmapBuilder.SetBackgroundImage(this._bindings[14].ControllerValue == 1 ? EmbeddedResources.ReadImage(this._imageOnResourcePath) : EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[14].ControllerValue));
+                    break;
+                case "Yaw Damper":
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[15].ControllerValue));
                     break;
             }
             bitmapBuilder.DrawText(actionParameter);
@@ -127,7 +132,7 @@
                     this._bindings[0].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[0].ControllerValue, ticks, -10000, 99900, 100));
                     break;
                 case "Heading Encoder":
-                    this._bindings[2].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[2].ControllerValue, ticks,1, 360, 1, true));
+                    this._bindings[2].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[2].ControllerValue, ticks, 1, 360, 1, true));
                     break;
                 case "Speed Encoder":
                     this._bindings[4].SetControllerValue(ConvertTool.ApplyAdjustment(this._bindings[4].ControllerValue, ticks, 0, 2000, 1));
@@ -162,6 +167,9 @@
                     break;
                 case "VS Speed":
                     this._bindings[14].SetControllerValue(1);
+                    break;
+                case "Yaw Damper":
+                    this._bindings[15].SetControllerValue(1);
                     break;
                 case "Altitude Reset":
                     this._bindings[0].SetControllerValue((Int64)(Math.Round(this._bindings[1].ControllerValue / 100d, 0) * 100));
