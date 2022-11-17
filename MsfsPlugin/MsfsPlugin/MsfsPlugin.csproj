@@ -88,6 +88,7 @@
     <Compile Include="input\debug\AircraftInput.cs" />
     <Compile Include="input\light\LightsMultiInputs.cs" />
     <Compile Include="input\misc\AutoTaxiInput.cs" />
+    <Compile Include="input\misc\IconInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\EngineInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
@@ -110,6 +111,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tools\ImageTool.cs" />
     <Compile Include="tools\ConvertTool.cs" />
     <Compile Include="MSFSApplication.cs" />
     <Compile Include="MSFSPlugin.cs" />
@@ -165,6 +167,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\32.png" />
     <EmbeddedResource Include="Resources\48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\availableFull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\disableFull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\disconnectFull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\offFull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\onFull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\tryingFull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\waitFull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\availableBorder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

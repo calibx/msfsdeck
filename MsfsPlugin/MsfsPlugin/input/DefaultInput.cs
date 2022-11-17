@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     public abstract class DefaultInput : PluginDynamicCommand, Notifiable
     {
-        protected readonly String _imageOffResourcePath = "Loupedeck.MsfsPlugin.Resources.off.png";
-        protected readonly String _imageOnResourcePath = "Loupedeck.MsfsPlugin.Resources.on.png";
         protected readonly String _imageWaitResourcePath = "Loupedeck.MsfsPlugin.Resources.wait.png";
         protected readonly String _imageAvailableResourcePath = "Loupedeck.MsfsPlugin.Resources.available.png";
         protected readonly String _imageDisableResourcePath = "Loupedeck.MsfsPlugin.Resources.disable.png";
@@ -25,32 +23,7 @@
             }
         }
         protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize) => this.GetValue();
-        protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
-        {
-            if (this._bindingCnx.MsfsValue == 0)
-            {
-                using (var bitmapBuilder = new BitmapBuilder(imageSize))
-                {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisconnectResourcePath));
-                    bitmapBuilder.DrawText(this.DisplayName);
-                    return bitmapBuilder.ToImage();
-                }
-            }
-            else if (this._bindingCnx.MsfsValue == 2)
-            {
-                using (var bitmapBuilder = new BitmapBuilder(imageSize))
-                {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageTryingResourcePath));
-                    bitmapBuilder.DrawText(this.DisplayName);
-                    return bitmapBuilder.ToImage();
-                }
-            }
-            else
-            {
-                return this.GetImage(imageSize);
-            }
-        }
-
+        protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize) => this.GetImage(imageSize);
         protected override void RunCommand(String actionParameter) => this.ChangeValue();
         protected virtual String GetValue() => null;
         protected virtual BitmapImage GetImage(PluginImageSize imageSize) => null;

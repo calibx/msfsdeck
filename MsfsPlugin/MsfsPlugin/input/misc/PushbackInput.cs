@@ -2,6 +2,7 @@
 {
 
     using Loupedeck.MsfsPlugin.input;
+    using Loupedeck.MsfsPlugin.tools;
 
     class PushbackInput : DefaultInput
     {
@@ -29,19 +30,19 @@
             {
                 if (this._bindings[0].MsfsValue == 0)
                 {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageDisableResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(0));
                 }
                 else if (this._bindings[1].MsfsValue == 1)
                 {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOnResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(2));
                 }
                 else if (this._bindings[2].ControllerValue == 3)
                 {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageOffResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(4));
                 }
                 else
                 {
-                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(this._imageWaitResourcePath));
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(3));
                 }
 
                 switch (this._bindings[2].ControllerValue)
