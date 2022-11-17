@@ -3,6 +3,17 @@ The aim of this plugin is to use the Loupedeck Live to control MSFS
 # Requirements
 * Loupedeck Live : https://loupedeck.com/fr/products/loupedeck-live/
 * MSFS : https://www.flightsimulator.com/
+# Changelog
+* 2.2.0
+Add flashlight (sending default binding ALT + L)
+Fix ATC Open/close
+Map folders to physical buttons by default
+Add Yaw Damper control
+Add indexed pitot handling
+Add indexed light handling
+Setting to 29.92 when pushing baro encoder
+Add a new Input to change icon background size
+
 # Upgrading
 * Auto : for the market release, go to the market to update
 * Manual
