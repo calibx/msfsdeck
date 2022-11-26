@@ -91,6 +91,7 @@
             ALL_LIGHTS_TOGGLE,
             FLASHLIGHT,
             YAW_DAMPER_TOGGLE,
+            AP_BC_HOLD,
         };
         private enum DEFINITIONS
         {
@@ -201,6 +202,7 @@
             public Int64 glareshieldLight;
 
             public Int64 apYawDamper;
+            public Int64 apBackCourse;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -384,6 +386,7 @@
             MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER].SetMsfsValue(reader.apThrottleHold);
             MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER].SetMsfsValue(reader.apVerticalSpeedHold);
             MsfsData.Instance.bindings[BindingKeys.AP_YAW_DAMPER_AP_FOLDER].SetMsfsValue(reader.apYawDamper);
+            MsfsData.Instance.bindings[BindingKeys.AP_BC_AP_FOLDER].SetMsfsValue(reader.apBackCourse);
 
             MsfsData.Instance.bindings[BindingKeys.AP_ALT_SWITCH].SetMsfsValue(reader.apAltHold);
             MsfsData.Instance.bindings[BindingKeys.AP_HEAD_SWITCH].SetMsfsValue(reader.apHeadingHold);
@@ -393,6 +396,7 @@
             MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH].SetMsfsValue(reader.apThrottleHold);
             MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH].SetMsfsValue(reader.apVerticalSpeedHold);
             MsfsData.Instance.bindings[BindingKeys.AP_YAW_DAMPER_SWITCH].SetMsfsValue(reader.apYawDamper);
+            MsfsData.Instance.bindings[BindingKeys.AP_BC_SWITCH].SetMsfsValue(reader.apBackCourse);
 
             MsfsData.Instance.bindings[BindingKeys.AP_ALT_AL_FOLDER].SetMsfsValue(reader.apAltitude);
             MsfsData.Instance.bindings[BindingKeys.ALT_AL_FOLDER].SetMsfsValue(reader.planeAltitude);
@@ -414,6 +418,7 @@
             MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER].SetMsfsValue(reader.apThrottleHold);
             MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER].SetMsfsValue(reader.apVerticalSpeedHold);
             MsfsData.Instance.bindings[BindingKeys.AP_YAW_DAMPER_AL_FOLDER].SetMsfsValue(reader.apYawDamper);
+            MsfsData.Instance.bindings[BindingKeys.AP_BC_AL_FOLDER].SetMsfsValue(reader.apBackCourse);
 
             MsfsData.Instance.bindings[BindingKeys.COM1_ACTIVE_FREQUENCY].SetMsfsValue(reader.COM1ActiveFreq);
             MsfsData.Instance.bindings[BindingKeys.COM1_STBY].SetMsfsValue(reader.COM1StbFreq);
@@ -488,6 +493,7 @@
             this.SendEvent(EVENTS.AP_N1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER]);
             this.SendEvent(EVENTS.AP_PANEL_VS_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER]);
             this.SendEvent(EVENTS.YAW_DAMPER_TOGGLE, MsfsData.Instance.bindings[BindingKeys.AP_YAW_DAMPER_AP_FOLDER]);
+            this.SendEvent(EVENTS.AP_BC_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_BC_AP_FOLDER]);
 
             this.SendEvent(EVENTS.AP_PANEL_ALTITUDE_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_ALT_SWITCH]);
             this.SendEvent(EVENTS.AP_PANEL_HEADING_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_HEAD_SWITCH]);
@@ -497,6 +503,7 @@
             this.SendEvent(EVENTS.AP_N1_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_THROTTLE_SWITCH]);
             this.SendEvent(EVENTS.AP_PANEL_VS_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_SWITCH]);
             this.SendEvent(EVENTS.YAW_DAMPER_TOGGLE, MsfsData.Instance.bindings[BindingKeys.AP_YAW_DAMPER_SWITCH]);
+            this.SendEvent(EVENTS.AP_BC_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_BC_SWITCH]);
 
             this.SendEvent(EVENTS.ATC_MENU_OPEN, MsfsData.Instance.bindings[BindingKeys.ATC_ATC_FOLDER]);
             this.SendEvent(EVENTS.ATC_MENU_0, MsfsData.Instance.bindings[BindingKeys.ATC_0_ATC_FOLDER]);
@@ -522,6 +529,7 @@
             this.SendEvent(EVENTS.AP_APR_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_APP_SWITCH_AL_FOLDER]);
             this.SendEvent(EVENTS.AP_LOC_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_LOC_SWITCH_AL_FOLDER]);
             this.SendEvent(EVENTS.YAW_DAMPER_TOGGLE, MsfsData.Instance.bindings[BindingKeys.AP_YAW_DAMPER_AL_FOLDER]);
+            this.SendEvent(EVENTS.AP_BC_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_BC_AL_FOLDER]);
 
             this.SendEvent(EVENTS.COM_STBY_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM1_STBY]);
             this.SendEvent(EVENTS.COM1_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.COM1_RADIO_SWAP]);
@@ -764,6 +772,8 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT PEDESTRAL", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT GLARESHIELD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT YAW DAMPER", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT BACKCOURSE HOLD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            
 
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);

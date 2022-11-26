@@ -34,6 +34,7 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_YAW_DAMPER_AL_FOLDER)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_BC_AL_FOLDER)));
 
         }
 
@@ -76,6 +77,7 @@
                 this.CreateCommandName("Throttle"),
                 this.CreateCommandName("VS Speed"),
                 this.CreateCommandName("Yaw Damper"),
+                this.CreateCommandName("Back Course"),
             };
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
@@ -139,6 +141,9 @@
                 case "Yaw Damper":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[19].ControllerValue));
                     break;
+                case "Back Course":
+                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[20].ControllerValue));
+                    break;
             }
             bitmapBuilder.DrawText(actionParameter);
             return bitmapBuilder.ToImage();
@@ -201,6 +206,9 @@
                     break;
                 case "Yaw Damper":
                     this._bindings[19].SetControllerValue(1);
+                    break;
+                case "Back Course":
+                    this._bindings[20].SetControllerValue(1);
                     break;
                 case "Altitude Reset":
                     //this._bindings[18].SetControllerValue(1);
