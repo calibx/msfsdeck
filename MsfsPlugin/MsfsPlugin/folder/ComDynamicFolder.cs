@@ -199,25 +199,25 @@
                 case "COM1 Int Encoder":
                     var com1int = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(0, 3));
                     var com1dbl = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(3, 3));
-                    var newInt = ConvertTool.ApplyAdjustment(com1int, ticks, 118, 136, 1);
+                    var newInt = ConvertTool.ApplyAdjustment(com1int, ticks, 118, 136, 1, true);
                     this._bindings[12].SetControllerValue(newInt * 1000000 + com1dbl * 1000);
                     break;
                 case "COM1 Float Encoder":
                     var com1dbl1 = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(3, 3));
                     var com1int1 = Int32.Parse(this._bindings[12].ControllerValue.ToString().Substring(0, 3));
-                    var newFloat = ConvertTool.ApplyAdjustment(com1dbl1, ticks, 0, 995, 5);
+                    var newFloat = ConvertTool.ApplyAdjustment(com1dbl1, ticks, 0, 995, 5, true);
                     this._bindings[12].SetControllerValue(com1int1 * 1000000 + newFloat * 1000);
                     break;
                 case "COM2 Int Encoder":
                     var com2int = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(0, 3));
                     var com2dbl = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(3, 3));
-                    var newInt2 = ConvertTool.ApplyAdjustment(com2int, ticks, 118, 136, 1);
+                    var newInt2 = ConvertTool.ApplyAdjustment(com2int, ticks, 118, 136, 1, true);
                     this._bindings[13].SetControllerValue(newInt2 * 1000000 + com2dbl * 1000);
                     break;
                 case "COM2 Float Encoder":
                     var com2dbl2 = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(3, 3));
                     var com2int2 = Int32.Parse(this._bindings[13].ControllerValue.ToString().Substring(0, 3));
-                    var newFloat2 = ConvertTool.ApplyAdjustment(com2dbl2, ticks, 0, 995, 5);
+                    var newFloat2 = ConvertTool.ApplyAdjustment(com2dbl2, ticks, 0, 995, 5, true);
                     this._bindings[13].SetControllerValue(com2int2 * 1000000 + newFloat2 * 1000);
                     break;
 
