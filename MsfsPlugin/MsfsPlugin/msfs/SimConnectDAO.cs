@@ -92,6 +92,12 @@
             FLASHLIGHT,
             YAW_DAMPER_TOGGLE,
             AP_BC_HOLD,
+            SIM_RATE_DECR,
+            SIM_RATE_INC,
+            SIM_RATE_SET,
+            PLUS,
+            MINUS,
+            SIM_RATE,
         };
         private enum DEFINITIONS
         {
@@ -203,6 +209,8 @@
 
             public Int64 apYawDamper;
             public Int64 apBackCourse;
+
+            public Int64 simRate;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -432,6 +440,8 @@
             MsfsData.Instance.bindings[BindingKeys.COM2_STATUS].SetMsfsValue(reader.COM2Status);
             //MsfsData.Instance.bindings[BindingKeys.COM2_ACTIVE_FREQUENCY_TYPE].SetMsfsValue(this.COMtypeToInt(reader.COM2Type));
 
+            MsfsData.Instance.bindings[BindingKeys.SIM_RATE].SetMsfsValue(reader.simRate);
+
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT_INPUT]);
@@ -536,6 +546,7 @@
             this.SendEvent(EVENTS.COM2_STBY_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM2_STBY]);
             this.SendEvent(EVENTS.COM2_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.COM2_RADIO_SWAP]);
             this.SendEvent(EVENTS.FLASHLIGHT, MsfsData.Instance.bindings[BindingKeys.FLASHLIGHT]);
+            this.SendEvent(EVENTS.SIM_RATE, MsfsData.Instance.bindings[BindingKeys.SIM_RATE]);
 
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
             {
@@ -601,7 +612,6 @@
         {
             if (binding.ControllerChanged)
             {
-                Debug.WriteLine("Send " + eventName);
                 UInt32 value;
                 switch (eventName)
                 {
@@ -630,6 +640,11 @@
                     case EVENTS.KEY_TUG_HEADING:
                         value = (UInt32)(binding.ControllerValue == 1 ? TUG_ANGLE * -0.8f : TUG_ANGLE * 0.8f);
                         break;
+                    case EVENTS.SIM_RATE:
+                        value = 1;
+                        this.m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.SIM_RATE, 1, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                        eventName = binding.ControllerValue < binding.MsfsValue ? EVENTS.MINUS : EVENTS.PLUS;
+                        break;
                     case EVENTS.ATC_MENU_OPEN:
                         this.pluginForKey.KeyboardApi.SendShortcut((VirtualKeyCode)0x91, ModifierKey.None);
                         value = 0;
@@ -642,6 +657,7 @@
                         value = (UInt32)binding.ControllerValue;
                         break;
                 }
+                Debug.WriteLine("Send " + eventName + " with " + value);
                 if (enumerable)
                 {
                     for (UInt32 i=1;i< 10; i++)
@@ -773,7 +789,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "LIGHT GLARESHIELD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT YAW DAMPER", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AUTOPILOT BACKCOURSE HOLD", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            
+            this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "SIMULATION RATE", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
