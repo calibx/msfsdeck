@@ -60,6 +60,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="encoder\SimRateEncoder.cs" />
     <Compile Include="encoder\BarometerEncoder.cs" />
     <Compile Include="encoder\VSpeedAPEncoder.cs" />
     <Compile Include="encoder\SpeedAPEncoder.cs" />

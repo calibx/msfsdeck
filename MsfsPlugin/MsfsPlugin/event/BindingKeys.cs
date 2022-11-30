@@ -162,6 +162,7 @@
         COM3_RADIO_SWAP,
         FLASHLIGHT,
         ICON_SIZE,
+        SIM_RATE,
     }
 }
 
