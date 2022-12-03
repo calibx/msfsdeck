@@ -163,6 +163,7 @@
         FLASHLIGHT,
         ICON_SIZE,
         SIM_RATE,
+        SPOILERS_ARM,
     }
 }
 
