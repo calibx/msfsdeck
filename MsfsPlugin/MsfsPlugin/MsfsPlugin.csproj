@@ -95,6 +95,7 @@
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
+    <Compile Include="input\misc\SpoilerArmInput.cs" />
     <Compile Include="input\misc\PushbackInput.cs" />
     <Compile Include="input\misc\PauseInput.cs" />
     <Compile Include="input\nav\APWPDisplay.cs" />
