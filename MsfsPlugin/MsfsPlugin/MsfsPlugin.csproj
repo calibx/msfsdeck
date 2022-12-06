@@ -60,6 +60,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="encoder\SimRateEncoder.cs" />
     <Compile Include="encoder\BarometerEncoder.cs" />
     <Compile Include="encoder\VSpeedAPEncoder.cs" />
     <Compile Include="encoder\SpeedAPEncoder.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="folder\AirlinerDynamicFolder.cs" />
     <Compile Include="folder\APDynamicFolder.cs" />
     <Compile Include="folder\ATCDynamicFolder.cs" />
+    <Compile Include="folder\ComDynamicSFolder.cs" />
     <Compile Include="folder\ComDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
     <Compile Include="input\ap\APMultiInputs.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
+    <Compile Include="input\misc\SpoilerArmInput.cs" />
     <Compile Include="input\misc\PushbackInput.cs" />
     <Compile Include="input\misc\PauseInput.cs" />
     <Compile Include="input\nav\APWPDisplay.cs" />

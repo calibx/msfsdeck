@@ -1,12 +1,14 @@
 ﻿namespace Loupedeck.MsfsPlugin.tools
 {
     using System;
+    using System.Diagnostics;
 
     public class ConvertTool
     {
 
         public static Int64 ApplyAdjustment(Int64 value, Int32 ticks, Int32 min, Int32 max, Int32 step, Boolean cycle = false)
         {
+            Debug.WriteLine(value);
             value += ticks * step;
             if (value < min)
             {

@@ -99,6 +99,7 @@
         AP_THROTTLE_SWITCH_AP_FOLDER,
         AP_VSPEED_SWITCH_AP_FOLDER,
         AP_YAW_DAMPER_AP_FOLDER,
+        AP_BC_AP_FOLDER,
         AP_ALT_SWITCH,
         AP_HEAD_SWITCH,
         AP_NAV_SWITCH,
@@ -107,6 +108,7 @@
         AP_THROTTLE_SWITCH,
         AP_VSPEED_SWITCH,
         AP_YAW_DAMPER_SWITCH,
+        AP_BC_SWITCH,
         ATC_ATC_FOLDER,
         ATC_0_ATC_FOLDER,
         ATC_1_ATC_FOLDER,
@@ -138,6 +140,7 @@
         AP_THROTTLE_SWITCH_AL_FOLDER,
         AP_VSPEED_SWITCH_AL_FOLDER,
         AP_YAW_DAMPER_AL_FOLDER,
+        AP_BC_AL_FOLDER,
         AUTO_TAXI,
         COM1_ACTIVE_FREQUENCY,
         COM2_ACTIVE_FREQUENCY,
@@ -159,6 +162,8 @@
         COM3_RADIO_SWAP,
         FLASHLIGHT,
         ICON_SIZE,
+        SIM_RATE,
+        SPOILERS_ARM,
     }
 }
 
