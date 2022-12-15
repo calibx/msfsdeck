@@ -9,7 +9,7 @@
         {
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PARKING_BRAKES)));
         }
-        protected override void ChangeValue() => this._bindings[0].SetControllerValue(1);
+        protected override void ChangeValue() => this._bindings[0].SetControllerValue(ConvertTool.getToggledValue(this._bindings[0].ControllerValue));
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))

@@ -26,7 +26,7 @@
         enum EVENTS
         {
             GEAR_TOGGLE,
-            PARKING_BRAKE,
+            PARKING_BRAKE_SET,
             ENGINE_AUTO_START,
             ENGINE_AUTO_SHUTDOWN,
             PAUSE_ON,
@@ -469,7 +469,7 @@
             this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_INPUT]);
             this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_AP_FOLDER]);
             this.SendEvent(EVENTS.AP_VS_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_VSPEED_AL_FOLDER]);
-            this.SendEvent(EVENTS.PARKING_BRAKE, MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES]);
+            this.SendEvent(EVENTS.PARKING_BRAKE_SET, MsfsData.Instance.bindings[BindingKeys.PARKING_BRAKES]);
             this.SendEvent(EVENTS.PITOT_HEAT_TOGGLE, MsfsData.Instance.bindings[BindingKeys.PITOT], true);
             this.SendEvent(EVENTS.GEAR_TOGGLE, MsfsData.Instance.bindings[BindingKeys.GEAR_FRONT]);
             this.SendEvent(EVENTS.TOGGLE_NAV_LIGHTS, MsfsData.Instance.bindings[BindingKeys.LIGHT_NAV_MULTI], true);
