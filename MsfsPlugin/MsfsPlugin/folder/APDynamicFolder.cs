@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using Loupedeck.MsfsPlugin.tools;
 
@@ -95,6 +96,7 @@
         }
         public override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
         {
+            Debug.WriteLine(actionParameter);
             var bitmapBuilder = new BitmapBuilder(imageSize);
             switch (actionParameter)
             {
