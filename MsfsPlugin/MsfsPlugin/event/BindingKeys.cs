@@ -164,6 +164,14 @@
         ICON_SIZE,
         SIM_RATE,
         SPOILERS_ARM,
+        NAV1_ACTIVE_FREQUENCY,
+        NAV2_ACTIVE_FREQUENCY,
+        NAV1_STBY_FREQUENCY,
+        NAV2_STBY_FREQUENCY,
+        NAV1_AVAILABLE,
+        NAV2_AVAILABLE,
+        NAV1_RADIO_SWAP,
+        NAV2_RADIO_SWAP,
     }
 }
 

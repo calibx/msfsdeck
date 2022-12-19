@@ -5,6 +5,7 @@
 
     public class ConvertTool
     {
+        public static Int64 getToggledValue(Int64 value) => value == 0 ? 1 : 0;
 
         public static Int64 ApplyAdjustment(Int64 value, Int32 ticks, Int32 min, Int32 max, Int32 step, Boolean cycle = false)
         {

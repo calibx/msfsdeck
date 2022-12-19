@@ -81,6 +81,7 @@
     <Compile Include="folder\AirlinerDynamicFolder.cs" />
     <Compile Include="folder\APDynamicFolder.cs" />
     <Compile Include="folder\ATCDynamicFolder.cs" />
+    <Compile Include="folder\NavDynamicFolder.cs" />
     <Compile Include="folder\ComDynamicSFolder.cs" />
     <Compile Include="folder\ComDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
@@ -131,6 +132,9 @@
     <EmbeddedResource Include="Resources\DefaultProfile30win.lp4" />
     <EmbeddedResource Include="Resources\DefaultProfile40win.lp4" />
     <EmbeddedResource Include="Resources\DefaultProfile50win.lp4" />
+    <None Include="Resources\LoupedeckPackageRazor.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\LoupedeckPackage.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
