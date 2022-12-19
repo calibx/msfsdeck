@@ -132,6 +132,9 @@
     <EmbeddedResource Include="Resources\DefaultProfile30win.lp4" />
     <EmbeddedResource Include="Resources\DefaultProfile40win.lp4" />
     <EmbeddedResource Include="Resources\DefaultProfile50win.lp4" />
+    <None Include="Resources\LoupedeckPackageRazor.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\LoupedeckPackage.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
