@@ -3,45 +3,47 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Diagnostics;
 
     using Loupedeck.MsfsPlugin.tools;
 
-    public class ComDynamicSFolder : PluginDynamicFolder, Notifiable
+    public class NavDynamicSFolder : PluginDynamicFolder, Notifiable
     {
         protected readonly List<Binding> _bindings = new List<Binding>();
-        private Boolean isCom1active = true;
-        public ComDynamicSFolder()
+        private Boolean isVar1Active = true;
+        public NavDynamicSFolder()
         {
-            this.DisplayName = "COM (for S)";
+            this.DisplayName = "NAV (for S)";
             this.GroupName = "Folder";
 
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM1_ACTIVE_FREQUENCY)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM2_ACTIVE_FREQUENCY)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM1_STBY)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM2_STBY)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM1_AVAILABLE)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM2_AVAILABLE)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM1_RADIO_SWAP)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.COM2_RADIO_SWAP)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.NAV1_ACTIVE_FREQUENCY)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.NAV2_ACTIVE_FREQUENCY)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.NAV1_STBY_FREQUENCY)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.NAV2_STBY_FREQUENCY)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.NAV1_AVAILABLE)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.NAV2_AVAILABLE)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.NAV1_RADIO_SWAP)));
+            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.NAV2_RADIO_SWAP)));
+
             MsfsData.Instance.Register(this);
 
         }
+
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.EncoderArea;
+
         public override IEnumerable<String> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
             {
-                this.CreateCommandName("COM1"),
-                this.CreateCommandName("COM1 Active Int"),
-                this.CreateCommandName("COM1 Active Float"),
-                this.CreateCommandName("COM1 Standby Int"),
-                this.CreateCommandName("COM1 Standby Float"),
-                this.CreateCommandName("COM2"),
-                this.CreateCommandName("COM2 Active Int"),
-                this.CreateCommandName("COM2 Active Float"),
-                this.CreateCommandName("COM2 Standby Int"),
-                this.CreateCommandName("COM2 Standby Float"),
+                this.CreateCommandName("NAV1"),
+                this.CreateCommandName("NAV1 Active Int"),
+                this.CreateCommandName("NAV1 Active Float"),
+                this.CreateCommandName("NAV1 Standby Int"),
+                this.CreateCommandName("NAV1 Standby Float"),
+                this.CreateCommandName("NAV2"),
+                this.CreateCommandName("NAV2 Active Int"),
+                this.CreateCommandName("NAV2 Active Float"),
+                this.CreateCommandName("NAV2 Standby Int"),
+                this.CreateCommandName("NAV2 Standby Float"),
                 PluginDynamicFolder.NavigateUpActionName,
             };
         }
@@ -64,17 +66,16 @@
         }
         public override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
         {
-   
-            var bindingIndex = this.isCom1active ? 2 : 3;
+            var bindingIndex = this.isVar1Active ? 2 : 3;
             var ret = "";
             switch (actionParameter)
             {
                 case "Int":
-                    ret = "COM\n" + Math.Truncate(this._bindings[bindingIndex].ControllerValue / 1000000f) + ".";
+                    ret = "NAV\n" + Math.Truncate(this._bindings[bindingIndex].ControllerValue / 1000000f) + ".";
                     break;
                 case "Float":
-                    var com1dbl = Math.Round(this._bindings[bindingIndex].ControllerValue / 1000000f - Math.Truncate(this._bindings[bindingIndex].ControllerValue / 1000000f), 3).ToString();
-                    ret = "COM\n" + (com1dbl.Length > 2 ? com1dbl.Substring(2) : com1dbl).PadRight(3, '0');
+                    var var1dbl = Math.Round(this._bindings[bindingIndex].ControllerValue / 1000000f - Math.Truncate(this._bindings[bindingIndex].ControllerValue / 1000000f), 3).ToString();
+                    ret = "NAV\n" + (var1dbl.Length > 2 ? var1dbl.Substring(2) : var1dbl).PadRight(2, '0');
                     break;
             }
             return ret;
@@ -82,62 +83,64 @@
         public override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
         {
             var bitmapBuilder = new BitmapBuilder(imageSize);
-
             switch (actionParameter)
             {
-                case "COM1":
+                case "NAV1":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[4].MsfsValue));
-                    if (this.isCom1active)
+                    if (this.isVar1Active)
                     {
-                        bitmapBuilder.DrawText("=> COM1");
-                    } else
-                    {
-                        bitmapBuilder.DrawText("COM1");
+                        bitmapBuilder.DrawText("=> NAV1");
                     }
-                    
+                    else
+                    {
+                        bitmapBuilder.DrawText("NAV1");
+                    }
+
                     break;
-                case "COM2":
+                case "NAV2":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[5].MsfsValue));
-                    if (!this.isCom1active)
+                    if (!this.isVar1Active)
                     {
-                        bitmapBuilder.DrawText("=> COM2");
-                    } else
+                        bitmapBuilder.DrawText("=> NAV2");
+                    }
+                    else
                     {
-                        bitmapBuilder.DrawText("COM2");
+                        bitmapBuilder.DrawText("NAV2");
                     }
                     break;
-                case "COM1 Active Int":
+                case "NAV1 Active Int":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[4].MsfsValue));
                     bitmapBuilder.DrawText((this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
                     break;
-                case "COM1 Active Float":
+                case "NAV1 Active Float":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
+                    bitmapBuilder.DrawText(this._bindings[0].ControllerValue == 0 ? "0" : this._bindings[0].ControllerValue.ToString().Substring(3, 2), new BitmapColor(0, 255, 0), 40);
                     break;
-                case "COM1 Standby Int":
+                case "NAV1 Standby Int":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[4].MsfsValue));
                     bitmapBuilder.DrawText((this._bindings[2].ControllerValue == 0 ? "0" : this._bindings[2].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
                     break;
-                case "COM1 Standby Float":
+                case "NAV1 Standby Float":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText(this._bindings[2].ControllerValue == 0 ? "0" : this._bindings[2].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
+                    bitmapBuilder.DrawText(this._bindings[2].ControllerValue == 0 ? "0" : this._bindings[2].ControllerValue.ToString().Substring(3, 2), new BitmapColor(255, 255, 0), 40);
                     break;
-                case "COM2 Active Int":
+                case "NAV2 Active Int":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[5].MsfsValue));
                     bitmapBuilder.DrawText((this._bindings[1].ControllerValue == 0 ? "0" : this._bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
                     break;
-                case "COM2 Active Float":
+                case "NAV2 Active Float":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText(this._bindings[1].ControllerValue == 0 ? "0" : this._bindings[1].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
+                    bitmapBuilder.DrawText(this._bindings[1].ControllerValue == 0 ? "0" : this._bindings[1].ControllerValue.ToString().Substring(3, 2), new BitmapColor(0, 255, 0), 40);
                     break;
-                case "COM2 Standby Int":
+                case "NAV2 Standby Int":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[5].MsfsValue));
                     bitmapBuilder.DrawText((this._bindings[3].ControllerValue == 0 ? "0" : this._bindings[3].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
                     break;
-                case "COM2 Standby Float":
+                case "NAV2 Standby Float":
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(this._bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText(this._bindings[3].ControllerValue == 0 ? "0" : this._bindings[3].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
+                    bitmapBuilder.DrawText(this._bindings[3].ControllerValue == 0 ? "0" : this._bindings[3].ControllerValue.ToString().Substring(3, 2), new BitmapColor(255, 255, 0), 40);
                     break;
+
             }
             return bitmapBuilder.ToImage();
         }
@@ -146,53 +149,59 @@
         {
             switch (actionParameter)
             {
-                case "COM1":
-                    this.isCom1active = true;
+                case "NAV1":
+                    this.isVar1Active = true;
                     break;
-                case "COM2":
-                    this.isCom1active = false;
+                case "NAV2":
+                    this.isVar1Active = false;
                     break;
-                case "COM1 Active Int":
-                case "COM1 Active Float":
-                case "COM1 Standby Int":
-                case "COM1 Standby Float":
+                case "NAV1 Active":
+                case "NAV1 Active Int":
+                case "NAV1 Active Float":
+                case "NAV1 Standby":
+                case "NAV1 Standby Int":
+                case "NAV1 Standby Float":
                     this._bindings[6].SetControllerValue(1);
                     break;
-                case "COM2 Active Int":
-                case "COM2 Active Float":
-                case "COM2 Standby Int":
-                case "COM2 Standby Float":
+                case "NAV2 Active":
+                case "NAV2 Active Int":
+                case "NAV2 Active Float":
+                case "NAV2 Standby":
+                case "NAV2 Standby Int":
+                case "NAV2 Standby Float":
                     this._bindings[7].SetControllerValue(1);
                     break;
                 case "Int Reset":
                 case "Float Reset":
-                    if (this.isCom1active)
-                    { 
-                        this._bindings[6].SetControllerValue(1); 
-                    } else
-                    { 
+                    if (this.isVar1Active)
+                    {
+                        this._bindings[6].SetControllerValue(1);
+                    }
+                    else
+                    {
                         this._bindings[7].SetControllerValue(1);
                     }
                     break;
+
             }
         }
 
         public override void ApplyAdjustment(String actionParameter, Int32 ticks)
         {
-            var bindingIndex = this.isCom1active ? 2 : 3;
+            var bindingIndex = this.isVar1Active ? 2 : 3;
             switch (actionParameter)
             {
                 case "Int":
                     var com1int = Int32.Parse(this._bindings[bindingIndex].ControllerValue.ToString().Substring(0, 3));
-                    var com1dbl = Int32.Parse(this._bindings[bindingIndex].ControllerValue.ToString().Substring(3, 3));
-                    var newInt = ConvertTool.ApplyAdjustment(com1int, ticks, 118, 136, 1, true);
-                    this._bindings[bindingIndex].SetControllerValue(newInt * 1000000 + com1dbl * 1000);
+                    var com1dbl = Int32.Parse(this._bindings[bindingIndex].ControllerValue.ToString().Substring(3, 2));
+                    var newInt = ConvertTool.ApplyAdjustment(com1int, ticks, 108, 117, 1, true);
+                    this._bindings[bindingIndex].SetControllerValue(newInt * 1000000 + com1dbl * 10000);
                     break;
                 case "Float":
-                    var com1dbl1 = Int32.Parse(this._bindings[bindingIndex].ControllerValue.ToString().Substring(3, 3));
+                    var com1dbl1 = Int32.Parse(this._bindings[bindingIndex].ControllerValue.ToString().Substring(3, 2));
                     var com1int1 = Int32.Parse(this._bindings[bindingIndex].ControllerValue.ToString().Substring(0, 3));
-                    var newFloat = ConvertTool.ApplyAdjustment(com1dbl1, ticks, 0, 995, 5, true);
-                    this._bindings[bindingIndex].SetControllerValue(com1int1 * 1000000 + newFloat * 1000);
+                    var newFloat = ConvertTool.ApplyAdjustment(com1dbl1, ticks, 0, 99, 1, true);
+                    this._bindings[bindingIndex].SetControllerValue(com1int1 * 1000000 + newFloat * 10000);
                     break;
             }
             this.EncoderActionNamesChanged();
