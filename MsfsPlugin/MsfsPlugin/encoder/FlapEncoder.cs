@@ -11,6 +11,11 @@
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.MAX_FLAP)));
             this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.FLAP)));
         }
+
+        protected override String GetDisplayValue()
+        {
+            return this._bindings[1].ControllerValue + " / " + this._bindings[0].ControllerValue;
+        }
         protected override Int64 GetValue()
         {
             this.max = (Int32)this._bindings[0].ControllerValue;
