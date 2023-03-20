@@ -6,6 +6,8 @@
 
     public class Binding
     {
+        private UInt64 LastMessageId;
+
         private Int64 _MSFSPreviousValue;
         private Int64 _ControllerPreviousValue;
         public Int64 ControllerValue { get; set; }
@@ -18,15 +20,19 @@
         public Boolean HasMSFSChanged() => this.MSFSChanged;
         public void SetMsfsValue(Int64 newValue)
         {
-            this.MSFSChanged = !this._MSFSPreviousValue.Equals(this.MsfsValue);
-            this._MSFSPreviousValue = this.MsfsValue;
-            this.MsfsValue = newValue;
+            if (this.LastMessageId < MsfsData.Instance.MessageId)
+            {
+                this.MSFSChanged = !this._MSFSPreviousValue.Equals(this.MsfsValue);
+                this._MSFSPreviousValue = this.MsfsValue;
+                this.MsfsValue = newValue;
+            }
         }
         public void SetControllerValue(Int64 newValue)
         {
             this.ControllerChanged = true;
             this._ControllerPreviousValue = this.ControllerValue;
             this.ControllerValue = newValue;
+            this.LastMessageId = MsfsData.Instance.MessageId;
             SimConnectDAO.Instance.Connect();
         }
         public void Reset()

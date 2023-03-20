@@ -12,12 +12,14 @@
         public static MsfsData Instance => lazy.Value;
         public MSFSPlugin plugin { get; set; }
         public Boolean DEBUG { get; set; }
+        public UInt64 MessageId { get; set; }
         public String AircraftName { get; set; }
         public String DebugValue1 { get; set; }
         public String DebugValue2 { get; set; }
         public String DebugValue3 { get; set; }
         private MsfsData()
         {
+            this.MessageId = 0;
         }
 
         public void Register(Notifiable notif) => this.notifiables.Add(notif);
@@ -35,6 +37,7 @@
         {
             lock (this)
             {
+                this.MessageId++;
                 this.plugin.OnActionImageChanged(null, null, true);
                 foreach (Notifiable notifiable in this.notifiables)
                 {
