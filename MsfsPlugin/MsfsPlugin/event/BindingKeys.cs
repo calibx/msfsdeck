@@ -172,6 +172,9 @@
         NAV2_AVAILABLE,
         NAV1_RADIO_SWAP,
         NAV2_RADIO_SWAP,
+
+        //++ When adding new data to the communication with simConnect, add new binding key here and then create new Input/Encoder class creating a binding with this key.
+        //++ Next add to SimConnectDAO (see similarly formed comments (there are more than one) there).
     }
 }
 

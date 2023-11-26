@@ -103,6 +103,8 @@
             NAV2_RADIO_SWAP,
             NAV1_STBY_SET_HZ,
             NAV2_STBY_SET_HZ,
+
+            //++ Add new events here for data that is going to be sent from this plugin to SimConnect
         };
         private enum DEFINITIONS
         {
@@ -225,6 +227,7 @@
             public Int64 NAV1StbyFreq;
             public Int64 NAV2StbyFreq;
 
+            //++ Add fields for new data here. Ensure that the type fits what is written in the data definition below.
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -464,6 +467,8 @@
             MsfsData.Instance.bindings[BindingKeys.NAV2_AVAILABLE].SetMsfsValue(reader.NAV2Available);
             MsfsData.Instance.bindings[BindingKeys.NAV2_STBY_FREQUENCY].SetMsfsValue(reader.NAV2StbyFreq);
 
+            //++ Insert appropriate SetMsfsValue calls here using the new binding keys and the new fields in reader.
+
             this.SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
             this.SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT_INPUT]);
@@ -576,6 +581,8 @@
             this.SendEvent(EVENTS.NAV1_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.NAV1_RADIO_SWAP]);
             this.SendEvent(EVENTS.NAV2_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.NAV2_RADIO_SWAP]);
 
+            //++ Insert appropriate SendEvent calls here. Use the new binding key and the new event "matching" it.
+
             if (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerChanged)
             {
                 switch (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerValue)
@@ -681,6 +688,7 @@
                         this.pluginForKey.KeyboardApi.SendShortcut(VirtualKeyCode.KeyL, ModifierKey.Alt);
                         value = 0;
                         break;
+                        //++ If the new binding cannot use the default way of sending, add a new case above.
                     default:
                         value = (UInt32)binding.ControllerValue;
                         break;
@@ -827,6 +835,7 @@
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "NAV STANDBY FREQUENCY:1", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "NAV STANDBY FREQUENCY:2", "Hz", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             
+            //++ Make new data definitions here using a type that fits SimConnect variable
             
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             this.m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
