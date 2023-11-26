@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
 
     using Loupedeck.MsfsPlugin.tools;
 
@@ -163,34 +162,45 @@
             switch (actionParameter)
             {
                 case "NAV1 Int Encoder":
-                    var com1int = Int32.Parse(this._bindings[4].ControllerValue.ToString().Substring(0, 3));
-                    var com1dbl = Int32.Parse(this._bindings[4].ControllerValue.ToString().Substring(3, 2));
-                    var newInt = ConvertTool.ApplyAdjustment(com1int, ticks, 108, 117, 1, true);
-                    this._bindings[4].SetControllerValue(newInt * 1000000 + com1dbl * 10000);
+                    this._bindings[4].SetControllerValue(this.IncrIntValue(this._bindings[4].ControllerValue, ticks));
                     break;
                 case "NAV1 Float Encoder":
-                    var com1dbl1 = Int32.Parse(this._bindings[4].ControllerValue.ToString().Substring(3, 2));
-                    var com1int1 = Int32.Parse(this._bindings[4].ControllerValue.ToString().Substring(0, 3));
-                    var newFloat = ConvertTool.ApplyAdjustment(com1dbl1, ticks, 0, 99, 1, true);
-                    this._bindings[4].SetControllerValue(com1int1 * 1000000 + newFloat * 10000);
+                    this._bindings[4].SetControllerValue(this.IncrDecimalValue(this._bindings[4].ControllerValue, ticks));
                     break;
                 case "NAV2 Int Encoder":
-                    var com2int = Int32.Parse(this._bindings[5].ControllerValue.ToString().Substring(0, 3));
-                    var com2dbl = Int32.Parse(this._bindings[5].ControllerValue.ToString().Substring(3, 2));
-                    var newInt2 = ConvertTool.ApplyAdjustment(com2int, ticks, 108, 117, 1, true);
-                    this._bindings[5].SetControllerValue(newInt2 * 1000000 + com2dbl * 10000);
+                    this._bindings[5].SetControllerValue(this.IncrIntValue(this._bindings[5].ControllerValue, ticks));
                     break;
                 case "NAV2 Float Encoder":
-                    var com2dbl2 = Int32.Parse(this._bindings[5].ControllerValue.ToString().Substring(3, 2));
-                    var com2int2 = Int32.Parse(this._bindings[5].ControllerValue.ToString().Substring(0, 3));
-                    var newFloat2 = ConvertTool.ApplyAdjustment(com2dbl2, ticks, 0, 99, 1, true);
-                    this._bindings[5].SetControllerValue(com2int2 * 1000000 + newFloat2 * 10000);
+                    this._bindings[5].SetControllerValue(this.IncrDecimalValue(this._bindings[5].ControllerValue, ticks));
                     break;
-
             }
             this.EncoderActionNamesChanged();
             this.ButtonActionNamesChanged();
         }
+
+        Int64 IncrIntValue(Int64 presentValue, Int32 ticks)
+        {
+            var actualValue = presentValue / 10000;
+            var intValue = actualValue / 100;       // Truncate decimal part away
+            var decimals = actualValue % 100;
+
+            return this.EncodeValues(ConvertTool.ApplyAdjustment(intValue, ticks, 108, 117, 1, true), decimals);
+        }
+
+        Int64 IncrDecimalValue(Int64 presentValue, Int32 ticks)
+        {
+            var actualValue = presentValue / 10000;
+            var intValue = actualValue / 100;       // Truncate decimal part away
+            var decimals = actualValue % 100;
+
+            return intValue == 0 && decimals == 0
+                ? 108000000    // Recover if an illegal value crept into the system
+                : this.EncodeValues(intValue, ConvertTool.ApplyAdjustment(decimals, ticks, 0, 95, 5, true));
+        }
+
+        Int64 EncodeValues(Int64 intValue, Int64 decimalValue) =>
+            (intValue * 100 + decimalValue) * 10000;
+
         public void Notify()
         {
             foreach (Binding binding in this._bindings)

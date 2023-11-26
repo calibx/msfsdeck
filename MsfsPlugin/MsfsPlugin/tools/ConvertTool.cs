@@ -3,7 +3,7 @@
     using System;
     using System.Diagnostics;
 
-    public class ConvertTool
+    public static class ConvertTool
     {
         public static Int64 getToggledValue(Int64 value) => value == 0 ? 1 : 0;
 
