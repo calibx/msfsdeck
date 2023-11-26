@@ -15,7 +15,7 @@
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
                 bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(this._bindings[0].ControllerValue));
-                bitmapBuilder.DrawText("Brakes");
+                bitmapBuilder.DrawText("Parking Brakes");
                 return bitmapBuilder.ToImage();
             }
         }

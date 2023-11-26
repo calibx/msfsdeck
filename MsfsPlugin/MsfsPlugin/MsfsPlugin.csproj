@@ -47,7 +47,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.FlightSimulator.SimConnect, Version=10.0.61259.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+      <HintPath>%MSFS_SDK%SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
     </Reference>
     <Reference Include="PluginApi, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -205,7 +205,7 @@
     <PostBuildEvent>$(ILMergeConsolePath) /out:$(OutDir)/bin/win/MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "C:\MSFS SDK\SimConnect SDK\lib\SimConnect.dll" "." /Y
+    <PostBuildEvent>xcopy "%25MSFS_SDK%25SimConnect SDK\lib\SimConnect.dll" "." /Y
 if $(ConfigurationName) == Release (
   powershell Remove-Item 'archive' -Recurse -Force
   powershell New-Item -Path 'archive\bin\win' -ItemType Directory -Force

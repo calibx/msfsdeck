@@ -22,15 +22,15 @@
 
         public static BitmapImage _imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
 
-        public static BitmapImage GetOnOffImage(Int64 value) => ImageTool.IsConnected() ? value == 1 ? _imageOn : _imageOff : ImageTool.IsTryingToConnect() ? _imageTrying : _imageDisconnect;
-        public static BitmapImage GetAvailableDisableImage(Int64 value) => ImageTool.IsConnected() ? value == 1 ? _imageAvailableBorder : _imageDisableBorder : ImageTool.IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetOnOffImage(Int64 value) => IsConnected() ? (value == 1 ? _imageOn : _imageOff) : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetAvailableDisableImage(Int64 value) => IsConnected() ? value == 1 ? _imageAvailableBorder : _imageDisableBorder : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
 
         public static BitmapImage GetOnAvailableWaitDisableImage(Int64 value)
         {
             BitmapImage state;
-            if (ImageTool.IsTryingToConnect()) {
+            if (IsTryingToConnect()) {
                 state = _imageTrying;
-            } else if (!ImageTool.IsConnected())
+            } else if (!IsConnected())
             {
                 state = _imageDisconnect;
             } else
@@ -38,19 +38,19 @@
                 switch (value)
                 {
                     case 1:
-                        state = ImageTool._imageAvailable;
+                        state = _imageAvailable;
                         break;
                     case 2:
-                        state = ImageTool._imageOn;
+                        state = _imageOn;
                         break;
                     case 3:
-                        state = ImageTool._imageWait;
+                        state = _imageWait;
                         break;
                     case 4:
-                        state = ImageTool._imageOff;
+                        state = _imageOff;
                         break;
                     default:
-                        state = ImageTool._imageDisable;
+                        state = _imageDisable;
                         break;
                 }
             }
