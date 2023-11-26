@@ -8,7 +8,9 @@
 
     public class SimConnectDAO
     {
+        private SimConnectDAO() { }
         private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
+        
         public static SimConnectDAO Instance => lazy.Value;
 
         public const Int32 WM_USER_SIMCONNECT = 0x0402;
@@ -244,8 +246,6 @@
         {
             group1
         }
-
-        private SimConnectDAO() { }
         public static void Refresh(Object source, EventArgs e) => Instance.OnTick();
         public void setPlugin(Plugin plugin) => this.pluginForKey = plugin;
 
