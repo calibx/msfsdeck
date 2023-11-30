@@ -17,26 +17,34 @@
         public String DebugValue2 { get; set; }
         public String DebugValue3 { get; set; }
         private MsfsData()
+        { }
+
+        public void Register(Notifiable notif) => notifiables.Add(notif);
+
+        public Binding Register(BindingKeys key)
         {
+            if (!bindings.ContainsKey(key))
+            {
+                bindings.Add(key, new Binding(key));
+            }
+            return bindings[key];
         }
 
-        public void Register(Notifiable notif) => this.notifiables.Add(notif);
-
-        public Binding Register(Binding binding)
+        public Binding Register(Binding binding)   //>> Over time replace this by the one above
         {
-            if (!this.bindings.ContainsKey(binding.Key))
+            if (!bindings.ContainsKey(binding.Key))
             {
-                this.bindings.Add(binding.Key, binding);
+                bindings.Add(binding.Key, binding);
             }
-            return this.bindings[binding.Key];
+            return bindings[binding.Key];
         }
 
         public void Changed()
         {
             lock (this)
             {
-                this.plugin.OnActionImageChanged(null, null, true);
-                foreach (Notifiable notifiable in this.notifiables)
+                plugin.OnActionImageChanged(null, null, true);
+                foreach (Notifiable notifiable in notifiables)
                 {
                     notifiable.Notify();
                 }
