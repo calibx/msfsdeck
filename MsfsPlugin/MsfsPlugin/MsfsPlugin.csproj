@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="encoder\SimRateEncoder.cs" />
     <Compile Include="encoder\BarometerEncoder.cs" />
+    <Compile Include="encoder\VorObiEncoder.cs" />
     <Compile Include="encoder\VSpeedAPEncoder.cs" />
     <Compile Include="encoder\SpeedAPEncoder.cs" />
     <Compile Include="encoder\HeadignAPEncoder.cs" />

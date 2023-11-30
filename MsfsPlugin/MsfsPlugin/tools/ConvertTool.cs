@@ -1,30 +1,27 @@
 ﻿namespace Loupedeck.MsfsPlugin.tools
 {
-    using System;
-    using System.Diagnostics;
-
     public static class ConvertTool
     {
-        public static Int64 getToggledValue(Int64 value) => value == 0 ? 1 : 0;
+        public static long getToggledValue(long value) => value == 0 ? 1 : 0;
 
-        public static Int64 ApplyAdjustment(Int64 value, Int32 ticks, Int32 min, Int32 max, Int32 step, Boolean cycle = false)
+        public static long ApplyAdjustment(long value, int ticks, int min, int max, int step, bool cycle = false)
         {
-            Debug.WriteLine(value);
+            //Debug.WriteLine($"ConvertTool.ApplyAdjustment({value}, {ticks}, {min}, {max}, {step}, {cycle})");
             value += ticks * step;
             if (value < min)
             {
-                value = cycle ? max : min;
+                value = cycle ? value + max - min + 1 : min;
             }
             else if (value > max)
             {
-                value = cycle ? min : max;
+                value = cycle ? value - max + min - 1 : max;
             }
             return value;
         }
 
-        public static String IntToCOMStatus(Int64 comStatus)
+        public static string IntToCOMStatus(long comStatus)
         {
-            String type;
+            string type;
             switch (comStatus)
             {
                 case -1:
@@ -48,9 +45,10 @@
             }
             return type;
         }
-        public static String IntToCOMType(Int64 comType)
+
+        public static string IntToCOMType(long comType)
         {
-            String type;
+            string type;
             switch (comType)
             {
                 case 0:

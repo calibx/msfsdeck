@@ -1,50 +1,60 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
-
     using Loupedeck.MsfsPlugin.msfs;
 
     public class Binding
     {
-        private Int64 _MSFSPreviousValue;
-        private Int64 _ControllerPreviousValue;
-        public Int64 ControllerValue { get; set; }
-        public BindingKeys Key { get; set; }
-        public Int64 MsfsValue { get; set; }
-        public Boolean ControllerChanged { get; set; }
-        public Boolean MSFSChanged { get; set; }
+        public long ControllerValue { get; set; }
 
-        public Binding(BindingKeys Key) => this.Key = Key;
-        public Boolean HasMSFSChanged() => this.MSFSChanged;
-        public void SetMsfsValue(Int64 newValue)
+        public BindingKeys Key { get; set; }
+
+        public long MsfsValue { get; set; }
+
+        public bool ControllerChanged { get; set; }
+
+        public bool MSFSChanged { get; set; }
+
+        public Binding(BindingKeys key) => Key = key;
+
+        public bool HasMSFSChanged() => MSFSChanged;
+
+        public void SetMsfsValue(long newValue)
         {
-            this.MSFSChanged = !this._MSFSPreviousValue.Equals(this.MsfsValue);
-            this._MSFSPreviousValue = this.MsfsValue;
-            this.MsfsValue = newValue;
+            MSFSPreviousValue = MsfsValue;
+            MsfsValue = newValue;
+            MSFSChanged = !MSFSPreviousValue.Equals(MsfsValue);
         }
-        public void SetControllerValue(Int64 newValue)
+
+        public void SetControllerValue(long newValue)
         {
-            this.ControllerChanged = true;
-            this._ControllerPreviousValue = this.ControllerValue;
-            this.ControllerValue = newValue;
+            ControllerPreviousValue = ControllerValue;
+            ControllerValue = newValue;
+            ControllerChanged = true;
             SimConnectDAO.Instance.Connect();
         }
+
         public void Reset()
         {
-            this.ControllerValue = this.MsfsValue;
-            this._MSFSPreviousValue = this.MsfsValue;
-            this._ControllerPreviousValue = this.MsfsValue;
-            this.ControllerChanged = false;
-            this.MSFSChanged = false;
-        }
-        public void ResetController()
-        {
-            this.MsfsValue = this.ControllerValue;
-            this._MSFSPreviousValue = this.ControllerValue;
-            this._ControllerPreviousValue = this.ControllerValue;
-            this.ControllerChanged = false;
-            this.MSFSChanged = false;
+            if (!ControllerChanged)
+            {
+                ControllerChanged = false;
+                MSFSChanged = false;
+                ControllerValue = MsfsValue;
+                MSFSPreviousValue = MsfsValue;
+                ControllerPreviousValue = MsfsValue;
+            }
         }
 
+        public void ResetController()
+        {
+            ControllerChanged = false;
+            MSFSChanged = false;
+            MsfsValue = ControllerValue;
+            MSFSPreviousValue = ControllerValue;
+            ControllerPreviousValue = ControllerValue;
+        }
+
+        private long MSFSPreviousValue;
+        private long ControllerPreviousValue;
     }
 }
