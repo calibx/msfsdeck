@@ -7,7 +7,7 @@
 
     class HeadignAPEncoder : DefaultEncoder
     {
-        public HeadignAPEncoder() : base("Head", "Autopilot heading encoder", "AP", true, 0, 360, 1)
+        public HeadignAPEncoder() : base("Head", "Autopilot heading encoder", "AP", true, 1, 360, 1)
         {
             _bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_HEADING)));
             _bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.HEADING)));
