@@ -7,16 +7,32 @@
         public static long ApplyAdjustment(long value, int ticks, int min, int max, int step, bool cycle = false)
         {
             //Debug.WriteLine($"ConvertTool.ApplyAdjustment({value}, {ticks}, {min}, {max}, {step}, {cycle})");
-            value += ticks * step;
-            if (value < min)
+
+            var result = value + ticks * step;
+            if (cycle)
             {
-                value = cycle ? value + max - min + 1 : min;
+                int adjuster = max - min + step;
+                while (result > max)
+                {
+                    result -= adjuster;
+                }
+                while (result < min)
+                {
+                    result += adjuster;
+                }
             }
-            else if (value > max)
+            else
             {
-                value = cycle ? value - max + min - 1 : max;
+                if (result < min)
+                {
+                    return min;
+                }
+                else if (result > max)
+                {
+                    return max;
+                }
             }
-            return value;
+            return result;
         }
 
         public static string IntToCOMStatus(long comStatus)
