@@ -21,6 +21,8 @@
         private Plugin pluginForKey;
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
+
+        private const double timerInterval = 200;
         private enum DATA_REQUESTS
         {
             REQUEST_1
@@ -272,11 +274,10 @@
                     m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(SimConnect_OnRecvOpen);
                     m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(SimConnect_OnRecvSimobjectDataBytype);
 
-
                     AddRequest();
                     lock (timer)
                     {
-                        timer.Interval = 200;
+                        timer.Interval = timerInterval;
                         timer.Elapsed += Refresh;
                         timer.Enabled = true;
                     }
@@ -317,7 +318,7 @@
                 binding.MSFSChanged = true;
             }
             MsfsData.Instance.Changed();
-            timer.Interval = 200;
+            timer.Interval = timerInterval;
         }
         private void SimConnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
@@ -477,6 +478,8 @@
             MsfsData.Instance.bindings[BindingKeys.VOR2_OBS].SetMsfsValue(reader.NAV2Obs);
 
             //++ Insert appropriate SetMsfsValue calls here using the new binding keys and the new fields in reader.
+
+            MsfsData.Instance.Changed();
 
             SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM]);
             SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT]);
@@ -650,7 +653,6 @@
                 MsfsData.Instance.bindings[BindingKeys.MIXTURE].ResetController();
             }
             AutoTaxiInput(reader);
-            MsfsData.Instance.Changed();
         }
 
 

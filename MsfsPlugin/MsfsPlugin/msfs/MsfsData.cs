@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     class MsfsData
     {
         private readonly List<Notifiable> notifiables = new List<Notifiable>();
@@ -11,11 +12,11 @@
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
         public MSFSPlugin plugin { get; set; }
-        public Boolean DEBUG { get; set; }
-        public String AircraftName { get; set; }
-        public String DebugValue1 { get; set; }
-        public String DebugValue2 { get; set; }
-        public String DebugValue3 { get; set; }
+        public bool DEBUG { get; set; }
+        public string AircraftName { get; set; }
+        public string DebugValue1 { get; set; }
+        public string DebugValue2 { get; set; }
+        public string DebugValue3 { get; set; }
         private MsfsData()
         { }
 
