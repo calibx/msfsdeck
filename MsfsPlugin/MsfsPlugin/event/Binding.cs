@@ -20,38 +20,32 @@
 
         public void SetMsfsValue(long newValue)
         {
+            MSFSChanged = !MSFSPreviousValue.Equals(MsfsValue);
             MSFSPreviousValue = MsfsValue;
             MsfsValue = newValue;
-            MSFSChanged = !MSFSPreviousValue.Equals(MsfsValue);
         }
-
         public void SetControllerValue(long newValue)
         {
+            ControllerChanged = true;
             ControllerPreviousValue = ControllerValue;
             ControllerValue = newValue;
-            ControllerChanged = true;
             SimConnectDAO.Instance.Connect();
         }
-
         public void Reset()
         {
-            if (!ControllerChanged)
-            {
-                ControllerChanged = false;
-                MSFSChanged = false;
-                ControllerValue = MsfsValue;
-                MSFSPreviousValue = MsfsValue;
-                ControllerPreviousValue = MsfsValue;
-            }
-        }
-
-        public void ResetController()
-        {
+            ControllerValue = MsfsValue;
+            MSFSPreviousValue = MsfsValue;
+            ControllerPreviousValue = MsfsValue;
             ControllerChanged = false;
             MSFSChanged = false;
+        }
+        public void ResetController()
+        {
             MsfsValue = ControllerValue;
             MSFSPreviousValue = ControllerValue;
             ControllerPreviousValue = ControllerValue;
+            ControllerChanged = false;
+            MSFSChanged = false;
         }
 
         private long MSFSPreviousValue;
