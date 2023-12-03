@@ -8,7 +8,7 @@
         protected int min;
         protected int max;
         protected int step;
-        protected readonly List<Binding> _bindings = new List<Binding>();
+        protected readonly List<Binding> bindings = new List<Binding>();
 
         public DefaultEncoder(string name, string desc, string category, bool resettable, int min, int max, int step) : base(name, desc, category, resettable)
         {
@@ -30,7 +30,7 @@
 
         public void Notify()
         {
-            foreach (Binding binding in _bindings)
+            foreach (Binding binding in bindings)
             {
                 if (binding.HasMSFSChanged())
                 {
