@@ -63,16 +63,13 @@
         public void SetControllerValue(long newValue)
         {
             SetControllerValueCalled = true;
-            ControllerChanged = ControllerValue != newValue;
-            if (ControllerChanged)
-            {
-                if (DoTrace)
-                    DebugTracing.Trace($"Change {Key} from '{ControllerValue}' to '{newValue}'");
+            ControllerChanged = true;   // We need to do this even if the value is unchanged - e.g. NAV frequency swapping will only work with this
+            if (DoTrace)
+                DebugTracing.Trace($"Change {Key} from '{ControllerValue}' to '{newValue}'");
 
-                ControllerPreviousValue = ControllerValue;
-                ControllerValue = newValue;
-                SimConnectDAO.Instance.Connect();
-            }
+            ControllerPreviousValue = ControllerValue;
+            ControllerValue = newValue;
+            SimConnectDAO.Instance.Connect();
         }
 
         public void Reset()
