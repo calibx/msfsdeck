@@ -5,7 +5,7 @@
 
     using Loupedeck.MsfsPlugin.tools;
 
-    public class ComDynamicFolder : PluginDynamicFolder, Notifiable
+    public class ComDynamicFolder : PluginDynamicFolder, INotifiable
     {
         public ComDynamicFolder()
         {

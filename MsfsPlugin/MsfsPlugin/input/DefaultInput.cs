@@ -1,20 +1,14 @@
 ﻿namespace Loupedeck.MsfsPlugin.input
 {
-    using System;
     using System.Collections.Generic;
-    public abstract class DefaultInput : PluginDynamicCommand, Notifiable
+    public abstract class DefaultInput : PluginDynamicCommand, INotifiable
     {
-        protected readonly String _imageWaitResourcePath = "Loupedeck.MsfsPlugin.Resources.wait.png";
-        protected readonly String _imageAvailableResourcePath = "Loupedeck.MsfsPlugin.Resources.available.png";
-        protected readonly String _imageDisableResourcePath = "Loupedeck.MsfsPlugin.Resources.disable.png";
-        protected readonly String _imageDisconnectResourcePath = "Loupedeck.MsfsPlugin.Resources.disconnect.png";
-        protected readonly String _imageTryingResourcePath = "Loupedeck.MsfsPlugin.Resources.trying.png";
-        protected readonly List<Binding> _bindings = new List<Binding>();
+        protected readonly List<Binding> bindings = new List<Binding>();
         protected readonly Binding _bindingCnx = MsfsData.Instance.Register(new Binding(BindingKeys.CONNECTION));
-        public DefaultInput(String name, String desc, String category) : base(name, desc, category) => MsfsData.Instance.Register(this);
+        public DefaultInput(string name, string desc, string category) : base(name, desc, category) => MsfsData.Instance.Register(this);
         public void Notify()
         {
-            foreach (Binding binding in this._bindings)
+            foreach (Binding binding in bindings)
             {
                 if (binding.HasMSFSChanged())
                 {
@@ -22,10 +16,10 @@
                 }
             }
         }
-        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize) => this.GetValue();
-        protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize) => this.GetImage(imageSize);
-        protected override void RunCommand(String actionParameter) => this.ChangeValue();
-        protected virtual String GetValue() => null;
+        protected override string GetCommandDisplayName(string actionParameter, PluginImageSize imageSize) => GetValue();
+        protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize) => GetImage(imageSize);
+        protected override void RunCommand(string actionParameter) => ChangeValue();
+        protected virtual string GetValue() => null;
         protected virtual BitmapImage GetImage(PluginImageSize imageSize) => null;
         protected virtual void ChangeValue() { }
     }

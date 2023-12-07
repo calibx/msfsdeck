@@ -86,7 +86,7 @@
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="event\Binding.cs" />
     <Compile Include="event\BindingKeys.cs" />
-    <Compile Include="event\Notifiable.cs" />
+    <Compile Include="event\INotifiable.cs" />
     <Compile Include="folder\AirlinerDynamicFolder.cs" />
     <Compile Include="folder\APDynamicFolder.cs" />
     <Compile Include="folder\ATCDynamicFolder.cs" />

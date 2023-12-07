@@ -5,7 +5,7 @@
 
     class MsfsData
     {
-        private readonly List<Notifiable> notifiables = new List<Notifiable>();
+        private readonly List<INotifiable> notifiables = new List<INotifiable>();
 
         public Dictionary<BindingKeys, Binding> bindings = new Dictionary<BindingKeys, Binding>();
 
@@ -20,7 +20,7 @@
         private MsfsData()
         { }
 
-        public void Register(Notifiable notif) => notifiables.Add(notif);
+        public void Register(INotifiable notif) => notifiables.Add(notif);
 
         public Binding Register(BindingKeys key, long? value = null)
         {
@@ -45,7 +45,7 @@
             lock (this)
             {
                 plugin.OnActionImageChanged(null, null, true);
-                foreach (Notifiable notifiable in notifiables)
+                foreach (INotifiable notifiable in notifiables)
                 {
                     notifiable.Notify();
                 }

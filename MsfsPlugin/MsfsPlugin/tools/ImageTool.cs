@@ -1,8 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin.tools
 {
-    using System;
-
-    public class ImageTool
+    public static class ImageTool
     {
         public static BitmapImage _imageOff = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.off.png");
 
@@ -22,10 +20,10 @@
 
         public static BitmapImage _imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
 
-        public static BitmapImage GetOnOffImage(Int64 value) => IsConnected() ? (value == 1 ? _imageOn : _imageOff) : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
-        public static BitmapImage GetAvailableDisableImage(Int64 value) => IsConnected() ? value == 1 ? _imageAvailableBorder : _imageDisableBorder : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetOnOffImage(long value) => IsConnected() ? (value == 1 ? _imageOn : _imageOff) : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetAvailableDisableImage(long value) => IsConnected() ? value == 1 ? _imageAvailableBorder : _imageDisableBorder : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
 
-        public static BitmapImage GetOnAvailableWaitDisableImage(Int64 value)
+        public static BitmapImage GetOnAvailableWaitDisableImage(long value)
         {
             BitmapImage state;
             if (IsTryingToConnect()) {
@@ -57,8 +55,8 @@
             return state;
         }
 
-        private static Boolean IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
-        private static Boolean IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
+        private static bool IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
+        private static bool IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
 
         public static void Refresh()
         {

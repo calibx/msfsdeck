@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Loupedeck.MsfsPlugin.tools;
 
-    public abstract class DefaultEncoder : PluginDynamicAdjustment, Notifiable
+    public abstract class DefaultEncoder : PluginDynamicAdjustment, INotifiable
     {
         protected int min;
         protected int max;

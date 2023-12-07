@@ -1,12 +1,10 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
-
     using Loupedeck.MsfsPlugin.input;
     class SimCnxStateInput : DefaultInput
     {
-        public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug") => this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.CONNECTION)));
-        protected override String GetValue() => this._bindings[0].MsfsValue == 1 ? "Connected" : this._bindings[0].MsfsValue == 2 ? "Trying to connect" : "Disconnected";
+        public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug") => bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.CONNECTION)));
+        protected override string GetValue() => bindings[0].MsfsValue == 1 ? "Connected" : bindings[0].MsfsValue == 2 ? "Trying to connect" : "Disconnected";
     }
 }
 
