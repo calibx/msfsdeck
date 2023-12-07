@@ -22,11 +22,11 @@
 
         public void Register(Notifiable notif) => notifiables.Add(notif);
 
-        public Binding Register(BindingKeys key)
+        public Binding Register(BindingKeys key, long? value = null)
         {
             if (!bindings.ContainsKey(key))
             {
-                bindings.Add(key, new Binding(key));
+                bindings.Add(key, new Binding(key, value));
             }
             return bindings[key];
         }

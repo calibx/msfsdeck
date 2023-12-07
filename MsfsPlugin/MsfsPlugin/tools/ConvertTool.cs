@@ -6,8 +6,6 @@
 
         public static long ApplyAdjustment(long value, int ticks, int min, int max, int step, bool cycle = false)
         {
-            //Debug.WriteLine($"ConvertTool.ApplyAdjustment({value}, {ticks}, {min}, {max}, {step}, {cycle})");
-
             var result = value + ticks * step;
             if (cycle)
             {

@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
+    using Loupedeck.MsfsPlugin.tools;
 
     using Microsoft.FlightSimulator.SimConnect;
 
@@ -261,7 +262,7 @@
         {
             if (MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 0)
             {
-                Debug.WriteLine("Trying cnx");
+                DebugTracing.Trace("Trying cnx");
                 MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(2);
                 foreach (Binding binding in MsfsData.Instance.bindings.Values)
                 {
@@ -284,7 +285,7 @@
                 }
                 catch (COMException ex)
                 {
-                    Debug.WriteLine(ex);
+                    DebugTracing.Trace(ex);
                     MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
                     foreach (Binding binding in MsfsData.Instance.bindings.Values)
                     {
@@ -294,6 +295,7 @@
                 }
             }
         }
+
         public void Disconnect()
         {
             if (m_oSimConnect != null)
@@ -301,6 +303,9 @@
                 m_oSimConnect.Dispose();
                 m_oSimConnect = null;
             }
+
+            //>> If called from Unload, then I think that the rest here is superfluous to do. We could add a parameter
+            // indicating whether we are about to unload and if so return here.
 
             MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
             foreach (Binding binding in MsfsData.Instance.bindings.Values)
@@ -311,7 +316,7 @@
         }
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
-            Debug.WriteLine("Cnx opened");
+            DebugTracing.Trace("Cnx opened");
             MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(1);
             foreach (Binding binding in MsfsData.Instance.bindings.Values)
             {
@@ -707,7 +712,7 @@
                         value = (UInt32)binding.ControllerValue;
                         break;
                 }
-                Debug.WriteLine("Send " + eventName + " with " + value);
+                DebugTracing.Trace("Send " + eventName + " with " + value);
                 if (enumerable)
                 {
                     for (UInt32 i=1;i< 10; i++)
@@ -723,9 +728,12 @@
                 binding.ResetController();
             }
         }
+
+        private readonly object lockObject = new object();
+
         private void OnTick()
         {
-            lock (this)
+            lock (lockObject)
             {
                 try
                 {
@@ -742,7 +750,7 @@
                 }
                 catch (COMException exception)
                 {
-                    Debug.Write(exception.ToString());
+                    DebugTracing.Trace(exception);
                     Disconnect();
                 }
             }
