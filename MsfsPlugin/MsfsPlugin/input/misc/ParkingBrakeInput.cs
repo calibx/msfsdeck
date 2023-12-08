@@ -7,20 +7,23 @@
     {
         public ParkingBrakeInput() : base("Parking brake", "Display parking brakes state", "Misc")
         {
-            bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PARKING_BRAKES)));
+            binding = MsfsData.Instance.Register(BindingKeys.PARKING_BRAKES);
+            bindings.Add(binding);
         }
 
-        protected override void ChangeValue() => bindings[0].SetControllerValue(ConvertTool.getToggledValue(bindings[0].ControllerValue));
+        protected override void ChangeValue() => binding.SetControllerValue(ConvertTool.getToggledValue(binding.ControllerValue));
 
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[0].ControllerValue));
+                bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(binding.ControllerValue));
                 bitmapBuilder.DrawText("Parking Brakes");
                 return bitmapBuilder.ToImage();
             }
         }
+
+        readonly Binding binding;
     }
 }
 

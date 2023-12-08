@@ -31,15 +31,6 @@
             return bindings[key];
         }
 
-        public Binding Register(Binding binding)   //>> Over time replace this by the one above
-        {
-            if (!bindings.ContainsKey(binding.Key))
-            {
-                bindings.Add(binding.Key, binding);
-            }
-            return bindings[binding.Key];
-        }
-
         public void Changed()
         {
             lock (this)

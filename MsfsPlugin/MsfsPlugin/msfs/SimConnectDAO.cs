@@ -1,12 +1,12 @@
 ﻿namespace Loupedeck.MsfsPlugin.msfs
 {
     using System;
-    using System.Diagnostics;
     using System.Runtime.InteropServices;
     using Loupedeck.MsfsPlugin.tools;
 
     using Microsoft.FlightSimulator.SimConnect;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
     public class SimConnectDAO
     {
         private SimConnectDAO() { }
@@ -24,10 +24,12 @@
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
         private const double timerInterval = 200;
+
         private enum DATA_REQUESTS
         {
             REQUEST_1
         }
+
         enum EVENTS
         {
             GEAR_TOGGLE,
@@ -325,6 +327,7 @@
             MsfsData.Instance.Changed();
             timer.Interval = timerInterval;
         }
+
         private void SimConnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
             var reader = (Readers)data.dwData[0];

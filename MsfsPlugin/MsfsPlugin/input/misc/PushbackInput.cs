@@ -11,6 +11,7 @@
             bindings.Add(MsfsData.Instance.Register(BindingKeys.PUSHBACK_ATTACHED));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.PUSHBACK_CONTROLLER, 3));
         }
+
         protected override void ChangeValue()
         {
             if (bindings[1].MsfsValue == 1)
@@ -63,5 +64,3 @@
         }
     }
 }
-
-

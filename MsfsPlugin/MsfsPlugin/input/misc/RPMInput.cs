@@ -1,46 +1,39 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
-
     using Loupedeck.MsfsPlugin.input;
 
     class RPMInput : DefaultInput
     {
         public RPMInput() : base("RPM/N1", "Display RPM for or N1", "Misc")
         {
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ENGINE_TYPE)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.ENGINE_NUMBER)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.E1RPM)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.E2RPM)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.E1N1)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.E2N1)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.E3N1)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.E4N1)));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.ENGINE_TYPE));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.ENGINE_NUMBER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.E1RPM));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.E2RPM));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.E1N1));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.E2N1));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.E3N1));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.E4N1));
         }
-        protected override String GetValue()
+
+        protected override string GetValue()
         {
-            String result;
-            switch (this.bindings[0].MsfsValue)
+            switch (bindings[0].MsfsValue)
             {
                 case 0:
-                    result = "RPM\n" + (this.bindings[1].MsfsValue == 2
-                                    ? this.bindings[2].MsfsValue.ToString() + "\n" + this.bindings[3].MsfsValue.ToString()
-                                    : this.bindings[2].MsfsValue.ToString());
-                    break;
+                    return "RPM\n" + (bindings[1].MsfsValue == 2
+                                    ? bindings[2].MsfsValue.ToString() + "\n" + bindings[3].MsfsValue.ToString()
+                                    : bindings[2].MsfsValue.ToString());
                 case 1:
                 case 5:
-                    result = "N1\n" + (this.bindings[1].MsfsValue == 4
-                    ? this.bindings[4].MsfsValue.ToString() + "\n" + this.bindings[5].MsfsValue.ToString() + "\n" + this.bindings[6].MsfsValue.ToString() + "\n" + this.bindings[7].MsfsValue.ToString()
-                    : this.bindings[1].MsfsValue == 2
-                                    ? this.bindings[4].MsfsValue.ToString() + "\n" + this.bindings[5].MsfsValue.ToString()
-                                    : this.bindings[4].MsfsValue.ToString());
-                    break;
+                    return "N1\n" + (bindings[1].MsfsValue == 4
+                    ? bindings[4].MsfsValue.ToString() + "\n" + bindings[5].MsfsValue.ToString() + "\n" + bindings[6].MsfsValue.ToString() + "\n" + bindings[7].MsfsValue.ToString()
+                    : bindings[1].MsfsValue == 2
+                                    ? bindings[4].MsfsValue.ToString() + "\n" + bindings[5].MsfsValue.ToString()
+                                    : bindings[4].MsfsValue.ToString());
                 default:
-                    result = "N/A";
-                    break;
+                    return "N/A";
             }
-            return result;
         }
     }
 }
-

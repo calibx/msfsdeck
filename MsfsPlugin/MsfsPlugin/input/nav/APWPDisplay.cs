@@ -7,12 +7,12 @@
     {
         public APWPDisplay() : base("WP", "Display next WP data", "Nav")
         {
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_NEXT_WP_ID)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_NEXT_WP_DIST)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_NEXT_WP_ETE)));
-            this.bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.AP_NEXT_WP_HEADING)));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NEXT_WP_ID));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NEXT_WP_DIST));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NEXT_WP_ETE));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NEXT_WP_HEADING));
         }
-        protected override String GetValue() => "POI " + this.bindings[0].ControllerValue + "\n" + this.bindings[1].ControllerValue + " mn \n" + TimeSpan.FromSeconds(this.bindings[2].ControllerValue).ToString() + "\n" + this.bindings[3].ControllerValue + " °";
+        protected override string GetValue() => "WP " + bindings[0].ControllerValue + "\n" + bindings[1].ControllerValue + " mn \n" + TimeSpan.FromSeconds(bindings[2].ControllerValue).ToString() + "\n" + bindings[3].ControllerValue + " °";
     }
 }
 
