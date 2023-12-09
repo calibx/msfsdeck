@@ -240,6 +240,11 @@
             public Int64 NAV1Obs;
             public Int64 NAV2Obs;
 
+            public Double AirTemperature;
+            public Int64 WindDirection;
+            public Int64 WindSpeed;
+            public Int64 Visibility;
+
             //++ Add fields for new data here. Ensure that the type fits what is written in the data definition below.
         }
 
@@ -484,6 +489,11 @@
 
             MsfsData.Instance.bindings[BindingKeys.VOR1_OBS].SetMsfsValue(reader.NAV1Obs);
             MsfsData.Instance.bindings[BindingKeys.VOR2_OBS].SetMsfsValue(reader.NAV2Obs);
+
+            MsfsData.Instance.bindings[BindingKeys.AIR_TEMP].SetMsfsValue((long)Math.Round(reader.AirTemperature * 10));
+            MsfsData.Instance.bindings[BindingKeys.WIND_DIRECTION].SetMsfsValue(reader.WindDirection);
+            MsfsData.Instance.bindings[BindingKeys.WIND_SPEED].SetMsfsValue(reader.WindSpeed);
+            MsfsData.Instance.bindings[BindingKeys.VISIBILITY].SetMsfsValue(reader.Visibility);
 
             //++ Insert appropriate SetMsfsValue calls here using the new binding keys and the new fields in reader.
 
@@ -863,6 +873,11 @@
 
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "NAV OBS:1", "degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "NAV OBS:2", "degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "TOTAL AIR TEMPERATURE", "Celsius", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AMBIENT WIND DIRECTION", "Degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AMBIENT WIND VELOCITY", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AMBIENT VISIBILITY", "Meters", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             //++ Make new data definitions here using a type that fits SimConnect variable
 

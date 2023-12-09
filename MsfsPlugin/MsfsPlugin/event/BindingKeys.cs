@@ -178,6 +178,11 @@
         VOR1_SET,
         VOR2_SET,
 
+        AIR_TEMP,
+        WIND_DIRECTION,
+        WIND_SPEED,
+        VISIBILITY,
+
         //++ When adding new data to the communication with simConnect, add new binding key here and then create new Input/Encoder class creating a binding with this key.
         //++ Next add to SimConnectDAO (see similarly formed comments (there are more than one) there).
     }
