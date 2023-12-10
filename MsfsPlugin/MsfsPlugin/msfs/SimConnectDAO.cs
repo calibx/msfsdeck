@@ -244,6 +244,7 @@
             public Int64 WindDirection;
             public Int64 WindSpeed;
             public Int64 Visibility;
+            public Int64 SeaLevelPressure;
 
             //++ Add fields for new data here. Ensure that the type fits what is written in the data definition below.
         }
@@ -494,6 +495,7 @@
             MsfsData.Instance.bindings[BindingKeys.WIND_DIRECTION].SetMsfsValue(reader.WindDirection);
             MsfsData.Instance.bindings[BindingKeys.WIND_SPEED].SetMsfsValue(reader.WindSpeed);
             MsfsData.Instance.bindings[BindingKeys.VISIBILITY].SetMsfsValue(reader.Visibility);
+            MsfsData.Instance.bindings[BindingKeys.SEA_LEVEL_PRESSURE].SetMsfsValue(reader.SeaLevelPressure);
 
             //++ Insert appropriate SetMsfsValue calls here using the new binding keys and the new fields in reader.
 
@@ -878,6 +880,7 @@
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AMBIENT WIND DIRECTION", "Degrees", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AMBIENT WIND VELOCITY", "Knots", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AMBIENT VISIBILITY", "Meters", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "SEA LEVEL PRESSURE", "Millibars", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             //++ Make new data definitions here using a type that fits SimConnect variable
 

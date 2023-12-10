@@ -8,13 +8,15 @@
             bindings.Add(bindingWindDir = MsfsData.Instance.Register(BindingKeys.WIND_DIRECTION));
             bindings.Add(bindingWindVel = MsfsData.Instance.Register(BindingKeys.WIND_SPEED));
             bindings.Add(bindingVisib = MsfsData.Instance.Register(BindingKeys.VISIBILITY));
+            bindings.Add(bindingPressure = MsfsData.Instance.Register(BindingKeys.SEA_LEVEL_PRESSURE));
         }
 
-        protected override string GetValue() => $"{bindingOat.MsfsValue / 10.0} °C\n{bindingWindDir.MsfsValue}°/{bindingWindVel.MsfsValue}kts\nVis:{bindingVisib.MsfsValue}m";
+        protected override string GetValue() => $"{bindingOat.MsfsValue / 10.0} °C\n{bindingWindDir.MsfsValue}°/{bindingWindVel.MsfsValue} kts\nVis:{bindingVisib.MsfsValue} m\n{bindingPressure.MsfsValue} mbar";
 
         readonly Binding bindingOat;
         readonly Binding bindingWindDir;
         readonly Binding bindingWindVel;
         readonly Binding bindingVisib;
+        readonly Binding bindingPressure;
     }
 }
