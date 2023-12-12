@@ -21,7 +21,7 @@
         public static BitmapImage _imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
 
         public static BitmapImage GetOnOffImage(long value) => IsConnected() ? (value == 1 ? _imageOn : _imageOff) : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
-        public static BitmapImage GetAvailableDisableImage(long value) => IsConnected() ? value == 1 ? _imageAvailableBorder : _imageDisableBorder : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetAvailableDisableImage(long value) => IsConnected() ? (value == 1 ? _imageAvailableBorder : _imageDisableBorder) : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
 
         public static BitmapImage GetOnAvailableWaitDisableImage(long value)
         {

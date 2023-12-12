@@ -43,7 +43,7 @@
                 CreateCommandName("NAV2 Active Float"),
                 CreateCommandName("NAV2 Standby Int"),
                 CreateCommandName("NAV2 Standby Float"),
-                PluginDynamicFolder.NavigateUpActionName,
+                NavigateUpActionName,
             };
         }
         public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)

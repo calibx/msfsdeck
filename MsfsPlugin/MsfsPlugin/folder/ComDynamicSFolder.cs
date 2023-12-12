@@ -40,7 +40,7 @@
                 CreateCommandName("COM2 Active Float"),
                 CreateCommandName("COM2 Standby Int"),
                 CreateCommandName("COM2 Standby Float"),
-                PluginDynamicFolder.NavigateUpActionName,
+                NavigateUpActionName,
             };
         }
         public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)

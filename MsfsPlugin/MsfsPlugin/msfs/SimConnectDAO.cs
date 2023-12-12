@@ -675,8 +675,6 @@
             AutoTaxiInput(reader);
         }
 
-
-
         private void SendEvent(EVENTS eventName, Binding binding, Boolean enumerable = false)
         {
             if (binding.ControllerChanged)

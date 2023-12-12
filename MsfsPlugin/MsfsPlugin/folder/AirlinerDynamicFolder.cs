@@ -63,7 +63,7 @@
         {
             return new[]
             {
-                PluginDynamicFolder.NavigateUpActionName,
+                NavigateUpActionName,
                 CreateCommandName("FD"),
                 CreateCommandName("Altitude"),
                 CreateCommandName("AP"),
