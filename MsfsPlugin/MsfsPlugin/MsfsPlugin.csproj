@@ -114,7 +114,7 @@
     <Compile Include="input\misc\RPMInput.cs" />
     <Compile Include="input\misc\PitotInput.cs" />
     <Compile Include="input\nav\AltitudeInput.cs" />
-    <Compile Include="input\nav\WeatherDisplay.cs" />
+    <Compile Include="input\misc\WeatherDisplay.cs" />
     <Compile Include="input\nav\VerticalSpeedInput.cs" />
     <Compile Include="input\nav\SpeedInput.cs" />
     <Compile Include="input\nav\HeadingInput.cs" />

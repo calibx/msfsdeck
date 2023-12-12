@@ -12,7 +12,7 @@
             bindings.Add(MsfsData.Instance.Register(BindingKeys.SEA_LEVEL_PRESSURE));
         }
 
-        protected override void RunCommand(string actionParameter) => SetValue((long)Math.Round(bindings[1].MsfsValue / inHg2mbar));
+        protected override void RunCommand(string actionParameter) => SetValue((long)Math.Round(bindings[1].MsfsValue / inHg2mbar / 10));
 
         protected override string GetDisplayValue() => (GetValue() / 100f).ToString() + "\n" + GetValueHpa().ToString();
 
