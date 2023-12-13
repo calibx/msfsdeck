@@ -45,51 +45,54 @@
         }
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
-            var bitmapBuilder = new BitmapBuilder(imageSize);
-            switch (actionParameter)
+            using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                case "Navigation":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[0].ControllerValue));
-                    break;
-                case "Beacon":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[1].ControllerValue));
-                    break;
-                case "Landing":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[2].ControllerValue));
-                    break;
-                case "Taxi":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[3].ControllerValue));
-                    break;
-                case "Strobes":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[4].ControllerValue));
-                    break;
-                case "Instruments":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[5].ControllerValue));
-                    break;
-                case "Recognition":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[6].ControllerValue));
-                    break;
-                case "Wing":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[7].ControllerValue));
-                    break;
-                case "Logo":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
-                    break;
-                case "Cabin":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
-                    break;
-                case "Pedestral":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
-                    break;
-                case "Glareshield":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
-                    break;
-                case "All":
-                    break;
+                switch (actionParameter)
+                {
+                    case "Navigation":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[0].ControllerValue));
+                        break;
+                    case "Beacon":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[1].ControllerValue));
+                        break;
+                    case "Landing":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[2].ControllerValue));
+                        break;
+                    case "Taxi":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[3].ControllerValue));
+                        break;
+                    case "Strobes":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[4].ControllerValue));
+                        break;
+                    case "Instruments":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[5].ControllerValue));
+                        break;
+                    case "Recognition":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[6].ControllerValue));
+                        break;
+                    case "Wing":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[7].ControllerValue));
+                        break;
+                    case "Logo":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
+                        break;
+                    case "Cabin":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
+                        break;
+                    case "Pedestral":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
+                        break;
+                    case "Glareshield":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
+                        break;
+                    case "All":
+                        break;
+                }
+                bitmapBuilder.DrawText(actionParameter);
+                return bitmapBuilder.ToImage();
             }
-            bitmapBuilder.DrawText(actionParameter);
-            return bitmapBuilder.ToImage();
         }
+
         protected override void RunCommand(string actionParameter)
         {
             SimConnectDAO.Instance.setPlugin(Plugin);

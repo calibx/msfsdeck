@@ -95,40 +95,43 @@
         }
         public override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
-            var bitmapBuilder = new BitmapBuilder(imageSize);
-            switch (actionParameter)
+            using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                case "Altitude":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
-                    break;
-                case "Heading":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
-                    break;
-                case "Nav":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
-                    break;
-                case "Speed":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
-                    break;
-                case "AP":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[12].ControllerValue));
-                    break;
-                case "Throttle":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[13].ControllerValue));
-                    break;
-                case "VS Speed":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[14].ControllerValue));
-                    break;
-                case "Yaw Damper":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[15].ControllerValue));
-                    break;
-                case "Back Course":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[16].ControllerValue));
-                    break;
+                switch (actionParameter)
+                {
+                    case "Altitude":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
+                        break;
+                    case "Heading":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
+                        break;
+                    case "Nav":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
+                        break;
+                    case "Speed":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
+                        break;
+                    case "AP":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[12].ControllerValue));
+                        break;
+                    case "Throttle":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[13].ControllerValue));
+                        break;
+                    case "VS Speed":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[14].ControllerValue));
+                        break;
+                    case "Yaw Damper":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[15].ControllerValue));
+                        break;
+                    case "Back Course":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[16].ControllerValue));
+                        break;
+                }
+                bitmapBuilder.DrawText(actionParameter);
+                return bitmapBuilder.ToImage();
             }
-            bitmapBuilder.DrawText(actionParameter);
-            return bitmapBuilder.ToImage();
         }
+
         public override void ApplyAdjustment(string actionParameter, int ticks)
         {
             switch (actionParameter)

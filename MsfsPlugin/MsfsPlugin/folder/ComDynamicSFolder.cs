@@ -79,65 +79,53 @@
         }
         public override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
-            var bitmapBuilder = new BitmapBuilder(imageSize);
-
-            switch (actionParameter)
+            using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                case "COM1":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    if (isCom1active)
-                    {
-                        bitmapBuilder.DrawText("=> COM1");
-                    } else
-                    {
-                        bitmapBuilder.DrawText("COM1");
-                    }
-                    
-                    break;
-                case "COM2":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    if (!isCom1active)
-                    {
-                        bitmapBuilder.DrawText("=> COM2");
-                    } else
-                    {
-                        bitmapBuilder.DrawText("COM2");
-                    }
-                    break;
-                case "COM1 Active Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "COM1 Active Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "COM1 Standby Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[2].ControllerValue == 0 ? "0" : bindings[2].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "COM1 Standby Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[2].ControllerValue == 0 ? "0" : bindings[2].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "COM2 Active Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "COM2 Active Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(3, 3), new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "COM2 Standby Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "COM2 Standby Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(3, 3), new BitmapColor(255, 255, 0), 40);
-                    break;
+                switch (actionParameter)
+                {
+                    case "COM1":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText(isCom1active ? "=> COM1" : "COM1");
+                        break;
+                    case "COM2":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText(!isCom1active ? "=> COM2" : "COM2");
+                        break;
+                    case "COM1 Active Int":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText((bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Green, 40);
+                        break;
+                    case "COM1 Active Float":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText(bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(3, 3), ImageTool.Green, 40);
+                        break;
+                    case "COM1 Standby Int":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText((bindings[2].ControllerValue == 0 ? "0" : bindings[2].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Yellow, 40);
+                        break;
+                    case "COM1 Standby Float":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText(bindings[2].ControllerValue == 0 ? "0" : bindings[2].ControllerValue.ToString().Substring(3, 3), ImageTool.Yellow, 40);
+                        break;
+                    case "COM2 Active Int":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText((bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Green, 40);
+                        break;
+                    case "COM2 Active Float":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText(bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(3, 3), ImageTool.Green, 40);
+                        break;
+                    case "COM2 Standby Int":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText((bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Yellow, 40);
+                        break;
+                    case "COM2 Standby Float":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText(bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(3, 3), ImageTool.Yellow, 40);
+                        break;
+                }
+                return bitmapBuilder.ToImage();
             }
-            return bitmapBuilder.ToImage();
         }
 
         public override void RunCommand(string actionParameter)

@@ -81,67 +81,54 @@
         }
         public override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
-            var bitmapBuilder = new BitmapBuilder(imageSize);
-            switch (actionParameter)
+            using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                case "NAV1":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    if (isVar1Active)
-                    {
-                        bitmapBuilder.DrawText("=> NAV1");
-                    }
-                    else
-                    {
-                        bitmapBuilder.DrawText("NAV1");
-                    }
+                switch (actionParameter)
+                {
+                    case "NAV1":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText(isVar1Active ? "=> NAV1" : "NAV1");
+                        break;
+                    case "NAV2":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText(!isVar1Active ? "=> NAV2" : "NAV2");
+                        break;
+                    case "NAV1 Active Int":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText((bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Green, 40);
+                        break;
+                    case "NAV1 Active Float":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText(bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(3, 2), ImageTool.Green, 40);
+                        break;
+                    case "NAV1 Standby Int":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText((bindings[2].ControllerValue == 0 ? "0" : bindings[2].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Yellow, 40);
+                        break;
+                    case "NAV1 Standby Float":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
+                        bitmapBuilder.DrawText(bindings[2].ControllerValue == 0 ? "0" : bindings[2].ControllerValue.ToString().Substring(3, 2), ImageTool.Yellow, 40);
+                        break;
+                    case "NAV2 Active Int":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText((bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Green, 40);
+                        break;
+                    case "NAV2 Active Float":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText(bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(3, 2), ImageTool.Green, 40);
+                        break;
+                    case "NAV2 Standby Int":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText((bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Yellow, 40);
+                        break;
+                    case "NAV2 Standby Float":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
+                        bitmapBuilder.DrawText(bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(3, 2), ImageTool.Yellow, 40);
+                        break;
 
-                    break;
-                case "NAV2":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    if (!isVar1Active)
-                    {
-                        bitmapBuilder.DrawText("=> NAV2");
-                    }
-                    else
-                    {
-                        bitmapBuilder.DrawText("NAV2");
-                    }
-                    break;
-                case "NAV1 Active Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "NAV1 Active Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(3, 2), new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "NAV1 Standby Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[2].ControllerValue == 0 ? "0" : bindings[2].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "NAV1 Standby Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[4].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[2].ControllerValue == 0 ? "0" : bindings[2].ControllerValue.ToString().Substring(3, 2), new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "NAV2 Active Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "NAV2 Active Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(3, 2), new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "NAV2 Standby Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "NAV2 Standby Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(3, 2), new BitmapColor(255, 255, 0), 40);
-                    break;
-
+                }
+                return bitmapBuilder.ToImage();
             }
-            return bitmapBuilder.ToImage();
         }
 
         public override void RunCommand(string actionParameter)

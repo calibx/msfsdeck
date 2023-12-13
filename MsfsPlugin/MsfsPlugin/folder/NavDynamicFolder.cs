@@ -1,6 +1,5 @@
 ﻿namespace Loupedeck.MsfsPlugin.folder
 {
-    using System;
     using System.Collections.Generic;
 
     using Loupedeck.MsfsPlugin.tools;
@@ -12,14 +11,14 @@
             DisplayName = "NAV";
             GroupName = "Folder";
 
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV1_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV2_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV1_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV2_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV1_STBY_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV2_STBY_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV1_RADIO_SWAP));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV2_RADIO_SWAP));
+            bindings.Add(nav1ActiveFreq = MsfsData.Instance.Register(BindingKeys.NAV1_ACTIVE_FREQUENCY));
+            bindings.Add(nav2ActiveFreq = MsfsData.Instance.Register(BindingKeys.NAV2_ACTIVE_FREQUENCY));
+            bindings.Add(nav1Available = MsfsData.Instance.Register(BindingKeys.NAV1_AVAILABLE));
+            bindings.Add(nav2Available = MsfsData.Instance.Register(BindingKeys.NAV2_AVAILABLE));
+            bindings.Add(nav1StandbyFreq = MsfsData.Instance.Register(BindingKeys.NAV1_STBY_FREQUENCY));
+            bindings.Add(nav2StandbyFreq = MsfsData.Instance.Register(BindingKeys.NAV2_STBY_FREQUENCY));
+            bindings.Add(nav1Swap = MsfsData.Instance.Register(BindingKeys.NAV1_RADIO_SWAP));
+            bindings.Add(nav2Swap = MsfsData.Instance.Register(BindingKeys.NAV2_RADIO_SWAP));
 
             MsfsData.Instance.Register(this);
         }
@@ -28,151 +27,150 @@
 
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
+            //DebugTracing.Trace($"deviceType '{deviceType}'");
             return new[]
             {
-                CreateCommandName("NAV1 Active Int"),
-                CreateCommandName("NAV1 Active Float"),
-                CreateCommandName("NAV1 Standby Int"),
-                CreateCommandName("NAV1 Standby Float"),
-                CreateCommandName("NAV2 Active Int"),
-                CreateCommandName("NAV2 Active Float"),
-                CreateCommandName("NAV2 Standby Int"),
-                CreateCommandName("NAV2 Standby Float"),
-                NavigateUpActionName,
-            };
-        }
-
-        public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)
-        {
-            return new[]
-            {
-                CreateAdjustmentName ("NAV1 Int Encoder"),
-                CreateAdjustmentName ("NAV2 Int Encoder"),
-                CreateAdjustmentName (""),
-                CreateAdjustmentName ("NAV1 Float Encoder"),
-                CreateAdjustmentName ("NAV2 Float Encoder"),
+                CreateCommandName(Nav1ActIntAction),
+                CreateCommandName(Nav1ActDecAction),
+                CreateCommandName(Nav1StdbyIntAction),
+                CreateCommandName(Nav1StdbyDecAction),
+                CreateCommandName(Nav2ActIntAction),
+                CreateCommandName(Nav2ActDecAction),
+                CreateCommandName(Nav2StdbyIntAction),
+                CreateCommandName(Nav2StdbyDecAction),
             };
         }
 
         public override IEnumerable<string> GetEncoderPressActionNames(DeviceType deviceType)
         {
+            //DebugTracing.Trace($"deviceType '{deviceType}'");
+            var nav1Swap = CreateCommandName(Nav1Swap);
+            var nav2Swap = CreateCommandName(Nav2Swap);
             return new[]
             {
-                CreateCommandName("NAV1 Int Reset"),
-                CreateCommandName("NAV2 Int Reset"),
-                CreateCommandName (""),
-                CreateCommandName("NAV1 Float Reset"),
-                CreateCommandName("NAV2 Float Reset"),
+                nav1Swap,
+                nav2Swap,
+                NavigateUpActionName,
+                nav1Swap,
+                nav2Swap,
+                //>> ADF swap here
+            };
+        }
+
+        public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)
+        {
+            //DebugTracing.Trace($"deviceType '{deviceType}'");
+            return new[]
+            {
+                CreateAdjustmentName(Nav1IntEncAction),
+                CreateAdjustmentName(Nav2IntEncAction),
+                CreateAdjustmentName(NoAction),
+                CreateAdjustmentName(Nav1DecEncAction),
+                CreateAdjustmentName(Nav2DecEncAction),
             };
         }
 
         public override string GetAdjustmentDisplayName(string actionParameter, PluginImageSize imageSize)
         {
-            var ret = "";
+            //DebugTracing.Trace($"actionParameter '{actionParameter}', imageSize '{imageSize}'");
             switch (actionParameter)
             {
-                case "NAV1 Int Encoder":
-                    ret = "NAV1\n" + Math.Truncate(bindings[4].ControllerValue / 1000000f) + ".";
-                    break;
-                case "NAV1 Float Encoder":
-                    var com1dbl = Math.Round(bindings[4].ControllerValue / 1000000f - Math.Truncate(bindings[4].ControllerValue / 1000000f), 3).ToString();
-                    ret = "NAV1\n" + (com1dbl.Length > 2 ? com1dbl.Substring(2) : com1dbl).PadRight(2, '0');
-                    break;
-                case "NAV2 Int Encoder":
-                    ret = "NAV2\n" + Math.Truncate(bindings[5].ControllerValue / 1000000f) + ".";
-                    break;
-                case "NAV2 Float Encoder":
-                    var com2dbl = Math.Round(bindings[5].ControllerValue / 1000000f - Math.Truncate(bindings[5].ControllerValue / 1000000f), 3).ToString();
-                    ret = "NAV2\n" + (com2dbl.Length > 2 ? com2dbl.Substring(2) : com2dbl).PadRight(2, '0');
-                    break;
+                // In this implementation we actually return explanation of the encoder button press, because
+                // the effect of using the encoder rotation is self-explanatory.
+                case Nav1IntEncAction:
+                    return "NAV1\nActive\n<-->";
+                case Nav1DecEncAction:
+                    return "NAV1\nStandby\n<-->";
+                case Nav2IntEncAction:
+                    return "NAV2\nActive\n<-->";
+                case Nav2DecEncAction:
+                    return "NAV2\nStandby\n<-->";
             }
-            return ret;
+            return NoAction;
         }
 
         public override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
-            var bitmapBuilder = new BitmapBuilder(imageSize);
-            switch (actionParameter)
+            //DebugTracing.Trace($"actionParameter '{actionParameter}', imageSize '{imageSize}'");
+            using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                case "NAV1 Active Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[2].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "NAV1 Active Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[2].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(3, 2), new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "NAV1 Standby Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[2].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[4].ControllerValue == 0 ? "0" : bindings[4].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "NAV1 Standby Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[2].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[4].ControllerValue == 0 ? "0" : bindings[4].ControllerValue.ToString().Substring(3, 2), new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "NAV2 Active Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[3].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "NAV2 Active Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[3].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(3, 2), new BitmapColor(0, 255, 0), 40);
-                    break;
-                case "NAV2 Standby Int":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[3].MsfsValue));
-                    bitmapBuilder.DrawText((bindings[5].ControllerValue == 0 ? "0" : bindings[5].ControllerValue.ToString().Substring(0, 3)) + ".", new BitmapColor(255, 255, 0), 40);
-                    break;
-                case "NAV2 Standby Float":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[3].MsfsValue));
-                    bitmapBuilder.DrawText(bindings[5].ControllerValue == 0 ? "0" : bindings[5].ControllerValue.ToString().Substring(3, 2), new BitmapColor(255, 255, 0), 40);
-                    break;
-
+                switch (actionParameter)
+                {
+                    case Nav1ActIntAction:
+                        SetBackgroundImage(bitmapBuilder, nav1Available);
+                        bitmapBuilder.DrawText(ControllerIntValueText(nav1ActiveFreq), ImageTool.Green, 40);
+                        break;
+                    case Nav1ActDecAction:
+                        SetBackgroundImage(bitmapBuilder, nav1Available);
+                        bitmapBuilder.DrawText(ControllerDecValueText(nav1ActiveFreq), ImageTool.Green, 40);
+                        break;
+                    case Nav1StdbyIntAction:
+                        SetBackgroundImage(bitmapBuilder, nav1Available);
+                        bitmapBuilder.DrawText(ControllerIntValueText(nav1StandbyFreq), ImageTool.Yellow, 40);
+                        break;
+                    case Nav1StdbyDecAction:
+                        SetBackgroundImage(bitmapBuilder, nav1Available);
+                        bitmapBuilder.DrawText(ControllerDecValueText(nav1StandbyFreq), ImageTool.Yellow, 40);
+                        break;
+                    case Nav2ActIntAction:
+                        SetBackgroundImage(bitmapBuilder, nav2Available);
+                        bitmapBuilder.DrawText(ControllerIntValueText(nav2ActiveFreq), ImageTool.Green, 40);
+                        break;
+                    case Nav2ActDecAction:
+                        SetBackgroundImage(bitmapBuilder, nav2Available);
+                        bitmapBuilder.DrawText(ControllerDecValueText(nav2ActiveFreq), ImageTool.Green, 40);
+                        break;
+                    case Nav2StdbyIntAction:
+                        SetBackgroundImage(bitmapBuilder, nav2Available);
+                        bitmapBuilder.DrawText(ControllerIntValueText(nav2StandbyFreq), ImageTool.Yellow, 40);
+                        break;
+                    case Nav2StdbyDecAction:
+                        SetBackgroundImage(bitmapBuilder, nav2Available);
+                        bitmapBuilder.DrawText(ControllerDecValueText(nav2StandbyFreq), ImageTool.Yellow, 40);
+                        break;
+                }
+                return bitmapBuilder.ToImage();
             }
-            return bitmapBuilder.ToImage();
         }
 
         public override void RunCommand(string actionParameter)
         {
+            DebugTracing.Trace($"actionParameter '{actionParameter}'");
             switch (actionParameter)
             {
-                case "NAV1 Active":
-                case "NAV1 Active Int":
-                case "NAV1 Active Float":
-                case "NAV1 Standby":
-                case "NAV1 Standby Int":
-                case "NAV1 Standby Float":
-                case "NAV1 Int Reset":
-                case "NAV1 Float Reset":
-                    bindings[6].SetControllerValue(1);
+                case Nav1ActIntAction:
+                case Nav1ActDecAction:
+                case Nav1StdbyIntAction:
+                case Nav1StdbyDecAction:
+                case Nav1Swap:
+                    nav1Swap.SetControllerValue(1);
                     break;
-                case "NAV2 Active":
-                case "NAV2 Active Int":
-                case "NAV2 Active Float":
-                case "NAV2 Standby":
-                case "NAV2 Standby Int":
-                case "NAV2 Standby Float":
-                case "NAV2 Int Reset":
-                case "NAV2 Float Reset":
-                    bindings[7].SetControllerValue(1);
+                case Nav2ActIntAction:
+                case Nav2ActDecAction:
+                case Nav2StdbyIntAction:
+                case Nav2StdbyDecAction:
+                case Nav2Swap:
+                    nav2Swap.SetControllerValue(1);
                     break;
             }
         }
 
         public override void ApplyAdjustment(string actionParameter, int ticks)
         {
+            DebugTracing.Trace($"actionParameter '{actionParameter}', ticks '{ticks}'");
             switch (actionParameter)
             {
-                case "NAV1 Int Encoder":
-                    bindings[4].SetControllerValue(adjuster.IncrIntValue(bindings[4].ControllerValue, ticks));
+                case Nav1IntEncAction:
+                    nav1StandbyFreq.SetControllerValue(navAdjuster.IncrIntValue(nav1StandbyFreq.ControllerValue, ticks));
                     break;
-                case "NAV1 Float Encoder":
-                    bindings[4].SetControllerValue(adjuster.IncrDecimalValue(bindings[4].ControllerValue, ticks));
+                case Nav1DecEncAction:
+                    nav1StandbyFreq.SetControllerValue(navAdjuster.IncrDecimalValue(nav1StandbyFreq.ControllerValue, ticks));
                     break;
-                case "NAV2 Int Encoder":
-                    bindings[5].SetControllerValue(adjuster.IncrIntValue(bindings[5].ControllerValue, ticks));
+                case Nav2IntEncAction:
+                    nav2StandbyFreq.SetControllerValue(navAdjuster.IncrIntValue(nav2StandbyFreq.ControllerValue, ticks));
                     break;
-                case "NAV2 Float Encoder":
-                    bindings[5].SetControllerValue(adjuster.IncrDecimalValue(bindings[5].ControllerValue, ticks));
+                case Nav2DecEncAction:
+                    nav2StandbyFreq.SetControllerValue(navAdjuster.IncrDecimalValue(nav2StandbyFreq.ControllerValue, ticks));
                     break;
             }
             EncoderActionNamesChanged();
@@ -190,7 +188,40 @@
             }
         }
 
+        void SetBackgroundImage(BitmapBuilder builder, Binding binding) => builder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(binding.MsfsValue));
+        string ControllerIntValueText(Binding binding) => (binding.ControllerValue == 0 ? "0" : ControllerValueSubstring(binding, 0, 3)) + ".";
+        string ControllerDecValueText(Binding binding) => binding.ControllerValue == 0 ? "0" : ControllerValueSubstring(binding, 3, 2);
+        string ControllerValueSubstring(Binding binding, int startIndex, int length) => binding.ControllerValue.ToString().Substring(startIndex, length);
+
+        readonly Binding nav1ActiveFreq;
+        readonly Binding nav2ActiveFreq;
+        readonly Binding nav1Available;
+        readonly Binding nav2Available;
+        readonly Binding nav1StandbyFreq;
+        readonly Binding nav2StandbyFreq;
+        readonly Binding nav1Swap;
+        readonly Binding nav2Swap;
+
+        private const string Nav1ActIntAction = "NAV1 Active Int";
+        private const string Nav1ActDecAction = "NAV1 Active Float";
+        private const string Nav1StdbyIntAction = "NAV1 Standby Int";
+        private const string Nav1StdbyDecAction = "NAV1 Standby Float";
+        private const string Nav2ActIntAction = "NAV2 Active Int";
+        private const string Nav2ActDecAction = "NAV2 Active Float";
+        private const string Nav2StdbyIntAction = "NAV2 Standby Int";
+        private const string Nav2StdbyDecAction = "NAV2 Standby Float";
+
+        private const string Nav1IntEncAction = "NAV1 Int Encoder";
+        private const string Nav1DecEncAction = "NAV1 Float Encoder";
+        private const string Nav2IntEncAction = "NAV2 Int Encoder";
+        private const string Nav2DecEncAction = "NAV2 Float Encoder";
+
+        private const string Nav1Swap = "NAV1 freq swap";
+        private const string Nav2Swap = "NAV2 freq swap";
+        private const string NoAction = "";
+
         readonly List<Binding> bindings = new List<Binding>();
-        readonly DecimalValueAdjuster adjuster = new DecimalValueAdjuster(108, 117, 0, 95, 5);
+        readonly DecimalValueAdjuster navAdjuster = new DecimalValueAdjuster(108, 117, 0, 95, 5);
+        //>> Here we want an adfAdjuster
     }
 }

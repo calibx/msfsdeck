@@ -1,6 +1,8 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using Loupedeck.MsfsPlugin.input;
+    using Loupedeck.MsfsPlugin.tools;
+
     class GearInput : DefaultInput
     {
         public GearInput() : base("Gear", "Display gears state", "Misc")
@@ -27,7 +29,7 @@
                 }
                 else
                 {
-                    bitmapBuilder.DrawText("\t" + GetDisplay(bindings[1].MsfsValue) + "\n" + GetDisplay(bindings[2].MsfsValue) + "\t" + GetDisplay(bindings[3].MsfsValue), new BitmapColor(0, 0, 255));
+                    bitmapBuilder.DrawText("\t" + GetDisplay(bindings[1].MsfsValue) + "\n" + GetDisplay(bindings[2].MsfsValue) + "\t" + GetDisplay(bindings[3].MsfsValue), ImageTool.Blue);
                 }
                 return bitmapBuilder.ToImage();
             }

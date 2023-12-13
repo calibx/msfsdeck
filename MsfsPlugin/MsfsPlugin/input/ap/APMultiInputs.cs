@@ -42,51 +42,53 @@
         }
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
-            var bitmapBuilder = new BitmapBuilder(imageSize);
-            switch (actionParameter)
+            using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                case "AP Alt":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[0].ControllerValue));
-                    break;
-                case "AP Head":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[1].ControllerValue));
-                    break;
-                case "AP Nav":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[2].ControllerValue));
-                    break;
-                case "AP Speed":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[3].ControllerValue));
-                    break;
-                case "AP Master":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[4].ControllerValue));
-                    break;
-                case "AP Throttle":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[5].ControllerValue));
-                    break;
-                case "AP VSpeed":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[6].ControllerValue));
-                    break;
-                case "AP FD":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[7].ControllerValue));
-                    break;
-                case "AP FLC":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
-                    break;
-                case "AP APP":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
-                    break;
-                case "AP LOC":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
-                    break;
-                case "AP YD":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
-                    break;
-                case "AP BC":
-                    bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[12].ControllerValue));
-                    break;
+                switch (actionParameter)
+                {
+                    case "AP Alt":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[0].ControllerValue));
+                        break;
+                    case "AP Head":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[1].ControllerValue));
+                        break;
+                    case "AP Nav":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[2].ControllerValue));
+                        break;
+                    case "AP Speed":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[3].ControllerValue));
+                        break;
+                    case "AP Master":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[4].ControllerValue));
+                        break;
+                    case "AP Throttle":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[5].ControllerValue));
+                        break;
+                    case "AP VSpeed":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[6].ControllerValue));
+                        break;
+                    case "AP FD":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[7].ControllerValue));
+                        break;
+                    case "AP FLC":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
+                        break;
+                    case "AP APP":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
+                        break;
+                    case "AP LOC":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
+                        break;
+                    case "AP YD":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
+                        break;
+                    case "AP BC":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[12].ControllerValue));
+                        break;
+                }
+                bitmapBuilder.DrawText(actionParameter);
+                return bitmapBuilder.ToImage();
             }
-            bitmapBuilder.DrawText(actionParameter);
-            return bitmapBuilder.ToImage();
         }
 
         protected override void RunCommand(string actionParameter)

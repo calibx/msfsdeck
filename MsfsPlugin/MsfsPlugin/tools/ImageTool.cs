@@ -14,7 +14,7 @@
 
         public static BitmapImage _imageDisable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
 
-        public static BitmapImage _imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
+        public static BitmapImage _imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disableBorder.png");
 
         public static BitmapImage _imageDisconnect = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
 
@@ -55,9 +55,6 @@
             return state;
         }
 
-        private static bool IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
-        private static bool IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
-
         public static void Refresh()
         {
             _imageOff = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.offFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.off.png");
@@ -68,5 +65,13 @@
             _imageDisconnect = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnectFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
             _imageTrying = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.tryingFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
         }
-}
+
+        public static BitmapColor Red = new BitmapColor(255, 0, 0);
+        public static BitmapColor Green = new BitmapColor(0, 255, 0);
+        public static BitmapColor Blue = new BitmapColor(0, 0, 255);
+        public static BitmapColor Yellow = new BitmapColor(255, 255, 0);
+
+        private static bool IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
+        private static bool IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
+    }
 }
