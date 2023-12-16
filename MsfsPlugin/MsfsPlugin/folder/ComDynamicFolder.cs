@@ -204,6 +204,6 @@
         }
 
         readonly List<Binding> bindings = new List<Binding>();
-        readonly DecimalValueAdjuster adjuster = new DecimalValueAdjuster(118, 136, 0, 995, 5);
+        readonly DecimalValueAdjuster adjuster = new DecimalValueAdjuster(118, 136, 0, 995, 5, 1000000);
     }
 }

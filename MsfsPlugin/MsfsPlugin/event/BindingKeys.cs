@@ -182,7 +182,13 @@
         WIND_DIRECTION,
         WIND_SPEED,
         VISIBILITY,
-        SEA_LEVEL_PRESSURE
+        SEA_LEVEL_PRESSURE,
+
+        ADF_ACTIVE_FREQUENCY,
+        ADF_STBY_FREQUENCY,
+        ADF1_AVAILABLE,
+        ADF1_STBY_AVAILABLE,
+        ADF_RADIO_SWAP,
 
         //++ When adding new data to the communication with simConnect, add new binding key here and then create new Input/Encoder class creating a binding with this key.
         //++ Next add to SimConnectDAO (see similarly formed comments (there are more than one) there).

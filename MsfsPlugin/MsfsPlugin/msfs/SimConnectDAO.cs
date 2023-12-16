@@ -112,7 +112,10 @@
             NAV2_STBY_SET_HZ,
 
             VOR1_SET,
-            VOR2_SET
+            VOR2_SET,
+            ADF1_RADIO_SWAP,
+            ADF_COMPLETE_SET,
+            ADF_STBY_SET,
 
             //++ Add new events here for data that is going to be sent from this plugin to SimConnect
         };
@@ -245,6 +248,11 @@
             public Int64 WindSpeed;
             public Int64 Visibility;
             public Double SeaLevelPressure;
+
+            public double ADFActiveFreq;
+            public double ADFStbyFreq;
+            public Int64 ADF1Available;
+            public Int64 ADF2Available;
 
             //++ Add fields for new data here. Ensure that the type fits what is written in the data definition below.
         }
@@ -497,6 +505,11 @@
             MsfsData.Instance.bindings[BindingKeys.VISIBILITY].SetMsfsValue(reader.Visibility);
             MsfsData.Instance.bindings[BindingKeys.SEA_LEVEL_PRESSURE].SetMsfsValue((long)Math.Round(reader.SeaLevelPressure * 10));
 
+            MsfsData.Instance.bindings[BindingKeys.ADF_ACTIVE_FREQUENCY].SetMsfsValue((long)Math.Round(reader.ADFActiveFreq * 10));
+            MsfsData.Instance.bindings[BindingKeys.ADF_STBY_FREQUENCY].SetMsfsValue((long)Math.Round(reader.ADFStbyFreq * 10));
+            MsfsData.Instance.bindings[BindingKeys.ADF1_AVAILABLE].SetMsfsValue(reader.ADF1Available);
+            MsfsData.Instance.bindings[BindingKeys.ADF1_STBY_AVAILABLE].SetMsfsValue(reader.ADF2Available);
+
             //++ Insert appropriate SetMsfsValue calls here using the new binding keys and the new fields in reader.
 
             MsfsData.Instance.Changed();
@@ -615,6 +628,9 @@
 
             SendEvent(EVENTS.VOR1_SET, MsfsData.Instance.bindings[BindingKeys.VOR1_SET]);
             SendEvent(EVENTS.VOR2_SET, MsfsData.Instance.bindings[BindingKeys.VOR2_SET]);
+            SendEvent(EVENTS.ADF1_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.ADF_RADIO_SWAP]);
+            SendEvent(EVENTS.ADF_COMPLETE_SET, MsfsData.Instance.bindings[BindingKeys.ADF_ACTIVE_FREQUENCY]);   // Used in planes where we can only manipulate the active frequency
+            SendEvent(EVENTS.ADF_STBY_SET, MsfsData.Instance.bindings[BindingKeys.ADF_STBY_FREQUENCY]);
 
             //++ Insert appropriate SendEvent calls here. Use the new binding key and the new event "matching" it.
 
@@ -623,16 +639,12 @@
                 switch (MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].ControllerValue)
                 {
                     case 0:
+                    case 3:
                         SendEvent(EVENTS.TOGGLE_PUSHBACK, MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER]);
                         break;
                     case 1:
-                        SendEvent(EVENTS.KEY_TUG_HEADING, MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER]);
-                        break;
                     case 2:
                         SendEvent(EVENTS.KEY_TUG_HEADING, MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER]);
-                        break;
-                    case 3:
-                        SendEvent(EVENTS.TOGGLE_PUSHBACK, MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER]);
                         break;
                 }
                 MsfsData.Instance.bindings[BindingKeys.PUSHBACK_CONTROLLER].MSFSChanged = true;
@@ -692,8 +704,6 @@
                         value = (UInt32)(binding.ControllerValue * 16383 / (MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue == 0 ? 1 : MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue));
                         break;
                     case EVENTS.AXIS_PROPELLER_SET:
-                        value = (UInt32)Math.Round((binding.ControllerValue - 50) * 16383 / 50f);
-                        break;
                     case EVENTS.AXIS_SPOILER_SET:
                         value = (UInt32)Math.Round((binding.ControllerValue - 50) * 16383 / 50f);
                         break;
@@ -720,6 +730,11 @@
                         pluginForKey.KeyboardApi.SendShortcut(VirtualKeyCode.KeyL, ModifierKey.Alt);
                         value = 0;
                         break;
+                    case EVENTS.ADF_COMPLETE_SET:
+                    case EVENTS.ADF_STBY_SET:
+                        value = BcdEncode((uint)(binding.ControllerValue / 10));
+                        break;
+
                     //++ If the new binding cannot use the default way of sending, add a new case above.
                     default:
                         value = (UInt32)binding.ControllerValue;
@@ -728,7 +743,7 @@
                 DebugTracing.Trace("Send " + eventName + " with " + value);
                 if (enumerable)
                 {
-                    for (UInt32 i=1;i< 10; i++)
+                    for (UInt32 i=1; i< 10; i++)
                     {
                         m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, i, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
                     }
@@ -740,6 +755,13 @@
                 
                 binding.ResetController();
             }
+        }
+
+        uint BcdEncode(uint value)
+        {
+            var valText = $"0x{value}0000";
+            var result = Convert.ToUInt32(valText, 16);
+            return result;
         }
 
         private readonly object lockObject = new object();
@@ -880,7 +902,12 @@
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "AMBIENT VISIBILITY", "Meters", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "SEA LEVEL PRESSURE", "Millibars", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
-            //++ Make new data definitions here using a type that fits SimConnect variable
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ADF ACTIVE FREQUENCY:1", "KHz", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ADF STANDBY FREQUENCY:1", "KHz", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ADF AVAILABLE:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            m_oSimConnect.AddToDataDefinition(DEFINITIONS.Readers, "ADF STANDBY AVAILABLE:1", "Boolean", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
+            //++ Make new data definitions here using a type that fits SimConnect variable if it needs to be read from the Sim
 
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:1", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             m_oSimConnect.AddToDataDefinition(DEFINITIONS.Writers, "GENERAL ENG MIXTURE LEVER POSITION:2", "Percent", SIMCONNECT_DATATYPE.INT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);

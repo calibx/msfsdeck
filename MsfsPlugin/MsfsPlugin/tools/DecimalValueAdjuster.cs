@@ -2,7 +2,7 @@
 {
     internal class DecimalValueAdjuster
     {
-        public DecimalValueAdjuster(int minInt, int maxInt, int minDecimal, int maxDecimal, int stepDecimal)
+        public DecimalValueAdjuster(int minInt, int maxInt, int minDecimal, int maxDecimal, int stepDecimal, int representationValueDivider)
         {
             this.minInt = minInt;
             this.maxInt = maxInt;
@@ -10,7 +10,7 @@
             this.maxDecimal = maxDecimal;
             this.stepDecimal = stepDecimal;
             intDivider = maxDecimal + stepDecimal;
-            valueDivider = 1000000 / intDivider;
+            valueDivider = representationValueDivider / intDivider;
         }
 
         public long IncrIntValue(long presentValue, int ticks)

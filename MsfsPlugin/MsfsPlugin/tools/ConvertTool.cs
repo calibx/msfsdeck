@@ -2,6 +2,8 @@
 {
     public static class ConvertTool
     {
+        public static bool getBoolean(long value) => value != 0;
+
         public static long getToggledValue(long value) => value == 0 ? 1 : 0;
 
         public static long ApplyAdjustment(long value, int ticks, int min, int max, int step, bool cycle = false)
