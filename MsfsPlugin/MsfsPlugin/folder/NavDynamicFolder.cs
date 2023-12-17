@@ -65,18 +65,14 @@
         public override IEnumerable<string> GetEncoderPressActionNames(DeviceType deviceType)
         {
             //DebugTracing.Trace($"deviceType '{deviceType}'");
-            var nav1Swap = CreateCommandName(Nav1SwapAction);
-            var nav2Swap = CreateCommandName(Nav2SwapAction);
-            var adfSwap = CreateCommandName(AdfSwapAction);
-
             return new[]
             {
-                nav1Swap,
-                nav2Swap,
-                adfSwap,
-                nav1Swap,
-                nav2Swap,
-                adfSwap
+                CreateCommandName(Nav1SwapAction),
+                CreateCommandName(Nav2SwapAction),
+                CreateCommandName(AdfSwapAction),
+                NavigateUpActionName,
+                CreateCommandName(NoAction),
+                CreateCommandName(AdfOneTenSwap)
             };
         }
 
@@ -104,16 +100,16 @@
                 case Nav1IntEncAction:
                     return "NAV1\nActive\n<-->";
                 case Nav1DecEncAction:
-                    return "NAV1\nStandby\n<-->";
+                    return "Up";
                 case Nav2IntEncAction:
                     return "NAV2\nActive\n<-->";
                 case Nav2DecEncAction:
-                    return "NAV2\nStandby\n<-->";
+                    return " ";
                 case AdfHundredsEncAction:
                     // It could have been nice if we were able to document that this encoder changes the hundreds value
                     return "ADF\nActive" + (CanSwapAdf ? "\n<-->" : "");
                 case AdfOnesEncAction:
-                    return "ADF\nStandby\n" + (CanSwapAdf ? "<-->" : "N/A");
+                    return "ADF\nStandby\n" + (OnesMultiplier == 10 ? ">10/1" : "10/>1");
             }
             return NoAction;
         }
@@ -205,6 +201,9 @@
                     if (CanSwapAdf)
                         AdfSwap.SetControllerValue(1);
                     break;
+                case AdfOneTenSwap:
+                    OnesMultiplier = OnesMultiplier == 1 ? 10 : 1;
+                    break;
             }
         }
 
@@ -226,14 +225,12 @@
                     Nav2StandbyFreq.SetControllerValue(navAdjuster.IncrDecimalValue(Nav2StandbyFreq.ControllerValue, ticks));
                     break;
                 case AdfHundredsEncAction:
-                    AdjustAdf(CanSwapAdf ? AdfStandbyFreq : AdfActiveFreq, ticks * 100);
+                    AdjustAdf(AdfAdjustmentFrequency, ticks * 100);
                     break;
                 case AdfOnesEncAction:
-                    AdjustAdf(CanSwapAdf ? AdfStandbyFreq : AdfActiveFreq, ticks);
+                    AdjustAdf(AdfAdjustmentFrequency, ticks * OnesMultiplier);
                     break;
             }
-            EncoderActionNamesChanged();  //>> I don't think this is necessary
-            ButtonActionNamesChanged();   //>> -do-
         }
 
         public void Notify()
@@ -250,6 +247,7 @@
         void AdjustAdf(Binding bindingFreq, int ticks) => bindingFreq.SetControllerValue(adfAdjuster.IncrIntValue(bindingFreq.ControllerValue, ticks));
 
         void SetBackgroundImage(BitmapBuilder builder, Binding binding) => builder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(binding.MsfsValue));
+
         string ControllerNavIntValueText(Binding binding) => (binding.ControllerValue == 0 ? "0" : ControllerValueSubstring(binding, 0, 3)) + ".";
         string ControllerAdfIntValueText(Binding adfFreq, Binding adfAvailability) => GetBool(adfAvailability) ? ControllerAdfIntValueText(adfFreq) : string.Empty;
         string ControllerAdfDecValueText(Binding adfFreq, Binding adfAvailability) => GetBool(adfAvailability) ? ControllerAdfDecValueText(adfFreq) : string.Empty;
@@ -257,8 +255,12 @@
         string ControllerAdfDecValueText(Binding binding) => (binding.ControllerValue % 10).ToString();
         string ControllerNavDecValueText(Binding binding) => binding.ControllerValue == 0 ? "0" : ControllerValueSubstring(binding, 3, 2);
         string ControllerValueSubstring(Binding binding, int startIndex, int length) => binding.ControllerValue.ToString().Substring(startIndex, length);
-        bool CanSwapAdf => GetBool(AdfStbyAvail);
+
         bool GetBool(Binding binding) => ConvertTool.getBoolean(binding.MsfsValue);
+
+        Binding AdfAdjustmentFrequency => CanSwapAdf ? AdfStandbyFreq : AdfActiveFreq;
+
+        bool CanSwapAdf => GetBool(AdfStbyAvail);
 
         readonly Binding Nav1ActiveFreq;
         readonly Binding Nav2ActiveFreq;
@@ -297,7 +299,10 @@
         const string Nav1SwapAction = "NAV1 freq swap";
         const string Nav2SwapAction = "NAV2 freq swap";
         const string AdfSwapAction = "ADF freq swap";
+        const string AdfOneTenSwap = "ADF one/ten swap";
         const string NoAction = "";
+
+        int OnesMultiplier = 1;
 
         readonly List<Binding> bindings = new List<Binding>();
         readonly DecimalValueAdjuster navAdjuster = new DecimalValueAdjuster(108, 117, 0, 95, 5, 1000000);
