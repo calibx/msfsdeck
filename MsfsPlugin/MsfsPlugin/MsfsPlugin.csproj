@@ -90,6 +90,7 @@
     <Compile Include="folder\AirlinerDynamicFolder.cs" />
     <Compile Include="folder\APDynamicFolder.cs" />
     <Compile Include="folder\ATCDynamicFolder.cs" />
+    <Compile Include="folder\CockpitViewFolder.cs" />
     <Compile Include="folder\NavDynamicSFolder.cs" />
     <Compile Include="folder\NavDynamicFolder.cs" />
     <Compile Include="folder\ComDynamicSFolder.cs" />

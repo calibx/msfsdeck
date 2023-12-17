@@ -96,6 +96,6 @@
         //>>private long MSFSPreviousValue = long.MinValue;
         private long ControllerPreviousValue = long.MinValue;
         private bool SetControllerValueCalled = false;
-        private bool DoTrace => DebugTracing.tracingEnabled && SetControllerValueCalled;
+        private bool DoTrace => DebugTracing.TracingEnabled && SetControllerValueCalled;
     }
 }

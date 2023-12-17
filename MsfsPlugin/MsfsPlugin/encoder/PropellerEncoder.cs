@@ -3,7 +3,7 @@
     using Loupedeck.MsfsPlugin.encoder;
     class PropellerEncoder : DefaultEncoder
     {
-        public PropellerEncoder() : base("Propeller", "Current propeller", "Nav", true, 0, 100, 1) =>
+        public PropellerEncoder() : base("Prop", "Current propeller", "Nav", true, 0, 100, 1) =>
             bindings.Add(MsfsData.Instance.Register(BindingKeys.PROPELLER));
 
         protected override void RunCommand(string actionParameter) => SetValue(0);

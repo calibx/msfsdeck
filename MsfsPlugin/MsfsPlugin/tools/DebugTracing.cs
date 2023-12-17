@@ -7,10 +7,7 @@
 
     internal static class DebugTracing
     {
-        /// <summary>
-        /// Set this field to true when you want to trace what happens.
-        /// </summary>
-        public const bool tracingEnabled = false;
+        public static bool TracingEnabled => MsfsData.Instance.DEBUG;
 
         public static void Trace(string message, [CallerMemberName] string caller = null) => Tracing(caller, message);
 
@@ -18,7 +15,7 @@
 
         static void Tracing(string caller, string message)
         {
-            if (tracingEnabled)
+            if (TracingEnabled)
             {
                 var threadId = Thread.CurrentThread.ManagedThreadId;
                 Debug.WriteLine($"--> (thread {threadId}, method {caller}): {message}");
