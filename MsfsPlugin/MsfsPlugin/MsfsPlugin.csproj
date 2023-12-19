@@ -119,6 +119,9 @@
     <Compile Include="input\nav\VerticalSpeedInput.cs" />
     <Compile Include="input\nav\SpeedInput.cs" />
     <Compile Include="input\nav\HeadingInput.cs" />
+    <Compile Include="msfs\DataTransferIn.cs" />
+    <Compile Include="msfs\DataTransferOut.cs" />
+    <Compile Include="msfs\DataTransferTypes.cs" />
     <Compile Include="msfs\SimConnectDAO.cs" />
     <Compile Include="msfs\MsfsData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

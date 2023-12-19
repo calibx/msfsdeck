@@ -17,6 +17,7 @@
         public string DebugValue1 { get; set; }
         public string DebugValue2 { get; set; }
         public string DebugValue3 { get; set; }
+
         private MsfsData()
         { }
 
