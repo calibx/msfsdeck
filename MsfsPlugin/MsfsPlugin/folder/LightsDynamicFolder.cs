@@ -25,8 +25,8 @@
             bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_CABIN_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_PEDESTRAL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_GLARESHIELD_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_ALL_SWITCH_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.FLASHLIGHT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_ALL_SWITCH_FOLDER));
             MsfsData.Instance.Register(this);
 
         }
@@ -94,6 +94,9 @@
                     case "Glareshield":
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
                         break;
+                    case "Flashlight":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[12].ControllerValue));
+                        break;
                     case "All":
                         break;
                 }
@@ -144,10 +147,10 @@
                 case "Glareshield":
                     bindings[11].SetControllerValue(1);
                     break;
-                case "All":
+                case "Flashlight":
                     bindings[12].SetControllerValue(1);
                     break;
-                case "Flashlight":
+                case "All":
                     bindings[13].SetControllerValue(1);
                     break;
 
