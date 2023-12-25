@@ -65,31 +65,19 @@
             SetMsfsValue(BindingKeys.PUSHBACK_ATTACHED, (reader.pushbackAttached == 1 && reader.wheelRPM != 0) ? 1 : 0);
             SetMsfsValue(BindingKeys.PUSHBACK_STATE, reader.onGround);
             //SetMsfsValue(BindingKeys.PUSHBACK_ANGLE, reader.pushback); // Can read but set so stay on the controller state
-            SetMsfsValue(BindingKeys.LIGHT_NAV_MULTI, reader.navLight);
-            SetMsfsValue(BindingKeys.LIGHT_BEACON_MULTI, reader.beaconLight);
-            SetMsfsValue(BindingKeys.LIGHT_LANDING_MULTI, reader.landingLight);
-            SetMsfsValue(BindingKeys.LIGHT_TAXI_MULTI, reader.taxiLight);
-            SetMsfsValue(BindingKeys.LIGHT_STROBE_MULTI, reader.strobeLight);
-            SetMsfsValue(BindingKeys.LIGHT_INSTRUMENT_MULTI, reader.panelLight);
-            SetMsfsValue(BindingKeys.LIGHT_RECOG_MULTI, reader.recognitionLight);
-            SetMsfsValue(BindingKeys.LIGHT_WING_MULTI, reader.wingLight);
-            SetMsfsValue(BindingKeys.LIGHT_LOGO_MULTI, reader.logoLight);
-            SetMsfsValue(BindingKeys.LIGHT_CABIN_MULTI, reader.cabinLight);
-            SetMsfsValue(BindingKeys.LIGHT_PEDESTRAL_MULTI, reader.pedestralLight);
-            SetMsfsValue(BindingKeys.LIGHT_GLARESHIELD_MULTI, reader.glareshieldLight);
 
-            SetMsfsValue(BindingKeys.LIGHT_NAV_FOLDER, reader.navLight);
-            SetMsfsValue(BindingKeys.LIGHT_BEACON_FOLDER, reader.beaconLight);
-            SetMsfsValue(BindingKeys.LIGHT_LANDING_FOLDER, reader.landingLight);
-            SetMsfsValue(BindingKeys.LIGHT_TAXI_FOLDER, reader.taxiLight);
-            SetMsfsValue(BindingKeys.LIGHT_STROBE_FOLDER, reader.strobeLight);
-            SetMsfsValue(BindingKeys.LIGHT_INSTRUMENT_FOLDER, reader.panelLight);
-            SetMsfsValue(BindingKeys.LIGHT_RECOG_FOLDER, reader.recognitionLight);
-            SetMsfsValue(BindingKeys.LIGHT_WING_FOLDER, reader.wingLight);
-            SetMsfsValue(BindingKeys.LIGHT_LOGO_FOLDER, reader.logoLight);
-            SetMsfsValue(BindingKeys.LIGHT_CABIN_FOLDER, reader.cabinLight);
-            SetMsfsValue(BindingKeys.LIGHT_PEDESTRAL_FOLDER, reader.pedestralLight);
-            SetMsfsValue(BindingKeys.LIGHT_GLARESHIELD_FOLDER, reader.glareshieldLight);
+            SetMsfsValue(BindingKeys.LIGHT_NAV, reader.navLight);
+            SetMsfsValue(BindingKeys.LIGHT_BEACON, reader.beaconLight);
+            SetMsfsValue(BindingKeys.LIGHT_LANDING, reader.landingLight);
+            SetMsfsValue(BindingKeys.LIGHT_TAXI, reader.taxiLight);
+            SetMsfsValue(BindingKeys.LIGHT_STROBE, reader.strobeLight);
+            SetMsfsValue(BindingKeys.LIGHT_INSTRUMENT, reader.panelLight);
+            SetMsfsValue(BindingKeys.LIGHT_RECOG, reader.recognitionLight);
+            SetMsfsValue(BindingKeys.LIGHT_WING, reader.wingLight);
+            SetMsfsValue(BindingKeys.LIGHT_LOGO, reader.logoLight);
+            SetMsfsValue(BindingKeys.LIGHT_CABIN, reader.cabinLight);
+            SetMsfsValue(BindingKeys.LIGHT_PEDESTAL, reader.pedestralLight);
+            SetMsfsValue(BindingKeys.LIGHT_GLARESHIELD, reader.glareshieldLight);
 
             SetMsfsValue(BindingKeys.AP_ALT_AP_FOLDER, reader.apAltitude);
             SetMsfsValue(BindingKeys.ALT_AP_FOLDER, reader.planeAltitude);

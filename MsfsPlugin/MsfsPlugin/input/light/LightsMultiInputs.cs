@@ -11,19 +11,19 @@
 
         public LightsMultiInputs()
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_NAV_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_BEACON_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LANDING_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_TAXI_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_STROBE_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_INSTRUMENT_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_RECOG_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_WING_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LOGO_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_CABIN_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_PEDESTRAL_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_GLARESHIELD_MULTI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_ALL_SWITCH_MULTI));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_NAV));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_BEACON));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LANDING));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_TAXI));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_STROBE));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_INSTRUMENT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_RECOG));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_WING));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LOGO));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_CABIN));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_PEDESTAL));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_GLARESHIELD));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_ALL_SWITCH));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.FLASHLIGHT));
 
             AddParameter("Navigation", "Navigation light", "Lights");

@@ -13,20 +13,20 @@
             DisplayName = "Lights";
             GroupName = "Folder";
 
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_NAV_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_BEACON_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LANDING_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_TAXI_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_STROBE_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_INSTRUMENT_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_RECOG_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_WING_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LOGO_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_CABIN_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_PEDESTRAL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_GLARESHIELD_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_NAV));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_BEACON));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LANDING));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_TAXI));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_STROBE));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_INSTRUMENT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_RECOG));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_WING));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LOGO));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_CABIN));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_PEDESTAL));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_GLARESHIELD));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.FLASHLIGHT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_ALL_SWITCH_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_ALL_SWITCH));
             MsfsData.Instance.Register(this);
 
         }
@@ -46,7 +46,7 @@
                 CreateCommandName("Wing"),
                 CreateCommandName("Logo"),
                 CreateCommandName("Cabin"),
-                CreateCommandName("Pedestral"),
+                CreateCommandName("Pedestal"),
                 CreateCommandName("Glareshield"),
                 CreateCommandName("Flashlight"),
                 CreateCommandName("All")
@@ -88,7 +88,7 @@
                     case "Cabin":
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
                         break;
-                    case "Pedestral":
+                    case "Pedestal":
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
                         break;
                     case "Glareshield":
@@ -141,7 +141,7 @@
                 case "Cabin":
                     bindings[9].SetControllerValue(1);
                     break;
-                case "Pedestral":
+                case "Pedestal":
                     bindings[10].SetControllerValue(1);
                     break;
                 case "Glareshield":
