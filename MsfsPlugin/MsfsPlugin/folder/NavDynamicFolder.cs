@@ -254,18 +254,16 @@
         void SetBackgroundImage(BitmapBuilder builder, Binding binding) => builder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(binding.MsfsValue));
 
         string ControllerNavIntValueText(Binding binding) => (binding.ControllerValue == 0 ? "0" : ControllerValueSubstring(binding, 0, 3)) + ".";
-        string ControllerAdfIntValueText(Binding adfFreq, Binding adfAvailability) => GetBool(adfAvailability) ? ControllerAdfIntValueText(adfFreq) : string.Empty;
-        string ControllerAdfDecValueText(Binding adfFreq, Binding adfAvailability) => GetBool(adfAvailability) ? ControllerAdfDecValueText(adfFreq) : string.Empty;
+        string ControllerAdfIntValueText(Binding adfFreq, Binding adfAvailability) => adfAvailability.GetBool() ? ControllerAdfIntValueText(adfFreq) : string.Empty;
+        string ControllerAdfDecValueText(Binding adfFreq, Binding adfAvailability) => adfAvailability.GetBool() ? ControllerAdfDecValueText(adfFreq) : string.Empty;
         string ControllerAdfIntValueText(Binding binding) => $"{binding.ControllerValue / 10}.";
         string ControllerAdfDecValueText(Binding binding) => (binding.ControllerValue % 10).ToString();
         string ControllerNavDecValueText(Binding binding) => binding.ControllerValue == 0 ? "0" : ControllerValueSubstring(binding, 3, 2);
         string ControllerValueSubstring(Binding binding, int startIndex, int length) => binding.ControllerValue.ToString().Substring(startIndex, length);
 
-        bool GetBool(Binding binding) => ConvertTool.getBoolean(binding.MsfsValue);
-
         Binding AdfAdjustmentFrequency => CanSwapAdf ? AdfStandbyFreq : AdfActiveFreq;
 
-        bool CanSwapAdf => GetBool(AdfStbyAvail);
+        bool CanSwapAdf => AdfStbyAvail.GetBool();
 
         readonly Binding Nav1ActiveFreq;
         readonly Binding Nav2ActiveFreq;

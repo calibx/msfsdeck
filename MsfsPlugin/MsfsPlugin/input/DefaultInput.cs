@@ -5,7 +5,8 @@
     public abstract class DefaultInput : PluginDynamicCommand, INotifiable
     {
         protected readonly List<Binding> bindings = new List<Binding>();
-        protected readonly Binding bindingCnx = MsfsData.Instance.Register(BindingKeys.CONNECTION);
+        protected readonly Binding bindingCnx = Register(BindingKeys.CONNECTION);
+        protected static Binding Register(BindingKeys key) => MsfsData.Instance.Register(key);
 
         public DefaultInput(string name, string desc, string category) : base(name, desc, category) => MsfsData.Instance.Register(this);
 

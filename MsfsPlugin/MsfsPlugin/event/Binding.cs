@@ -11,6 +11,8 @@
 
         public long MsfsValue { get; private set; }
 
+        public bool GetBool() => ConvertTool.getBoolean(MsfsValue);
+
         public bool ControllerChanged { get; private set; }
 
         public bool MSFSChanged { get; set; }   //>> Not good that this can be set from outside
