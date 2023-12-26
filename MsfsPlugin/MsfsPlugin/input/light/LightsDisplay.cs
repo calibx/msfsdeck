@@ -1,6 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin.input.light
 {
     using Loupedeck;
+    using Loupedeck.MsfsPlugin.msfs;
     using Loupedeck.MsfsPlugin.tools;
 
     internal class LightsDisplay : DefaultInput
@@ -15,6 +16,7 @@
             bindings.Add(wing = Register(BindingKeys.LIGHT_WING));
             bindings.Add(logo = Register(BindingKeys.LIGHT_LOGO));
             bindings.Add(recognition = Register(BindingKeys.LIGHT_RECOG));
+            bindings.Add(connection = Register(BindingKeys.CONNECTION));
         }
 
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
@@ -37,6 +39,15 @@
             }
         }
 
+        protected override void RunCommand(string actionParameter)
+        {
+            var curValue = connection.MsfsValue;
+            if (curValue == 1 || curValue == 2)
+                SimConnectDAO.Instance.Disconnect();
+            else
+                SimConnectDAO.Instance.Connect();
+        }
+
         readonly Binding nav;
         readonly Binding beacon;
         readonly Binding taxi;
@@ -45,6 +56,7 @@
         readonly Binding wing;
         readonly Binding logo;
         readonly Binding recognition;
+        readonly Binding connection;
 
         BitmapColor GetTextColor(bool emphasize) => emphasize ? ImageTool.Green : ImageTool.Grey;
 

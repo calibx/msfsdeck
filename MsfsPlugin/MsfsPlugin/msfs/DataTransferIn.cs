@@ -47,8 +47,8 @@
             SetMsfsValue(BindingKeys.GEAR_FRONT, (Int64)Math.Round(reader.gearCenterPos * 10));
             SetMsfsValue(BindingKeys.GEAR_LEFT, (Int64)Math.Round(reader.gearLeftPos * 10));
             SetMsfsValue(BindingKeys.GEAR_RIGHT, (Int64)Math.Round(reader.gearRightPos * 10));
-            SetMsfsValue(BindingKeys.FUEL_FLOW, (Int64)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH));
-            SetMsfsValue(BindingKeys.FUEL_PERCENT, (Int64)(reader.fuelQuantity * 100 / reader.fuelCapacity));
+            SetMsfsValue(BindingKeys.FUEL_FLOW, reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH);
+            SetMsfsValue(BindingKeys.FUEL_PERCENT, (Int64)Math.Round(reader.fuelQuantity * 100.0 / reader.fuelCapacity));
             SetMsfsValue(BindingKeys.FUEL_TIME_LEFT, (Int64)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600));
             SetMsfsValue(BindingKeys.AP_NEXT_WP_ID, reader.wpID);
             SetMsfsValue(BindingKeys.AP_NEXT_WP_DIST, (Int64)Math.Round(reader.wpDistance * 0.00053996f, 1));
