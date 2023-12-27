@@ -117,10 +117,14 @@
             public Int64 gearRetractable;
             public Int64 parkingBrake;
             public Int64 engineType;
-            public Int64 E1N1;
-            public Int64 E2N1;
-            public Int64 E3N1;
-            public Int64 E4N1;
+            public Double E1N1;
+            public Double E2N1;
+            public Double E3N1;
+            public Double E4N1;
+            public Double E1N2;
+            public Double E2N2;
+            public Double E3N2;
+            public Double E4N2;
             public Int64 fuelCapacity;
             public Int64 fuelQuantity;
             public Int64 E1GPH;
@@ -130,6 +134,8 @@
             public Int64 pushback;
             public Int64 ENG1N1RPM;
             public Int64 ENG2N1RPM;
+            public Int64 ENG3N1RPM;
+            public Int64 ENG4N1RPM;
             public Int64 engineNumber;
             public Int64 planeAltitude;
             public Int64 apAltitude;

@@ -6,7 +6,7 @@
 
     internal class LightsDisplay : DefaultInput
     {
-        public LightsDisplay() : base("Lights", "Display lights on/off", "Lights")
+        public LightsDisplay() : base("External lights", "Display external lights on/off", "Lights")
         {
             bindings.Add(nav = Register(BindingKeys.LIGHT_NAV));
             bindings.Add(beacon = Register(BindingKeys.LIGHT_BEACON));

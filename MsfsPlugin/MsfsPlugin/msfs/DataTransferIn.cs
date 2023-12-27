@@ -58,10 +58,16 @@
             SetMsfsValue(BindingKeys.ENGINE_NUMBER, reader.engineNumber);
             SetMsfsValue(BindingKeys.E1RPM, reader.ENG1N1RPM);
             SetMsfsValue(BindingKeys.E2RPM, reader.ENG2N1RPM);
-            SetMsfsValue(BindingKeys.E1N1, reader.E1N1);
-            SetMsfsValue(BindingKeys.E2N1, reader.E2N1);
-            SetMsfsValue(BindingKeys.E3N1, reader.E3N1);
-            SetMsfsValue(BindingKeys.E4N1, reader.E4N1);
+            SetMsfsValue(BindingKeys.E3RPM, reader.ENG3N1RPM);
+            SetMsfsValue(BindingKeys.E4RPM, reader.ENG4N1RPM);
+            SetMsfsValue(BindingKeys.E1N1, PercentValue(reader.E1N1));
+            SetMsfsValue(BindingKeys.E2N1, PercentValue(reader.E2N1));
+            SetMsfsValue(BindingKeys.E3N1, PercentValue(reader.E3N1));
+            SetMsfsValue(BindingKeys.E4N1, PercentValue(reader.E4N1));
+            SetMsfsValue(BindingKeys.E1N2, PercentValue(reader.E1N2));
+            SetMsfsValue(BindingKeys.E2N2, PercentValue(reader.E2N2));
+            SetMsfsValue(BindingKeys.E3N2, PercentValue(reader.E3N2));
+            SetMsfsValue(BindingKeys.E4N2, PercentValue(reader.E4N2));
             SetMsfsValue(BindingKeys.PUSHBACK_ATTACHED, (reader.pushbackAttached == 1 && reader.wheelRPM != 0) ? 1 : 0);
             SetMsfsValue(BindingKeys.PUSHBACK_STATE, reader.onGround);
             //SetMsfsValue(BindingKeys.PUSHBACK_ANGLE, reader.pushback); // Can read but set so stay on the controller state
@@ -170,6 +176,9 @@
             MsfsData.Instance.Changed();
         }
 
+        // Percentages are rounded to nearest integer value:
+        static Int64 PercentValue(Double value) => (Int64)Math.Round(value);
+
         static void SetMsfsValue(BindingKeys key, long value) => MsfsData.Instance.bindings[key].SetMsfsValue(value);
 
         internal static void AddRequest(SimConnect simConnect)
@@ -191,10 +200,14 @@
             AddReaderDef("IS GEAR RETRACTABLE", "Boolean", SimType.INT64);
             AddReaderDef("BRAKE PARKING POSITION", "Boolean", SimType.INT64);
             AddReaderDef("ENGINE TYPE", "Enum", SimType.INT64);
-            AddReaderDef("TURB ENG N1:1", "Percent", SimType.INT64);
-            AddReaderDef("TURB ENG N1:2", "Percent", SimType.INT64);
-            AddReaderDef("TURB ENG N1:3", "Percent", SimType.INT64);
-            AddReaderDef("TURB ENG N1:4", "Percent", SimType.INT64);
+            AddReaderDef("TURB ENG N1:1", "Percent", SimType.FLOAT64);
+            AddReaderDef("TURB ENG N1:2", "Percent", SimType.FLOAT64);
+            AddReaderDef("TURB ENG N1:3", "Percent", SimType.FLOAT64);
+            AddReaderDef("TURB ENG N1:4", "Percent", SimType.FLOAT64);
+            AddReaderDef("TURB ENG N2:1", "Percent", SimType.FLOAT64);
+            AddReaderDef("TURB ENG N2:2", "Percent", SimType.FLOAT64);
+            AddReaderDef("TURB ENG N2:3", "Percent", SimType.FLOAT64);
+            AddReaderDef("TURB ENG N2:4", "Percent", SimType.FLOAT64);
             AddReaderDef("FUEL TOTAL CAPACITY", "Gallon", SimType.INT64);
             AddReaderDef("FUEL TOTAL QUANTITY", "Gallon", SimType.INT64);
             AddReaderDef("ENG FUEL FLOW GPH:1", "Gallons per hour", SimType.INT64);
@@ -204,6 +217,8 @@
             AddReaderDef("PUSHBACK STATE:0", "Enum", SimType.INT64);
             AddReaderDef("PROP RPM:1", "RPM", SimType.INT64);
             AddReaderDef("PROP RPM:2", "RPM", SimType.INT64);
+            AddReaderDef("PROP RPM:3", "RPM", SimType.INT64);
+            AddReaderDef("PROP RPM:4", "RPM", SimType.INT64);
             AddReaderDef("NUMBER OF ENGINES", "Number", SimType.INT64);
             AddReaderDef("INDICATED ALTITUDE", "Feet", SimType.INT64);
             AddReaderDef("AUTOPILOT ALTITUDE LOCK VAR", "Feet", SimType.INT64);
