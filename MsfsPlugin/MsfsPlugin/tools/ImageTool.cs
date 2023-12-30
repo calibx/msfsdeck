@@ -70,7 +70,8 @@
         public static BitmapColor Green = new BitmapColor(0, 255, 0);
         public static BitmapColor Blue = new BitmapColor(0, 0, 255);
         public static BitmapColor Yellow = new BitmapColor(255, 255, 0);
-        public static BitmapColor Grey = new BitmapColor(152, 152, 152);
+        public static BitmapColor Grey = new BitmapColor(128, 128, 128);
+        public static BitmapColor LightGrey = new BitmapColor(192, 192, 192);
 
         private static bool IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
         private static bool IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;

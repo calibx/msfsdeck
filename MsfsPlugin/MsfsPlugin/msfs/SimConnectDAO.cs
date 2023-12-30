@@ -153,7 +153,7 @@
                     if (reader.groundSpeed > 19)
                     {
                         MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(3);
-                        m_oSimConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.BRAKES, 1, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                        DataTransferOut.Transmit(m_oSimConnect, EVENTS.BRAKES, 1);
                     }
                     else
                     {

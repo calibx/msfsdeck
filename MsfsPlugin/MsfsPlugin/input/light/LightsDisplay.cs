@@ -58,7 +58,7 @@
         readonly Binding recognition;
         readonly Binding connection;
 
-        BitmapColor GetTextColor(bool emphasize) => emphasize ? ImageTool.Green : ImageTool.Grey;
+        BitmapColor GetTextColor(bool emphasize) => emphasize ? ImageTool.Green : ImageTool.LightGrey;
 
         const int fontSize = 13;
         const int line1 = 0;

@@ -205,7 +205,7 @@
                         break;
                     case EVENTS.SIM_RATE:
                         value = 1;
-                        simConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.SIM_RATE, 1, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                        Transmit(simConnect, eventName, 1);
                         eventName = binding.ControllerValue < binding.MsfsValue ? EVENTS.MINUS : EVENTS.PLUS;
                         break;
                     case EVENTS.ATC_MENU_OPEN:
@@ -226,21 +226,26 @@
                         value = (UInt32)binding.ControllerValue;
                         break;
                 }
-                DebugTracing.Trace("Send " + eventName + " with " + value);
                 if (enumerable)
                 {
                     for (UInt32 i = 1; i < 10; i++)
                     {
-                        simConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, i, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                        Transmit(simConnect, eventName, i);
                     }
                 }
                 else
                 {
-                    simConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                    Transmit(simConnect, eventName, value);
                 }
 
                 binding.ResetController();
             }
+        }
+
+        internal static void Transmit(SimConnect simConnect, EVENTS eventName, UInt32 value)
+        {
+            DebugTracing.Trace("Send " + eventName + " with " + value);
+            simConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
         }
 
         internal static void setPlugin(Plugin plugin) => pluginForKey = plugin;

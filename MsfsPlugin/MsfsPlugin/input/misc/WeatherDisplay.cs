@@ -17,7 +17,7 @@
         string WindText => $"{windDir.MsfsValue}°/{windVel.MsfsValue} kts";
         string VisibilityText => $"Vis: {VisibilityValueText(visib.MsfsValue)} m";
         string VisibilityValueText(long value) => value > 9999 ? ">9999" : value.ToString();
-        string PressureText => $"{pressure.MsfsValue / 10.0} mbar";
+        string PressureText => $"{pressure.MsfsValue / 10.0} hPa";
 
         readonly Binding oat;
         readonly Binding windDir;
