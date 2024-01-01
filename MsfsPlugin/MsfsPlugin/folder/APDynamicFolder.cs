@@ -30,7 +30,7 @@
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_MASTER_SWITCH_AP_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_YAW_DAMPER_AP_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_BC_AP_FOLDER));
 
         }

@@ -1,5 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin.folder
 {
+    using System;
     using System.Collections.Generic;
 
     using Loupedeck.MsfsPlugin.tools;
@@ -21,6 +22,7 @@
             bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED_AL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_AL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED_AL_FOLDER));
+
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_FD_SWITCH_AL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_SWITCH_AL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SWITCH_AL_FOLDER));
@@ -32,18 +34,19 @@
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEAD_SWITCH_AL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_YAW_DAMPER_AL_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_BC_AL_FOLDER));
-
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
+
         public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)
         {
             return new[]
             {
                 CreateAdjustmentName ("Altitude Encoder"),
                 CreateAdjustmentName ("Heading Encoder"),
+                CreateAdjustmentName (""),
                 CreateAdjustmentName ("Speed Encoder"),
                 CreateAdjustmentName ("VS Speed Encoder"),
             };
@@ -55,8 +58,10 @@
             {
                 CreateCommandName("Altitude Reset"),
                 CreateCommandName("Heading Reset"),
+                NavigateLeftActionName,
                 CreateCommandName("Speed Reset"),
                 CreateCommandName("VS Speed Reset"),
+                NavigateRightActionName
             };
         }
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
@@ -213,16 +218,16 @@
                     bindings[20].SetControllerValue(1);
                     break;
                 case "Altitude Reset":
-                    //this._bindings[18].SetControllerValue(1);
+                    bindings[0].SetControllerValue((long)(Math.Round(bindings[1].ControllerValue / 100d, 0) * 100));
                     break;
                 case "Heading Reset":
-                    //this._bindings[18].SetControllerValue(1);
+                    bindings[2].SetControllerValue(bindings[3].ControllerValue);
                     break;
                 case "Speed Reset":
-                    //this._bindings[18].SetControllerValue(1);
+                    bindings[4].SetControllerValue((long)(Math.Round(bindings[5].ControllerValue / 100d, 0) * 100));
                     break;
                 case "VS Speed Reset":
-                    //this._bindings[18].SetControllerValue(1);
+                    bindings[6].SetControllerValue((long)(Math.Round(bindings[7].ControllerValue / 100d, 0) * 100));
                     break;
             }
         }
