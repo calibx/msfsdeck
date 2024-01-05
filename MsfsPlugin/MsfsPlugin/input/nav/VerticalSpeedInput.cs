@@ -6,8 +6,8 @@
     {
         public VerticalSpeedInput() : base("VS", "Display current and AP vertical speed", "Nav")
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_INPUT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED_INPUT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED));
         }
 
         protected override string GetValue() => "VSpeed\n[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;

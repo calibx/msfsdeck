@@ -6,8 +6,8 @@
     {
         public AltitudeInput() : base("Altitude", "Display current and AP altitude", "Nav")
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_INPUT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ALT_INPUT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.ALT));
         }
 
         protected override string GetValue() => "Alt\n[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;

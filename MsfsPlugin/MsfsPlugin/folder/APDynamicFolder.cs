@@ -14,24 +14,24 @@
             GroupName = "Folder";
             MsfsData.Instance.Register(this);
 
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ALT_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEADING_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.HEADING_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED_AP_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.ALT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEADING));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.HEADING));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED));
 
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_SWITCH_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEAD_SWITCH_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NAV_SWITCH_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_SWITCH_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_MASTER_SWITCH_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEAD_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NAV_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_MASTER_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_THROTTLE_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_SWITCH));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_BC_AP_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_BC_SWITCH));
 
         }
 

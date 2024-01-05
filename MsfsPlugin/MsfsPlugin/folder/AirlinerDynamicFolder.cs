@@ -14,28 +14,28 @@
             GroupName = "Folder";
             MsfsData.Instance.Register(this);
 
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ALT_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEADING_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.HEADING_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED_AL_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.ALT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEADING));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.HEADING));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED));
 
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_FD_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_GPS_SWITCH_AL_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_MASTER_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NAV_SWITCH));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_FLC_SWITCH_AL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_APP_SWITCH_AL_FOLDER));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_LOC_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEAD_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEAD_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_THROTTLE_SWITCH));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_SWITCH));
             bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_BC_AL_FOLDER));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_BC_SWITCH));
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
@@ -84,6 +84,7 @@
                 CreateCommandName("Back Course"),
             };
         }
+
         public override string GetAdjustmentDisplayName(string actionParameter, PluginImageSize imageSize)
         {
             var ret = "";

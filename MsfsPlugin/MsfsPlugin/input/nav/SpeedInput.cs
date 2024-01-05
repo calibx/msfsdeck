@@ -6,8 +6,8 @@
     {
         public SpeedInput() : base("Speed", "Display current and AP speed", "Nav")
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_INPUT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED_INPUT));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED));
+            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED));
         }
 
         protected override string GetValue() => "Speed\n[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;

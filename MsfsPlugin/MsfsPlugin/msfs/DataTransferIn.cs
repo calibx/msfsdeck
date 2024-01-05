@@ -18,29 +18,21 @@
             SetMsfsValue(BindingKeys.AILERON_TRIM, (Int64)Math.Round(reader.aileronTrim * 100));
             SetMsfsValue(BindingKeys.AP_ALT, reader.apAltitude);
             SetMsfsValue(BindingKeys.ALT, reader.planeAltitude);
-            SetMsfsValue(BindingKeys.AP_ALT_INPUT, reader.apAltitude);
-            SetMsfsValue(BindingKeys.ALT_INPUT, reader.planeAltitude);
             SetMsfsValue(BindingKeys.KOHLSMAN, (Int64)Math.Round(reader.kohlsmanInHb * 100));
             SetMsfsValue(BindingKeys.ELEVATOR_TRIM, (Int64)Math.Round(reader.elevatorTrim * 100));
             SetMsfsValue(BindingKeys.MAX_FLAP, reader.flapMax);
             SetMsfsValue(BindingKeys.FLAP, reader.flapPosition);
             SetMsfsValue(BindingKeys.AP_HEADING, reader.apHeading);
             SetMsfsValue(BindingKeys.HEADING, (Int64)Math.Round(reader.planeHeading));
-            SetMsfsValue(BindingKeys.AP_HEADING_INPUT, reader.apHeading);
-            SetMsfsValue(BindingKeys.HEADING_INPUT, (Int64)Math.Round(reader.planeHeading));
             SetMsfsValue(BindingKeys.MIXTURE, reader.mixtureE1);
             SetMsfsValue(BindingKeys.PROPELLER, (Int64)Math.Round(reader.propellerE1));
             SetMsfsValue(BindingKeys.RUDDER_TRIM, (Int64)Math.Round(reader.rudderTrim * 100));
             SetMsfsValue(BindingKeys.AP_SPEED, reader.apSpeed);
             SetMsfsValue(BindingKeys.SPEED, reader.planeSpeed);
-            SetMsfsValue(BindingKeys.AP_SPEED_INPUT, reader.apSpeed);
-            SetMsfsValue(BindingKeys.SPEED_INPUT, reader.planeSpeed);
             SetMsfsValue(BindingKeys.SPOILER, (Int64)Math.Round(reader.spoiler * 100));
             SetMsfsValue(BindingKeys.THROTTLE, (Int64)Math.Round(reader.throttle * 100));
             SetMsfsValue(BindingKeys.AP_VSPEED, reader.apVSpeed);
             SetMsfsValue(BindingKeys.VSPEED, (Int64)Math.Round(reader.planeVSpeed * 60));
-            SetMsfsValue(BindingKeys.AP_VSPEED_INPUT, reader.apVSpeed);
-            SetMsfsValue(BindingKeys.VSPEED_INPUT, (Int64)Math.Round(reader.planeVSpeed * 60));
             SetMsfsValue(BindingKeys.PARKING_BRAKES, reader.parkingBrake);
             SetMsfsValue(BindingKeys.PITOT, reader.pitot);
             SetMsfsValue(BindingKeys.GEAR_RETRACTABLE, reader.gearRetractable);
@@ -85,23 +77,6 @@
             SetMsfsValue(BindingKeys.LIGHT_PEDESTAL, reader.pedestralLight);
             SetMsfsValue(BindingKeys.LIGHT_GLARESHIELD, reader.glareshieldLight);
 
-            SetMsfsValue(BindingKeys.AP_ALT_AP_FOLDER, reader.apAltitude);
-            SetMsfsValue(BindingKeys.ALT_AP_FOLDER, reader.planeAltitude);
-            SetMsfsValue(BindingKeys.AP_HEADING_AP_FOLDER, reader.apHeading);
-            SetMsfsValue(BindingKeys.HEADING_AP_FOLDER, (Int64)Math.Round(reader.planeHeading));
-            SetMsfsValue(BindingKeys.AP_SPEED_AP_FOLDER, reader.apSpeed);
-            SetMsfsValue(BindingKeys.SPEED_AP_FOLDER, reader.planeSpeed);
-            SetMsfsValue(BindingKeys.AP_VSPEED_AP_FOLDER, reader.apVSpeed);
-            SetMsfsValue(BindingKeys.VSPEED_AP_FOLDER, (Int64)Math.Round(reader.planeVSpeed * 60));
-            SetMsfsValue(BindingKeys.AP_ALT_SWITCH_AP_FOLDER, reader.apAltHold);
-            SetMsfsValue(BindingKeys.AP_HEAD_SWITCH_AP_FOLDER, reader.apHeadingHold);
-            SetMsfsValue(BindingKeys.AP_NAV_SWITCH_AP_FOLDER, reader.apNavHold);
-            SetMsfsValue(BindingKeys.AP_SPEED_SWITCH_AP_FOLDER, reader.apSpeedHold);
-            SetMsfsValue(BindingKeys.AP_MASTER_SWITCH_AP_FOLDER, reader.apMasterHold);
-            SetMsfsValue(BindingKeys.AP_THROTTLE_SWITCH_AP_FOLDER, reader.apThrottleHold);
-            SetMsfsValue(BindingKeys.AP_VSPEED_SWITCH_AP_FOLDER, reader.apVerticalSpeedHold);
-            SetMsfsValue(BindingKeys.AP_BC_AP_FOLDER, reader.apBackCourse);
-
             SetMsfsValue(BindingKeys.AP_ALT_SWITCH, reader.apAltHold);
             SetMsfsValue(BindingKeys.AP_HEAD_SWITCH, reader.apHeadingHold);
             SetMsfsValue(BindingKeys.AP_NAV_SWITCH, reader.apNavHold);
@@ -112,26 +87,10 @@
             SetMsfsValue(BindingKeys.AP_YAW_DAMPER_SWITCH, reader.apYawDamper);
             SetMsfsValue(BindingKeys.AP_BC_SWITCH, reader.apBackCourse);
 
-            SetMsfsValue(BindingKeys.AP_ALT_AL_FOLDER, reader.apAltitude);
-            SetMsfsValue(BindingKeys.ALT_AL_FOLDER, reader.planeAltitude);
-            SetMsfsValue(BindingKeys.AP_HEADING_AL_FOLDER, reader.apHeading);
-            SetMsfsValue(BindingKeys.HEADING_AL_FOLDER, (Int64)Math.Round(reader.planeHeading));
-            SetMsfsValue(BindingKeys.AP_SPEED_AL_FOLDER, reader.apSpeed);
-            SetMsfsValue(BindingKeys.SPEED_AL_FOLDER, reader.planeSpeed);
-            SetMsfsValue(BindingKeys.AP_VSPEED_AL_FOLDER, reader.apVSpeed);
-            SetMsfsValue(BindingKeys.VSPEED_AL_FOLDER, (Int64)Math.Round(reader.planeVSpeed * 60));
             SetMsfsValue(BindingKeys.AP_FD_SWITCH_AL_FOLDER, reader.apFD);
-            SetMsfsValue(BindingKeys.AP_ALT_SWITCH_AL_FOLDER, reader.apAltHold);
-            SetMsfsValue(BindingKeys.AP_SWITCH_AL_FOLDER, reader.apMasterHold);
-            SetMsfsValue(BindingKeys.AP_GPS_SWITCH_AL_FOLDER, reader.apNavHold);
             SetMsfsValue(BindingKeys.AP_FLC_SWITCH_AL_FOLDER, reader.apFLC);
             SetMsfsValue(BindingKeys.AP_APP_SWITCH_AL_FOLDER, reader.apAPP);
             SetMsfsValue(BindingKeys.AP_LOC_SWITCH_AL_FOLDER, reader.apLOC);
-            SetMsfsValue(BindingKeys.AP_SPEED_SWITCH_AL_FOLDER, reader.apSpeedHold);
-            SetMsfsValue(BindingKeys.AP_HEAD_SWITCH_AL_FOLDER, reader.apHeadingHold);
-            SetMsfsValue(BindingKeys.AP_THROTTLE_SWITCH_AL_FOLDER, reader.apThrottleHold);
-            SetMsfsValue(BindingKeys.AP_VSPEED_SWITCH_AL_FOLDER, reader.apVerticalSpeedHold);
-            SetMsfsValue(BindingKeys.AP_BC_AL_FOLDER, reader.apBackCourse);
 
             SetMsfsValue(BindingKeys.COM1_ACTIVE_FREQUENCY, reader.COM1ActiveFreq);
             SetMsfsValue(BindingKeys.COM1_STBY, reader.COM1StbFreq);
@@ -218,19 +177,19 @@
             AddReaderDef("PROP RPM:3", "RPM", SimType.INT64);                                             //        ENG3N1RPM            E3RPM
             AddReaderDef("PROP RPM:4", "RPM", SimType.INT64);                                             //        ENG4N1RPM            E4RPM
             AddReaderDef("NUMBER OF ENGINES", "Number", SimType.INT64);                                   //        engineNumber         ENGINE_NUMBER
-            AddReaderDef("INDICATED ALTITUDE", "Feet", SimType.INT64);                                    //        planeAltitude        ALT, ALT_INPUT, ALT_AP_FOLDER, ALT_AL_FOLDER
-            AddReaderDef("AUTOPILOT ALTITUDE LOCK VAR", "Feet", SimType.INT64);                           //        apAltitude           AP_ALT, AP_ALT_INPUT, AP_ALT_AP_FOLDER, AP_ALT_AL_FOLDER
+            AddReaderDef("INDICATED ALTITUDE", "Feet", SimType.INT64);                                    //        planeAltitude        ALT
+            AddReaderDef("AUTOPILOT ALTITUDE LOCK VAR", "Feet", SimType.INT64);                           //        apAltitude           AP_ALT
             AddReaderDef("GPS FLIGHT PLAN WP INDEX", "Number", SimType.INT64);                            //        wpID                 AP_NEXT_WP_ID
             AddReaderDef("GPS WP DISTANCE", "Meters", SimType.INT64);                                     //        wpDistance           AP_NEXT_WP_DIST
             AddReaderDef("GPS WP ETE", "Seconds", SimType.INT64);                                         //        wpETE                AP_NEXT_WP_ETE
             AddReaderDef("GPS WP BEARING", "Radians", SimType.INT64);                                     //        wpBearing            AP_NEXT_WP_HEADING
             AddReaderDef("GPS FLIGHT PLAN WP COUNT", "Number", SimType.INT64);                            //        wpCount              - no binding -
-            AddReaderDef("AUTOPILOT HEADING LOCK DIR", "degrees", SimType.INT64);                         //        apHeading            AP_HEADING, AP_HEADING_INPUT, AP_HEADING_AP_FOLDER, AP_HEADING_AL_FOLDER
-            AddReaderDef("PLANE HEADING DEGREES MAGNETIC", "degrees", SimType.FLOAT64);                   //        planeHeading         HEADING, HEADING_INPUT, HEADING_AP_FOLDER, HEADING_AL_FOLDER
-            AddReaderDef("AIRSPEED INDICATED", "Knots", SimType.INT64);                                   //        planeSpeed           SPEED, SPEED_INPUT, SPEED_AP_FOLDER, SPEED_AL_FOLDER
-            AddReaderDef("VERTICAL SPEED", "feet/second", SimType.FLOAT64);                               //        planeVSpeed          VSPEED, VSPEED_INPUT, VSPEED_AP_FOLDER, VSPEED_AL_FOLDER
-            AddReaderDef("AUTOPILOT VERTICAL HOLD VAR", "Feet per minute", SimType.INT64);                //        apVSpeed             AP_VSPEED, AP_VSPEED_INPUT, AP_VSPEED_AP_FOLDER, AP_VSPEED_AL_FOLDER
-            AddReaderDef("AUTOPILOT AIRSPEED HOLD VAR", "Knots", SimType.INT64);                          //        apSpeed              AP_SPEED, AP_SPEED_INPUT, AP_SPEED_AP_FOLDER, AP_SPEED_AL_FOLDER
+            AddReaderDef("AUTOPILOT HEADING LOCK DIR", "degrees", SimType.INT64);                         //        apHeading            AP_HEADING
+            AddReaderDef("PLANE HEADING DEGREES MAGNETIC", "degrees", SimType.FLOAT64);                   //        planeHeading         HEADING
+            AddReaderDef("AIRSPEED INDICATED", "Knots", SimType.INT64);                                   //        planeSpeed           SPEED
+            AddReaderDef("VERTICAL SPEED", "feet/second", SimType.FLOAT64);                               //        planeVSpeed          VSPEED
+            AddReaderDef("AUTOPILOT VERTICAL HOLD VAR", "Feet per minute", SimType.INT64);                //        apVSpeed             AP_VSPEED
+            AddReaderDef("AUTOPILOT AIRSPEED HOLD VAR", "Knots", SimType.INT64);                          //        apSpeed              AP_SPEED
             AddReaderDef("ENG COMBUSTION:1", "Boolean", SimType.INT64);                                   //        E1On                 ENGINE_AUTO
 
             AddReaderDef("LIGHT NAV", "Boolean", SimType.INT64);                                          //        navLight             LIGHT_NAV
@@ -244,13 +203,13 @@
             AddReaderDef("LIGHT LOGO", "Boolean", SimType.INT64);                                         //        logoLight            LIGHT_LOGO
             AddReaderDef("LIGHT CABIN", "Boolean", SimType.INT64);                                        //        cabinLight           LIGHT_CABIN
 
-            AddReaderDef("AUTOPILOT ALTITUDE LOCK", "Boolean", SimType.INT64);                            //        apAltHold            AP_ALT_SWITCH, AP_ALT_SWITCH_AP_FOLDER, AP_ALT_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT HEADING LOCK", "Boolean", SimType.INT64);                             //        apHeadingHold        AP_HEAD_SWITCH, AP_HEAD_SWITCH_AP_FOLDER, AP_HEAD_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT MACH HOLD", "Boolean", SimType.INT64);                                //        apSpeedHold          AP_SPEED_SWITCH, AP_SPEED_SWITCH_AP_FOLDER, AP_SPEED_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT MANAGED THROTTLE ACTIVE", "Boolean", SimType.INT64);                  //        apThrottleHold       AP_THROTTLE_SWITCH, AP_THROTTLE_SWITCH_AP_FOLDER, AP_THROTTLE_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT MASTER", "Boolean", SimType.INT64);                                   //        apMasterHold         AP_MASTER_SWITCH, AP_MASTER_SWITCH_AP_FOLDER, AP_MASTER_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT NAV1 LOCK", "Boolean", SimType.INT64);                                //        apNavHold            AP_NAV_SWITCH, AP_NAV_SWITCH_AP_FOLDER, AP_GPS_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT VERTICAL HOLD", "Boolean", SimType.INT64);                            //        apVerticalSpeedHold  AP_VSPEED_SWITCH, AP_VSPEED_SWITCH_AP_FOLDER, AP_VSPEED_SWITCH_AL_FOLDER
+            AddReaderDef("AUTOPILOT ALTITUDE LOCK", "Boolean", SimType.INT64);                            //        apAltHold            AP_ALT_SWITCH
+            AddReaderDef("AUTOPILOT HEADING LOCK", "Boolean", SimType.INT64);                             //        apHeadingHold        AP_HEAD_SWITCH
+            AddReaderDef("AUTOPILOT MACH HOLD", "Boolean", SimType.INT64);                                //        apSpeedHold          AP_SPEED_SWITCH
+            AddReaderDef("AUTOPILOT MANAGED THROTTLE ACTIVE", "Boolean", SimType.INT64);                  //        apThrottleHold       AP_THROTTLE_SWITCH
+            AddReaderDef("AUTOPILOT MASTER", "Boolean", SimType.INT64);                                   //        apMasterHold         AP_MASTER_SWITCH
+            AddReaderDef("AUTOPILOT NAV1 LOCK", "Boolean", SimType.INT64);                                //        apNavHold            AP_NAV_SWITCH
+            AddReaderDef("AUTOPILOT VERTICAL HOLD", "Boolean", SimType.INT64);                            //        apVerticalSpeedHold  AP_VSPEED_SWITCH
             AddReaderDef("KOHLSMAN SETTING HG:1", "inHg", SimType.FLOAT64);                               //        kohlsmanInHb         KOHLSMAN
             AddReaderDef("AILERON TRIM PCT", "Number", SimType.FLOAT64);                                  //        aileronTrim          AILERON_TRIM
             AddReaderDef("ELEVATOR TRIM PCT", "Percent Over 100", SimType.FLOAT64);                       //        elevatorTrim         ELEVATOR_TRIM
@@ -283,7 +242,7 @@
             AddReaderDef("LIGHT PEDESTRAL", "Boolean", SimType.INT64);                                    //        pedestralLight       LIGHT_PEDESTAL
             AddReaderDef("LIGHT GLARESHIELD", "Boolean", SimType.INT64);                                  //        glareshieldLight     LIGHT_GLARESHIELD
             AddReaderDef("AUTOPILOT YAW DAMPER", "Boolean", SimType.INT64);                               //        apYawDamper          AP_YAW_DAMPER_SWITCH
-            AddReaderDef("AUTOPILOT BACKCOURSE HOLD", "Boolean", SimType.INT64);                          //        apBackCourse         AP_BC_SWITCH, AP_BC_AP_FOLDER, AP_BC_AL_FOLDER
+            AddReaderDef("AUTOPILOT BACKCOURSE HOLD", "Boolean", SimType.INT64);                          //        apBackCourse         AP_BC_SWITCH
             AddReaderDef("SIMULATION RATE", "Number", SimType.FLOAT64);                                   //        simRate              SIM_RATE
             AddReaderDef("SPOILERS ARMED", "Boolean", SimType.INT64);                                     //        spoilerArm           SPOILERS_ARM
 
