@@ -6,8 +6,8 @@
     {
         public FlapEncoder() : base("Flaps", "Current flap level", "Nav", true, 0, 100, 1)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.MAX_FLAP));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.FLAP));
+            bindings.Add(Register(BindingKeys.MAX_FLAP));
+            bindings.Add(Register(BindingKeys.FLAP));
         }
 
         protected override string GetDisplayValue() => bindings[1].ControllerValue + " / " + bindings[0].ControllerValue;

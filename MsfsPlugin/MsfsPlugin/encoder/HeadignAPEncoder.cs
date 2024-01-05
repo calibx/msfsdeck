@@ -7,8 +7,8 @@
     {
         public HeadignAPEncoder() : base("Head", "Autopilot heading encoder", "AP", true, 1, 360, 1)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEADING));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.HEADING));
+            bindings.Add(Register(BindingKeys.AP_HEADING));
+            bindings.Add(Register(BindingKeys.HEADING));
         }
         protected override void RunCommand(string actionParameter) => SetValue(bindings[1].ControllerValue);
         protected override string GetDisplayValue() => "[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;

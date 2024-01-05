@@ -5,33 +5,26 @@
     using Loupedeck.MsfsPlugin.msfs;
     using Loupedeck.MsfsPlugin.tools;
 
-    public class LightsDynamicFolder : PluginDynamicFolder, INotifiable
+    public class LightsDynamicFolder : DefaultFolder
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
-        public LightsDynamicFolder()
+        public LightsDynamicFolder() : base("Lights")
         {
-            DisplayName = "Lights";
-            GroupName = "Folder";
-
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_NAV));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_BEACON));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LANDING));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_TAXI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_STROBE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_INSTRUMENT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_RECOG));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_WING));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LOGO));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_CABIN));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_PEDESTAL));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_GLARESHIELD));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.FLASHLIGHT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_ALL_SWITCH));
-            MsfsData.Instance.Register(this);
-
+            bindings.Add(Register(BindingKeys.LIGHT_NAV));
+            bindings.Add(Register(BindingKeys.LIGHT_BEACON));
+            bindings.Add(Register(BindingKeys.LIGHT_LANDING));
+            bindings.Add(Register(BindingKeys.LIGHT_TAXI));
+            bindings.Add(Register(BindingKeys.LIGHT_STROBE));
+            bindings.Add(Register(BindingKeys.LIGHT_INSTRUMENT));
+            bindings.Add(Register(BindingKeys.LIGHT_RECOG));
+            bindings.Add(Register(BindingKeys.LIGHT_WING));
+            bindings.Add(Register(BindingKeys.LIGHT_LOGO));
+            bindings.Add(Register(BindingKeys.LIGHT_CABIN));
+            bindings.Add(Register(BindingKeys.LIGHT_PEDESTAL));
+            bindings.Add(Register(BindingKeys.LIGHT_GLARESHIELD));
+            bindings.Add(Register(BindingKeys.FLASHLIGHT));
+            bindings.Add(Register(BindingKeys.LIGHT_ALL_SWITCH));
         }
 
-        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
@@ -156,17 +149,5 @@
 
             }
         }
-
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
-            }
-        }
     }
-
 }

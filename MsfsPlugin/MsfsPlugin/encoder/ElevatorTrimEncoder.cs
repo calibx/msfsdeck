@@ -5,7 +5,7 @@
     class ElevatorTrimEncoder : DefaultEncoder
     {
         public ElevatorTrimEncoder() : base("Elevator Trim", "Elevator trim encoder", "Nav", true, -100, 100, 1) =>
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ELEVATOR_TRIM));
+            bindings.Add(Register(BindingKeys.ELEVATOR_TRIM));
 
         protected override void RunCommand(string actionParameter) => SetValue(0);
 

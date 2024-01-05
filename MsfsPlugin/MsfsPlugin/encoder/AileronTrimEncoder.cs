@@ -5,7 +5,7 @@
     class AileronTrimEncoder : DefaultEncoder
     {
         public AileronTrimEncoder() : base("Aileron Trim", "Aileron trim encoder", "Nav", true, -100, 100, 1) =>
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AILERON_TRIM));
+            bindings.Add(Register(BindingKeys.AILERON_TRIM));
 
         protected override void RunCommand(string actionParameter) => SetValue(0);
 

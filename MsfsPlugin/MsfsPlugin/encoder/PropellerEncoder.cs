@@ -4,7 +4,7 @@
     class PropellerEncoder : DefaultEncoder
     {
         public PropellerEncoder() : base("Prop", "Current propeller", "Nav", true, 0, 100, 1) =>
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.PROPELLER));
+            bindings.Add(Register(BindingKeys.PROPELLER));
 
         protected override void RunCommand(string actionParameter) => SetValue(0);
 

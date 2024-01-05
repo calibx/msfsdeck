@@ -5,7 +5,7 @@
     class RudderTrimEncoder : DefaultEncoder
     {
         public RudderTrimEncoder() : base("Rudder Trim", "Rudder trim encoder", "Nav", true, -100, 100, 1) =>
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.RUDDER_TRIM));
+            bindings.Add(Register(BindingKeys.RUDDER_TRIM));
 
         protected override void RunCommand(string actionParameter) => SetValue(0);
 

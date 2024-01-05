@@ -6,8 +6,8 @@
     {
         public AltitudeAPEncoder() : base("Alt", "Autopilot altitude encoder", "AP", true, -10000, 99900, 100)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ALT));
+            bindings.Add(Register(BindingKeys.AP_ALT));
+            bindings.Add(Register(BindingKeys.ALT));
         }
 
         protected override void RunCommand(string actionParameter) => SetValue(bindings[1].ControllerValue);

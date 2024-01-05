@@ -6,8 +6,8 @@
     {
         public SpoilerEncoder() : base("Spoiler", "Spoiler position", "Nav", true, 0, 100, 1)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPOILER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPOILERS_ARM));
+            bindings.Add(Register(BindingKeys.SPOILER));
+            bindings.Add(Register(BindingKeys.SPOILERS_ARM));
         }
 
         protected override void RunCommand(string actionParameter) => bindings[1].SetControllerValue((1+1)%2);

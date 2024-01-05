@@ -6,8 +6,8 @@
     {
         public SpeedAPEncoder() : base("Speed", "Autopilot speed encoder", "AP", true, 0, 2000, 1)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED));
+            bindings.Add(Register(BindingKeys.AP_SPEED));
+            bindings.Add(Register(BindingKeys.SPEED));
         }
 
         protected override void RunCommand(string actionParameter) => SetValue(bindings[1].ControllerValue);

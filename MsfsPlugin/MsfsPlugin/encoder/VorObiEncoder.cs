@@ -6,10 +6,10 @@
     {
         public VorObiEncoder() : base("VOR OBS", "VOR OBS encoder", "Nav", true, 0, 359, 1)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VOR1_OBS));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VOR2_OBS));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VOR1_SET));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VOR2_SET));
+            bindings.Add(Register(BindingKeys.VOR1_OBS));
+            bindings.Add(Register(BindingKeys.VOR2_OBS));
+            bindings.Add(Register(BindingKeys.VOR1_SET));
+            bindings.Add(Register(BindingKeys.VOR2_SET));
         }
 
         protected override void RunCommand(string actionParameter) => controlsVor2 = !controlsVor2;

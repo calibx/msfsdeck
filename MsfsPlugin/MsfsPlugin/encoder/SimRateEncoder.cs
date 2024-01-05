@@ -7,7 +7,7 @@
     class SimRateEncoder : DefaultEncoder
     {
         public SimRateEncoder() : base("Sim Rate", "Simulation rate encoder", "Misc", true, 0, 12800, 100) =>
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SIM_RATE));
+            bindings.Add(Register(BindingKeys.SIM_RATE));
 
         protected override void RunCommand(string actionParameter) => SetValue(0);
 

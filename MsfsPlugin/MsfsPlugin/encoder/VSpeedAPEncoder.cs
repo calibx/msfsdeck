@@ -6,8 +6,8 @@
     {
         public VSpeedAPEncoder() : base("VS", "Autopilot VS encoder", "AP", true, -10000, 10000, 100)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED));
+            bindings.Add(Register(BindingKeys.AP_VSPEED));
+            bindings.Add(Register(BindingKeys.VSPEED));
         }
 
         protected override void RunCommand(string actionParameter) => SetValue(bindings[1].ControllerValue);

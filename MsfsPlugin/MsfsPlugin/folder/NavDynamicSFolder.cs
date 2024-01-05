@@ -5,26 +5,19 @@
 
     using Loupedeck.MsfsPlugin.tools;
 
-    public class NavDynamicSFolder : PluginDynamicFolder, INotifiable
+    public class NavDynamicSFolder : DefaultFolder
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
         private bool isVar1Active = true;
-        public NavDynamicSFolder()
+        public NavDynamicSFolder() : base("NAV (for S)")
         {
-            DisplayName = "NAV (for S)";
-            GroupName = "Folder";
-
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV1_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV2_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV1_STBY_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV2_STBY_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV1_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV2_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV1_RADIO_SWAP));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.NAV2_RADIO_SWAP));
-
-            MsfsData.Instance.Register(this);
-
+            bindings.Add(Register(BindingKeys.NAV1_ACTIVE_FREQUENCY));
+            bindings.Add(Register(BindingKeys.NAV2_ACTIVE_FREQUENCY));
+            bindings.Add(Register(BindingKeys.NAV1_STBY_FREQUENCY));
+            bindings.Add(Register(BindingKeys.NAV2_STBY_FREQUENCY));
+            bindings.Add(Register(BindingKeys.NAV1_AVAILABLE));
+            bindings.Add(Register(BindingKeys.NAV2_AVAILABLE));
+            bindings.Add(Register(BindingKeys.NAV1_RADIO_SWAP));
+            bindings.Add(Register(BindingKeys.NAV2_RADIO_SWAP));
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.EncoderArea;
@@ -63,6 +56,7 @@
                 CreateCommandName("Float Reset"),
             };
         }
+
         public override string GetAdjustmentDisplayName(string actionParameter, PluginImageSize imageSize)
         {
             var bindingIndex = isVar1Active ? 2 : 3;
@@ -79,6 +73,7 @@
             }
             return ret;
         }
+
         public override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
@@ -125,7 +120,6 @@
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[5].MsfsValue));
                         bitmapBuilder.DrawText(bindings[3].ControllerValue == 0 ? "0" : bindings[3].ControllerValue.ToString().Substring(3, 2), ImageTool.Yellow, 40);
                         break;
-
                 }
                 return bitmapBuilder.ToImage();
             }
@@ -168,7 +162,6 @@
                         bindings[7].SetControllerValue(1);
                     }
                     break;
-
             }
         }
 
@@ -192,16 +185,6 @@
             }
             EncoderActionNamesChanged();
             ButtonActionNamesChanged();
-        }
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
-            }
         }
     }
 }

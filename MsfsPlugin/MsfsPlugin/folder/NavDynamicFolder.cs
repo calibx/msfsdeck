@@ -4,28 +4,23 @@
 
     using Loupedeck.MsfsPlugin.tools;
 
-    public class NavDynamicFolder : PluginDynamicFolder, INotifiable
+    public class NavDynamicFolder : DefaultFolder
     {
-        public NavDynamicFolder()
+        public NavDynamicFolder() : base("NAV")
         {
-            DisplayName = "NAV";
-            GroupName = "Folder";
-
-            bindings.Add(Nav1ActiveFreq = MsfsData.Instance.Register(BindingKeys.NAV1_ACTIVE_FREQUENCY));
-            bindings.Add(Nav2ActiveFreq = MsfsData.Instance.Register(BindingKeys.NAV2_ACTIVE_FREQUENCY));
-            bindings.Add(Nav1Available = MsfsData.Instance.Register(BindingKeys.NAV1_AVAILABLE));
-            bindings.Add(Nav2Available = MsfsData.Instance.Register(BindingKeys.NAV2_AVAILABLE));
-            bindings.Add(Nav1StandbyFreq = MsfsData.Instance.Register(BindingKeys.NAV1_STBY_FREQUENCY));
-            bindings.Add(Nav2StandbyFreq = MsfsData.Instance.Register(BindingKeys.NAV2_STBY_FREQUENCY));
-            bindings.Add(Nav1Swap = MsfsData.Instance.Register(BindingKeys.NAV1_RADIO_SWAP));
-            bindings.Add(Nav2Swap = MsfsData.Instance.Register(BindingKeys.NAV2_RADIO_SWAP));
-            bindings.Add(AdfActiveFreq = MsfsData.Instance.Register(BindingKeys.ADF_ACTIVE_FREQUENCY));
-            bindings.Add(AdfStandbyFreq = MsfsData.Instance.Register(BindingKeys.ADF_STBY_FREQUENCY));
-            bindings.Add(AdfAvail = MsfsData.Instance.Register(BindingKeys.ADF1_AVAILABLE));
-            bindings.Add(AdfStbyAvail = MsfsData.Instance.Register(BindingKeys.ADF1_STBY_AVAILABLE));
-            bindings.Add(AdfSwap = MsfsData.Instance.Register(BindingKeys.ADF_RADIO_SWAP));
-
-            MsfsData.Instance.Register(this);
+            bindings.Add(Nav1ActiveFreq = Register(BindingKeys.NAV1_ACTIVE_FREQUENCY));
+            bindings.Add(Nav2ActiveFreq = Register(BindingKeys.NAV2_ACTIVE_FREQUENCY));
+            bindings.Add(Nav1Available = Register(BindingKeys.NAV1_AVAILABLE));
+            bindings.Add(Nav2Available = Register(BindingKeys.NAV2_AVAILABLE));
+            bindings.Add(Nav1StandbyFreq = Register(BindingKeys.NAV1_STBY_FREQUENCY));
+            bindings.Add(Nav2StandbyFreq = Register(BindingKeys.NAV2_STBY_FREQUENCY));
+            bindings.Add(Nav1Swap = Register(BindingKeys.NAV1_RADIO_SWAP));
+            bindings.Add(Nav2Swap = Register(BindingKeys.NAV2_RADIO_SWAP));
+            bindings.Add(AdfActiveFreq = Register(BindingKeys.ADF_ACTIVE_FREQUENCY));
+            bindings.Add(AdfStandbyFreq = Register(BindingKeys.ADF_STBY_FREQUENCY));
+            bindings.Add(AdfAvail = Register(BindingKeys.ADF1_AVAILABLE));
+            bindings.Add(AdfStbyAvail = Register(BindingKeys.ADF1_STBY_AVAILABLE));
+            bindings.Add(AdfSwap = Register(BindingKeys.ADF_RADIO_SWAP));
         }
 
         // Plane                      Variable containing active frequency       Variable containing "other" freq     "other" frequency shown?  Swapping event
@@ -44,8 +39,6 @@
         // Milviz 310R                      ADF ACTIVE FREQUENCY:1                   ADF STANDBY FREQUENCY:1                     yes            ADF1_RADIO_SWAP
         // Textron C152                     ADF ACTIVE FREQUENCY:1                                                               no                            
         // Textron C172                     ADF ACTIVE FREQUENCY:1                   ADF STANDBY FREQUENCY:1                     yes            ADF1_RADIO_SWAP
-
-        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
 
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
@@ -238,17 +231,6 @@
             }
         }
 
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
-            }
-        }
-
         void AdjustAdf(Binding bindingFreq, int ticks) => bindingFreq.SetControllerValue(adfAdjuster.IncrIntValue(bindingFreq.ControllerValue, ticks));
 
         void SetBackgroundImage(BitmapBuilder builder, Binding binding) => builder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(binding.MsfsValue));
@@ -307,7 +289,6 @@
 
         int OnesMultiplier = 1;
 
-        readonly List<Binding> bindings = new List<Binding>();
         readonly DecimalValueAdjuster navAdjuster = new DecimalValueAdjuster(108, 117, 0, 95, 5, 1000000);
         readonly DecimalValueAdjuster adfAdjuster = new DecimalValueAdjuster(100, 1799, 0, 0, 1, 10);
     }

@@ -5,36 +5,29 @@
 
     using Loupedeck.MsfsPlugin.tools;
 
-    public class ComDynamicFolder : PluginDynamicFolder, INotifiable
+    public class ComDynamicFolder : DefaultFolder
     {
-        public ComDynamicFolder()
+        public ComDynamicFolder() : base("COM")
         {
-            DisplayName = "COM";
-            GroupName = "Folder";
-
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM3_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_ACTIVE_FREQUENCY_TYPE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_ACTIVE_FREQUENCY_TYPE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM3_ACTIVE_FREQUENCY_TYPE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_STATUS));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_STATUS));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM3_STATUS));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM3_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_STBY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_STBY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM3_STBY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_RADIO_SWAP));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_RADIO_SWAP));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM3_RADIO_SWAP));
-
-            MsfsData.Instance.Register(this);
+            bindings.Add(Register(BindingKeys.COM1_ACTIVE_FREQUENCY));
+            bindings.Add(Register(BindingKeys.COM2_ACTIVE_FREQUENCY));
+            bindings.Add(Register(BindingKeys.COM3_ACTIVE_FREQUENCY));
+            bindings.Add(Register(BindingKeys.COM1_ACTIVE_FREQUENCY_TYPE));
+            bindings.Add(Register(BindingKeys.COM2_ACTIVE_FREQUENCY_TYPE));
+            bindings.Add(Register(BindingKeys.COM3_ACTIVE_FREQUENCY_TYPE));
+            bindings.Add(Register(BindingKeys.COM1_STATUS));
+            bindings.Add(Register(BindingKeys.COM2_STATUS));
+            bindings.Add(Register(BindingKeys.COM3_STATUS));
+            bindings.Add(Register(BindingKeys.COM1_AVAILABLE));
+            bindings.Add(Register(BindingKeys.COM2_AVAILABLE));
+            bindings.Add(Register(BindingKeys.COM3_AVAILABLE));
+            bindings.Add(Register(BindingKeys.COM1_STBY));
+            bindings.Add(Register(BindingKeys.COM2_STBY));
+            bindings.Add(Register(BindingKeys.COM3_STBY));
+            bindings.Add(Register(BindingKeys.COM1_RADIO_SWAP));
+            bindings.Add(Register(BindingKeys.COM2_RADIO_SWAP));
+            bindings.Add(Register(BindingKeys.COM3_RADIO_SWAP));
         }
-
-        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
 
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
@@ -192,18 +185,6 @@
             ButtonActionNamesChanged();
         }
 
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
-            }
-        }
-
-        readonly List<Binding> bindings = new List<Binding>();
         readonly DecimalValueAdjuster adjuster = new DecimalValueAdjuster(118, 136, 0, 995, 5, 1000000);
     }
 }

@@ -4,28 +4,25 @@
 
     using Loupedeck.MsfsPlugin.msfs;
 
-    public class ATCDynamicFolder : PluginDynamicFolder, INotifiable
+    public class ATCDynamicFolder : DefaultFolder
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
-        public ATCDynamicFolder()
+        public ATCDynamicFolder() : base("ATC")
         {
-            DisplayName = "ATC";
-            GroupName = "Folder";
-            MsfsData.Instance.Register(this);
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_0_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_1_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_2_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_3_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_4_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_5_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_6_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_7_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_8_ATC_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ATC_9_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_0_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_1_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_2_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_3_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_4_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_5_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_6_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_7_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_8_ATC_FOLDER));
+            bindings.Add(Register(BindingKeys.ATC_9_ATC_FOLDER));
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.EncoderArea;
+
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
@@ -43,7 +40,9 @@
                 CreateCommandName("9")
             };
         }
+
         public override string GetCommandDisplayName(string actionParameter, PluginImageSize imageSize) => actionParameter;
+
         public override void RunCommand(string actionParameter)
         {
             SimConnectDAO.Instance.setPlugin(Plugin);
@@ -84,7 +83,5 @@
                     break;
             }
         }
-        public void Notify() { }
-
     }
 }

@@ -3,13 +3,10 @@
     using System.Collections.Generic;
     using Loupedeck.MsfsPlugin.tools;
 
-    internal class CockpitViewFolder : PluginDynamicFolder
+    internal class CockpitViewFolder : DefaultFolder
     {
-        public CockpitViewFolder()
+        public CockpitViewFolder() : base("Cockpit Views")
         {
-            DisplayName = "Cockpit Views";
-            GroupName = "Folder";
-
             InSetMode = false;
             InCustomMode = false;
             SetModifierKey();

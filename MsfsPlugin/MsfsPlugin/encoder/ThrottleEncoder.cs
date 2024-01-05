@@ -6,8 +6,8 @@
     {
         public ThrottleEncoder() : base("Throttle", "Current throttle", "Nav", true, -100, 100, 1)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.MIN_THROTTLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.THROTTLE));
+            bindings.Add(Register(BindingKeys.MIN_THROTTLE));
+            bindings.Add(Register(BindingKeys.THROTTLE));
         }
 
         protected override void RunCommand(string actionParameter) => SetValue(0);

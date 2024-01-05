@@ -8,8 +8,8 @@
     {
         public BarometerEncoder() : base("Baro", "Barometer encoder", "Nav", true, 2799, 3201, 1)
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.KOHLSMAN));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SEA_LEVEL_PRESSURE));
+            bindings.Add(Register(BindingKeys.KOHLSMAN));
+            bindings.Add(Register(BindingKeys.SEA_LEVEL_PRESSURE));
         }
 
         protected override void RunCommand(string actionParameter) => SetValue((long)Math.Round(bindings[1].MsfsValue / inHg2mbar / 10));

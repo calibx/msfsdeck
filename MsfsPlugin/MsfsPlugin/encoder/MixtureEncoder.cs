@@ -5,7 +5,7 @@
     class MixtureEncoder : DefaultEncoder
     {
         public MixtureEncoder() : base("Mixture", "Mixture encoder for the 4 engines", "Nav", true, 0, 100, 1) =>
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.MIXTURE));
+            bindings.Add(Register(BindingKeys.MIXTURE));
 
         protected override void RunCommand(string actionParameter) => SetValue(0);
 

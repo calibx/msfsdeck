@@ -5,27 +5,23 @@
 
     using Loupedeck.MsfsPlugin.tools;
 
-    public class ComDynamicSFolder : PluginDynamicFolder, INotifiable
+    public class ComDynamicSFolder : DefaultFolder
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
         private bool isCom1active = true;
-        public ComDynamicSFolder()
+        public ComDynamicSFolder() : base("COM (for S)")
         {
-            DisplayName = "COM (for S)";
-            GroupName = "Folder";
-
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_ACTIVE_FREQUENCY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_STBY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_STBY));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_AVAILABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM1_RADIO_SWAP));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.COM2_RADIO_SWAP));
-            MsfsData.Instance.Register(this);
-
+            bindings.Add(Register(BindingKeys.COM1_ACTIVE_FREQUENCY));
+            bindings.Add(Register(BindingKeys.COM2_ACTIVE_FREQUENCY));
+            bindings.Add(Register(BindingKeys.COM1_STBY));
+            bindings.Add(Register(BindingKeys.COM2_STBY));
+            bindings.Add(Register(BindingKeys.COM1_AVAILABLE));
+            bindings.Add(Register(BindingKeys.COM2_AVAILABLE));
+            bindings.Add(Register(BindingKeys.COM1_RADIO_SWAP));
+            bindings.Add(Register(BindingKeys.COM2_RADIO_SWAP));
         }
+
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.EncoderArea;
+
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
@@ -43,6 +39,7 @@
                 NavigateUpActionName,
             };
         }
+
         public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)
         {
             return new[]
@@ -180,16 +177,6 @@
             }
             EncoderActionNamesChanged();
             ButtonActionNamesChanged();
-        }
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
-            }
         }
     }
 }

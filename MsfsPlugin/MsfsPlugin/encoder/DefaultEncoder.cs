@@ -23,10 +23,7 @@
             SetValue(ConvertTool.ApplyAdjustment(GetValue(), ticks, min, max, step));
             ActionImageChanged();
         }
-        protected override string GetAdjustmentValue(string actionParameter)
-        {
-            return GetDisplayValue();
-        }
+        protected override string GetAdjustmentValue(string actionParameter) => GetDisplayValue();
 
         public void Notify()
         {
@@ -38,6 +35,8 @@
                 }
             }
         }
+
+        protected static Binding Register(BindingKeys key) => MsfsData.Instance.Register(key);
         protected virtual string GetDisplayValue() => GetValue().ToString();
         protected virtual long GetValue() => 0;
         protected abstract void SetValue(long value);

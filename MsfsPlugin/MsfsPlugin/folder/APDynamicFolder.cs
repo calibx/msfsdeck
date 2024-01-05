@@ -5,37 +5,31 @@
 
     using Loupedeck.MsfsPlugin.tools;
 
-    public class APDynamicFolder : PluginDynamicFolder, INotifiable
+    public class APDynamicFolder : DefaultFolder
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
-        public APDynamicFolder()
+        public APDynamicFolder() : base("AP")
         {
-            DisplayName = "AP";
-            GroupName = "Folder";
-            MsfsData.Instance.Register(this);
+            bindings.Add(Register(BindingKeys.AP_ALT));
+            bindings.Add(Register(BindingKeys.ALT));
+            bindings.Add(Register(BindingKeys.AP_HEADING));
+            bindings.Add(Register(BindingKeys.HEADING));
+            bindings.Add(Register(BindingKeys.AP_SPEED));
+            bindings.Add(Register(BindingKeys.SPEED));
+            bindings.Add(Register(BindingKeys.AP_VSPEED));
+            bindings.Add(Register(BindingKeys.VSPEED));
 
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.ALT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEADING));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.HEADING));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.SPEED));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.VSPEED));
-
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEAD_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NAV_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_MASTER_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_THROTTLE_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_BC_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_ALT_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_HEAD_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_NAV_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_SPEED_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_MASTER_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_THROTTLE_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_VSPEED_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_BC_SWITCH));
 
         }
 
-        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
         public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)
         {
             return new[]
@@ -194,17 +188,6 @@
                 case "VS Speed Reset":
                     bindings[6].SetControllerValue((long)(Math.Round(bindings[7].ControllerValue / 100d, 0) * 100));
                     break;
-            }
-        }
-
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
             }
         }
     }
