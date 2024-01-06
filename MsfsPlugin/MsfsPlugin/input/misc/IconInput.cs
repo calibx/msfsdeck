@@ -5,7 +5,7 @@
 
     class IconInput : DefaultInput
     {
-        public IconInput() : base("IconSize", "ChangeIconSize", "Misc") => bindings.Add(MsfsData.Instance.Register(BindingKeys.ICON_SIZE));
+        public IconInput() : base("IconSize", "ChangeIconSize", "Misc") => bindings.Add(Register(BindingKeys.ICON_SIZE));
         protected override void ChangeValue()
         {
             bindings[0].SetControllerValue(bindings[0].ControllerValue == 0 ? 1 : 0);

@@ -7,7 +7,7 @@
     {
         public SpoilerArmInput() : base("SpoilerArm", "Spoiler Arm", "Misc")
         {
-            binding = MsfsData.Instance.Register(BindingKeys.SPOILERS_ARM);
+            binding = Register(BindingKeys.SPOILERS_ARM);
             bindings.Add(binding);
         }
 

@@ -7,9 +7,9 @@
     {
         public PushbackInput() : base("Pushback", "Pushback", "Misc")
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.PUSHBACK_STATE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.PUSHBACK_ATTACHED));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.PUSHBACK_CONTROLLER, 3));
+            bindings.Add(Register(BindingKeys.PUSHBACK_STATE));
+            bindings.Add(Register(BindingKeys.PUSHBACK_ATTACHED));
+            bindings.Add(Register(BindingKeys.PUSHBACK_CONTROLLER, 3));
         }
 
         protected override void ChangeValue()

@@ -7,10 +7,10 @@
     {
         public GearInput() : base("Gear", "Display gears state", "Misc")
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.GEAR_RETRACTABLE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.GEAR_FRONT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.GEAR_LEFT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.GEAR_RIGHT));
+            bindings.Add(Register(BindingKeys.GEAR_RETRACTABLE));
+            bindings.Add(Register(BindingKeys.GEAR_FRONT));
+            bindings.Add(Register(BindingKeys.GEAR_LEFT));
+            bindings.Add(Register(BindingKeys.GEAR_RIGHT));
         }
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {

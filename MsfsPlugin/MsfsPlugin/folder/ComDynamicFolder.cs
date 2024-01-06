@@ -29,6 +29,8 @@
             bindings.Add(Register(BindingKeys.COM3_RADIO_SWAP));
         }
 
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
+
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]

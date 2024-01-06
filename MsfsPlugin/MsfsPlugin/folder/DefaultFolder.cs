@@ -15,8 +15,6 @@
             MsfsData.Instance.Register(this);
         }
 
-        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
-
         public void Notify()
         {
             foreach (Binding binding in bindings)

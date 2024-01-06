@@ -6,7 +6,7 @@
     {
         protected readonly List<Binding> bindings = new List<Binding>();
         protected readonly Binding bindingCnx = Register(BindingKeys.CONNECTION);
-        protected static Binding Register(BindingKeys key) => MsfsData.Instance.Register(key);
+        protected static Binding Register(BindingKeys key, long? value = null) => MsfsData.Instance.Register(key, value);
 
         public DefaultInput(string name, string desc, string category) : base(name, desc, category) => MsfsData.Instance.Register(this);
 

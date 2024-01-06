@@ -25,6 +25,8 @@
             bindings.Add(Register(BindingKeys.LIGHT_ALL_SWITCH));
         }
 
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
+
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]

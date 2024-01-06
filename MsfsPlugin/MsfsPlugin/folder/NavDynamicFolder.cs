@@ -27,6 +27,7 @@
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------
         // ATR-42/72                        ADF ACTIVE FREQUENCY:1                   ADF STANDBY FREQUENCY:1                     yes            ADF1_RADIO_SWAP
         //                                  ADF ACTIVE FREQUENCY:2                   ADF STANDBY FREQUENCY:2                     yes            ADF2_RADIO_SWAP .. not yet implemented
+        // Bagolu C172                      ADF ACTIVE FREQUENCY:1                   ADF STANDBY FREQUENCY:1                     yes            ADF1_RADIO_SWAP
         // Britten Norman Islander          ADF ACTIVE FREQUENCY:1                                                               no             
         // B737                             ADF ACTIVE FREQUENCY:1                   ??                                          yes            Must be using non-standard variable for "other" frequency
         // Carenado C182 RG II              ADF ACTIVE FREQUENCY:1                   ADF STANDBY FREQUENCY:1                     yes            ADF1_RADIO_SWAP
@@ -34,11 +35,14 @@
         // DC6                              ADF ACTIVE FREQUENCY:1                   ??                                          yes            Has two sets of active/standby but must be using non-standard variables
         // DHC-4 Caribou                    ADF ACTIVE FREQUENCY:1                   ADF ACTIVE FREQUENCY:2                      yes            Could be implemented because 'ADF AVAILABLE:2' is true
         // DHC-6 Twin Otter                 ADF ACTIVE FREQUENCY:1                   ADF STANDBY FREQUENCY:1                     yes            ADF1_RADIO_SWAP
+        // DHC-7 Pilot's Dash7              ADF ACTIVE FREQUENCY:1                   ADF ACTIVE FREQUENCY:2                      yes            Could be implemented because 'ADF AVAILABLE:2' is true
         // JF Piper Arrow III               ADF ACTIVE FREQUENCY:1                                                               no
         // JP Logistics C152                ADF ACTIVE FREQUENCY:1                   ADF ACTIVE FREQUENCY:2                      yes            Can not be implemented because 'ADF AVAILABLE:2' is false
         // Milviz 310R                      ADF ACTIVE FREQUENCY:1                   ADF STANDBY FREQUENCY:1                     yes            ADF1_RADIO_SWAP
         // Textron C152                     ADF ACTIVE FREQUENCY:1                                                               no                            
         // Textron C172                     ADF ACTIVE FREQUENCY:1                   ADF STANDBY FREQUENCY:1                     yes            ADF1_RADIO_SWAP
+
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
 
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {

@@ -5,7 +5,7 @@
 
     class EngineInput : DefaultInput
     {
-        public EngineInput() : base("AutoEngine", "Engine auto on/off", "Misc") => bindings.Add(MsfsData.Instance.Register(BindingKeys.ENGINE_AUTO));
+        public EngineInput() : base("AutoEngine", "Engine auto on/off", "Misc") => bindings.Add(Register(BindingKeys.ENGINE_AUTO));
         protected override void ChangeValue() => bindings[0].SetControllerValue(1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {

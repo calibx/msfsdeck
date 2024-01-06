@@ -5,7 +5,7 @@
 
     class SimCnxStateInput : DefaultInput
     {
-        public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug") => bindings.Add(MsfsData.Instance.Register(BindingKeys.CONNECTION));
+        public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug") => bindings.Add(Register(BindingKeys.CONNECTION));
 
         protected override string GetValue() => bindings[0].MsfsValue == 1 ? "connected" : bindings[0].MsfsValue == 2 ? "trying to\nconnect" : "not\nconnected";
 

@@ -6,8 +6,8 @@
     {
         public HeadingInput() : base("Heading", "Display current and AP heading", "Nav")
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEADING));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.HEADING));
+            bindings.Add(Register(BindingKeys.AP_HEADING));
+            bindings.Add(Register(BindingKeys.HEADING));
         }
 
         protected override string GetValue() => "Head\n[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;

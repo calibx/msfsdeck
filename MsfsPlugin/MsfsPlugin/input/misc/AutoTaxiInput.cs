@@ -5,7 +5,7 @@
 
     class AutoTaxiInput : DefaultInput
     {
-        public AutoTaxiInput() : base("AutoTaxi", "Auto speed to 20 knots on taxi", "Misc") => bindings.Add(MsfsData.Instance.Register(BindingKeys.AUTO_TAXI));
+        public AutoTaxiInput() : base("AutoTaxi", "Auto speed to 20 knots on taxi", "Misc") => bindings.Add(Register(BindingKeys.AUTO_TAXI));
         protected override void ChangeValue() => bindings[0].SetControllerValue(bindings[0].MsfsValue == 1 ? 2 : 1);
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {

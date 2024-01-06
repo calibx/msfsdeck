@@ -7,7 +7,7 @@
     {
         public PitotInput() : base("Pitot", "Pitot heating", "Misc")
         {
-            binding = MsfsData.Instance.Register(BindingKeys.PITOT);
+            binding = Register(BindingKeys.PITOT);
             bindings.Add(binding);
         }
 

@@ -7,7 +7,7 @@
     {
         public ParkingBrakeInput() : base("Parking brake", "Display parking brakes state", "Misc")
         {
-            binding = MsfsData.Instance.Register(BindingKeys.PARKING_BRAKES);
+            binding = Register(BindingKeys.PARKING_BRAKES);
             bindings.Add(binding);
         }
 

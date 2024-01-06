@@ -30,6 +30,8 @@
 
         }
 
+        public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
+
         public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)
         {
             return new[]

@@ -7,7 +7,7 @@
     {
         public PauseInput() : base("Pause", "Pause", "Misc")
         {
-            binding = MsfsData.Instance.Register(BindingKeys.PAUSE);
+            binding = Register(BindingKeys.PAUSE);
             bindings.Add(binding);
         }
 
