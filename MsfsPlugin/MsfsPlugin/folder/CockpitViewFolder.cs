@@ -107,7 +107,7 @@
 
         void SendKey(VirtualKeyCode key) => Plugin.KeyboardApi.SendShortcut(key, CurrentModifier);
 
-        BitmapColor GetTextColor(bool emphasize) => emphasize ? ImageTool.Green : ImageTool.Grey;
+        BitmapColor GetTextColor(bool emphasize) => emphasize ? ImageTool.Green : ImageTool.LightGrey;
 
         void SetModifierKey() => CurrentModifier =
             InSetMode
