@@ -8,17 +8,20 @@
         public FuelDisplay() : base("Fuel", "Display fuel left, flow and time before empty", "Misc")
         {
             bindings.Add(fuelPercent = Register(BindingKeys.FUEL_PERCENT));
-            bindings.Add(fuelFlow = Register(BindingKeys.FUEL_FLOW));
+            bindings.Add(fuelFlowGph = Register(BindingKeys.FUEL_FLOW_GPH));
+            bindings.Add(fuelFlowPph = Register(BindingKeys.FUEL_FLOW_PPH));
             bindings.Add(fuelTimeLeft = Register(BindingKeys.FUEL_TIME_LEFT));
         }
 
         protected override string GetValue() =>
-            "Fuel\n" + fuelPercent.MsfsValue + " %\n" +
-            fuelFlow.MsfsValue + " gph\n" +
-            (fuelFlow.MsfsValue == 0 ? "" : TimeSpan.FromSeconds(fuelTimeLeft.MsfsValue).ToString());
+            "Fuel " + fuelPercent.MsfsValue + "%\n" +
+            fuelFlowGph.MsfsValue + " gph\n" +
+            fuelFlowPph.MsfsValue + " pph\n" +
+            (fuelFlowGph.MsfsValue == 0 ? "" : TimeSpan.FromSeconds(fuelTimeLeft.MsfsValue).ToString());
 
         readonly Binding fuelPercent;
-        readonly Binding fuelFlow;
+        readonly Binding fuelFlowGph;
+        readonly Binding fuelFlowPph;
         readonly Binding fuelTimeLeft;
     }
 }

@@ -39,9 +39,10 @@
             SetMsfsValue(BindingKeys.GEAR_FRONT, (Int64)Math.Round(reader.gearCenterPos * 10));
             SetMsfsValue(BindingKeys.GEAR_LEFT, (Int64)Math.Round(reader.gearLeftPos * 10));
             SetMsfsValue(BindingKeys.GEAR_RIGHT, (Int64)Math.Round(reader.gearRightPos * 10));
-            SetMsfsValue(BindingKeys.FUEL_FLOW, reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH);
+            SetMsfsValue(BindingKeys.FUEL_FLOW_GPH, (Int64)Math.Round(reader.FuelGph));
+            SetMsfsValue(BindingKeys.FUEL_FLOW_PPH, (Int64)Math.Round(reader.FuelPph));
             SetMsfsValue(BindingKeys.FUEL_PERCENT, (Int64)Math.Round(reader.fuelQuantity * 100.0 / reader.fuelCapacity));
-            SetMsfsValue(BindingKeys.FUEL_TIME_LEFT, (Int64)(reader.fuelQuantity / (Double)(reader.E1GPH + reader.E2GPH + reader.E3GPH + reader.E4GPH) * 3600));
+            SetMsfsValue(BindingKeys.FUEL_TIME_LEFT, (Int64)(reader.fuelQuantity / reader.FuelGph * 3600));
             SetMsfsValue(BindingKeys.AP_NEXT_WP_ID, reader.wpID);
             SetMsfsValue(BindingKeys.AP_NEXT_WP_DIST, (Int64)Math.Round(reader.wpDistance * 0.00053996f, 1));
             SetMsfsValue(BindingKeys.AP_NEXT_WP_ETE, reader.wpETE);
@@ -167,10 +168,14 @@
             AddReaderDef("TURB ENG N2:4", "Percent", SimType.FLOAT64);                                    //        E4N2                 E2N4
             AddReaderDef("FUEL TOTAL CAPACITY", "Gallon", SimType.INT64);                                 //        fuelCapacity         FUEL_PERCENT
             AddReaderDef("FUEL TOTAL QUANTITY", "Gallon", SimType.INT64);                                 //        fuelQuantity         FUEL_PERCENT, FUEL_TIME_LEFT
-            AddReaderDef("ENG FUEL FLOW GPH:1", "Gallons per hour", SimType.INT64);                       //        E1GPH                FUEL_FLOW, FUEL_TIME_LEFT
-            AddReaderDef("ENG FUEL FLOW GPH:2", "Gallons per hour", SimType.INT64);                       //        E2GPH                FUEL_FLOW, FUEL_TIME_LEFT
-            AddReaderDef("ENG FUEL FLOW GPH:3", "Gallons per hour", SimType.INT64);                       //        E3GPH                FUEL_FLOW, FUEL_TIME_LEFT
-            AddReaderDef("ENG FUEL FLOW GPH:4", "Gallons per hour", SimType.INT64);                       //        E4GPH                FUEL_FLOW, FUEL_TIME_LEFT
+            AddReaderDef("ENG FUEL FLOW GPH:1", "Gallons per hour", SimType.FLOAT64);                     //        E1GPH                FUEL_FLOW_GPH, FUEL_TIME_LEFT
+            AddReaderDef("ENG FUEL FLOW GPH:2", "Gallons per hour", SimType.FLOAT64);                     //        E2GPH                FUEL_FLOW_GPH, FUEL_TIME_LEFT
+            AddReaderDef("ENG FUEL FLOW GPH:3", "Gallons per hour", SimType.FLOAT64);                     //        E3GPH                FUEL_FLOW_GPH, FUEL_TIME_LEFT
+            AddReaderDef("ENG FUEL FLOW GPH:4", "Gallons per hour", SimType.FLOAT64);                     //        E4GPH                FUEL_FLOW_GPH, FUEL_TIME_LEFT
+            AddReaderDef("ENG FUEL FLOW PPH:1", "Pounds per hour", SimType.FLOAT64);                      //        E1PPH                FUEL_FLOW_PPH, FUEL_TIME_LEFT
+            AddReaderDef("ENG FUEL FLOW PPH:2", "Pounds per hour", SimType.FLOAT64);                      //        E2PPH                FUEL_FLOW_PPH, FUEL_TIME_LEFT
+            AddReaderDef("ENG FUEL FLOW PPH:3", "Pounds per hour", SimType.FLOAT64);                      //        E3PPH                FUEL_FLOW_PPH, FUEL_TIME_LEFT
+            AddReaderDef("ENG FUEL FLOW PPH:4", "Pounds per hour", SimType.FLOAT64);                      //        E4PPH                FUEL_FLOW_PPH, FUEL_TIME_LEFT
             AddReaderDef("PUSHBACK STATE:0", "Enum", SimType.INT64);                                      //        pushback             - no binding -
             AddReaderDef("PROP RPM:1", "RPM", SimType.INT64);                                             //        ENG1N1RPM            E1RPM
             AddReaderDef("PROP RPM:2", "RPM", SimType.INT64);                                             //        ENG2N1RPM            E2RPM
