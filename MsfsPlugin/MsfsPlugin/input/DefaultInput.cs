@@ -8,7 +8,15 @@
         protected readonly Binding bindingCnx = Register(BindingKeys.CONNECTION);
         protected static Binding Register(BindingKeys key, long? value = null) => MsfsData.Instance.Register(key, value);
 
-        public DefaultInput(string name, string desc, string category) : base(name, desc, category) => MsfsData.Instance.Register(this);
+        protected DefaultInput(string name, string desc, string category) : base(name, desc, category)
+        {
+            MsfsData.Instance.Register(this);
+        }
+
+        protected DefaultInput()
+        {
+            MsfsData.Instance.Register(this);
+        }
 
         public void Notify()
         {
@@ -29,4 +37,3 @@
         protected virtual void ChangeValue() { }
     }
 }
-

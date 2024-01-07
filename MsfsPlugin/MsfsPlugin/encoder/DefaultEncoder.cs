@@ -10,7 +10,7 @@
         protected int step;
         protected readonly List<Binding> bindings = new List<Binding>();
 
-        public DefaultEncoder(string name, string desc, string category, bool resettable, int min, int max, int step) : base(name, desc, category, resettable)
+        protected DefaultEncoder(string name, string desc, string category, bool resettable, int min, int max, int step) : base(name, desc, category, resettable)
         {
             this.min = min;
             this.max = max;

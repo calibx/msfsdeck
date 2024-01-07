@@ -1,28 +1,25 @@
 ﻿namespace Loupedeck.MsfsPlugin.folder
 {
-    using System.Collections.Generic;
-
+    using Loupedeck.MsfsPlugin.input;
     using Loupedeck.MsfsPlugin.tools;
 
-    public class APMultiInputs : PluginDynamicCommand, INotifiable
+    public class APMultiInputs : DefaultInput
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
         public APMultiInputs()
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_ALT_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_HEAD_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_NAV_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_SPEED_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_MASTER_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_THROTTLE_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_VSPEED_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_FD_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_FLC_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_APP_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_LOC_SWITCH_AL_FOLDER));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.AP_BC_SWITCH));
-
+            bindings.Add(Register(BindingKeys.AP_ALT_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_HEAD_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_NAV_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_SPEED_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_MASTER_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_THROTTLE_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_VSPEED_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_FD_SWITCH_AL_FOLDER));
+            bindings.Add(Register(BindingKeys.AP_FLC_SWITCH_AL_FOLDER));
+            bindings.Add(Register(BindingKeys.AP_APP_SWITCH_AL_FOLDER));
+            bindings.Add(Register(BindingKeys.AP_LOC_SWITCH_AL_FOLDER));
+            bindings.Add(Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_BC_SWITCH));
 
             AddParameter("AP Alt", "Autopilot Altitude Switch", "AP");
             AddParameter("AP Head", "Autopilot Heading Switch", "AP");
@@ -37,9 +34,8 @@
             AddParameter("AP LOC", "Autopilot LOC Switch", "AP");
             AddParameter("AP YD", "Autopilot Yaw Damper Switch", "AP");
             AddParameter("AP BC", "Autopilot Back Course Switch", "AP");
-            MsfsData.Instance.Register(this);
-
         }
+
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
@@ -134,19 +130,7 @@
                 case "AP BC":
                     bindings[12].SetControllerValue(1);
                     break;
-
-            }
-        }
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
             }
         }
     }
-
 }

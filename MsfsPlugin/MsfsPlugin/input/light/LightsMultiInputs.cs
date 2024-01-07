@@ -1,30 +1,27 @@
 ﻿namespace Loupedeck.MsfsPlugin.folder
 {
-    using System.Collections.Generic;
-
+    using Loupedeck.MsfsPlugin.input;
     using Loupedeck.MsfsPlugin.msfs;
     using Loupedeck.MsfsPlugin.tools;
 
-    public class LightsMultiInputs : PluginDynamicCommand, INotifiable
+    public class LightsMultiInputs : DefaultInput
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
-
         public LightsMultiInputs()
         {
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_NAV));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_BEACON));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LANDING));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_TAXI));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_STROBE));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_INSTRUMENT));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_RECOG));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_WING));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_LOGO));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_CABIN));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_PEDESTAL));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_GLARESHIELD));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.LIGHT_ALL_SWITCH));
-            bindings.Add(MsfsData.Instance.Register(BindingKeys.FLASHLIGHT));
+            bindings.Add(Register(BindingKeys.LIGHT_NAV));
+            bindings.Add(Register(BindingKeys.LIGHT_BEACON));
+            bindings.Add(Register(BindingKeys.LIGHT_LANDING));
+            bindings.Add(Register(BindingKeys.LIGHT_TAXI));
+            bindings.Add(Register(BindingKeys.LIGHT_STROBE));
+            bindings.Add(Register(BindingKeys.LIGHT_INSTRUMENT));
+            bindings.Add(Register(BindingKeys.LIGHT_RECOG));
+            bindings.Add(Register(BindingKeys.LIGHT_WING));
+            bindings.Add(Register(BindingKeys.LIGHT_LOGO));
+            bindings.Add(Register(BindingKeys.LIGHT_CABIN));
+            bindings.Add(Register(BindingKeys.LIGHT_PEDESTAL));
+            bindings.Add(Register(BindingKeys.LIGHT_GLARESHIELD));
+            bindings.Add(Register(BindingKeys.LIGHT_ALL_SWITCH));
+            bindings.Add(Register(BindingKeys.FLASHLIGHT));
 
             AddParameter("Navigation", "Navigation light", "Lights");
             AddParameter("Beacon", "Beacon light", "Lights");
@@ -40,8 +37,6 @@
             AddParameter("Glareshield", "Glareshield light", "Lights");
             AddParameter("Flashlight", "Flashlight", "Lights");
             AddParameter("All lights", "All lights", "Lights");
-
-            MsfsData.Instance.Register(this);
         }
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
@@ -140,16 +135,6 @@
                 case "Flashlight":
                     bindings[13].SetControllerValue(1);
                     break;
-            }
-        }
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
             }
         }
     }
