@@ -34,8 +34,9 @@
             switch (engineType.MsfsValue)
             {
                 case 0:   // Prop
-                case 5:   // Turbo-prop
                     return Join(Prepend("RPM", RpmValues));
+                case 5:   // Turbo-prop
+                    return Join(Prepend("Ng" + columnSeparator + "RPM", Join(N1Values, RpmValues)));
                 case 1:   // Jet
                     return Join(Prepend("N1" + columnSeparator + "N2", Join(N1Values, N2Values)));
                 default:
