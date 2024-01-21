@@ -6,12 +6,26 @@
 
     class BarometerEncoder : DefaultEncoder
     {
-        public BarometerEncoder() : base("Baro", "Barometer encoder", "Nav", true, 2799, 3201, 1) => this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.KOHLSMAN)));
-        protected override void RunCommand(String actionParameter) => this.SetValue(2992);
-        protected override String GetDisplayValue() => (this._bindings[0].ControllerValue / 100f).ToString();
-        protected override Int64 GetValue() => this._bindings[0].ControllerValue;
-        protected override void SetValue(Int64 newValue) => this._bindings[0].SetControllerValue(newValue);
+        public BarometerEncoder() : base("Baro", "Barometer encoder", "Nav", true, 2799, 3201, 1)
+        {
+            bindings.Add(Register(BindingKeys.KOHLSMAN));
+            bindings.Add(Register(BindingKeys.SEA_LEVEL_PRESSURE));
+        }
 
+        protected override void RunCommand(string actionParameter) => SetValue((long)Math.Round(bindings[1].MsfsValue / inHg2mbar / 10));
 
+        protected override string GetDisplayValue() => (GetValue() / 100f).ToString() + "\n" + GetValueHpa().ToString();
+
+        protected override long GetValue() => bindings[0].ControllerValue;
+
+        protected override void SetValue(long newValue) => bindings[0].SetControllerValue(newValue);
+
+        private double GetValueHpa()
+        {
+            var result = bindings[0].ControllerValue * inHg2mbar;
+            return Math.Round(result, 1);
+        }
+
+        private const double inHg2mbar = 0.3386389;
     }
 }

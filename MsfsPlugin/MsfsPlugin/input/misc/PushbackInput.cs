@@ -1,6 +1,5 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-
     using Loupedeck.MsfsPlugin.input;
     using Loupedeck.MsfsPlugin.tools;
 
@@ -8,35 +7,35 @@
     {
         public PushbackInput() : base("Pushback", "Pushback", "Misc")
         {
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PUSHBACK_STATE)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PUSHBACK_ATTACHED)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.PUSHBACK_CONTROLLER)));
-            this._bindings[2].ControllerValue = 3;
+            bindings.Add(Register(BindingKeys.PUSHBACK_STATE));
+            bindings.Add(Register(BindingKeys.PUSHBACK_ATTACHED));
+            bindings.Add(Register(BindingKeys.PUSHBACK_CONTROLLER, 3));
         }
+
         protected override void ChangeValue()
         {
-            if (this._bindings[1].MsfsValue == 1)
+            if (bindings[1].MsfsValue == 1)
             {
-                this._bindings[2].SetControllerValue((this._bindings[2].ControllerValue + 1) % 4);
+                bindings[2].SetControllerValue((bindings[2].ControllerValue + 1) % 4);
             }
             else
             {
-                this._bindings[2].SetControllerValue(this._bindings[2].ControllerValue == 0 ? 3 : 0);
+                bindings[2].SetControllerValue(bindings[2].ControllerValue == 0 ? 3 : 0);
             }
         }
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (this._bindings[0].MsfsValue == 0)
+                if (bindings[0].MsfsValue == 0)
                 {
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(0));
                 }
-                else if (this._bindings[1].MsfsValue == 1)
+                else if (bindings[1].MsfsValue == 1)
                 {
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(2));
                 }
-                else if (this._bindings[2].ControllerValue == 3)
+                else if (bindings[2].ControllerValue == 3)
                 {
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(4));
                 }
@@ -45,7 +44,7 @@
                     bitmapBuilder.SetBackgroundImage(ImageTool.GetOnAvailableWaitDisableImage(3));
                 }
 
-                switch (this._bindings[2].ControllerValue)
+                switch (bindings[2].ControllerValue)
                 {
                     case 0:
                         bitmapBuilder.DrawText("Pushback straight");
@@ -63,8 +62,5 @@
                 return bitmapBuilder.ToImage();
             }
         }
-
     }
 }
-
-

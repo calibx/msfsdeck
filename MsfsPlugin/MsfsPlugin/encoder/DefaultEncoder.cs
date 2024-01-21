@@ -1,20 +1,16 @@
 ﻿namespace Loupedeck.MsfsPlugin.encoder
 {
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-
-
     using Loupedeck.MsfsPlugin.tools;
 
-    public abstract class DefaultEncoder : PluginDynamicAdjustment, Notifiable
+    public abstract class DefaultEncoder : PluginDynamicAdjustment, INotifiable
     {
-        protected Int32 min;
-        protected Int32 max;
-        protected Int32 step;
-        protected readonly List<Binding> _bindings = new List<Binding>();
+        protected int min;
+        protected int max;
+        protected int step;
+        protected readonly List<Binding> bindings = new List<Binding>();
 
-        public DefaultEncoder(String name, String desc, String category, Boolean resettable, Int32 min, Int32 max, Int32 step) : base(name, desc, category, resettable)
+        protected DefaultEncoder(string name, string desc, string category, bool resettable, int min, int max, int step) : base(name, desc, category, resettable)
         {
             this.min = min;
             this.max = max;
@@ -22,18 +18,16 @@
             MsfsData.Instance.Register(this);
         }
 
-        protected override void ApplyAdjustment(String actionParameter, Int32 ticks)
+        protected override void ApplyAdjustment(string actionParameter, int ticks)
         {
-            this.SetValue(ConvertTool.ApplyAdjustment(this.GetValue(), ticks, this.min, this.max, this.step));
-            this.ActionImageChanged();
+            SetValue(ConvertTool.ApplyAdjustment(GetValue(), ticks, min, max, step));
+            ActionImageChanged();
         }
-        protected override String GetAdjustmentValue(String actionParameter)
-        {
-            return this.GetDisplayValue();
-        }
+        protected override string GetAdjustmentValue(string actionParameter) => GetDisplayValue();
+
         public void Notify()
         {
-            foreach (Binding binding in this._bindings)
+            foreach (Binding binding in bindings)
             {
                 if (binding.HasMSFSChanged())
                 {
@@ -41,8 +35,10 @@
                 }
             }
         }
-        protected virtual String GetDisplayValue() => this.GetValue().ToString();
-        protected virtual Int64 GetValue() => 0;
-        protected abstract void SetValue(Int64 value);
+
+        protected static Binding Register(BindingKeys key) => MsfsData.Instance.Register(key);
+        protected virtual string GetDisplayValue() => GetValue().ToString();
+        protected virtual long GetValue() => 0;
+        protected abstract void SetValue(long value);
     }
 }

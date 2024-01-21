@@ -1,30 +1,43 @@
 ﻿namespace Loupedeck.MsfsPlugin.tools
 {
-    using System;
-    using System.Diagnostics;
-
-    public class ConvertTool
+    public static class ConvertTool
     {
-        public static Int64 getToggledValue(Int64 value) => value == 0 ? 1 : 0;
+        public static bool getBoolean(long value) => value != 0;
 
-        public static Int64 ApplyAdjustment(Int64 value, Int32 ticks, Int32 min, Int32 max, Int32 step, Boolean cycle = false)
+        public static long getToggledValue(long value) => value == 0 ? 1 : 0;
+
+        public static long ApplyAdjustment(long value, int ticks, int min, int max, int step, bool cycle = false)
         {
-            Debug.WriteLine(value);
-            value += ticks * step;
-            if (value < min)
+            var result = value + ticks * step;
+            if (cycle)
             {
-                value = cycle ? max : min;
+                int adjuster = max - min + step;
+                while (result > max)
+                {
+                    result -= adjuster;
+                }
+                while (result < min)
+                {
+                    result += adjuster;
+                }
             }
-            else if (value > max)
+            else
             {
-                value = cycle ? min : max;
+                if (result < min)
+                {
+                    return min;
+                }
+                else if (result > max)
+                {
+                    return max;
+                }
             }
-            return value;
+            return result;
         }
 
-        public static String IntToCOMStatus(Int64 comStatus)
+        public static string IntToCOMStatus(long comStatus)
         {
-            String type;
+            string type;
             switch (comStatus)
             {
                 case -1:
@@ -48,9 +61,10 @@
             }
             return type;
         }
-        public static String IntToCOMType(Int64 comType)
+
+        public static string IntToCOMType(long comType)
         {
-            String type;
+            string type;
             switch (comType)
             {
                 case 0:

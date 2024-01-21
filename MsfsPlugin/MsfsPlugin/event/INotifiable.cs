@@ -1,6 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    interface Notifiable
+    interface INotifiable
     {
         void Notify();
     }

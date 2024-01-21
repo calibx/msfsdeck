@@ -1,50 +1,103 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
-
     using Loupedeck.MsfsPlugin.msfs;
+    using Loupedeck.MsfsPlugin.tools;
 
     public class Binding
     {
-        private Int64 _MSFSPreviousValue;
-        private Int64 _ControllerPreviousValue;
-        public Int64 ControllerValue { get; set; }
-        public BindingKeys Key { get; set; }
-        public Int64 MsfsValue { get; set; }
-        public Boolean ControllerChanged { get; set; }
-        public Boolean MSFSChanged { get; set; }
+        public long ControllerValue { get; private set; }
 
-        public Binding(BindingKeys Key) => this.Key = Key;
-        public Boolean HasMSFSChanged() => this.MSFSChanged;
-        public void SetMsfsValue(Int64 newValue)
+        public BindingKeys Key { get; }
+
+        public long MsfsValue { get; private set; }
+
+        public bool GetBool() => ConvertTool.getBoolean(MsfsValue);
+
+        public bool ControllerChanged { get; private set; }
+
+        public bool MSFSChanged { get; set; }   //>> Not good that this can be set from outside
+
+        public Binding(BindingKeys key, long? value = null)
         {
-            this.MSFSChanged = !this._MSFSPreviousValue.Equals(this.MsfsValue);
-            this._MSFSPreviousValue = this.MsfsValue;
-            this.MsfsValue = newValue;
+            Key = key;
+            if (value.HasValue)
+                ControllerValue = value.Value;
         }
-        public void SetControllerValue(Int64 newValue)
+
+        public bool HasMSFSChanged() => MSFSChanged;
+
+        //>> Strange that the following methods do not lock, since they can be called from different threads concurrently
+
+        public void SetMsfsValue(long newValue)
         {
-            this.ControllerChanged = true;
-            this._ControllerPreviousValue = this.ControllerValue;
-            this.ControllerValue = newValue;
+            MSFSChanged = MsfsValue != newValue;
+
+            if (!MSFSChanged)
+                return;
+
+            if (newValue == ControllerPreviousValue)
+            {
+                // Ignore delayed change. Yes, this is not foolproof because the setting could be several
+                // changes away, but at least it avoids most of the occurrences where the value flips back
+                // and forth due to a delayed value coming from MSFS.
+
+                if (DoTrace)
+                    DebugTracing.Trace($"Ignoring delayed change to {newValue}");
+                return;
+            }
+
+            else if (ControllerChanged)
+            {
+                // Ignore a change from MSFS if we are in process of sending another value to it.
+
+                if (DoTrace)
+                    DebugTracing.Trace($"Ignoring change to {newValue} since we have a new value about to be sent.");
+                return;
+            }
+
+            if (DoTrace)
+                DebugTracing.Trace($"MSFS value for key {Key} changed from '{MsfsValue}' to '{newValue}'");
+
+            //>>MSFSPreviousValue = MsfsValue;
+            MsfsValue = newValue;
+        }
+
+        public void SetControllerValue(long newValue)
+        {
+            SetControllerValueCalled = true;
+            ControllerChanged = true;   // We need to do this even if the value is unchanged - e.g. NAV frequency swapping will only work with this
+            if (DoTrace)
+                DebugTracing.Trace($"Change {Key} from '{ControllerValue}' to '{newValue}'");
+
+            ControllerPreviousValue = ControllerValue;
+            ControllerValue = newValue;
             SimConnectDAO.Instance.Connect();
         }
+
         public void Reset()
         {
-            this.ControllerValue = this.MsfsValue;
-            this._MSFSPreviousValue = this.MsfsValue;
-            this._ControllerPreviousValue = this.MsfsValue;
-            this.ControllerChanged = false;
-            this.MSFSChanged = false;
-        }
-        public void ResetController()
-        {
-            this.MsfsValue = this.ControllerValue;
-            this._MSFSPreviousValue = this.ControllerValue;
-            this._ControllerPreviousValue = this.ControllerValue;
-            this.ControllerChanged = false;
-            this.MSFSChanged = false;
+            if (DoTrace)
+            {
+                DebugTracing.Trace($"Key {Key}");
+            }
+            ControllerValue = MsfsValue;
+            ControllerChanged = false;
+            MSFSChanged = false;
+            if (MsfsValue == ControllerValue)
+                SetControllerValueCalled = false;
         }
 
+        public void ResetController()
+        {
+            DebugTracing.Trace($"Key {Key}");
+            MsfsValue = ControllerValue;
+            ControllerChanged = false;
+            SetControllerValueCalled = false;
+        }
+
+        //>>private long MSFSPreviousValue = long.MinValue;
+        private long ControllerPreviousValue = long.MinValue;
+        private bool SetControllerValueCalled = false;
+        private bool DoTrace => DebugTracing.TracingEnabled && SetControllerValueCalled;
     }
 }

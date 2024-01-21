@@ -1,8 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin.tools
 {
-    using System;
-
-    public class ImageTool
+    public static class ImageTool
     {
         public static BitmapImage _imageOff = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.off.png");
 
@@ -16,21 +14,21 @@
 
         public static BitmapImage _imageDisable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
 
-        public static BitmapImage _imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
+        public static BitmapImage _imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disableBorder.png");
 
         public static BitmapImage _imageDisconnect = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
 
         public static BitmapImage _imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
 
-        public static BitmapImage GetOnOffImage(Int64 value) => ImageTool.IsConnected() ? value == 1 ? _imageOn : _imageOff : ImageTool.IsTryingToConnect() ? _imageTrying : _imageDisconnect;
-        public static BitmapImage GetAvailableDisableImage(Int64 value) => ImageTool.IsConnected() ? value == 1 ? _imageAvailableBorder : _imageDisableBorder : ImageTool.IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetOnOffImage(long value) => IsConnected() ? (value == 1 ? _imageOn : _imageOff) : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetAvailableDisableImage(long value) => IsConnected() ? (value == 1 ? _imageAvailableBorder : _imageDisableBorder) : IsTryingToConnect() ? _imageTrying : _imageDisconnect;
 
-        public static BitmapImage GetOnAvailableWaitDisableImage(Int64 value)
+        public static BitmapImage GetOnAvailableWaitDisableImage(long value)
         {
             BitmapImage state;
-            if (ImageTool.IsTryingToConnect()) {
+            if (IsTryingToConnect()) {
                 state = _imageTrying;
-            } else if (!ImageTool.IsConnected())
+            } else if (!IsConnected())
             {
                 state = _imageDisconnect;
             } else
@@ -38,27 +36,24 @@
                 switch (value)
                 {
                     case 1:
-                        state = ImageTool._imageAvailable;
+                        state = _imageAvailable;
                         break;
                     case 2:
-                        state = ImageTool._imageOn;
+                        state = _imageOn;
                         break;
                     case 3:
-                        state = ImageTool._imageWait;
+                        state = _imageWait;
                         break;
                     case 4:
-                        state = ImageTool._imageOff;
+                        state = _imageOff;
                         break;
                     default:
-                        state = ImageTool._imageDisable;
+                        state = _imageDisable;
                         break;
                 }
             }
             return state;
         }
-
-        private static Boolean IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
-        private static Boolean IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
 
         public static void Refresh()
         {
@@ -70,5 +65,15 @@
             _imageDisconnect = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnectFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
             _imageTrying = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.tryingFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
         }
-}
+
+        public static BitmapColor Red = new BitmapColor(255, 0, 0);
+        public static BitmapColor Green = new BitmapColor(0, 255, 0);
+        public static BitmapColor Blue = new BitmapColor(0, 0, 255);
+        public static BitmapColor Yellow = new BitmapColor(255, 255, 0);
+        public static BitmapColor Grey = new BitmapColor(128, 128, 128);
+        public static BitmapColor LightGrey = new BitmapColor(192, 192, 192);
+
+        private static bool IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
+        private static bool IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
+    }
 }

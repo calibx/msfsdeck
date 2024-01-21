@@ -2,41 +2,42 @@
 {
     using System;
     using System.Collections.Generic;
+
     class MsfsData
     {
-        private readonly List<Notifiable> notifiables = new List<Notifiable>();
+        private readonly List<INotifiable> notifiables = new List<INotifiable>();
 
         public Dictionary<BindingKeys, Binding> bindings = new Dictionary<BindingKeys, Binding>();
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
         public MSFSPlugin plugin { get; set; }
-        public Boolean DEBUG { get; set; }
-        public String AircraftName { get; set; }
-        public String DebugValue1 { get; set; }
-        public String DebugValue2 { get; set; }
-        public String DebugValue3 { get; set; }
+        public bool DEBUG { get; set; }
+        public string AircraftName { get; set; }
+        public string DebugValue1 { get; set; }
+        public string DebugValue2 { get; set; }
+        public string DebugValue3 { get; set; }
+
         private MsfsData()
-        {
-        }
+        { }
 
-        public void Register(Notifiable notif) => this.notifiables.Add(notif);
+        public void Register(INotifiable notif) => notifiables.Add(notif);
 
-        public Binding Register(Binding binding)
+        public Binding Register(BindingKeys key, long? value = null)
         {
-            if (!this.bindings.ContainsKey(binding.Key))
+            if (!bindings.ContainsKey(key))
             {
-                this.bindings.Add(binding.Key, binding);
+                bindings.Add(key, new Binding(key, value));
             }
-            return this.bindings[binding.Key];
+            return bindings[key];
         }
 
         public void Changed()
         {
             lock (this)
             {
-                this.plugin.OnActionImageChanged(null, null, true);
-                foreach (Notifiable notifiable in this.notifiables)
+                plugin.OnActionImageChanged(null, null, true);
+                foreach (INotifiable notifiable in notifiables)
                 {
                     notifiable.Notify();
                 }
