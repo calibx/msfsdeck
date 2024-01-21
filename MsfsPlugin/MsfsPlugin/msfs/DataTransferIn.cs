@@ -6,12 +6,14 @@
     using SimType = Microsoft.FlightSimulator.SimConnect.SIMCONNECT_DATATYPE;
 
     using static DataTransferTypes;
+    using Loupedeck.MsfsPlugin.tools;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
     internal static class DataTransferIn
     {
         internal static void ReadMsfsValues(Readers reader)
         {
+            DebugTracing.Trace("Reading sim variables");
             MsfsData.Instance.AircraftName = reader.title;
 
             SetMsfsValue(BindingKeys.ENGINE_AUTO, reader.E1On);
@@ -131,7 +133,9 @@
 
             //++ Insert appropriate SetMsfsValue calls here using the new binding keys and the new fields in reader.
 
+            DebugTracing.Trace("Done reading sim variables");
             MsfsData.Instance.Changed();
+            DebugTracing.Trace("Returning");
         }
 
         // Percentages are rounded to nearest integer value:
