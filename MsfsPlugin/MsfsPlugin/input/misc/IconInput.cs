@@ -18,7 +18,7 @@
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(value ? 1 : 0));
+                bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(value));
                 bitmapBuilder.DrawText("Icon size");
                 return bitmapBuilder.ToImage();
             }

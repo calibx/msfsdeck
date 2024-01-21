@@ -20,14 +20,18 @@
 
         static readonly BitmapImage imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disableBorder.png");
 
-        public static BitmapImage GetOnOffImage(long value) =>
+        public static BitmapImage GetOnOffImage(long value) => GetOnOffImage(value == 1);
+
+        public static BitmapImage GetAvailableDisableImage(long value) => GetAvailableDisableImage(value == 1);
+
+        public static BitmapImage GetOnOffImage(bool on) =>
             IsConnected()
-            ? (value == 1 ? imageOn : imageOff)
+            ? (on ? imageOn : imageOff)
             : IsTryingToConnect() ? imageTrying : imageDisconnect;
 
-        public static BitmapImage GetAvailableDisableImage(long value) =>
+        public static BitmapImage GetAvailableDisableImage(bool available) =>
             IsConnected()
-            ? (value == 1 ? imageAvailableBorder : imageDisableBorder)
+            ? (available ? imageAvailableBorder : imageDisableBorder)
             : (IsTryingToConnect() ? imageTrying : imageDisconnect);
 
         public static BitmapImage GetOnAvailableWaitDisableImage(long value)
