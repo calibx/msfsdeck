@@ -15,9 +15,9 @@
         protected override string GetDisplayValue() => "[" + ApHeading.ControllerValue + "]\n" + Heading.ControllerValue;
         protected override long GetValue() => ApHeading.ControllerValue;
         protected override void SetValue(long newValue) => ApHeading.SetControllerValue(newValue);
-        protected override void ApplyAdjustment(string actionParameter, int ticks)       //>> Kan undværes hvis DefaultEncoder kender til cycle /default-værdi false)
+        protected override void ApplyAdjustment(string actionParameter, int ticks)
         {
-            SetValue(ConvertTool.ApplyAdjustment(GetValue(), ticks, min, max, step, true));
+            SetValue(ConvertTool.ApplyAdjustment(ApHeading.ControllerValue, ticks, min, max, step, true));
             ActionImageChanged();
         }
 
