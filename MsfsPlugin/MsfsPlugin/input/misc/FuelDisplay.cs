@@ -14,10 +14,21 @@
         }
 
         protected override string GetValue() =>
-            "Fuel " + fuelPercent.MsfsValue + "%\n" +
-            fuelFlowGph.MsfsValue + " gph\n" +
-            fuelFlowPph.MsfsValue + " pph\n" +
-            (fuelFlowGph.MsfsValue == 0 ? "" : TimeSpan.FromSeconds(fuelTimeLeft.MsfsValue).ToString());
+            $"Fuel {fuelPercent.MsfsValue} %\n{fuelFlowGph.MsfsValue} gph\n{AlternativeValueText}\n {TimeLeftText}";
+
+        protected override void ChangeValue()
+        {
+            showPph = !showPph;
+        }
+
+        string AlternativeValueText => showPph ? $"{PphValue} pph" : $"{KgphValue} kgph";
+
+        string TimeLeftText => fuelFlowGph.MsfsValue == 0 ? "" : TimeSpan.FromSeconds(fuelTimeLeft.MsfsValue).ToString();
+
+        long KgphValue => (long)Math.Round(PphValue * 0.45359237);
+        long PphValue => (long)Math.Round(fuelFlowPph.MsfsValue / 100.0);
+
+        bool showPph = false;   // If false Kgph is shown
 
         readonly Binding fuelPercent;
         readonly Binding fuelFlowGph;
@@ -25,4 +36,3 @@
         readonly Binding fuelTimeLeft;
     }
 }
-

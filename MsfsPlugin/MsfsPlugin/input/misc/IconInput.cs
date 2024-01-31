@@ -5,21 +5,25 @@
 
     class IconInput : DefaultInput
     {
-        public IconInput() : base("IconSize", "ChangeIconSize", "Misc") => bindings.Add(Register(BindingKeys.ICON_SIZE));
+        public IconInput() : base("IconSize", "ChangeIconSize", "Misc")
+        { }
+
         protected override void ChangeValue()
         {
-            bindings[0].SetControllerValue(bindings[0].ControllerValue == 0 ? 1 : 0);
-            ImageTool.Refresh();
+            value = !value;
+            ImageTool.Refresh(value);
         }
+
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[0].ControllerValue));
-                bitmapBuilder.DrawText("ICON");
+                bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(value));
+                bitmapBuilder.DrawText("Icon size");
                 return bitmapBuilder.ToImage();
             }
         }
+
+        bool value = false;
     }
 }
-

@@ -113,7 +113,6 @@
         COM2_RADIO_SWAP,
         COM3_RADIO_SWAP,
         FLASHLIGHT,
-        ICON_SIZE,
         SIM_RATE,
         SPOILERS_ARM,
         NAV1_ACTIVE_FREQUENCY,
