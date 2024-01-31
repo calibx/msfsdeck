@@ -1,5 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
+    using System.Linq;
+
     using Loupedeck.MsfsPlugin.msfs;
     using Loupedeck.MsfsPlugin.tools;
 
@@ -15,7 +17,7 @@
 
         public bool ControllerChanged { get; private set; }
 
-        public bool MSFSChanged { get; set; }   //>> Not good that this can be set from outside
+        public bool MSFSChanged { get; set; }
 
         public Binding(BindingKeys key, long? value = null)
         {
@@ -37,7 +39,9 @@
                 // changes away, but at least it avoids most of the occurrences where the value flips back
                 // and forth due to a delayed value coming from MSFS.
                 if (DoTrace)
-                    DebugTracing.Trace($"Ignoring delayed change to {newValue}");
+                    DebugTracing.Trace($"Ignoring delayed change for key '{Key}' to '{newValue}'");
+                // Only ignore once (if the value is resent to us, we accept it):
+                ControllerPreviousValue = long.MinValue;
                 return;
             }
 
@@ -45,14 +49,13 @@
             {
                 // Ignore a change from MSFS if we are in process of sending another value to it.
                 if (DoTrace)
-                    DebugTracing.Trace($"Ignoring change to {newValue} since we have a new value about to be sent.");
+                    DebugTracing.Trace($"Ignoring change for key '{Key}' to '{newValue}' since we have a new value about to be sent.");
                 return;
             }
 
             if (DoTrace)
-                DebugTracing.Trace($"MSFS value for key {Key} changed from '{MsfsValue}' to '{newValue}'");
+                DebugTracing.Trace($"MSFS value for key '{Key}' changed from '{MsfsValue}' to '{newValue}'");
 
-            //>>MSFSPreviousValue = MsfsValue;
             MsfsValue = newValue;
             MSFSChanged = true;
         }
@@ -89,9 +92,11 @@
             SetControllerValueCalled = false;
         }
 
-        //>>private long MSFSPreviousValue = long.MinValue;
         private long ControllerPreviousValue = long.MinValue;
         private bool SetControllerValueCalled = false;
-        private bool DoTrace => DebugTracing.TracingEnabled && SetControllerValueCalled;
+        private bool DoTrace => DebugTracing.TracingEnabled && (SetControllerValueCalled || KeysToTrace.Contains(Key));
+
+        // For debugging: add keys to trace even if they are not manipulated by calling SetControllerValue():
+        private readonly BindingKeys[] KeysToTrace = { };
     }
 }

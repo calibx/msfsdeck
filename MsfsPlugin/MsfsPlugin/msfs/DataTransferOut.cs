@@ -14,7 +14,6 @@
     {
         internal static void SendEvents(SimConnect simConnect)
         {
-            DebugTracing.Trace("Sending to sim");
             SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM], simConnect);
             SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT], simConnect);
             SendEvent(EVENTS.KOHLSMAN_SET, MsfsData.Instance.bindings[BindingKeys.KOHLSMAN], simConnect);
@@ -142,7 +141,6 @@
                 simConnect.SetDataOnSimObject(DEFINITIONS.Writers, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, writer);
                 MsfsData.Instance.bindings[BindingKeys.MIXTURE].ResetController();
             }
-            DebugTracing.Trace("Done sending to sim");
         }
 
         private static void SendEvent(EVENTS eventName, Binding binding, SimConnect simConnect, Boolean enumerable = false)
