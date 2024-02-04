@@ -13,7 +13,7 @@
 
         public long MsfsValue { get; private set; }
 
-        public bool GetBool() => ConvertTool.getBoolean(MsfsValue);
+        public bool GetBool() => ConvertTool.GetBoolean(MsfsValue);
 
         public bool ControllerChanged { get; private set; }
 

@@ -151,7 +151,7 @@
                 switch (eventName)
                 {
                     case EVENTS.KOHLSMAN_SET:
-                        value = (UInt32)(binding.ControllerValue / 100f * 33.8639 * 16);
+                        value = ConvertTool.RoundToUint(binding.ControllerValue / 10000f * ConvertTool.inHg2mbar * 16);   //>> We should do rounding rather than truncation elsewhere too
                         break;
                     case EVENTS.ELEVATOR_TRIM_SET:
                         value = (UInt32)(binding.ControllerValue / 100f * 16383);

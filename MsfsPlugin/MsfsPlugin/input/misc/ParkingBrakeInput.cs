@@ -11,7 +11,7 @@
             bindings.Add(binding);
         }
 
-        protected override void ChangeValue() => binding.SetControllerValue(ConvertTool.getToggledValue(binding.ControllerValue));
+        protected override void ChangeValue() => binding.SetControllerValue(ConvertTool.GetToggledValue(binding.ControllerValue));
 
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
