@@ -1,10 +1,22 @@
 ﻿namespace Loupedeck.MsfsPlugin.tools
 {
+    using System;
+
     public static class ConvertTool
     {
-        public static bool getBoolean(long value) => value != 0;
+        // Conversion factors
 
-        public static long getToggledValue(long value) => value == 0 ? 1 : 0;
+        public const double inHg2mbar = 33.86388158;   // Note also that 1 mbar == 1 hPa
+
+        public static uint RoundToUint(double value) => (uint)Round(value, 0);
+
+        public static long RoundToLong(double value) => (long)Round(value, 0);
+
+        public static double Round(double value, int digits) => Math.Round(value, digits, MidpointRounding.AwayFromZero);
+
+        public static bool GetBoolean(long value) => value != 0;
+
+        public static long GetToggledValue(long value) => value == 0 ? 1 : 0;
 
         public static long ApplyAdjustment(long value, int ticks, int min, int max, int step, bool cycle = false)
         {

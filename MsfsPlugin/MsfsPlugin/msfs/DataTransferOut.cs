@@ -151,27 +151,27 @@
                 switch (eventName)
                 {
                     case EVENTS.KOHLSMAN_SET:
-                        value = (UInt32)(binding.ControllerValue / 100f * 33.8639 * 16);
+                        value = ConvertTool.RoundToUint(binding.ControllerValue / 10000f * ConvertTool.inHg2mbar * 16);
                         break;
                     case EVENTS.ELEVATOR_TRIM_SET:
-                        value = (UInt32)(binding.ControllerValue / 100f * 16383);
+                        value = ConvertTool.RoundToUint(binding.ControllerValue / 100f * 16383);
                         break;
                     case EVENTS.FLAPS_SET:
-                        value = (UInt32)(binding.ControllerValue * 16383 / (MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue == 0 ? 1 : MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue));
+                        value = ConvertTool.RoundToUint(binding.ControllerValue * 16383 / (MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue == 0 ? 1 : MsfsData.Instance.bindings[BindingKeys.MAX_FLAP].ControllerValue));
                         break;
                     case EVENTS.AXIS_PROPELLER_SET:
                     case EVENTS.AXIS_SPOILER_SET:
-                        value = (UInt32)Math.Round((binding.ControllerValue - 50) * 16383 / 50f);
+                        value = ConvertTool.RoundToUint((binding.ControllerValue - 50) * 16383 / 50f);
                         break;
                     case EVENTS.THROTTLE_SET:
-                        value = (UInt32)(binding.ControllerValue / 100f * 16383);
+                        value = ConvertTool.RoundToUint(binding.ControllerValue / 100f * 16383);
                         break;
                     case EVENTS.TOGGLE_PUSHBACK:
-                        value = (UInt32)binding.ControllerValue;
+                        value = ConvertTool.RoundToUint(binding.ControllerValue);
                         MsfsData.Instance.bindings[BindingKeys.PUSHBACK_STATE].MSFSChanged = true;
                         break;
                     case EVENTS.KEY_TUG_HEADING:
-                        value = (UInt32)(binding.ControllerValue == 1 ? TUG_ANGLE * -0.8f : TUG_ANGLE * 0.8f);
+                        value = ConvertTool.RoundToUint(binding.ControllerValue == 1 ? TUG_ANGLE * -0.8f : TUG_ANGLE * 0.8f);
                         break;
                     case EVENTS.SIM_RATE:
                         value = 1;
@@ -179,7 +179,7 @@
                         eventName = binding.ControllerValue < binding.MsfsValue ? EVENTS.MINUS : EVENTS.PLUS;
                         break;
                     case EVENTS.ATC_MENU_OPEN:
-                        pluginForKey.KeyboardApi.SendShortcut((VirtualKeyCode)0x91, ModifierKey.None);
+                        pluginForKey.KeyboardApi.SendShortcut(VirtualKeyCode.ScrollLock, ModifierKey.None);
                         value = 0;
                         break;
                     case EVENTS.FLASHLIGHT:
@@ -188,12 +188,12 @@
                         break;
                     case EVENTS.ADF_COMPLETE_SET:
                     case EVENTS.ADF_STBY_SET:
-                        value = BcdEncode((uint)(binding.ControllerValue / 10));
+                        value = BcdEncode(ConvertTool.RoundToUint(binding.ControllerValue / 10));
                         break;
 
                     //++ If the new binding cannot use the default way of sending, add a new case above.
                     default:
-                        value = (UInt32)binding.ControllerValue;
+                        value = ConvertTool.RoundToUint(binding.ControllerValue);
                         break;
                 }
                 if (enumerable)

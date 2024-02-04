@@ -19,7 +19,7 @@
             SetMsfsValue(BindingKeys.AILERON_TRIM, (Int64)Math.Round(reader.aileronTrim * 100));
             SetMsfsValue(BindingKeys.AP_ALT, reader.apAltitude);
             SetMsfsValue(BindingKeys.ALT, reader.planeAltitude);
-            SetMsfsValue(BindingKeys.KOHLSMAN, (Int64)Math.Round(reader.kohlsmanInHb * 100));
+            SetMsfsValue(BindingKeys.KOHLSMAN, (Int64)Math.Round(reader.kohlsmanInHb * 10000));
             SetMsfsValue(BindingKeys.ELEVATOR_TRIM, (Int64)Math.Round(reader.elevatorTrim * 100));
             SetMsfsValue(BindingKeys.MAX_FLAP, reader.flapMax);
             SetMsfsValue(BindingKeys.FLAP, reader.flapPosition);

@@ -23,6 +23,7 @@
             SetValue(ConvertTool.ApplyAdjustment(GetValue(), ticks, min, max, step));
             ActionImageChanged();
         }
+
         protected override string GetAdjustmentValue(string actionParameter) => GetDisplayValue();
 
         public void Notify()
