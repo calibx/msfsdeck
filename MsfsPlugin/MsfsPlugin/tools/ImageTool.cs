@@ -1,74 +1,100 @@
 ﻿namespace Loupedeck.MsfsPlugin.tools
 {
-    using System;
-
-    public class ImageTool
+    public static class ImageTool
     {
-        public static BitmapImage _imageOff = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.off.png");
+        static BitmapImage imageOff = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.off.png");
 
-        public static BitmapImage _imageOn = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.on.png");
+        static BitmapImage imageOn = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.on.png");
 
-        public static BitmapImage _imageWait = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.wait.png");
+        static BitmapImage imageWait = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.wait.png");
 
-        public static BitmapImage _imageAvailable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.available.png");
+        static BitmapImage imageAvailable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.available.png");
 
-        public static BitmapImage _imageAvailableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.availableBorder.png");
+        static BitmapImage imageDisable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
 
-        public static BitmapImage _imageDisable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
+        static BitmapImage imageDisconnect = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
 
-        public static BitmapImage _imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
+        static BitmapImage imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
 
-        public static BitmapImage _imageDisconnect = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
+        static readonly BitmapImage imageAvailableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.availableBorder.png");
 
-        public static BitmapImage _imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
+        static readonly BitmapImage imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disableBorder.png");
 
-        public static BitmapImage GetOnOffImage(Int64 value) => ImageTool.IsConnected() ? value == 1 ? _imageOn : _imageOff : ImageTool.IsTryingToConnect() ? _imageTrying : _imageDisconnect;
-        public static BitmapImage GetAvailableDisableImage(Int64 value) => ImageTool.IsConnected() ? value == 1 ? _imageAvailableBorder : _imageDisableBorder : ImageTool.IsTryingToConnect() ? _imageTrying : _imageDisconnect;
+        public static BitmapImage GetOnOffImage(long value) => GetOnOffImage(value == 1);
 
-        public static BitmapImage GetOnAvailableWaitDisableImage(Int64 value)
+        public static BitmapImage GetAvailableDisableImage(long value) => GetAvailableDisableImage(value == 1);
+
+        public static BitmapImage GetOnOffImage(bool on) =>
+            IsConnected()
+            ? (on ? imageOn : imageOff)
+            : IsTryingToConnect() ? imageTrying : imageDisconnect;
+
+        public static BitmapImage GetAvailableDisableImage(bool available) =>
+            IsConnected()
+            ? (available ? imageAvailableBorder : imageDisableBorder)
+            : (IsTryingToConnect() ? imageTrying : imageDisconnect);
+
+        public static BitmapImage GetOnAvailableWaitDisableImage(long value)
         {
             BitmapImage state;
-            if (ImageTool.IsTryingToConnect()) {
-                state = _imageTrying;
-            } else if (!ImageTool.IsConnected())
+            if (IsTryingToConnect())
             {
-                state = _imageDisconnect;
-            } else
-            { 
+                state = imageTrying;
+            }
+            else if (!IsConnected())
+            {
+                state = imageDisconnect;
+            }
+            else
+            {
                 switch (value)
                 {
                     case 1:
-                        state = ImageTool._imageAvailable;
+                        state = imageAvailable;
                         break;
                     case 2:
-                        state = ImageTool._imageOn;
+                        state = imageOn;
                         break;
                     case 3:
-                        state = ImageTool._imageWait;
+                        state = imageWait;
                         break;
                     case 4:
-                        state = ImageTool._imageOff;
+                        state = imageOff;
                         break;
                     default:
-                        state = ImageTool._imageDisable;
+                        state = imageDisable;
                         break;
                 }
             }
             return state;
         }
 
-        private static Boolean IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
-        private static Boolean IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
-
-        public static void Refresh()
+        public static void Refresh(bool toFull)
         {
-            _imageOff = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.offFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.off.png");
-            _imageOn = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.onFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.on.png");
-            _imageWait = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.waitFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.wait.png");
-            _imageAvailable = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.availableFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.available.png");
-            _imageDisable = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disableFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
-            _imageDisconnect = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnectFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
-            _imageTrying = MsfsData.Instance.bindings[BindingKeys.CONNECTION].ControllerValue == 1 ? EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.tryingFull.png") : EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
+            imageOff = GetImage("off", toFull);
+            imageOn = GetImage("on", toFull);
+            imageWait = GetImage("wait", toFull);
+            imageAvailable = GetImage("available", toFull);
+            imageDisable = GetImage("disable", toFull);
+            imageDisconnect = GetImage("disconnect", toFull);
+            imageTrying = GetImage("trying", toFull);
+
+            if (!IsConnected())
+            {
+                MsfsData.Instance.Changed();
+            }
         }
-}
+
+        public static BitmapColor Red = new BitmapColor(255, 0, 0);
+        public static BitmapColor Green = new BitmapColor(0, 255, 0);
+        public static BitmapColor Blue = new BitmapColor(0, 0, 255);
+        public static BitmapColor Yellow = new BitmapColor(255, 255, 0);
+        public static BitmapColor Grey = new BitmapColor(128, 128, 128);
+        public static BitmapColor LightGrey = new BitmapColor(192, 192, 192);
+
+        private static BitmapImage GetImage(string name, bool full) => EmbeddedResources.ReadImage($"Loupedeck.MsfsPlugin.Resources.{name}{(full ? "Full" : "")}.png");
+
+        private static bool IsConnected() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 1;
+        private static bool IsTryingToConnect() => MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 2;
+    }
 }

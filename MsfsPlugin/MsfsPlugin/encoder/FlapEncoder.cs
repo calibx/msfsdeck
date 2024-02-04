@@ -1,27 +1,25 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
-
     using Loupedeck.MsfsPlugin.encoder;
 
     class FlapEncoder : DefaultEncoder
     {
-        public FlapEncoder() : base("Flap", "Current flap level", "Nav", true, 0, 100, 1)
+        public FlapEncoder() : base("Flaps", "Current flap level", "Nav", true, 0, 100, 1)
         {
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.MAX_FLAP)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.FLAP)));
+            bindings.Add(Register(BindingKeys.MAX_FLAP));
+            bindings.Add(Register(BindingKeys.FLAP));
         }
 
-        protected override String GetDisplayValue()
+        protected override string GetDisplayValue() => bindings[1].ControllerValue + " / " + bindings[0].ControllerValue;
+
+        protected override long GetValue()
         {
-            return this._bindings[1].ControllerValue + " / " + this._bindings[0].ControllerValue;
+            max = (int)bindings[0].ControllerValue;
+            return bindings[1].ControllerValue;
         }
-        protected override Int64 GetValue()
-        {
-            this.max = (Int32)this._bindings[0].ControllerValue;
-            return this._bindings[1].ControllerValue;
-        }
-        protected override void RunCommand(String actionParameter) => this.SetValue(0);
-        protected override void SetValue(Int64 newValue) => this._bindings[1].SetControllerValue(newValue);
+
+        protected override void RunCommand(string actionParameter) => SetValue(0);
+
+        protected override void SetValue(long newValue) => bindings[1].SetControllerValue(newValue);
     }
 }

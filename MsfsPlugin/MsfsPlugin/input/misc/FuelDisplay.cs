@@ -7,11 +7,32 @@
     {
         public FuelDisplay() : base("Fuel", "Display fuel left, flow and time before empty", "Misc")
         {
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.FUEL_PERCENT)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.FUEL_FLOW)));
-            this._bindings.Add(MsfsData.Instance.Register(new Binding(BindingKeys.FUEL_TIME_LEFT)));
+            bindings.Add(fuelPercent = Register(BindingKeys.FUEL_PERCENT));
+            bindings.Add(fuelFlowGph = Register(BindingKeys.FUEL_FLOW_GPH));
+            bindings.Add(fuelFlowPph = Register(BindingKeys.FUEL_FLOW_PPH));
+            bindings.Add(fuelTimeLeft = Register(BindingKeys.FUEL_TIME_LEFT));
         }
-        protected override String GetValue() => "Fuel\n" + this._bindings[0].MsfsValue + " %\n" + (this._bindings[1].MsfsValue != 0 ? this._bindings[1].MsfsValue + " gph\n" + TimeSpan.FromSeconds(this._bindings[2].MsfsValue).ToString() : "0 gph\n 0 sec");
+
+        protected override string GetValue() =>
+            $"Fuel {fuelPercent.MsfsValue} %\n{fuelFlowGph.MsfsValue} gph\n{AlternativeValueText}\n {TimeLeftText}";
+
+        protected override void ChangeValue()
+        {
+            showPph = !showPph;
+        }
+
+        string AlternativeValueText => showPph ? $"{PphValue} pph" : $"{KgphValue} kgph";
+
+        string TimeLeftText => fuelFlowGph.MsfsValue == 0 ? "" : TimeSpan.FromSeconds(fuelTimeLeft.MsfsValue).ToString();
+
+        long KgphValue => (long)Math.Round(PphValue * 0.45359237);
+        long PphValue => (long)Math.Round(fuelFlowPph.MsfsValue / 100.0);
+
+        bool showPph = false;   // If false Kgph is shown
+
+        readonly Binding fuelPercent;
+        readonly Binding fuelFlowGph;
+        readonly Binding fuelFlowPph;
+        readonly Binding fuelTimeLeft;
     }
 }
-
