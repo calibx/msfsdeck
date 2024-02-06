@@ -2,6 +2,7 @@
 {
     using System;
     using System.Runtime.InteropServices;
+
     using Loupedeck.MsfsPlugin.tools;
 
     using Microsoft.FlightSimulator.SimConnect;
@@ -13,7 +14,7 @@
     {
         private SimConnectDAO() { }
         private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
-        
+
         public static SimConnectDAO Instance => lazy.Value;
 
         public const Int32 WM_USER_SIMCONNECT = 0x0402;

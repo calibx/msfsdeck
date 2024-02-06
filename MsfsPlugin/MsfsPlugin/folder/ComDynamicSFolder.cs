@@ -59,7 +59,7 @@
         }
         public override string GetAdjustmentDisplayName(string actionParameter, PluginImageSize imageSize)
         {
-   
+
             var bindingIndex = isCom1active ? 2 : 3;
             var ret = "";
             switch (actionParameter)
