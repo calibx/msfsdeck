@@ -67,7 +67,7 @@
             THROTTLE_SET,
             KEY_TUG_HEADING,
             TOGGLE_FLIGHT_DIRECTOR,
-            AP_FLIGHT_LEVEL_CHANGE,
+            FLIGHT_LEVEL_CHANGE,
             AP_APR_HOLD,
             AP_LOC_HOLD,
             BRAKES,
