@@ -6,7 +6,6 @@
     using SimType = Microsoft.FlightSimulator.SimConnect.SIMCONNECT_DATATYPE;
 
     using static DataTransferTypes;
-    using Loupedeck.MsfsPlugin.tools;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
     internal static class DataTransferIn
