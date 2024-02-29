@@ -1,7 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin.msfs
 {
     using System;
-
+ 
     using Microsoft.FlightSimulator.SimConnect;
 
     using static DataTransferTypes;
@@ -280,10 +280,6 @@
             AddWriterDef("GENERAL ENG MIXTURE LEVER POSITION:3", "Percent", SimType.INT64);               //        mixtureE3            MIXTURE
             AddWriterDef("GENERAL ENG MIXTURE LEVER POSITION:4", "Percent", SimType.INT64);               //        mixtureE4            MIXTURE
 
-            foreach (EVENTS evt in Enum.GetValues(typeof(EVENTS)))
-            {
-                simConnect.MapClientEventToSimEvent(evt, evt.ToString());
-            }
 
             simConnect.RegisterDataDefineStruct<Readers>(DEFINITIONS.Readers);
             simConnect.RegisterDataDefineStruct<Writers>(DEFINITIONS.Writers);

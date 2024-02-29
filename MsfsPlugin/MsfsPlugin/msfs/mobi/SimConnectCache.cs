@@ -26,6 +26,16 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
 
     public class SimConnectCache
     {
+
+        private static readonly Lazy<SimConnectCache> lazy = new Lazy<SimConnectCache>(() => new SimConnectCache());
+
+        public static SimConnectCache Instance => lazy.Value;
+
+        private static readonly System.Timers.Timer timer = new System.Timers.Timer();
+
+        private const double timerInterval = 200;
+
+
         public event EventHandler Closed;
         public event EventHandler Connected;
         public event EventHandler ConnectionLost;
@@ -206,6 +216,13 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                     m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(SimConnect_OnRecvException);
                     // Listen to exceptions
                     Log.Instance.log("SimConnect (MSFS2020) instantiated", LogSeverity.Debug);
+
+                    lock (timer)
+                    {
+                        timer.Interval = timerInterval;
+                        timer.Elapsed += Refresh;
+                        timer.Enabled = true;
+                    }
                 }
             }
             catch (COMException ex)
@@ -214,12 +231,10 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                 return false;
             }
 
-            m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-            m_oSimConnect.ReceiveMessage();
-
-            return true;
+             return true;
         }
-        
+
+        public static void Refresh(Object source, EventArgs e) => Instance.OnTick();
 
         private void SimConnect_RecvSimobjectData(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA data)
         {
@@ -240,11 +255,11 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                     var prefix = "";
                     if (GroupKey != STANDARD_EVENT_GROUP)
                         prefix = "MobiFlight.";
-                    (sender).MapClientEventToSimEvent((MOBIFLIGHT_EVENTS)eventItem.Item2, prefix + eventItem.Item1);
+                    sender.MapClientEventToSimEvent((MOBIFLIGHT_EVENTS)eventItem.Item2, prefix + eventItem.Item1);
                 }
             }
             // register receive data events
-            (sender).OnRecvClientData += SimConnectCache_OnRecvClientData;
+            sender.OnRecvClientData += SimConnectCache_OnRecvClientData;
 
             // initialize init client
             InitializeClientDataAreas(sender, WasmInitClientData);
@@ -252,6 +267,14 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             Connected?.Invoke(this, null);
 
             WasmModuleClient.Ping(sender, WasmInitClientData);
+
+            MsfsData.Instance.bindings[BindingKeys.MOBISIMCONNECTION].SetMsfsValue(1);
+            foreach (Binding binding in MsfsData.Instance.bindings.Values)
+            {
+                binding.MSFSChanged = true;
+            }
+            MsfsData.Instance.Changed();
+            timer.Interval = timerInterval;
         }
 
         private void InitializeClientDataAreas(SimConnect sender, WasmModuleClientData clientData)
@@ -297,7 +320,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
         {
             try
             {
-                DebugTracing.Trace("Mobi Received client Data");
+                DebugTracing.Trace("Mobi Received client Data " +data.ToString());
                 // Init Client Callback
                 if (data.dwRequestID == (uint)WasmInitClientData.DATA_DEFINITION_ID)
                 {
@@ -317,6 +340,14 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                         InitializeClientDataAreas(m_oSimConnect, WasmRuntimeClientData);
                         _wasmConnected = true;
                         Connected?.Invoke(this, null);
+                        MsfsData.Instance.bindings[BindingKeys.MOBIWASMCONNECTION].SetMsfsValue(1);
+                        foreach (Binding binding in MsfsData.Instance.bindings.Values)
+                        {
+                            binding.MSFSChanged = true;
+                        }
+                        MsfsData.Instance.Changed();
+                        timer.Interval = timerInterval;
+
                     }
                 }
                 // Runtime Client Callback
@@ -368,7 +399,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             }
             catch (Exception ex)
             {
-                Log.Instance.log($"Exception in SimConnect Callback: {ex.Message}", LogSeverity.Error);
+                DebugTracing.Trace($"Exception in SimConnect Callback: {ex.Message}");
                 throw; // Exception is caught in SimConnect
             }
         }
@@ -440,14 +471,8 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                 if (eventItem != null)
                     break;
             }
-
-            if (eventItem == null)
-            {
-                Log.Instance.log($"Unknown event ID: {eventID}.", LogSeverity.Error);
-                return;
-            }
-            m_oSimConnect?.TransmitClientEvent(
-                    0,
+           m_oSimConnect?.TransmitClientEvent(
+                    SimConnect.SIMCONNECT_OBJECT_ID_USER,
                     (MOBIFLIGHT_EVENTS)eventItem.Item2,
                     1,
                     SIMCONNECT_NOTIFICATION_GROUP_ID.SIMCONNECT_GROUP_PRIORITY_DEFAULT,
@@ -585,6 +610,32 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             StringSimVars.Clear();
             Log.Instance.log("SimVars Cleared.", LogSeverity.Debug);
         }
+
+        private readonly object lockObject = new object();
+
+        private void OnTick()
+        {
+            lock (lockObject)
+            {
+                try
+                {
+                    if (m_oSimConnect != null)
+                    {
+                        m_oSimConnect.ReceiveMessage();
+                    }
+                    else
+                    {
+                        timer.Enabled = false;
+                    }
+                }
+                catch (COMException exception)
+                {
+                    DebugTracing.Trace(exception);
+                    Disconnect();
+                }
+            }
+        }
+
 
         #region Not Implemented Yet
         public void setOffset(int offset, byte value)

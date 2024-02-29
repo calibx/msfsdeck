@@ -108,6 +108,7 @@
     <Compile Include="input\misc\IconInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\EngineInput.cs" />
+    <Compile Include="input\misc\MiscInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
@@ -252,6 +253,7 @@ if $(ConfigurationName) == Release (
   powershell Copy-Item 'MSFSPlugin.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
   powershell Copy-Item 'Microsoft.FlightSimulator.SimConnect.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
   powershell Copy-Item 'SimConnect.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
+
 )</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -26,6 +26,8 @@
         PAUSE,
         PITOT,
         CONNECTION,
+        MOBISIMCONNECTION,
+        MOBIWASMCONNECTION,
         GEAR_FRONT,
         GEAR_LEFT,
         GEAR_RIGHT,

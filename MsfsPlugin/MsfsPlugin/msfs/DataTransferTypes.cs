@@ -7,6 +7,11 @@
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
     internal static class DataTransferTypes
     {
+
+        public enum DUMMY_EVENTS
+        {
+            DUMMY
+        }
         internal enum DEFINITIONS
         {
             Readers,
@@ -255,5 +260,7 @@
             public Int64 mixtureE3;
             public Int64 mixtureE4;
         }
+
+        
     }
 }
