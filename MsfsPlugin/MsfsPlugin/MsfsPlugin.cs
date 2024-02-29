@@ -1,17 +1,16 @@
 namespace Loupedeck.MsfsPlugin
 {
-    using System;
-
     using Loupedeck.MsfsPlugin.msfs;
     public class MSFSPlugin : Plugin
     {
         public override void Load()
         {
-            this.Info.Icon16x16 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.16.png");
-            this.Info.Icon32x32 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.32.png");
-            this.Info.Icon48x48 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.48.png");
-            this.Info.Icon256x256 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.256.png");
+            Info.Icon16x16 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.16.png");
+            Info.Icon32x32 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.32.png");
+            Info.Icon48x48 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.48.png");
+            Info.Icon256x256 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.256.png");
             MsfsData.Instance.plugin = this;
+            DataTransferOut.loadEvents();
         }
 
         public override void Unload()
@@ -20,14 +19,12 @@ namespace Loupedeck.MsfsPlugin
         }
 
 
-        public override void RunCommand(String commandName, String parameter)
-        {
+        public override void RunCommand(string commandName, string parameter)
+        { }
 
-        }
+        public override void ApplyAdjustment(string adjustmentName, string parameter, int diff)
+        { }
 
-        public override void ApplyAdjustment(String adjustmentName, String parameter, Int32 diff)
-        {
-        }
-        public override Boolean UsesApplicationApiOnly => true;
+        public override bool UsesApplicationApiOnly => true;
     }
 }

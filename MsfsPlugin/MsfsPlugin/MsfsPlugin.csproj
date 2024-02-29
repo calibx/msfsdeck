@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit3TestAdapter.4.5.0\build\net462\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.4.5.0\build\net462\NUnit3TestAdapter.props')" />
+  <Import Project="..\packages\NUnit.4.0.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.4.0.1\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -49,6 +51,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework, Version=4.0.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.4.0.1\lib\net462\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework.legacy, Version=4.0.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.4.0.1\lib\net462\nunit.framework.legacy.dll</HintPath>
+    </Reference>
     <Reference Include="PluginApi, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Loupedeck\Loupedeck2\PluginApi.dll</HintPath>
@@ -62,9 +70,10 @@
   <ItemGroup>
     <Compile Include="encoder\SimRateEncoder.cs" />
     <Compile Include="encoder\BarometerEncoder.cs" />
+    <Compile Include="encoder\VorObiEncoder.cs" />
     <Compile Include="encoder\VSpeedAPEncoder.cs" />
     <Compile Include="encoder\SpeedAPEncoder.cs" />
-    <Compile Include="encoder\HeadignAPEncoder.cs" />
+    <Compile Include="encoder\HeadingAPEncoder.cs" />
     <Compile Include="encoder\ElevatorTrimEncoder.cs" />
     <Compile Include="encoder\DefaultEncoder.cs" />
     <Compile Include="encoder\AltitudeAPEncoder.cs" />
@@ -77,23 +86,29 @@
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="event\Binding.cs" />
     <Compile Include="event\BindingKeys.cs" />
-    <Compile Include="event\Notifiable.cs" />
+    <Compile Include="event\INotifiable.cs" />
     <Compile Include="folder\AirlinerDynamicFolder.cs" />
     <Compile Include="folder\APDynamicFolder.cs" />
     <Compile Include="folder\ATCDynamicFolder.cs" />
+    <Compile Include="folder\CockpitViewFolder.cs" />
+    <Compile Include="folder\DefaultFolder.cs" />
+    <Compile Include="folder\NavDynamicSFolder.cs" />
     <Compile Include="folder\NavDynamicFolder.cs" />
     <Compile Include="folder\ComDynamicSFolder.cs" />
     <Compile Include="folder\ComDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
     <Compile Include="input\ap\APMultiInputs.cs" />
+    <Compile Include="input\debug\MobiflightCnxStateInput.cs" />
     <Compile Include="input\debug\SimCnxStateInput.cs" />
     <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\debug\AircraftInput.cs" />
+    <Compile Include="input\light\LightsDisplay.cs" />
     <Compile Include="input\light\LightsMultiInputs.cs" />
     <Compile Include="input\misc\AutoTaxiInput.cs" />
     <Compile Include="input\misc\IconInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\EngineInput.cs" />
+    <Compile Include="input\misc\MiscInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
@@ -104,9 +119,20 @@
     <Compile Include="input\misc\RPMInput.cs" />
     <Compile Include="input\misc\PitotInput.cs" />
     <Compile Include="input\nav\AltitudeInput.cs" />
+    <Compile Include="input\misc\WeatherDisplay.cs" />
     <Compile Include="input\nav\VerticalSpeedInput.cs" />
     <Compile Include="input\nav\SpeedInput.cs" />
     <Compile Include="input\nav\HeadingInput.cs" />
+    <Compile Include="msfs\DataTransferIn.cs" />
+    <Compile Include="msfs\DataTransferOut.cs" />
+    <Compile Include="msfs\DataTransferTypes.cs" />
+    <Compile Include="msfs\mobi\FSUIPCOffsetType.cs" />
+    <Compile Include="msfs\mobi\Log.cs" />
+    <Compile Include="msfs\mobi\ProgressUpdateEvent.cs" />
+    <Compile Include="msfs\mobi\SimConnectCache.cs" />
+    <Compile Include="msfs\mobi\SimConnectDefinitions.cs" />
+    <Compile Include="msfs\mobi\WasmModuleClient.cs" />
+    <Compile Include="msfs\mobi\WasmModuleClientData.cs" />
     <Compile Include="msfs\SimConnectDAO.cs" />
     <Compile Include="msfs\MsfsData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -115,10 +141,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tools\DebugTracing.cs" />
+    <Compile Include="tools\DecimalValueAdjuster.cs" />
     <Compile Include="tools\ImageTool.cs" />
     <Compile Include="tools\ConvertTool.cs" />
     <Compile Include="MSFSApplication.cs" />
     <Compile Include="MSFSPlugin.cs" />
+    <Compile Include="Unittests\ConvertToolTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PluginConfiguration.json" />
@@ -132,6 +161,7 @@
     <EmbeddedResource Include="Resources\DefaultProfile30win.lp4" />
     <EmbeddedResource Include="Resources\DefaultProfile40win.lp4" />
     <EmbeddedResource Include="Resources\DefaultProfile50win.lp4" />
+    <None Include="packages.config" />
     <None Include="Resources\LoupedeckPackageRazor.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -139,6 +169,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="Resources\DefaultProfile20win.lp4" />
+    <EmbeddedResource Include="Resources\msfs2020_eventids.cip" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\off.png" />
@@ -204,7 +235,7 @@
     <PostBuildEvent>$(ILMergeConsolePath) /out:$(OutDir)/bin/win/MSFSPlugin.dll $(OutDir)MSFSPlugin.dll $(OutDir)fsuipcClient.dll</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "C:\MSFS SDK\SimConnect SDK\lib\SimConnect.dll" "." /Y
+    <PostBuildEvent>xcopy "%25MSFS_SDK%25SimConnect SDK\lib\SimConnect.dll" "." /Y
 if $(ConfigurationName) == Release (
   powershell Remove-Item 'archive' -Recurse -Force
   powershell New-Item -Path 'archive\bin\win' -ItemType Directory -Force
@@ -222,6 +253,14 @@ if $(ConfigurationName) == Release (
   powershell Copy-Item 'MSFSPlugin.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
   powershell Copy-Item 'Microsoft.FlightSimulator.SimConnect.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
   powershell Copy-Item 'SimConnect.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
+
 )</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit.4.0.1\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.4.0.1\build\NUnit.props'))" />
+    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.4.5.0\build\net462\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.4.5.0\build\net462\NUnit3TestAdapter.props'))" />
+  </Target>
 </Project>
