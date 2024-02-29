@@ -1,6 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin.folder
 {
     using System.Collections.Generic;
+
     using Loupedeck.MsfsPlugin.tools;
 
     internal class CockpitViewFolder : DefaultFolder

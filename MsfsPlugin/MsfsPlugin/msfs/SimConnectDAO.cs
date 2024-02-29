@@ -2,6 +2,7 @@
 {
     using System;
     using System.Runtime.InteropServices;
+
     using Loupedeck.MsfsPlugin.tools;
 
     using Microsoft.FlightSimulator.SimConnect;
@@ -13,12 +14,14 @@
     {
         private SimConnectDAO() { }
         private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
-        
+
         public static SimConnectDAO Instance => lazy.Value;
 
         public const Int32 WM_USER_SIMCONNECT = 0x0402;
 
         private SimConnect m_oSimConnect = null;
+
+        private bool _simConnectConnected = false;
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
@@ -54,8 +57,10 @@
                     m_oSimConnect = new SimConnect("MSFS Plugin", new IntPtr(0), WM_USER_SIMCONNECT, null, 0);
                     m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(SimConnect_OnRecvOpen);
                     m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(SimConnect_OnRecvSimobjectDataBytype);
+                    m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(SimConnect_OnRecvException);
 
                     DataTransferIn.AddRequest(m_oSimConnect);
+                    DataTransferOut.initEvents(m_oSimConnect);
 
                     lock (timer)
                     {
@@ -74,7 +79,16 @@
                     }
                     MsfsData.Instance.Changed();
                 }
+                _simConnectConnected = true;
             }
+        }
+        public bool IsSimConnectConnected() => _simConnectConnected;
+
+        private void SimConnect_OnRecvException(SimConnect sender, SIMCONNECT_RECV_EXCEPTION data)
+        {
+
+            SIMCONNECT_EXCEPTION eException = (SIMCONNECT_EXCEPTION)data.dwException;
+            DebugTracing.Trace(eException.ToString());
         }
 
         public void Disconnect()
@@ -83,6 +97,7 @@
             {
                 m_oSimConnect.Dispose();
                 m_oSimConnect = null;
+                _simConnectConnected = false;
             }
 
             //>> If called from Unload, then I think that the rest here is superfluous to do. We could add a parameter
@@ -115,6 +130,14 @@
 
             DataTransferOut.SendEvents(m_oSimConnect);
             AutoTaxiInput(reader);
+        }
+
+        public void SendEvent(Enum eventName, UInt32 value)
+        {
+            if (_simConnectConnected)
+            { 
+                DataTransferOut.Transmit(m_oSimConnect, eventName, value); 
+            }
         }
 
         private readonly object lockObject = new object();

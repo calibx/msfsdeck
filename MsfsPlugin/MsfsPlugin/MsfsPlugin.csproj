@@ -47,9 +47,9 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.FlightSimulator.SimConnect, Version=11.0.62651.3, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="Microsoft.FlightSimulator.SimConnect, Version=10.0.61259.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>%MSFS_SDK%\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=4.0.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.4.0.1\lib\net462\nunit.framework.dll</HintPath>
@@ -98,6 +98,7 @@
     <Compile Include="folder\ComDynamicFolder.cs" />
     <Compile Include="folder\LightsDynamicFolder.cs" />
     <Compile Include="input\ap\APMultiInputs.cs" />
+    <Compile Include="input\debug\MobiflightCnxStateInput.cs" />
     <Compile Include="input\debug\SimCnxStateInput.cs" />
     <Compile Include="input\debug\DebugInput.cs" />
     <Compile Include="input\debug\AircraftInput.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="input\misc\IconInput.cs" />
     <Compile Include="input\misc\GearInput.cs" />
     <Compile Include="input\misc\EngineInput.cs" />
+    <Compile Include="input\misc\MiscInput.cs" />
     <Compile Include="input\misc\ParkingBrakeInput.cs" />
     <Compile Include="input\DefaultInput.cs" />
     <Compile Include="input\misc\FuelDisplay.cs" />
@@ -124,6 +126,13 @@
     <Compile Include="msfs\DataTransferIn.cs" />
     <Compile Include="msfs\DataTransferOut.cs" />
     <Compile Include="msfs\DataTransferTypes.cs" />
+    <Compile Include="msfs\mobi\FSUIPCOffsetType.cs" />
+    <Compile Include="msfs\mobi\Log.cs" />
+    <Compile Include="msfs\mobi\ProgressUpdateEvent.cs" />
+    <Compile Include="msfs\mobi\SimConnectCache.cs" />
+    <Compile Include="msfs\mobi\SimConnectDefinitions.cs" />
+    <Compile Include="msfs\mobi\WasmModuleClient.cs" />
+    <Compile Include="msfs\mobi\WasmModuleClientData.cs" />
     <Compile Include="msfs\SimConnectDAO.cs" />
     <Compile Include="msfs\MsfsData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -160,6 +169,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="Resources\DefaultProfile20win.lp4" />
+    <EmbeddedResource Include="Resources\msfs2020_eventids.cip" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\off.png" />
@@ -243,6 +253,7 @@ if $(ConfigurationName) == Release (
   powershell Copy-Item 'MSFSPlugin.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
   powershell Copy-Item 'Microsoft.FlightSimulator.SimConnect.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
   powershell Copy-Item 'SimConnect.dll' -Destination '%25USERPROFILE%25\AppData\Local\Loupedeck\Plugins\MSFS'
+
 )</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

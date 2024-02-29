@@ -1,7 +1,5 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using System;
-
     using Loupedeck.MsfsPlugin.encoder;
 
     class SimRateEncoder : DefaultEncoder
@@ -23,7 +21,8 @@
             {
                 var newValue = GetValue() * 2;
                 SetValue(newValue > 12800 ? 12800 : newValue);
-            } else
+            }
+            else
             {
                 var newValue = GetValue() / 2;
                 SetValue(newValue < 25 ? 25 : newValue);

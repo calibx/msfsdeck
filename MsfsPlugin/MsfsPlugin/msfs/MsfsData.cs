@@ -19,7 +19,9 @@
         public string DebugValue3 { get; set; }
 
         private MsfsData()
-        { }
+        {
+            DEBUG = true;
+        }
 
         public void Register(INotifiable notif) => notifiables.Add(notif);
 

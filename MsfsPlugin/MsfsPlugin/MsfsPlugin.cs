@@ -10,6 +10,7 @@ namespace Loupedeck.MsfsPlugin
             Info.Icon48x48 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.48.png");
             Info.Icon256x256 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.256.png");
             MsfsData.Instance.plugin = this;
+            DataTransferOut.loadEvents();
         }
 
         public override void Unload()
