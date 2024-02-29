@@ -20,7 +20,7 @@
 
         private MsfsData()
         {
-            DEBUG = true;
+            DEBUG = false;
         }
 
         public void Register(INotifiable notif) => notifiables.Add(notif);
