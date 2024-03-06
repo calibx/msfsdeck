@@ -2,23 +2,23 @@
 {
     public static class ImageTool
     {
-        static BitmapImage imageOff = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.off.png");
+        public static BitmapImage imageOff = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.off.png");
 
-        static BitmapImage imageOn = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.on.png");
+        public static BitmapImage imageOn = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.on.png");
 
-        static BitmapImage imageWait = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.wait.png");
+        public static BitmapImage imageWait = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.wait.png");
 
-        static BitmapImage imageAvailable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.available.png");
+        public static BitmapImage imageAvailable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.available.png");
 
-        static BitmapImage imageDisable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
+        public static BitmapImage imageDisable = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disable.png");
 
-        static BitmapImage imageDisconnect = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
+        public static BitmapImage imageDisconnect = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disconnect.png");
 
-        static BitmapImage imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
+        public static BitmapImage imageTrying = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.trying.png");
 
-        static readonly BitmapImage imageAvailableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.availableBorder.png");
+        public static readonly BitmapImage imageAvailableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.availableBorder.png");
 
-        static readonly BitmapImage imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disableBorder.png");
+        public static readonly BitmapImage imageDisableBorder = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.disableBorder.png");
 
         public static BitmapImage GetOnOffImage(long value) => GetOnOffImage(value == 1);
 

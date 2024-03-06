@@ -1,17 +1,23 @@
 ﻿namespace Loupedeck.MsfsPlugin.msfs
 {
     using System;
+    using System.Collections.Generic;
 
+    using Loupedeck.MsfsPlugin.msfs.mobi;
     using Loupedeck.MsfsPlugin.tools;
 
     using Microsoft.FlightSimulator.SimConnect;
 
     using static DataTransferTypes;
+    using static Loupedeck.MsfsPlugin.msfs.DataTransferTypes;
     using static Loupedeck.MsfsPlugin.msfs.SimConnectDAO;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
     internal static class DataTransferOut
     {
+
+        internal static Dictionary<String, Dictionary<String, Dictionary<String, List<Tuple<String, uint>>>>> MobiEvents;
+        private const string STANDARD_EVENT_GROUP = "STANDARD";
         internal static void SendEvents(SimConnect simConnect)
         {
             SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM], simConnect);
@@ -212,7 +218,7 @@
             }
         }
 
-        internal static void Transmit(SimConnect simConnect, EVENTS eventName, UInt32 value)
+        internal static void Transmit(SimConnect simConnect, Enum eventName, UInt32 value)
         {
             DebugTracing.Trace("Send " + eventName + " with " + value);
             simConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
@@ -224,6 +230,69 @@
         {
             var valText = $"0x{value}0000";
             return Convert.ToUInt32(valText, 16);
+        }
+        
+        internal static void loadEvents()
+        {
+            if (MobiEvents == null)
+            {
+                MobiEvents = new Dictionary<string, Dictionary<string, Dictionary<string, List<Tuple<String, uint>>>>> ();
+                
+
+                string[] lines = EmbeddedResources.ReadTextFile("Loupedeck.MsfsPlugin.Resources.msfs2020_eventids.cip").Split("\n");
+                uint EventIdx = 0;
+
+                var VendorKey = "DUMMY";
+                var AircraftKey = "DUMMY";
+                var ComponentKey = "DUMMY";
+                foreach (var line in lines)
+                {
+                    if (line.StartsWith("//"))
+                        continue;
+                    var groups = line.Split(':');
+                    if (groups.Length > 1) // group detection
+                    {
+                        var cols = line.Split('/');
+                        VendorKey = cols[0];
+                        AircraftKey = cols[1];
+                        ComponentKey = cols[2].Split(":")[0];
+                        if (!MobiEvents.ContainsKey(VendorKey))
+                            MobiEvents[VendorKey] = new Dictionary<string, Dictionary<string, List<Tuple<String, uint>>>>();
+                        if (!MobiEvents[VendorKey].ContainsKey(AircraftKey))
+                            MobiEvents[VendorKey][AircraftKey] = new Dictionary<string, List<Tuple<String, uint>>>();
+                        if (!MobiEvents[VendorKey][AircraftKey].ContainsKey(ComponentKey))
+                            MobiEvents[VendorKey][AircraftKey][ComponentKey] = new List<Tuple<String, uint>>();
+                    } else
+                    {
+                        MobiEvents[VendorKey][AircraftKey][ComponentKey].Add(new Tuple<string, uint>(line, EventIdx++));
+                    }
+                }
+            }
+        }
+        internal static void initEvents(SimConnect simConnect)
+        {
+            foreach (EVENTS evt in Enum.GetValues(typeof(EVENTS)))
+            {
+                simConnect.MapClientEventToSimEvent(evt, evt.ToString());
+            }
+            foreach (var GroupKey in MobiEvents.Keys)
+            {
+                foreach (var AircraftKey in MobiEvents[GroupKey].Keys)
+                {
+                    foreach (var ComponentKey in MobiEvents[GroupKey][AircraftKey].Keys)
+                    {
+                        foreach (Tuple<string, uint> eventItem in MobiEvents[GroupKey][AircraftKey][ComponentKey])
+                        {
+                            var prefix = "";
+                            if (GroupKey != STANDARD_EVENT_GROUP)
+                            {
+                                prefix = "MobiFlight.";
+                            }
+                            simConnect.MapClientEventToSimEvent((MOBIFLIGHT_EVENTS)eventItem.Item2, prefix + eventItem.Item1);
+                        }
+                    }
+                }
+            }
         }
 
         private static Plugin pluginForKey;
