@@ -7,30 +7,30 @@
 
     public class AirlinerDynamicFolder : DefaultFolder
     {
-        public AirlinerDynamicFolder() : base("Airliner")
+        public AirlinerDynamicFolder() : base("Autopilot")
         {
-            bindings.Add(Register(BindingKeys.AP_ALT));
-            bindings.Add(Register(BindingKeys.ALT));
-            bindings.Add(Register(BindingKeys.AP_HEADING));
-            bindings.Add(Register(BindingKeys.HEADING));
-            bindings.Add(Register(BindingKeys.AP_SPEED));
-            bindings.Add(Register(BindingKeys.SPEED));
-            bindings.Add(Register(BindingKeys.AP_VSPEED));
-            bindings.Add(Register(BindingKeys.VSPEED));
+            bindings.Add(ApAltSetting = Register(BindingKeys.AP_ALT));
+            bindings.Add(PlaneAltitude = Register(BindingKeys.ALT));
+            bindings.Add(ApHdgSetting = Register(BindingKeys.AP_HEADING));
+            bindings.Add(PlaneHeading = Register(BindingKeys.HEADING));
+            bindings.Add(ApSpeedSetting = Register(BindingKeys.AP_SPEED));
+            bindings.Add(PlaneSpeed = Register(BindingKeys.SPEED));
+            bindings.Add(ApVspeedSetting = Register(BindingKeys.AP_VSPEED));
+            bindings.Add(PlaneVspeed = Register(BindingKeys.VSPEED));
 
-            bindings.Add(Register(BindingKeys.AP_FD_SWITCH_AL_FOLDER));
-            bindings.Add(Register(BindingKeys.AP_ALT_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_MASTER_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_NAV_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_FLC_SWITCH_AL_FOLDER));
-            bindings.Add(Register(BindingKeys.AP_APP_SWITCH_AL_FOLDER));
-            bindings.Add(Register(BindingKeys.AP_LOC_SWITCH_AL_FOLDER));
-            bindings.Add(Register(BindingKeys.AP_SPEED_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_HEAD_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_THROTTLE_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_VSPEED_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_BC_SWITCH));
+            bindings.Add(FdSwitch = Register(BindingKeys.AP_FD_SWITCH));
+            bindings.Add(AltSwitch = Register(BindingKeys.AP_ALT_SWITCH));
+            bindings.Add(MasterSwitch = Register(BindingKeys.AP_MASTER_SWITCH));
+            bindings.Add(NavSwitch = Register(BindingKeys.AP_NAV_SWITCH));
+            bindings.Add(FlcSwitch = Register(BindingKeys.AP_FLC_SWITCH));
+            bindings.Add(AprSwitch = Register(BindingKeys.AP_APP_SWITCH));
+            bindings.Add(LocSwitch = Register(BindingKeys.AP_LOC_SWITCH));
+            bindings.Add(SpeedSwitch = Register(BindingKeys.AP_SPEED_SWITCH));
+            bindings.Add(HeadingSwitch = Register(BindingKeys.AP_HEAD_SWITCH));
+            bindings.Add(ThrottleSwitch = Register(BindingKeys.AP_THROTTLE_SWITCH));
+            bindings.Add(VspeedSwitch = Register(BindingKeys.AP_VSPEED_SWITCH));
+            bindings.Add(YdSwitch = Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
+            bindings.Add(BcSwitch = Register(BindingKeys.AP_BC_SWITCH));
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
@@ -65,18 +65,21 @@
             {
                 NavigateUpActionName,
                 CreateCommandName("FD"),
-                CreateCommandName("Altitude"),
                 CreateCommandName("AP"),
-                CreateCommandName("GPS"),
+                CreateCommandName("Yaw Damp"),
+
+                CreateCommandName("Altitude"),
                 CreateCommandName("FLC"),
-                CreateCommandName("APP"),
-                CreateCommandName("LOC"),
-                CreateCommandName("Speed"),
                 CreateCommandName("Heading"),
+                CreateCommandName("NAV"),
+
+                CreateCommandName("LOC"),
+                CreateCommandName("APR"),
+                CreateCommandName("Speed"),
+                CreateCommandName("VSpeed"),
+
                 CreateCommandName("Throttle"),
-                CreateCommandName("VS Speed"),
-                CreateCommandName("Yaw Damper"),
-                CreateCommandName("Back Course"),
+                CreateCommandName("Back Crs"),
             };
         }
 
@@ -86,16 +89,16 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    ret = "Alt\n[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;
+                    ret = "Alt\n[" + ApAltSetting.ControllerValue + "]\n" + PlaneAltitude.ControllerValue;
                     break;
                 case "Heading Encoder":
-                    ret = "Head\n[" + bindings[2].ControllerValue + "]\n" + bindings[3].ControllerValue;
+                    ret = "Head\n[" + ApHdgSetting.ControllerValue + "]\n" + PlaneHeading.ControllerValue;
                     break;
                 case "Speed Encoder":
-                    ret = "Speed\n[" + bindings[4].ControllerValue + "]\n" + bindings[5].ControllerValue;
+                    ret = "Speed\n[" + ApSpeedSetting.ControllerValue + "]\n" + PlaneSpeed.ControllerValue;
                     break;
                 case "VS Speed Encoder":
-                    ret = "VS\n[" + bindings[6].ControllerValue + "]\n" + bindings[7].ControllerValue;
+                    ret = "VS\n[" + ApVspeedSetting.ControllerValue + "]\n" + PlaneVspeed.ControllerValue;
                     break;
             }
             return ret;
@@ -107,43 +110,43 @@
                 switch (actionParameter)
                 {
                     case "LOC":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[14].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(LocSwitch.ControllerValue));
                         break;
                     case "FD":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(FdSwitch.ControllerValue));
                         break;
                     case "FLC":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[12].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(FlcSwitch.ControllerValue));
                         break;
-                    case "APP":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[13].ControllerValue));
+                    case "APR":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(AprSwitch.ControllerValue));
                         break;
                     case "Altitude":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(AltSwitch.ControllerValue));
                         break;
                     case "Heading":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[16].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(HeadingSwitch.ControllerValue));
                         break;
-                    case "GPS":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
+                    case "NAV":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(NavSwitch.ControllerValue));
                         break;
                     case "Speed":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[15].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(SpeedSwitch.ControllerValue));
                         break;
                     case "AP":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(MasterSwitch.ControllerValue));
                         break;
                     case "Throttle":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[17].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(ThrottleSwitch.ControllerValue));
                         break;
-                    case "VS Speed":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[18].ControllerValue));
+                    case "VSpeed":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(VspeedSwitch.ControllerValue));
                         break;
-                    case "Yaw Damper":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[19].ControllerValue));
+                    case "Yaw Damp":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(YdSwitch.ControllerValue));
                         break;
-                    case "Back Course":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[20].ControllerValue));
+                    case "Back Crs":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(BcSwitch.ControllerValue));
                         break;
                 }
                 bitmapBuilder.DrawText(actionParameter);
@@ -156,16 +159,16 @@
             switch (actionParameter)
             {
                 case "Altitude Encoder":
-                    bindings[0].SetControllerValue(ConvertTool.ApplyAdjustment(bindings[0].ControllerValue, ticks, -10000, 99900, 100));
+                    ApAltSetting.SetControllerValue(ConvertTool.ApplyAdjustment(ApAltSetting.ControllerValue, ticks, -10000, 99900, 100));
                     break;
                 case "Heading Encoder":
-                    bindings[2].SetControllerValue(ConvertTool.ApplyAdjustment(bindings[2].ControllerValue, ticks, 1, 360, 1, true));
+                    ApHdgSetting.SetControllerValue(ConvertTool.ApplyAdjustment(ApHdgSetting.ControllerValue, ticks, 1, 360, 1, true));
                     break;
                 case "Speed Encoder":
-                    bindings[4].SetControllerValue(ConvertTool.ApplyAdjustment(bindings[4].ControllerValue, ticks, 0, 2000, 1));
+                    ApSpeedSetting.SetControllerValue(ConvertTool.ApplyAdjustment(ApSpeedSetting.ControllerValue, ticks, 0, 2000, 1));
                     break;
                 case "VS Speed Encoder":
-                    bindings[6].SetControllerValue(ConvertTool.ApplyAdjustment(bindings[6].ControllerValue, ticks, -10000, 10000, 100));
+                    ApVspeedSetting.SetControllerValue(ConvertTool.ApplyAdjustment(ApVspeedSetting.ControllerValue, ticks, -10000, 10000, 100));
                     break;
             }
             EncoderActionNamesChanged();
@@ -175,57 +178,79 @@
             switch (actionParameter)
             {
                 case "LOC":
-                    bindings[14].SetControllerValue(1);
+                    LocSwitch.SetControllerValue(1);
                     break;
                 case "FD":
-                    bindings[8].SetControllerValue(1);
+                    FdSwitch.SetControllerValue(1);
                     break;
                 case "FLC":
-                    bindings[12].SetControllerValue(1);
+                    FlcSwitch.SetControllerValue(1);
                     break;
-                case "APP":
-                    bindings[13].SetControllerValue(1);
+                case "APR":
+                    AprSwitch.SetControllerValue(1);
                     break;
                 case "Altitude":
-                    bindings[9].SetControllerValue(1);
+                    AltSwitch.SetControllerValue(1);
                     break;
                 case "Heading":
-                    bindings[16].SetControllerValue(1);
+                    HeadingSwitch.SetControllerValue(1);
                     break;
-                case "GPS":
-                    bindings[11].SetControllerValue(1);
+                case "NAV":
+                    NavSwitch.SetControllerValue(1);
                     break;
                 case "Speed":
-                    bindings[15].SetControllerValue(1);
+                    SpeedSwitch.SetControllerValue(1);
                     break;
                 case "AP":
-                    bindings[10].SetControllerValue(1);
+                    MasterSwitch.SetControllerValue(1);
                     break;
                 case "Throttle":
-                    bindings[17].SetControllerValue(1);
+                    ThrottleSwitch.SetControllerValue(1);
                     break;
-                case "VS Speed":
-                    bindings[18].SetControllerValue(1);
+                case "VSpeed":
+                    VspeedSwitch.SetControllerValue(1);
                     break;
-                case "Yaw Damper":
-                    bindings[19].SetControllerValue(1);
+                case "Yaw Damp":
+                    YdSwitch.SetControllerValue(1);
                     break;
-                case "Back Course":
-                    bindings[20].SetControllerValue(1);
+                case "Back Crs":
+                    BcSwitch.SetControllerValue(1);
                     break;
                 case "Altitude Reset":
-                    bindings[0].SetControllerValue((long)(Math.Round(bindings[1].ControllerValue / 100d, 0) * 100));
+                    ApAltSetting.SetControllerValue((long)(Math.Round(PlaneAltitude.ControllerValue / 100d, 0) * 100));
                     break;
                 case "Heading Reset":
-                    bindings[2].SetControllerValue(bindings[3].ControllerValue);
+                    ApHdgSetting.SetControllerValue(PlaneHeading.ControllerValue);
                     break;
                 case "Speed Reset":
-                    bindings[4].SetControllerValue((long)(Math.Round(bindings[5].ControllerValue / 100d, 0) * 100));
+                    ApSpeedSetting.SetControllerValue((long)(Math.Round(PlaneSpeed.ControllerValue / 100d, 0) * 100));
                     break;
                 case "VS Speed Reset":
-                    bindings[6].SetControllerValue((long)(Math.Round(bindings[7].ControllerValue / 100d, 0) * 100));
+                    ApVspeedSetting.SetControllerValue((long)(Math.Round(PlaneVspeed.ControllerValue / 100d, 0) * 100));
                     break;
             }
         }
+
+        readonly Binding ApAltSetting;
+        readonly Binding PlaneAltitude;
+        readonly Binding ApHdgSetting;
+        readonly Binding PlaneHeading;
+        readonly Binding ApSpeedSetting;
+        readonly Binding PlaneSpeed;
+        readonly Binding ApVspeedSetting;
+        readonly Binding PlaneVspeed;
+        readonly Binding FdSwitch;
+        readonly Binding AltSwitch;
+        readonly Binding MasterSwitch;
+        readonly Binding NavSwitch;
+        readonly Binding FlcSwitch;
+        readonly Binding AprSwitch;
+        readonly Binding LocSwitch;
+        readonly Binding SpeedSwitch;
+        readonly Binding HeadingSwitch;
+        readonly Binding ThrottleSwitch;
+        readonly Binding VspeedSwitch;
+        readonly Binding YdSwitch;
+        readonly Binding BcSwitch;
     }
 }

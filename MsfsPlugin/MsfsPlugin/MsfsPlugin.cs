@@ -15,7 +15,7 @@ namespace Loupedeck.MsfsPlugin
 
         public override void Unload()
         {
-            SimConnectDAO.Instance.Disconnect();
+            SimConnectDAO.Instance.Disconnect(true);
         }
 
 

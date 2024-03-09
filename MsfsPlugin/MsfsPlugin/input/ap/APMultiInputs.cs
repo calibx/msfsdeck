@@ -14,10 +14,10 @@
             bindings.Add(Register(BindingKeys.AP_MASTER_SWITCH));
             bindings.Add(Register(BindingKeys.AP_THROTTLE_SWITCH));
             bindings.Add(Register(BindingKeys.AP_VSPEED_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_FD_SWITCH_AL_FOLDER));
-            bindings.Add(Register(BindingKeys.AP_FLC_SWITCH_AL_FOLDER));
-            bindings.Add(Register(BindingKeys.AP_APP_SWITCH_AL_FOLDER));
-            bindings.Add(Register(BindingKeys.AP_LOC_SWITCH_AL_FOLDER));
+            bindings.Add(Register(BindingKeys.AP_FD_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_FLC_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_APP_SWITCH));
+            bindings.Add(Register(BindingKeys.AP_LOC_SWITCH));
             bindings.Add(Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
             bindings.Add(Register(BindingKeys.AP_BC_SWITCH));
 

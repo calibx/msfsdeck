@@ -89,10 +89,10 @@
             SetMsfsValue(BindingKeys.AP_YAW_DAMPER_SWITCH, reader.apYawDamper);
             SetMsfsValue(BindingKeys.AP_BC_SWITCH, reader.apBackCourse);
 
-            SetMsfsValue(BindingKeys.AP_FD_SWITCH_AL_FOLDER, reader.apFD);
-            SetMsfsValue(BindingKeys.AP_FLC_SWITCH_AL_FOLDER, reader.apFLC);
-            SetMsfsValue(BindingKeys.AP_APP_SWITCH_AL_FOLDER, reader.apAPP);
-            SetMsfsValue(BindingKeys.AP_LOC_SWITCH_AL_FOLDER, reader.apLOC);
+            SetMsfsValue(BindingKeys.AP_FD_SWITCH, reader.apFD);
+            SetMsfsValue(BindingKeys.AP_FLC_SWITCH, reader.apFLC);
+            SetMsfsValue(BindingKeys.AP_APP_SWITCH, reader.apAPP);
+            SetMsfsValue(BindingKeys.AP_LOC_SWITCH, reader.apLOC);
 
             SetMsfsValue(BindingKeys.COM1_ACTIVE_FREQUENCY, reader.COM1ActiveFreq);
             SetMsfsValue(BindingKeys.COM1_STBY, reader.COM1StbFreq);
@@ -228,10 +228,10 @@
             AddReaderDef("GENERAL ENG THROTTLE LEVER POSITION:1", "Percent Over 100", SimType.FLOAT64);   //        throttle             THROTTLE
             AddReaderDef("PITOT HEAT SWITCH:1", "Boolean", SimType.INT64);                                //        pitot                PITOT
             AddReaderDef("CENTER WHEEL RPM", "RPM", SimType.INT64);                                       //        wheelRPM             PUSHBACK_ATTACHED
-            AddReaderDef("AUTOPILOT FLIGHT DIRECTOR ACTIVE:1", "Boolean", SimType.INT64);                 //        apFD                 AP_FD_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean", SimType.INT64);                      //        apFLC                AP_FLC_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT APPROACH HOLD", "Boolean", SimType.INT64);                            //        apAPP                AP_APP_SWITCH_AL_FOLDER
-            AddReaderDef("AUTOPILOT APPROACH IS LOCALIZER", "Boolean", SimType.INT64);                    //        apLOC                AP_LOC_SWITCH_AL_FOLDER
+            AddReaderDef("AUTOPILOT FLIGHT DIRECTOR ACTIVE:1", "Boolean", SimType.INT64);                 //        apFD                 AP_FD_SWITCH
+            AddReaderDef("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean", SimType.INT64);                      //        apFLC                AP_FLC_SWITCH
+            AddReaderDef("AUTOPILOT APPROACH HOLD", "Boolean", SimType.INT64);                            //        apAPP                AP_APP_SWITCH
+            AddReaderDef("AUTOPILOT APPROACH IS LOCALIZER", "Boolean", SimType.INT64);                    //        apLOC                AP_LOC_SWITCH
             AddReaderDef("SIM ON GROUND", "Boolean", SimType.INT64);                                      //        onGround             PUSHBACK_STATE
             AddReaderDef("GROUND VELOCITY", "Knots", SimType.INT64);                                      //        groundSpeed          AUTO_TAXI
             AddReaderDef("PUSHBACK ATTACHED", "Boolean", SimType.INT64);                                  //        pushbackAttached     PUSHBACK_ATTACHED

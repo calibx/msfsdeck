@@ -12,7 +12,12 @@
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
     public class SimConnectDAO
     {
-        private SimConnectDAO() { }
+        private SimConnectDAO()
+        {
+            connection = MsfsData.Instance.Register(BindingKeys.CONNECTION);
+            autoTaxi = MsfsData.Instance.Register(BindingKeys.AUTO_TAXI);
+        }
+
         private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
 
         public static SimConnectDAO Instance => lazy.Value;
@@ -43,10 +48,10 @@
 
         public void Connect()
         {
-            if (MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 0)
+            if (connection.MsfsValue == 0)
             {
                 DebugTracing.Trace("Trying cnx");
-                MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(2);
+                connection.SetMsfsValue(2);
                 foreach (Binding binding in MsfsData.Instance.bindings.Values)
                 {
                     binding.MSFSChanged = true;
@@ -72,7 +77,7 @@
                 catch (COMException ex)
                 {
                     DebugTracing.Trace(ex);
-                    MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
+                    connection.SetMsfsValue(0);
                     foreach (Binding binding in MsfsData.Instance.bindings.Values)
                     {
                         binding.MSFSChanged = true;
@@ -91,8 +96,9 @@
             DebugTracing.Trace(eException.ToString());
         }
 
-        public void Disconnect()
+        public void Disconnect(bool unloading = false)
         {
+            DebugTracing.Trace($"Disconnecting - unloading={unloading}");
             if (m_oSimConnect != null)
             {
                 m_oSimConnect.Dispose();
@@ -100,10 +106,10 @@
                 _simConnectConnected = false;
             }
 
-            //>> If called from Unload, then I think that the rest here is superfluous to do. We could add a parameter
-            // indicating whether we are about to unload and if so return here.
+            if (unloading)
+                return;
 
-            MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
+            connection.SetMsfsValue(0);
             foreach (Binding binding in MsfsData.Instance.bindings.Values)
             {
                 binding.MSFSChanged = true;
@@ -114,7 +120,7 @@
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
             DebugTracing.Trace("Cnx opened");
-            MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(1);
+            connection.SetMsfsValue(1);
             foreach (Binding binding in MsfsData.Instance.bindings.Values)
             {
                 binding.MSFSChanged = true;
@@ -171,30 +177,41 @@
         {
             if (reader.onGround == 1)
             {
-                if (MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].ControllerValue >= 2)
+                if (autoTaxi.ControllerValue >= 2)
                 {
                     if (reader.groundSpeed > 19)
                     {
-                        MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(3);
+                        autoTaxi.SetMsfsValue(3);
                         DataTransferOut.Transmit(m_oSimConnect, EVENTS.BRAKES, 1);
                     }
                     else
                     {
-                        MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(2);
+                        autoTaxi.SetMsfsValue(2);
                     }
                 }
                 else
                 {
-                    MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(1);
+                    autoTaxi.SetMsfsValue(1);
                 }
             }
             else
             {
-                MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(0);
+                autoTaxi.SetMsfsValue(0);
             }
         }
+
+        private SimConnect m_oSimConnect = null;
+
+        private static readonly System.Timers.Timer timer = new System.Timers.Timer();
+
+        private const double timerInterval = 200;
+
+        private enum DATA_REQUESTS
+        {
+            REQUEST_1
+        }
+
+        private readonly Binding connection;
+        private readonly Binding autoTaxi;
     }
 }
-
-
-
