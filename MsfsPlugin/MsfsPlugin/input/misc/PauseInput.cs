@@ -7,8 +7,7 @@
     {
         public PauseInput() : base("Pause", "Pause", "Misc")
         {
-            binding = Register(BindingKeys.PAUSE);
-            bindings.Add(binding);
+            binding = Bind(BindingKeys.PAUSE);
         }
 
         protected override void ChangeValue() => binding.SetControllerValue(1);

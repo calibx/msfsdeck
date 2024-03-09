@@ -9,20 +9,20 @@
     {
         public RPMInput() : base("RPM/N1", "Display RPM for or N1", "Misc")
         {
-            bindings.Add(engineType = Register(BindingKeys.ENGINE_TYPE));
-            bindings.Add(engineNumber = Register(BindingKeys.ENGINE_NUMBER));
-            bindings.Add(eng1Rpm = Register(BindingKeys.E1RPM));
-            bindings.Add(eng2Rpm = Register(BindingKeys.E2RPM));
-            bindings.Add(eng3Rpm = Register(BindingKeys.E3RPM));
-            bindings.Add(eng4Rpm = Register(BindingKeys.E4RPM));
-            bindings.Add(eng1N1 = Register(BindingKeys.E1N1));
-            bindings.Add(eng2N1 = Register(BindingKeys.E2N1));
-            bindings.Add(eng3N1 = Register(BindingKeys.E3N1));
-            bindings.Add(eng4N1 = Register(BindingKeys.E4N1));
-            bindings.Add(eng1N2 = Register(BindingKeys.E1N2));
-            bindings.Add(eng2N2 = Register(BindingKeys.E2N2));
-            bindings.Add(eng3N2 = Register(BindingKeys.E3N2));
-            bindings.Add(eng4N2 = Register(BindingKeys.E4N2));
+            engineType = Bind(BindingKeys.ENGINE_TYPE);
+            engineNumber = Bind(BindingKeys.ENGINE_NUMBER);
+            eng1Rpm = Bind(BindingKeys.E1RPM);
+            eng2Rpm = Bind(BindingKeys.E2RPM);
+            eng3Rpm = Bind(BindingKeys.E3RPM);
+            eng4Rpm = Bind(BindingKeys.E4RPM);
+            eng1N1 = Bind(BindingKeys.E1N1);
+            eng2N1 = Bind(BindingKeys.E2N1);
+            eng3N1 = Bind(BindingKeys.E3N1);
+            eng4N1 = Bind(BindingKeys.E4N1);
+            eng1N2 = Bind(BindingKeys.E1N2);
+            eng2N2 = Bind(BindingKeys.E2N2);
+            eng3N2 = Bind(BindingKeys.E3N2);
+            eng4N2 = Bind(BindingKeys.E4N2);
 
             RpmBindings = new List<Binding>() { eng1Rpm, eng2Rpm, eng3Rpm, eng4Rpm };
             N1Bindings = new List<Binding>() { eng1N1, eng2N1, eng3N1, eng4N1 };

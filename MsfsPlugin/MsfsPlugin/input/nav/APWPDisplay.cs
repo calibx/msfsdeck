@@ -3,17 +3,28 @@
     using System;
 
     using Loupedeck.MsfsPlugin.input;
+    using Loupedeck.MsfsPlugin.tools;
+
     class APWPDisplay : DefaultInput
     {
         public APWPDisplay() : base("WP", "Display next WP data", "Nav")
         {
-            bindings.Add(Register(BindingKeys.AP_NEXT_WP_ID));
-            bindings.Add(Register(BindingKeys.AP_NEXT_WP_DIST));
-            bindings.Add(Register(BindingKeys.AP_NEXT_WP_ETE));
-            bindings.Add(Register(BindingKeys.AP_NEXT_WP_HEADING));
+            wpId = Bind(BindingKeys.AP_NEXT_WP_ID);
+            wpDist = Bind(BindingKeys.AP_NEXT_WP_DIST);
+            wpETE = Bind(BindingKeys.AP_NEXT_WP_ETE);
+            wpHdg = Bind(BindingKeys.AP_NEXT_WP_HEADING);
         }
 
-        protected override string GetValue() => "WP " + bindings[0].ControllerValue + "\n" + bindings[1].ControllerValue + " mn \n" + TimeSpan.FromSeconds(bindings[2].ControllerValue).ToString() + "\n" + bindings[3].ControllerValue + " °";
+        protected override string GetValue() =>
+            "WP " + wpId.ControllerValue + "\n" +
+            ConvertTool.Round(wpDist.ControllerValue / 10.0, 1) + " nm \n" +
+            TimeSpan.FromSeconds(wpETE.ControllerValue).ToString() + "\n" +
+            wpHdg.ControllerValue + " °";
+
+        readonly Binding wpId;
+        readonly Binding wpDist;
+        readonly Binding wpETE;
+        readonly Binding wpHdg;
     }
 }
 

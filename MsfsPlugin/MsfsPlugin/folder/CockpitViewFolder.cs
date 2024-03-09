@@ -16,20 +16,20 @@
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.EncoderArea;
 
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType) => new[]
-            {
-                CreateCommandName("1"),
-                CreateCommandName("2"),
-                CreateCommandName("3"),
-                CreateCommandName("4"),
-                CreateCommandName("5"),
-                CreateCommandName("6"),
-                CreateCommandName("7"),
-                CreateCommandName("8"),
-                CreateCommandName("9"),
-                CreateCommandName("0"),
-                CreateCommandName(FixedCustom),
-                CreateCommandName(SetMode),
-            };
+        {
+            CreateCommandName("1"),
+            CreateCommandName("2"),
+            CreateCommandName("3"),
+            CreateCommandName("4"),
+            CreateCommandName("5"),
+            CreateCommandName("6"),
+            CreateCommandName("7"),
+            CreateCommandName("8"),
+            CreateCommandName("9"),
+            CreateCommandName("0"),
+            CreateCommandName(FixedCustom),
+            CreateCommandName(SetMode),
+        };
 
         public override string GetCommandDisplayName(string actionParameter, PluginImageSize imageSize) => actionParameter;
 

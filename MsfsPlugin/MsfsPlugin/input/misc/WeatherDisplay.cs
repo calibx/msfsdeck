@@ -6,11 +6,11 @@
     {
         public WeatherDisplay() : base("Weather", "Display weather parameters", "Misc")
         {
-            bindings.Add(oat = Register(BindingKeys.AIR_TEMP));
-            bindings.Add(windDir = Register(BindingKeys.WIND_DIRECTION));
-            bindings.Add(windVel = Register(BindingKeys.WIND_SPEED));
-            bindings.Add(visib = Register(BindingKeys.VISIBILITY));
-            bindings.Add(pressure = Register(BindingKeys.SEA_LEVEL_PRESSURE));
+            oat = Bind(BindingKeys.AIR_TEMP);
+            windDir = Bind(BindingKeys.WIND_DIRECTION);
+            windVel = Bind(BindingKeys.WIND_SPEED);
+            visib = Bind(BindingKeys.VISIBILITY);
+            pressure = Bind(BindingKeys.SEA_LEVEL_PRESSURE);
         }
 
         protected override string GetValue() => $"{OatText}\n{WindText}\n{VisibilityText}\n{PressureText}";

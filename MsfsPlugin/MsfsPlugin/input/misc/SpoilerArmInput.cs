@@ -7,8 +7,7 @@
     {
         public SpoilerArmInput() : base("SpoilerArm", "Spoiler Arm", "Misc")
         {
-            binding = Register(BindingKeys.SPOILERS_ARM);
-            bindings.Add(binding);
+            binding = Bind(BindingKeys.SPOILERS_ARM);
         }
 
         protected override void ChangeValue() => binding.SetControllerValue(1);

@@ -8,7 +8,7 @@
     {
         public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug")
         {
-            bindings.Add(binding = Register(BindingKeys.CONNECTION));
+            binding = Bind(BindingKeys.CONNECTION);
         }
 
         protected override string GetValue() => binding.MsfsValue == 1 ? "connected" : binding.MsfsValue == 2 ? "trying to\nconnect" : "not\nconnected";

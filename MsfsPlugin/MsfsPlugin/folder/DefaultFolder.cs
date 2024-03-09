@@ -1,29 +1,22 @@
 ﻿namespace Loupedeck.MsfsPlugin.folder
 {
-    using System.Collections.Generic;
-
     using Loupedeck.MsfsPlugin;
+    using Loupedeck.MsfsPlugin.tools;
 
     public abstract class DefaultFolder : PluginDynamicFolder, INotifiable
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
-
         protected DefaultFolder(string displayName)
         {
             DisplayName = displayName;
             GroupName = "Folder";
+            entity = new CommonEntity();
             MsfsData.Instance.Register(this);
         }
 
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                    binding.Reset();
-            }
-        }
+        protected Binding Bind(BindingKeys key) => entity.Bind(key);
 
-        protected static Binding Register(BindingKeys key) => MsfsData.Instance.Register(key);
+        public void Notify() => entity.Notify();
+
+        readonly CommonEntity entity;
     }
 }
