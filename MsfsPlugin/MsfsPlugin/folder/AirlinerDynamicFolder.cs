@@ -9,28 +9,28 @@
     {
         public AirlinerDynamicFolder() : base("Autopilot")
         {
-            bindings.Add(ApAltSetting = Register(BindingKeys.AP_ALT));
-            bindings.Add(PlaneAltitude = Register(BindingKeys.ALT));
-            bindings.Add(ApHdgSetting = Register(BindingKeys.AP_HEADING));
-            bindings.Add(PlaneHeading = Register(BindingKeys.HEADING));
-            bindings.Add(ApSpeedSetting = Register(BindingKeys.AP_SPEED));
-            bindings.Add(PlaneSpeed = Register(BindingKeys.SPEED));
-            bindings.Add(ApVspeedSetting = Register(BindingKeys.AP_VSPEED));
-            bindings.Add(PlaneVspeed = Register(BindingKeys.VSPEED));
+            ApAltSetting = Bind(BindingKeys.AP_ALT);
+            PlaneAltitude = Bind(BindingKeys.ALT);
+            ApHdgSetting = Bind(BindingKeys.AP_HEADING);
+            PlaneHeading = Bind(BindingKeys.HEADING);
+            ApSpeedSetting = Bind(BindingKeys.AP_SPEED);
+            PlaneSpeed = Bind(BindingKeys.SPEED);
+            ApVspeedSetting = Bind(BindingKeys.AP_VSPEED);
+            PlaneVspeed = Bind(BindingKeys.VSPEED);
 
-            bindings.Add(FdSwitch = Register(BindingKeys.AP_FD_SWITCH));
-            bindings.Add(AltSwitch = Register(BindingKeys.AP_ALT_SWITCH));
-            bindings.Add(MasterSwitch = Register(BindingKeys.AP_MASTER_SWITCH));
-            bindings.Add(NavSwitch = Register(BindingKeys.AP_NAV_SWITCH));
-            bindings.Add(FlcSwitch = Register(BindingKeys.AP_FLC_SWITCH));
-            bindings.Add(AprSwitch = Register(BindingKeys.AP_APP_SWITCH));
-            bindings.Add(LocSwitch = Register(BindingKeys.AP_LOC_SWITCH));
-            bindings.Add(SpeedSwitch = Register(BindingKeys.AP_SPEED_SWITCH));
-            bindings.Add(HeadingSwitch = Register(BindingKeys.AP_HEAD_SWITCH));
-            bindings.Add(ThrottleSwitch = Register(BindingKeys.AP_THROTTLE_SWITCH));
-            bindings.Add(VspeedSwitch = Register(BindingKeys.AP_VSPEED_SWITCH));
-            bindings.Add(YdSwitch = Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
-            bindings.Add(BcSwitch = Register(BindingKeys.AP_BC_SWITCH));
+            MasterSwitch = Bind(BindingKeys.AP_MASTER_SWITCH);
+            FdSwitch = Bind(BindingKeys.AP_FD_SWITCH);
+            AltSwitch = Bind(BindingKeys.AP_ALT_SWITCH);
+            HeadingSwitch = Bind(BindingKeys.AP_HEAD_SWITCH);
+            NavSwitch = Bind(BindingKeys.AP_NAV_SWITCH);
+            FlcSwitch = Bind(BindingKeys.AP_FLC_SWITCH);
+            AprSwitch = Bind(BindingKeys.AP_APP_SWITCH);
+            LocSwitch = Bind(BindingKeys.AP_LOC_SWITCH);
+            SpeedSwitch = Bind(BindingKeys.AP_SPEED_SWITCH);
+            ThrottleSwitch = Bind(BindingKeys.AP_THROTTLE_SWITCH);
+            VspeedSwitch = Bind(BindingKeys.AP_VSPEED_SWITCH);
+            YdSwitch = Bind(BindingKeys.AP_YAW_DAMPER_SWITCH);
+            BcSwitch = Bind(BindingKeys.AP_BC_SWITCH);
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
@@ -59,6 +59,7 @@
                 NavigateRightActionName
             };
         }
+
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[]
@@ -66,7 +67,7 @@
                 NavigateUpActionName,
                 CreateCommandName("FD"),
                 CreateCommandName("AP"),
-                CreateCommandName("Yaw Damp"),
+                CreateCommandName("Yaw Damper"),
 
                 CreateCommandName("Altitude"),
                 CreateCommandName("FLC"),
@@ -79,7 +80,7 @@
                 CreateCommandName("VSpeed"),
 
                 CreateCommandName("Throttle"),
-                CreateCommandName("Back Crs"),
+                CreateCommandName("Back Course"),
             };
         }
 
@@ -103,6 +104,7 @@
             }
             return ret;
         }
+
         public override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
@@ -142,14 +144,15 @@
                     case "VSpeed":
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(VspeedSwitch.ControllerValue));
                         break;
-                    case "Yaw Damp":
+                    case "Yaw Damper":
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(YdSwitch.ControllerValue));
                         break;
-                    case "Back Crs":
+                    case "Back Course":
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(BcSwitch.ControllerValue));
                         break;
                 }
-                bitmapBuilder.DrawText(actionParameter);
+                bitmapBuilder.Translate(0, -10);
+                bitmapBuilder.DrawText(actionParameter.Replace(' ', '\n'));
                 return bitmapBuilder.ToImage();
             }
         }
@@ -210,10 +213,10 @@
                 case "VSpeed":
                     VspeedSwitch.SetControllerValue(1);
                     break;
-                case "Yaw Damp":
+                case "Yaw Damper":
                     YdSwitch.SetControllerValue(1);
                     break;
-                case "Back Crs":
+                case "Back Course":
                     BcSwitch.SetControllerValue(1);
                     break;
                 case "Altitude Reset":

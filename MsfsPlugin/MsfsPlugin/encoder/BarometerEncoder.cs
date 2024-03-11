@@ -7,8 +7,8 @@
     {
         public BarometerEncoder() : base("Baro", "Barometer encoder", "Nav", true, 2799, 3201, 1)
         {
-            bindings.Add(kohlsman = Register(BindingKeys.KOHLSMAN));                  // Value is 10000 times the actual value (rounded to long)
-            bindings.Add(pressure = Register(BindingKeys.SEA_LEVEL_PRESSURE));
+            kohlsman = Bind(BindingKeys.KOHLSMAN);                  // Value is 10000 times the actual value (rounded to long)
+            pressure = Bind(BindingKeys.SEA_LEVEL_PRESSURE);
         }
 
         protected override void RunCommand(string actionParameter) => SetValue(ConvertTool.RoundToLong(pressure.MsfsValue / ConvertTool.inHg2mbar * 1000d));

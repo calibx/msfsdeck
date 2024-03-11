@@ -7,8 +7,8 @@
     {
         public HeadingAPEncoder() : base("Head", "Autopilot heading encoder", "AP", true, 1, 360, 1)
         {
-            bindings.Add(ApHeading = Register(BindingKeys.AP_HEADING));
-            bindings.Add(Heading = Register(BindingKeys.HEADING));
+            ApHeading = Bind(BindingKeys.AP_HEADING);
+            Heading = Bind(BindingKeys.HEADING);
         }
 
         protected override void RunCommand(string actionParameter) => SetValue(Heading.ControllerValue);

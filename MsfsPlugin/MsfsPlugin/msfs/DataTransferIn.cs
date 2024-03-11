@@ -45,7 +45,7 @@
             SetMsfsValue(BindingKeys.FUEL_PERCENT, (Int64)Math.Round(reader.fuelQuantity * 100.0 / reader.fuelCapacity));
             SetMsfsValue(BindingKeys.FUEL_TIME_LEFT, (Int64)(reader.fuelQuantity / reader.FuelGph * 3600));
             SetMsfsValue(BindingKeys.AP_NEXT_WP_ID, reader.wpID);
-            SetMsfsValue(BindingKeys.AP_NEXT_WP_DIST, (Int64)Math.Round(reader.wpDistance * 0.00053996f, 1));
+            SetMsfsValue(BindingKeys.AP_NEXT_WP_DIST, (Int64)Math.Round(reader.wpDistance * 0.00053996f * 10, 1));
             SetMsfsValue(BindingKeys.AP_NEXT_WP_ETE, reader.wpETE);
             SetMsfsValue(BindingKeys.AP_NEXT_WP_HEADING, reader.wpBearing);
             SetMsfsValue(BindingKeys.ENGINE_TYPE, reader.engineType);
@@ -97,13 +97,13 @@
             SetMsfsValue(BindingKeys.COM1_ACTIVE_FREQUENCY, reader.COM1ActiveFreq);
             SetMsfsValue(BindingKeys.COM1_STBY, reader.COM1StbFreq);
             SetMsfsValue(BindingKeys.COM1_AVAILABLE, reader.COM1Available);
-            SetMsfsValue(BindingKeys.COM1_STATUS, reader.COM1Status);
+            //SetMsfsValue(BindingKeys.COM1_STATUS, reader.COM1Status);
             //SetMsfsValue(BindingKeys.COM1_ACTIVE_FREQUENCY_TYPE, COMtypeToInt(reader.COM1Type));
 
             SetMsfsValue(BindingKeys.COM2_ACTIVE_FREQUENCY, reader.COM2ActiveFreq);
             SetMsfsValue(BindingKeys.COM2_STBY, reader.COM2StbFreq);
             SetMsfsValue(BindingKeys.COM2_AVAILABLE, reader.COM2Available);
-            SetMsfsValue(BindingKeys.COM2_STATUS, reader.COM2Status);
+            //SetMsfsValue(BindingKeys.COM2_STATUS, reader.COM2Status);
             //SetMsfsValue(BindingKeys.COM2_ACTIVE_FREQUENCY_TYPE, this.COMtypeToInt(reader.COM2Type));
 
             SetMsfsValue(BindingKeys.SIM_RATE, (Int64)(reader.simRate * 100));
@@ -188,7 +188,7 @@
             AddReaderDef("GPS FLIGHT PLAN WP INDEX", "Number", SimType.INT64);                            //        wpID                 AP_NEXT_WP_ID
             AddReaderDef("GPS WP DISTANCE", "Meters", SimType.INT64);                                     //        wpDistance           AP_NEXT_WP_DIST
             AddReaderDef("GPS WP ETE", "Seconds", SimType.INT64);                                         //        wpETE                AP_NEXT_WP_ETE
-            AddReaderDef("GPS WP BEARING", "Radians", SimType.INT64);                                     //        wpBearing            AP_NEXT_WP_HEADING
+            AddReaderDef("GPS WP BEARING", "degrees", SimType.INT64);                                     //        wpBearing            AP_NEXT_WP_HEADING
             AddReaderDef("GPS FLIGHT PLAN WP COUNT", "Number", SimType.INT64);                            //        wpCount              - no binding -
             AddReaderDef("AUTOPILOT HEADING LOCK DIR", "degrees", SimType.INT64);                         //        apHeading            AP_HEADING
             AddReaderDef("PLANE HEADING DEGREES MAGNETIC", "degrees", SimType.FLOAT64);                   //        planeHeading         HEADING

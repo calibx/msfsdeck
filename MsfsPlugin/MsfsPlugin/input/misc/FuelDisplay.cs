@@ -3,14 +3,15 @@
     using System;
 
     using Loupedeck.MsfsPlugin.input;
+
     class FuelDisplay : DefaultInput
     {
         public FuelDisplay() : base("Fuel", "Display fuel left, flow and time before empty", "Misc")
         {
-            bindings.Add(fuelPercent = Register(BindingKeys.FUEL_PERCENT));
-            bindings.Add(fuelFlowGph = Register(BindingKeys.FUEL_FLOW_GPH));
-            bindings.Add(fuelFlowPph = Register(BindingKeys.FUEL_FLOW_PPH));
-            bindings.Add(fuelTimeLeft = Register(BindingKeys.FUEL_TIME_LEFT));
+            fuelPercent = Bind(BindingKeys.FUEL_PERCENT);
+            fuelFlowGph = Bind(BindingKeys.FUEL_FLOW_GPH);
+            fuelFlowPph = Bind(BindingKeys.FUEL_FLOW_PPH);
+            fuelTimeLeft = Bind(BindingKeys.FUEL_TIME_LEFT);
         }
 
         protected override string GetValue() =>

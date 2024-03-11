@@ -8,17 +8,17 @@
     {
         public ATCDynamicFolder() : base("ATC")
         {
-            bindings.Add(Register(BindingKeys.ATC_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_0_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_1_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_2_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_3_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_4_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_5_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_6_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_7_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_8_ATC_FOLDER));
-            bindings.Add(Register(BindingKeys.ATC_9_ATC_FOLDER));
+            OpenClose = Bind(BindingKeys.ATC_ATC_FOLDER);
+            Choice1 = Bind(BindingKeys.ATC_1_ATC_FOLDER);
+            Choice2 = Bind(BindingKeys.ATC_2_ATC_FOLDER);
+            Choice3 = Bind(BindingKeys.ATC_3_ATC_FOLDER);
+            Choice4 = Bind(BindingKeys.ATC_4_ATC_FOLDER);
+            Choice5 = Bind(BindingKeys.ATC_5_ATC_FOLDER);
+            Choice6 = Bind(BindingKeys.ATC_6_ATC_FOLDER);
+            Choice7 = Bind(BindingKeys.ATC_7_ATC_FOLDER);
+            Choice8 = Bind(BindingKeys.ATC_8_ATC_FOLDER);
+            Choice9 = Bind(BindingKeys.ATC_9_ATC_FOLDER);
+            Choice0 = Bind(BindingKeys.ATC_0_ATC_FOLDER);
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.EncoderArea;
@@ -28,7 +28,6 @@
             return new[]
             {
                 CreateCommandName("Open/Close"),
-                CreateCommandName("0"),
                 CreateCommandName("1"),
                 CreateCommandName("2"),
                 CreateCommandName("3"),
@@ -37,7 +36,8 @@
                 CreateCommandName("6"),
                 CreateCommandName("7"),
                 CreateCommandName("8"),
-                CreateCommandName("9")
+                CreateCommandName("9"),
+                CreateCommandName("0")
             };
         }
 
@@ -49,39 +49,51 @@
             switch (actionParameter)
             {
                 case "Open/Close":
-                    bindings[0].SetControllerValue(1);
-                    break;
-                case "0":
-                    bindings[1].SetControllerValue(1);
+                    OpenClose.SetControllerValue(1);
                     break;
                 case "1":
-                    bindings[2].SetControllerValue(1);
+                    Choice1.SetControllerValue(1);
                     break;
                 case "2":
-                    bindings[3].SetControllerValue(1);
+                    Choice2.SetControllerValue(1);
                     break;
                 case "3":
-                    bindings[4].SetControllerValue(1);
+                    Choice3.SetControllerValue(1);
                     break;
                 case "4":
-                    bindings[5].SetControllerValue(1);
+                    Choice4.SetControllerValue(1);
                     break;
                 case "5":
-                    bindings[6].SetControllerValue(1);
+                    Choice5.SetControllerValue(1);
                     break;
                 case "6":
-                    bindings[7].SetControllerValue(1);
+                    Choice6.SetControllerValue(1);
                     break;
                 case "7":
-                    bindings[8].SetControllerValue(1);
+                    Choice7.SetControllerValue(1);
                     break;
                 case "8":
-                    bindings[9].SetControllerValue(1);
+                    Choice8.SetControllerValue(1);
                     break;
                 case "9":
-                    bindings[10].SetControllerValue(1);
+                    Choice9.SetControllerValue(1);
+                    break;
+                case "0":
+                    Choice0.SetControllerValue(1);
                     break;
             }
         }
+
+        readonly Binding OpenClose;
+        readonly Binding Choice1;
+        readonly Binding Choice2;
+        readonly Binding Choice3;
+        readonly Binding Choice4;
+        readonly Binding Choice5;
+        readonly Binding Choice6;
+        readonly Binding Choice7;
+        readonly Binding Choice8;
+        readonly Binding Choice9;
+        readonly Binding Choice0;
     }
 }

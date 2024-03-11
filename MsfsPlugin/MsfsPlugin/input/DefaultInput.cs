@@ -1,32 +1,29 @@
 ﻿namespace Loupedeck.MsfsPlugin.input
 {
     using System.Collections.Generic;
+    using Loupedeck.MsfsPlugin.tools;
 
     public abstract class DefaultInput : PluginDynamicCommand, INotifiable
     {
-        protected readonly List<Binding> bindings = new List<Binding>();
-        protected static Binding Register(BindingKeys key, long? value = null) => MsfsData.Instance.Register(key, value);
+        protected IList<Binding> bindings => entity.bindings;   //>> Can be removed when all inputs declare individual bindings
 
         protected DefaultInput(string name, string desc, string category) : base(name, desc, category)
         {
+            entity = new CommonEntity();
             MsfsData.Instance.Register(this);
         }
 
         protected DefaultInput()
         {
+            entity = new CommonEntity();
             MsfsData.Instance.Register(this);
         }
 
-        public void Notify()
-        {
-            foreach (Binding binding in bindings)
-            {
-                if (binding.HasMSFSChanged())
-                {
-                    binding.Reset();
-                }
-            }
-        }
+        protected static Binding Register(BindingKeys key, long? value = null) => MsfsData.Instance.Register(key, value);   //>> Can be removed when all inputs declare individual bindings
+
+        protected Binding Bind(BindingKeys key, long? value = null) => entity.Bind(key, value);
+
+        public void Notify() => entity.Notify();
 
         protected override string GetCommandDisplayName(string actionParameter, PluginImageSize imageSize) => GetValue();
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize) => GetImage(imageSize);
@@ -34,5 +31,7 @@
         protected virtual string GetValue() => null;
         protected virtual BitmapImage GetImage(PluginImageSize imageSize) => null;
         protected virtual void ChangeValue() { }
+
+        readonly CommonEntity entity;
     }
 }
