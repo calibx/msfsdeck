@@ -4,7 +4,7 @@
 
     internal class CommonEntity
     {
-        public readonly IList<Binding> bindings;
+        public readonly IList<Binding> bindings;   //>> Can be made private when no longer referenced from DefaultEncoder and DefaultInput.
 
         public CommonEntity()
         {

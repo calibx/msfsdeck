@@ -9,7 +9,6 @@
     using Microsoft.FlightSimulator.SimConnect;
 
     using static DataTransferTypes;
-    using static Loupedeck.MsfsPlugin.msfs.DataTransferTypes;
     using static Loupedeck.MsfsPlugin.msfs.SimConnectDAO;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
