@@ -7,7 +7,7 @@
 
     public class APDynamicFolder : DefaultFolder
     {
-        public APDynamicFolder() : base("AP")
+        public APDynamicFolder() : base("Simple Autopilot")
         {
             ApAltSetting = Bind(BindingKeys.AP_ALT);
             PlaneAltitude = Bind(BindingKeys.ALT);
@@ -116,13 +116,14 @@
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(VspeedSwitch.ControllerValue));
                         break;
                     case "Yaw Damper":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(binding15.ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(YdSwitch.ControllerValue));
                         break;
                     case "Back Course":
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(BcSwitch.ControllerValue));
                         break;
                 }
-                bitmapBuilder.DrawText(actionParameter);
+                bitmapBuilder.Translate(0, -10);
+                bitmapBuilder.DrawText(actionParameter.Replace(' ', '\n'));
                 return bitmapBuilder.ToImage();
             }
         }
@@ -172,7 +173,7 @@
                     VspeedSwitch.SetControllerValue(1);
                     break;
                 case "Yaw Damper":
-                    binding15.SetControllerValue(1);
+                    YdSwitch.SetControllerValue(1);
                     break;
                 case "Back Course":
                     BcSwitch.SetControllerValue(1);
@@ -207,10 +208,7 @@
         readonly Binding MasterSwitch;
         readonly Binding ThrottleSwitch;
         readonly Binding VspeedSwitch;
-
-        public Binding YdSwitch { get; }
-
-        readonly Binding binding15;
         readonly Binding BcSwitch;
+        readonly Binding YdSwitch;
     }
 }

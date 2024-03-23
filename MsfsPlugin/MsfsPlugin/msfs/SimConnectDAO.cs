@@ -24,19 +24,6 @@
 
         public const Int32 WM_USER_SIMCONNECT = 0x0402;
 
-        private SimConnect m_oSimConnect = null;
-
-        private bool _simConnectConnected = false;
-
-        private static readonly System.Timers.Timer timer = new System.Timers.Timer();
-
-        private const double timerInterval = 200;
-
-        private enum DATA_REQUESTS
-        {
-            REQUEST_1
-        }
-
         public enum hSimconnect : int
         {
             group1
@@ -201,6 +188,8 @@
         }
 
         private SimConnect m_oSimConnect = null;
+
+        private bool _simConnectConnected = false;
 
         private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
