@@ -1,21 +1,22 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using Loupedeck.MsfsPlugin.encoder;
-
     class SpoilerEncoder : DefaultEncoder
     {
         public SpoilerEncoder() : base("Spoiler", "Spoiler position", "Nav", true, 0, 100, 1)
         {
-            bindings.Add(Register(BindingKeys.SPOILER));
-            bindings.Add(Register(BindingKeys.SPOILERS_ARM));
+            spoiler = Bind(BindingKeys.SPOILER);
+            spoilersArm = Bind(BindingKeys.SPOILERS_ARM);
         }
 
-        protected override void RunCommand(string actionParameter) => bindings[1].SetControllerValue((1 + 1) % 2);
+        protected override void RunCommand(string actionParameter) => spoilersArm.SetControllerValue((1 + 1) % 2);
 
-        protected override long GetValue() => bindings[0].ControllerValue;
+        protected override long GetValue() => spoiler.ControllerValue;
 
-        protected override void SetValue(long newValue) => bindings[0].SetControllerValue(newValue);
+        protected override void SetValue(long newValue) => spoiler.SetControllerValue(newValue);
 
-        protected override string GetDisplayValue() => bindings[1].ControllerValue == 1 ? "[" + GetValue().ToString() + "]" : GetValue().ToString();
+        protected override string GetDisplayValue() => spoilersArm.ControllerValue == 1 ? "[" + GetValue().ToString() + "]" : GetValue().ToString();
+
+        readonly Binding spoiler;
+        readonly Binding spoilersArm;
     }
 }

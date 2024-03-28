@@ -1,7 +1,5 @@
-﻿namespace Loupedeck.MsfsPlugin.encoder
+﻿namespace Loupedeck.MsfsPlugin
 {
-    using System.Collections.Generic;
-
     using Loupedeck.MsfsPlugin.tools;
 
     public abstract class DefaultEncoder : PluginDynamicAdjustment, INotifiable
@@ -9,7 +7,6 @@
         protected int min;
         protected int max;
         protected int step;
-        protected IList<Binding> bindings => entity.bindings;   //>> Can be removed when all encoders declare individual bindings
 
         protected DefaultEncoder(string name, string desc, string category, bool resettable, int min, int max, int step) : base(name, desc, category, resettable)
         {
@@ -25,8 +22,6 @@
             SetValue(ConvertTool.ApplyAdjustment(GetValue(), ticks, min, max, step));
             ActionImageChanged();
         }
-
-        protected static Binding Register(BindingKeys key) => MsfsData.Instance.Register(key);   //>> Can be removed when all encoders declare individual bindings
 
         protected Binding Bind(BindingKeys key) => entity.Bind(key);
 
