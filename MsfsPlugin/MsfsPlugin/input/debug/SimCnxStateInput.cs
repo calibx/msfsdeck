@@ -15,7 +15,7 @@
 
         protected override void RunCommand(string actionParameter)
         {
-            var curValue = bindings[0].MsfsValue;
+            var curValue = binding.MsfsValue;
             if (curValue == 1 || curValue == 2)
                 SimConnectDAO.Instance.Disconnect();
             else

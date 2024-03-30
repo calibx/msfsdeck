@@ -86,6 +86,7 @@
     <Compile Include="encoder\ThrottleEncoder.cs" />
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="event\Binding.cs" />
+    <Compile Include="event\BindingExtensions.cs" />
     <Compile Include="event\BindingKeys.cs" />
     <Compile Include="event\INotifiable.cs" />
     <Compile Include="folder\AirlinerDynamicFolder.cs" />

@@ -8,20 +8,20 @@
     {
         public LightsMultiInputs()
         {
-            bindings.Add(Register(BindingKeys.LIGHT_NAV));
-            bindings.Add(Register(BindingKeys.LIGHT_BEACON));
-            bindings.Add(Register(BindingKeys.LIGHT_LANDING));
-            bindings.Add(Register(BindingKeys.LIGHT_TAXI));
-            bindings.Add(Register(BindingKeys.LIGHT_STROBE));
-            bindings.Add(Register(BindingKeys.LIGHT_INSTRUMENT));
-            bindings.Add(Register(BindingKeys.LIGHT_RECOG));
-            bindings.Add(Register(BindingKeys.LIGHT_WING));
-            bindings.Add(Register(BindingKeys.LIGHT_LOGO));
-            bindings.Add(Register(BindingKeys.LIGHT_CABIN));
-            bindings.Add(Register(BindingKeys.LIGHT_PEDESTAL));
-            bindings.Add(Register(BindingKeys.LIGHT_GLARESHIELD));
-            bindings.Add(Register(BindingKeys.LIGHT_ALL_SWITCH));
-            bindings.Add(Register(BindingKeys.FLASHLIGHT));
+            nav = Bind(BindingKeys.LIGHT_NAV);
+            beacon = Bind(BindingKeys.LIGHT_BEACON);
+            landing = Bind(BindingKeys.LIGHT_LANDING);
+            taxi = Bind(BindingKeys.LIGHT_TAXI);
+            strobes = Bind(BindingKeys.LIGHT_STROBE);
+            instrument = Bind(BindingKeys.LIGHT_INSTRUMENT);
+            recog = Bind(BindingKeys.LIGHT_RECOG);
+            wing = Bind(BindingKeys.LIGHT_WING);
+            logo = Bind(BindingKeys.LIGHT_LOGO);
+            cabin = Bind(BindingKeys.LIGHT_CABIN);
+            pedestal = Bind(BindingKeys.LIGHT_PEDESTAL);
+            glareshield = Bind(BindingKeys.LIGHT_GLARESHIELD);
+            all = Bind(BindingKeys.LIGHT_ALL_SWITCH);
+            flashlight = Bind(BindingKeys.FLASHLIGHT);
 
             AddParameter("Navigation", "Navigation light", "Lights");
             AddParameter("Beacon", "Beacon light", "Lights");
@@ -33,11 +33,12 @@
             AddParameter("Wing", "Wing light", "Lights");
             AddParameter("Logo", "Logo light", "Lights");
             AddParameter("Cabin", "Cabin light", "Lights");
-            AddParameter("Pedestral", "Pedestral light", "Lights");
+            AddParameter("Pedestal", "Pedestal light", "Lights");
             AddParameter("Glareshield", "Glareshield light", "Lights");
-            AddParameter("Flashlight", "Flashlight", "Lights");
             AddParameter("All lights", "All lights", "Lights");
+            AddParameter("Flashlight", "Flashlight", "Lights");
         }
+
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
@@ -45,42 +46,46 @@
                 switch (actionParameter)
                 {
                     case "Navigation":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[0].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(nav.ControllerValue));
                         break;
                     case "Beacon":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[1].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(beacon.ControllerValue));
                         break;
                     case "Landing":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[2].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(landing.ControllerValue));
                         break;
                     case "Taxi":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[3].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(taxi.ControllerValue));
                         break;
                     case "Strobes":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[4].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(strobes.ControllerValue));
                         break;
                     case "Instruments":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[5].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(instrument.ControllerValue));
                         break;
                     case "Recognition":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[6].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(recog.ControllerValue));
                         break;
                     case "Wing":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[7].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(wing.ControllerValue));
                         break;
                     case "Logo":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(logo.ControllerValue));
                         break;
                     case "Cabin":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(cabin.ControllerValue));
                         break;
-                    case "Pedestral":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
+                    case "Pedestal":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(pedestal.ControllerValue));
                         break;
                     case "Glareshield":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(glareshield.ControllerValue));
                         break;
-                    case "All":
+                    case "All lights":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(all.ControllerValue));
+                        break;
+                    case "Flashlight":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(flashlight.ControllerValue));
                         break;
                 }
                 bitmapBuilder.DrawText(actionParameter);
@@ -94,48 +99,63 @@
             switch (actionParameter)
             {
                 case "Navigation":
-                    bindings[0].SetControllerValue(1);
+                    nav.ToggleControllerValue();
                     break;
                 case "Beacon":
-                    bindings[1].SetControllerValue(1);
+                    beacon.ToggleControllerValue();
                     break;
                 case "Landing":
-                    bindings[2].SetControllerValue(1);
+                    landing.ToggleControllerValue();
                     break;
                 case "Taxi":
-                    bindings[3].SetControllerValue(1);
+                    taxi.ToggleControllerValue();
                     break;
                 case "Strobes":
-                    bindings[4].SetControllerValue(1);
+                    strobes.ToggleControllerValue();
                     break;
                 case "Instruments":
-                    bindings[5].SetControllerValue(1);
+                    instrument.ToggleControllerValue();
                     break;
                 case "Recognition":
-                    bindings[6].SetControllerValue(1);
+                    recog.ToggleControllerValue();
                     break;
                 case "Wing":
-                    bindings[7].SetControllerValue(1);
+                    wing.ToggleControllerValue();
                     break;
                 case "Logo":
-                    bindings[8].SetControllerValue(1);
+                    logo.ToggleControllerValue();
                     break;
                 case "Cabin":
-                    bindings[9].SetControllerValue(1);
+                    cabin.ToggleControllerValue();
                     break;
-                case "Pedestral":
-                    bindings[10].SetControllerValue(1);
+                case "Pedestal":
+                    pedestal.ToggleControllerValue();
                     break;
                 case "Glareshield":
-                    bindings[11].SetControllerValue(1);
+                    glareshield.ToggleControllerValue();
                     break;
-                case "All":
-                    bindings[12].SetControllerValue(1);
+                case "All lights":
+                    all.ToggleControllerValue();
                     break;
                 case "Flashlight":
-                    bindings[13].SetControllerValue(1);
+                    flashlight.ToggleControllerValue();
                     break;
             }
         }
+
+        readonly Binding nav;
+        readonly Binding beacon;
+        readonly Binding landing;
+        readonly Binding taxi;
+        readonly Binding strobes;
+        readonly Binding instrument;
+        readonly Binding recog;
+        readonly Binding wing;
+        readonly Binding logo;
+        readonly Binding cabin;
+        readonly Binding pedestal;
+        readonly Binding glareshield;
+        readonly Binding all;
+        readonly Binding flashlight;
     }
 }
