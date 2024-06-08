@@ -1,6 +1,5 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using Loupedeck.MsfsPlugin.encoder;
     using Loupedeck.MsfsPlugin.tools;
 
     class BarometerEncoder : DefaultEncoder

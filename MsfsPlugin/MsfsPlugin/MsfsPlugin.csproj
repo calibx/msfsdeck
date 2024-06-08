@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="encoder\SimRateEncoder.cs" />
     <Compile Include="encoder\BarometerEncoder.cs" />
+    <Compile Include="encoder\TrimEncoder.cs" />
     <Compile Include="encoder\VorObiEncoder.cs" />
     <Compile Include="encoder\VSpeedAPEncoder.cs" />
     <Compile Include="encoder\SpeedAPEncoder.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="encoder\ThrottleEncoder.cs" />
     <Compile Include="encoder\SpoilerEncoder.cs" />
     <Compile Include="event\Binding.cs" />
+    <Compile Include="event\BindingExtensions.cs" />
     <Compile Include="event\BindingKeys.cs" />
     <Compile Include="event\INotifiable.cs" />
     <Compile Include="folder\AirlinerDynamicFolder.cs" />

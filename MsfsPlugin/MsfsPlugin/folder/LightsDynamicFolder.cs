@@ -93,6 +93,7 @@
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(flash.ControllerValue));
                         break;
                     case "All":
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(allLights.ControllerValue));
                         break;
                 }
                 bitmapBuilder.DrawText(actionParameter);
@@ -107,46 +108,46 @@
             switch (actionParameter)
             {
                 case "Navigation":
-                    nav.SetControllerValue(1);
+                    nav.ToggleControllerValue();
                     break;
                 case "Beacon":
-                    beacon.SetControllerValue(1);
+                    beacon.ToggleControllerValue();
                     break;
                 case "Landing":
-                    landing.SetControllerValue(1);
+                    landing.ToggleControllerValue();
                     break;
                 case "Taxi":
-                    taxi.SetControllerValue(1);
+                    taxi.ToggleControllerValue();
                     break;
                 case "Strobes":
-                    strobe.SetControllerValue(1);
+                    strobe.ToggleControllerValue();
                     break;
                 case "Instruments":
-                    instrument.SetControllerValue(1);
+                    instrument.ToggleControllerValue();
                     break;
                 case "Recognition":
-                    recognition.SetControllerValue(1);
+                    recognition.ToggleControllerValue();
                     break;
                 case "Wing":
-                    wing.SetControllerValue(1);
+                    wing.ToggleControllerValue();
                     break;
                 case "Logo":
-                    logo.SetControllerValue(1);
+                    logo.ToggleControllerValue();
                     break;
                 case "Cabin":
-                    cabin.SetControllerValue(1);
+                    cabin.ToggleControllerValue();
                     break;
                 case "Pedestal":
-                    pedestal.SetControllerValue(1);
+                    pedestal.ToggleControllerValue();
                     break;
                 case "Glareshield":
-                    glareshield.SetControllerValue(1);
+                    glareshield.ToggleControllerValue();
                     break;
                 case "Flashlight":
-                    flash.SetControllerValue(1);
+                    flash.ToggleControllerValue();
                     break;
                 case "All":
-                    allLights.SetControllerValue(1);
+                    allLights.ToggleControllerValue();
                     break;
 
             }

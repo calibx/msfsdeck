@@ -25,4 +25,3 @@
         readonly Binding binding;
     }
 }
-

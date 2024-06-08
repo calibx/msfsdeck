@@ -4,8 +4,6 @@
 
     internal class CommonEntity
     {
-        public readonly IList<Binding> bindings;   //>> Can be made private when no longer referenced from DefaultEncoder and DefaultInput.
-
         public CommonEntity()
         {
             bindings = new List<Binding>();
@@ -28,5 +26,7 @@
             bindings.Add(binding);
             return binding;
         }
+
+        private readonly IList<Binding> bindings;
     }
 }

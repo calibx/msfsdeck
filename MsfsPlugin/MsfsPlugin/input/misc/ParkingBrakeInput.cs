@@ -10,7 +10,7 @@
             binding = Bind(BindingKeys.PARKING_BRAKES);
         }
 
-        protected override void ChangeValue() => binding.SetControllerValue(ConvertTool.GetToggledValue(binding.ControllerValue));
+        protected override void ChangeValue() => binding.ToggleControllerValue();
 
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
@@ -25,4 +25,3 @@
         readonly Binding binding;
     }
 }
-

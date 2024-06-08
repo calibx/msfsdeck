@@ -7,19 +7,19 @@
     {
         public APMultiInputs()
         {
-            bindings.Add(Register(BindingKeys.AP_ALT_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_HEAD_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_NAV_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_SPEED_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_MASTER_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_THROTTLE_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_VSPEED_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_FD_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_FLC_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_APP_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_LOC_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_YAW_DAMPER_SWITCH));
-            bindings.Add(Register(BindingKeys.AP_BC_SWITCH));
+            altSwitch = Bind(BindingKeys.AP_ALT_SWITCH);
+            headSwitch = Bind(BindingKeys.AP_HEAD_SWITCH);
+            navSwitch = Bind(BindingKeys.AP_NAV_SWITCH);
+            speedSwitch = Bind(BindingKeys.AP_SPEED_SWITCH);
+            masterSwitch = Bind(BindingKeys.AP_MASTER_SWITCH);
+            throttleSwitch = Bind(BindingKeys.AP_THROTTLE_SWITCH);
+            vspeedSwitch = Bind(BindingKeys.AP_VSPEED_SWITCH);
+            fdSwitch = Bind(BindingKeys.AP_FD_SWITCH);
+            flcSwitch = Bind(BindingKeys.AP_FLC_SWITCH);
+            appSwitch = Bind(BindingKeys.AP_APP_SWITCH);
+            locSwitch = Bind(BindingKeys.AP_LOC_SWITCH);
+            yawDamperSwitch = Bind(BindingKeys.AP_YAW_DAMPER_SWITCH);
+            bcSwitch = Bind(BindingKeys.AP_BC_SWITCH);
 
             AddParameter("AP Alt", "Autopilot Altitude Switch", "AP");
             AddParameter("AP Head", "Autopilot Heading Switch", "AP");
@@ -43,43 +43,43 @@
                 switch (actionParameter)
                 {
                     case "AP Alt":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[0].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(altSwitch.ControllerValue));
                         break;
                     case "AP Head":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[1].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(headSwitch.ControllerValue));
                         break;
                     case "AP Nav":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[2].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(navSwitch.ControllerValue));
                         break;
                     case "AP Speed":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[3].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(speedSwitch.ControllerValue));
                         break;
                     case "AP Master":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[4].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(masterSwitch.ControllerValue));
                         break;
                     case "AP Throttle":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[5].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(throttleSwitch.ControllerValue));
                         break;
                     case "AP VSpeed":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[6].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(vspeedSwitch.ControllerValue));
                         break;
                     case "AP FD":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[7].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(fdSwitch.ControllerValue));
                         break;
                     case "AP FLC":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[8].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(flcSwitch.ControllerValue));
                         break;
                     case "AP APP":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[9].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(appSwitch.ControllerValue));
                         break;
                     case "AP LOC":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[10].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(locSwitch.ControllerValue));
                         break;
                     case "AP YD":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[11].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(yawDamperSwitch.ControllerValue));
                         break;
                     case "AP BC":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bindings[12].ControllerValue));
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(bcSwitch.ControllerValue));
                         break;
                 }
                 bitmapBuilder.DrawText(actionParameter);
@@ -92,45 +92,59 @@
             switch (actionParameter)
             {
                 case "AP Alt":
-                    bindings[0].SetControllerValue(1);
+                    altSwitch.SetControllerValue(1);
                     break;
                 case "AP Head":
-                    bindings[1].SetControllerValue(1);
+                    headSwitch.SetControllerValue(1);
                     break;
                 case "AP Nav":
-                    bindings[2].SetControllerValue(1);
+                    navSwitch.SetControllerValue(1);
                     break;
                 case "AP Speed":
-                    bindings[3].SetControllerValue(1);
+                    speedSwitch.SetControllerValue(1);
                     break;
                 case "AP Master":
-                    bindings[4].SetControllerValue(1);
+                    masterSwitch.SetControllerValue(1);
                     break;
                 case "AP Throttle":
-                    bindings[5].SetControllerValue(1);
+                    throttleSwitch.SetControllerValue(1);
                     break;
                 case "AP VSpeed":
-                    bindings[6].SetControllerValue(1);
+                    vspeedSwitch.SetControllerValue(1);
                     break;
                 case "AP FD":
-                    bindings[7].SetControllerValue(1);
+                    fdSwitch.SetControllerValue(1);
                     break;
                 case "AP FLC":
-                    bindings[8].SetControllerValue(1);
+                    flcSwitch.SetControllerValue(1);
                     break;
                 case "AP APP":
-                    bindings[9].SetControllerValue(1);
+                    appSwitch.SetControllerValue(1);
                     break;
                 case "AP LOC":
-                    bindings[10].SetControllerValue(1);
+                    locSwitch.SetControllerValue(1);
                     break;
                 case "AP YD":
-                    bindings[11].SetControllerValue(1);
+                    yawDamperSwitch.SetControllerValue(1);
                     break;
                 case "AP BC":
-                    bindings[12].SetControllerValue(1);
+                    bcSwitch.SetControllerValue(1);
                     break;
             }
         }
+
+        readonly Binding altSwitch;
+        readonly Binding headSwitch;
+        readonly Binding navSwitch;
+        readonly Binding speedSwitch;
+        readonly Binding masterSwitch;
+        readonly Binding throttleSwitch;
+        readonly Binding vspeedSwitch;
+        readonly Binding fdSwitch;
+        readonly Binding flcSwitch;
+        readonly Binding appSwitch;
+        readonly Binding locSwitch;
+        readonly Binding yawDamperSwitch;
+        readonly Binding bcSwitch;
     }
 }

@@ -1,12 +1,9 @@
 ﻿namespace Loupedeck.MsfsPlugin.input
 {
-    using System.Collections.Generic;
     using Loupedeck.MsfsPlugin.tools;
 
     public abstract class DefaultInput : PluginDynamicCommand, INotifiable
     {
-        protected IList<Binding> bindings => entity.bindings;   //>> Can be removed when all inputs declare individual bindings
-
         protected DefaultInput(string name, string desc, string category) : base(name, desc, category)
         {
             entity = new CommonEntity();
