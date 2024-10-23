@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
 
-    using Loupedeck.MsfsPlugin;
-
     class MsfsData
     {
         private readonly List<INotifiable> notifiables = new List<INotifiable>();

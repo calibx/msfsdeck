@@ -30,7 +30,7 @@
         double HPaValue => pressure.MsfsValue / 10.0;
 
         bool showInHg = false;   // If false hPa is shown
-        
+
         readonly Binding oat;
         readonly Binding windDir;
         readonly Binding windVel;

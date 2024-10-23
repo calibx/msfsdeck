@@ -3,13 +3,9 @@
  */
 namespace Loupedeck.MsfsPlugin.msfs.mobi
 {
-    using Microsoft.FlightSimulator.SimConnect;
-
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+
+    using Microsoft.FlightSimulator.SimConnect;
     static class WasmModuleClient
     {
         public static void Ping(SimConnect simConnect, WasmModuleClientData clientData)

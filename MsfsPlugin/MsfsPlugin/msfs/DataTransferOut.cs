@@ -230,13 +230,13 @@
             var valText = $"0x{value}0000";
             return Convert.ToUInt32(valText, 16);
         }
-        
+
         internal static void loadEvents()
         {
             if (MobiEvents == null)
             {
-                MobiEvents = new Dictionary<string, Dictionary<string, Dictionary<string, List<Tuple<String, uint>>>>> ();
-                
+                MobiEvents = new Dictionary<string, Dictionary<string, Dictionary<string, List<Tuple<String, uint>>>>>();
+
 
                 string[] lines = EmbeddedResources.ReadTextFile("Loupedeck.MsfsPlugin.Resources.msfs2020_eventids.cip").Split("\n");
                 uint EventIdx = 0;
@@ -261,7 +261,8 @@
                             MobiEvents[VendorKey][AircraftKey] = new Dictionary<string, List<Tuple<String, uint>>>();
                         if (!MobiEvents[VendorKey][AircraftKey].ContainsKey(ComponentKey))
                             MobiEvents[VendorKey][AircraftKey][ComponentKey] = new List<Tuple<String, uint>>();
-                    } else
+                    }
+                    else
                     {
                         MobiEvents[VendorKey][AircraftKey][ComponentKey].Add(new Tuple<string, uint>(line, EventIdx++));
                     }

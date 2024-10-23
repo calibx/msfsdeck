@@ -1,6 +1,5 @@
 namespace Loupedeck.MsfsPlugin
 {
-    using System;
     using Loupedeck.MsfsPlugin.msfs;
 
     // This class contains the plugin-level logic of the Loupedeck plugin.
@@ -8,19 +7,19 @@ namespace Loupedeck.MsfsPlugin
     public class MsfsPlugin : Plugin
     {
         // Gets a value indicating whether this is an API-only plugin.
-        public override Boolean UsesApplicationApiOnly => true;
+        public override bool UsesApplicationApiOnly => true;
 
         // Gets a value indicating whether this is a Universal plugin or an Application plugin.
-        public override Boolean HasNoApplication => true;
+        public override bool HasNoApplication => true;
 
         // Initializes a new instance of the plugin class.
         public MsfsPlugin()
         {
             // Initialize the plugin log.
-            PluginLog.Init(this.Log);
+            PluginLog.Init(Log);
 
             // Initialize the plugin resources.
-            PluginResources.Init(this.Assembly);
+            PluginResources.Init(Assembly);
         }
 
         // This method is called when the plugin is loaded.

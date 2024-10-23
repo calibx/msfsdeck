@@ -128,8 +128,8 @@
         public void SendEvent(Enum eventName, UInt32 value)
         {
             if (_simConnectConnected)
-            { 
-                DataTransferOut.Transmit(m_oSimConnect, eventName, value); 
+            {
+                DataTransferOut.Transmit(m_oSimConnect, eventName, value);
             }
         }
 

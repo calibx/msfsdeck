@@ -1,7 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin.msfs
 {
     using System;
- 
+
     using Microsoft.FlightSimulator.SimConnect;
 
     using static DataTransferTypes;

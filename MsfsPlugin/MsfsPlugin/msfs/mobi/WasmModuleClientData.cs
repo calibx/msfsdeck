@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Loupedeck.MsfsPlugin.msfs.mobi
+﻿namespace Loupedeck.MsfsPlugin.msfs.mobi
 {
     /**
      * WasmModuleClientData from Mobiflight https://github.com/MobiFlight/MobiFlight-Connector/blob/main/SimConnectMSFS/WasmModuleClientData.cs

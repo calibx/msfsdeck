@@ -6,10 +6,11 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
     using System;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
-    using Microsoft.FlightSimulator.SimConnect;
     using System.Text.RegularExpressions;
+
     using Loupedeck.MsfsPlugin.tools;
-    using static Loupedeck.MsfsPlugin.msfs.DataTransferTypes;
+
+    using Microsoft.FlightSimulator.SimConnect;
 
     // String properties must be packed inside of a struct
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
@@ -17,7 +18,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
     {
         // this is how you declare a fixed size string
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-        public String sValue;
+        public string sValue;
 
         // other definitions can be added to this struct
         // ...
@@ -40,14 +41,14 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
         public event EventHandler Connected;
         public event EventHandler ConnectionLost;
         public event EventHandler LVarListUpdated;
-        public event EventHandler<String> AircraftChanged;
+        public event EventHandler<string> AircraftChanged;
 
         private uint MaxClientDataDefinition = 0;
 
         private const string STANDARD_EVENT_GROUP = "STANDARD";
 
-        private WasmModuleClientData WasmInitClientData;
-        private WasmModuleClientData WasmRuntimeClientData;
+        private readonly WasmModuleClientData WasmInitClientData;
+        private readonly WasmModuleClientData WasmRuntimeClientData;
 
         // offset 3, because first two definitions are the client response channels and the built-in aircraft name
         private const int SIMVAR_DATA_DEFINITION_OFFSET = 3;
@@ -75,15 +76,15 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
         private bool _simConnectConnected = false;
         private bool _wasmConnected = false;
 
-        public Dictionary<String, List<Tuple<String, uint>>> Events { get; private set; }
+        public Dictionary<string, List<Tuple<string, uint>>> Events { get; private set; }
 
-        public String PresetFile = null;
-        public String PresetFileUser = null;
+        public string PresetFile = null;
+        public string PresetFileUser = null;
 
-        private List<SimVar> SimVars = new List<SimVar>();
-        private List<StringSimVar> StringSimVars = new List<StringSimVar>();
-        private List<String> LVars = new List<String>();
-        private String ResponseStatus = "NEW";
+        private readonly List<SimVar> SimVars = new List<SimVar>();
+        private readonly List<StringSimVar> StringSimVars = new List<StringSimVar>();
+        private readonly List<string> LVars = new List<string>();
+        private string ResponseStatus = "NEW";
 
         private enum DATA_REQUESTS
         {
@@ -103,7 +104,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                 RESPONSE_OFFSET = 0
             };
 
-            string hashMachineName = Environment.MachineName.GetHashCode().ToString();
+            var hashMachineName = Environment.MachineName.GetHashCode().ToString();
             WasmRuntimeClientData = new WasmModuleClientData()
             {
                 NAME = $"Client_{hashMachineName}",
@@ -141,16 +142,15 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
 
         private void loadEventPresets()
         {
-            if (Events == null)
-                Events = new Dictionary<string, List<Tuple<String, uint>>>();
+            Events ??= new Dictionary<string, List<Tuple<string, uint>>>();
             Events.Clear();
 
-            string[] lines = EmbeddedResources.ReadTextFile("Loupedeck.MsfsPlugin.Resources.msfs2020_eventids.cip").Split("\n");
+            var lines = EmbeddedResources.ReadTextFile("Loupedeck.MsfsPlugin.Resources.msfs2020_eventids.cip").Split("\n");
             var GroupKey = "Dummy";
             uint EventIdx = 0;
 
-            Events[GroupKey] = new List<Tuple<String, uint>>();
-            foreach (string line in lines)
+            Events[GroupKey] = new List<Tuple<string, uint>>();
+            foreach (var line in lines)
             {
                 if (line.StartsWith("//"))
                     continue;
@@ -162,13 +162,13 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                     if (Events.ContainsKey(GroupKey))
                         continue;
 
-                    Events[GroupKey] = new List<Tuple<String, uint>>();
+                    Events[GroupKey] = new List<Tuple<string, uint>>();
                     continue; // we found a group
                 }
 
                 Events[GroupKey].Add(new Tuple<string, uint>(cols[0], EventIdx++));
             }
-           
+
         }
 
         internal void RefreshLVarsList()
@@ -211,7 +211,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                     m_oSimConnect.AddToDataDefinition(SIMCONNECT_DEFINE_ID.AIRCRAFT_NAME, "Title", null, SIMCONNECT_DATATYPE.STRING128, 0, SimConnect.SIMCONNECT_UNUSED);
                     m_oSimConnect.RequestDataOnSimObject((SIMCONNECT_REQUEST_ID)SIMCONNECT_DEFINE_ID.AIRCRAFT_NAME, SIMCONNECT_DEFINE_ID.AIRCRAFT_NAME, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_PERIOD.SECOND, SIMCONNECT_DATA_REQUEST_FLAG.CHANGED, 0, 0, 0);
                     m_oSimConnect.RegisterDataDefineStruct<StringData>(SIMCONNECT_DEFINE_ID.AIRCRAFT_NAME);
-                    
+
                     // Listen to exceptions
                     m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(SimConnect_OnRecvException);
                     // Listen to exceptions
@@ -225,16 +225,16 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                     }
                 }
             }
-            catch (COMException ex)
+            catch (COMException)
             {
                 m_oSimConnect = null;
                 return false;
             }
 
-             return true;
+            return true;
         }
 
-        public static void Refresh(Object source, EventArgs e) => Instance.OnTick();
+        public static void Refresh(object source, EventArgs e) => Instance.OnTick();
 
         private void SimConnect_RecvSimobjectData(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA data)
         {
@@ -248,7 +248,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             DebugTracing.Trace("Mobi Cnx opened");
             _simConnectConnected = true;
             // register Events
-            foreach (string GroupKey in Events.Keys)
+            foreach (var GroupKey in Events.Keys)
             {
                 foreach (Tuple<string, uint> eventItem in Events[GroupKey])
                 {
@@ -280,26 +280,26 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
         private void InitializeClientDataAreas(SimConnect sender, WasmModuleClientData clientData)
         {
             // register Client Data (for SimVars)
-            (sender).MapClientDataNameToID($"{clientData.NAME}.LVars", clientData.AREA_SIMVAR_ID);
-            (sender).CreateClientData(clientData.AREA_SIMVAR_ID, 4096, SIMCONNECT_CREATE_CLIENT_DATA_FLAG.DEFAULT);
+            sender.MapClientDataNameToID($"{clientData.NAME}.LVars", clientData.AREA_SIMVAR_ID);
+            sender.CreateClientData(clientData.AREA_SIMVAR_ID, 4096, SIMCONNECT_CREATE_CLIENT_DATA_FLAG.DEFAULT);
 
             // register Client Data (for WASM Module Commands)
-            (sender).MapClientDataNameToID($"{clientData.NAME}.Command", clientData.AREA_COMMAND_ID);
-            (sender).CreateClientData(clientData.AREA_COMMAND_ID, MOBIFLIGHT_MESSAGE_SIZE, SIMCONNECT_CREATE_CLIENT_DATA_FLAG.DEFAULT);
+            sender.MapClientDataNameToID($"{clientData.NAME}.Command", clientData.AREA_COMMAND_ID);
+            sender.CreateClientData(clientData.AREA_COMMAND_ID, MOBIFLIGHT_MESSAGE_SIZE, SIMCONNECT_CREATE_CLIENT_DATA_FLAG.DEFAULT);
 
             // register Client Data (for WASM Module Responses)
-            (sender).MapClientDataNameToID($"{clientData.NAME}.Response", clientData.AREA_RESPONSE_ID);
-            (sender).CreateClientData(clientData.AREA_RESPONSE_ID, MOBIFLIGHT_MESSAGE_SIZE, SIMCONNECT_CREATE_CLIENT_DATA_FLAG.DEFAULT);
+            sender.MapClientDataNameToID($"{clientData.NAME}.Response", clientData.AREA_RESPONSE_ID);
+            sender.CreateClientData(clientData.AREA_RESPONSE_ID, MOBIFLIGHT_MESSAGE_SIZE, SIMCONNECT_CREATE_CLIENT_DATA_FLAG.DEFAULT);
 
             // register Client Data (for String-SimVars)
-            (sender).MapClientDataNameToID($"{clientData.NAME}.StringVars", clientData.AREA_STRINGSIMVAR_ID);
-            (sender).CreateClientData(clientData.AREA_STRINGSIMVAR_ID, MOBIFLIGHT_STRINGVAR_DATAAREA_SIZE, SIMCONNECT_CREATE_CLIENT_DATA_FLAG.DEFAULT);
+            sender.MapClientDataNameToID($"{clientData.NAME}.StringVars", clientData.AREA_STRINGSIMVAR_ID);
+            sender.CreateClientData(clientData.AREA_STRINGSIMVAR_ID, MOBIFLIGHT_STRINGVAR_DATAAREA_SIZE, SIMCONNECT_CREATE_CLIENT_DATA_FLAG.DEFAULT);
 
-            (sender).AddToClientDataDefinition(clientData.DATA_DEFINITION_ID,
+            sender.AddToClientDataDefinition(clientData.DATA_DEFINITION_ID,
                                                 clientData.RESPONSE_OFFSET, MOBIFLIGHT_MESSAGE_SIZE, 0, 0);
 
-            (sender).RegisterStruct<SIMCONNECT_RECV_CLIENT_DATA, ResponseString>(clientData.DATA_DEFINITION_ID);
-            (sender).RequestClientData(
+            sender.RegisterStruct<SIMCONNECT_RECV_CLIENT_DATA, ResponseString>(clientData.DATA_DEFINITION_ID);
+            sender.RequestClientData(
                 clientData.AREA_RESPONSE_ID,
                 (SIMCONNECT_REQUEST_ID)clientData.DATA_DEFINITION_ID,
                 clientData.DATA_DEFINITION_ID,
@@ -320,11 +320,11 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
         {
             try
             {
-                DebugTracing.Trace("Mobi Received client Data " +data.ToString());
+                DebugTracing.Trace("Mobi Received client Data " + data.ToString());
                 // Init Client Callback
                 if (data.dwRequestID == (uint)WasmInitClientData.DATA_DEFINITION_ID)
                 {
-                    var simData = (ResponseString)(data.dwData[0]);
+                    var simData = (ResponseString)data.dwData[0];
 
                     if (simData.Data == "MF.Pong")
                     {
@@ -353,7 +353,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                 // Runtime Client Callback
                 else if (data.dwRequestID == (uint)WasmRuntimeClientData.DATA_DEFINITION_ID)
                 {
-                    var simData = (ResponseString)(data.dwData[0]);
+                    var simData = (ResponseString)data.dwData[0];
 
                     if (simData.Data == "MF.LVars.List.Start")
                     {
@@ -380,7 +380,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                 // SimVar value callback
                 else if (data.dwRequestID > MOBIFLIGHT_STRINGVAR_ID_OFFSET) // -> is string SimVar
                 {
-                    var simData = (ClientDataStringValue)(data.dwData[0]);
+                    var simData = (ClientDataStringValue)data.dwData[0];
                     var simVarIndex = (int)(data.dwRequestID - MOBIFLIGHT_STRINGVAR_ID_OFFSET - 1);
 
                     if (StringSimVars.Count <= simVarIndex || simVarIndex < 0)
@@ -389,8 +389,8 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                 }
                 else // -> Must be float SimVar
                 {
-                    var simData = (ClientDataValue)(data.dwData[0]);
-                    var simVarIndex = (int)(data.dwRequestID) - SIMVAR_DATA_DEFINITION_OFFSET;
+                    var simData = (ClientDataValue)data.dwData[0];
+                    var simVarIndex = (int)data.dwRequestID - SIMVAR_DATA_DEFINITION_OFFSET;
 
                     if (SimVars.Count <= simVarIndex || simVarIndex < 0)
                         return;
@@ -419,8 +419,8 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
 
         private void SimConnect_OnRecvException(SimConnect sender, SIMCONNECT_RECV_EXCEPTION data)
         {
-            
-            SIMCONNECT_EXCEPTION eException = (SIMCONNECT_EXCEPTION)data.dwException;
+
+            var eException = (SIMCONNECT_EXCEPTION)data.dwException;
             DebugTracing.Trace(eException.ToString());
         }
 
@@ -463,24 +463,24 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             if (m_oSimConnect == null || !IsConnected())
                 return;
 
-            Tuple<String, uint> eventItem = null;
+            Tuple<string, uint> eventItem = null;
 
-            foreach (String GroupKey in Events.Keys)
+            foreach (var GroupKey in Events.Keys)
             {
                 eventItem = Events[GroupKey].Find(x => x.Item1 == eventID);
                 if (eventItem != null)
                     break;
             }
-           m_oSimConnect?.TransmitClientEvent(
-                    SimConnect.SIMCONNECT_OBJECT_ID_USER,
-                    (MOBIFLIGHT_EVENTS)eventItem.Item2,
-                    1,
-                    SIMCONNECT_NOTIFICATION_GROUP_ID.SIMCONNECT_GROUP_PRIORITY_DEFAULT,
-                    SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY
-            );
+            m_oSimConnect?.TransmitClientEvent(
+                     SimConnect.SIMCONNECT_OBJECT_ID_USER,
+                     (MOBIFLIGHT_EVENTS)eventItem.Item2,
+                     1,
+                     SIMCONNECT_NOTIFICATION_GROUP_ID.SIMCONNECT_GROUP_PRIORITY_DEFAULT,
+                     SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY
+             );
         }
 
-        public FSUIPCOffsetType GetSimVar(String simVarName, out String stringVal, out double floatVal)
+        public FSUIPCOffsetType GetSimVar(string simVarName, out string stringVal, out double floatVal)
         {
             FSUIPCOffsetType simVarType = FSUIPCOffsetType.Float;
             var isFloat = false;
@@ -522,13 +522,13 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             else
             {
                 stringVal = StringSimVars.Find(lvar => lvar.Name == simVarName).Data;
-                stringVal = (stringVal) == null ? "0" : stringVal;
+                stringVal ??= "0";
             }
 
             return simVarType;
         }
 
-        public void SetSimVar(String SimVarCode)
+        public void SetSimVar(string SimVarCode)
         {
             WasmModuleClient.SetSimVar(m_oSimConnect, SimVarCode, WasmRuntimeClientData);
         }
@@ -542,7 +542,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             if (simVarType == FSUIPCOffsetType.Float)
             {
                 // Register SimVar as float
-                SimVar newSimVar = new SimVar() { Name = SimVarName, ID = (uint)(SimVars.Count + SIMVAR_DATA_DEFINITION_OFFSET) };
+                var newSimVar = new SimVar() { Name = SimVarName, ID = (uint)(SimVars.Count + SIMVAR_DATA_DEFINITION_OFFSET) };
                 SimVars.Add(newSimVar);
                 if (MaxClientDataDefinition < (SimVars.Count + SIMVAR_DATA_DEFINITION_OFFSET - 1 + StringSimVars.Count))
                 {
@@ -573,12 +573,12 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             else
             {
                 // Register SimVar as string (different ID-offset, size and a separate data-area)
-                StringSimVar newStringSimVar = new StringSimVar() { Name = SimVarName, ID = (uint)StringSimVars.Count + 1 + MOBIFLIGHT_STRINGVAR_ID_OFFSET };
+                var newStringSimVar = new StringSimVar() { Name = SimVarName, ID = (uint)StringSimVars.Count + 1 + MOBIFLIGHT_STRINGVAR_ID_OFFSET };
                 StringSimVars.Add(newStringSimVar);
                 if (MaxClientDataDefinition < (SimVars.Count + SIMVAR_DATA_DEFINITION_OFFSET - 1 + StringSimVars.Count))
                 {
                     m_oSimConnect?.AddToClientDataDefinition(
-                        (SIMCONNECT_DEFINE_ID)(newStringSimVar.ID),
+                        (SIMCONNECT_DEFINE_ID)newStringSimVar.ID,
                         (uint)((StringSimVars.Count - 1) * MOBIFLIGHT_STRINGVAR_SIZE),
                         MOBIFLIGHT_STRINGVAR_SIZE,
                         0,
@@ -588,8 +588,8 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
 
                     m_oSimConnect?.RequestClientData(
                         WasmRuntimeClientData.AREA_STRINGSIMVAR_ID,
-                        (SIMCONNECT_REQUEST_ID)(newStringSimVar.ID),
-                        (SIMCONNECT_DEFINE_ID)(newStringSimVar.ID),
+                        (SIMCONNECT_REQUEST_ID)newStringSimVar.ID,
+                        (SIMCONNECT_DEFINE_ID)newStringSimVar.ID,
                         SIMCONNECT_CLIENT_DATA_PERIOD.ON_SET,
                         SIMCONNECT_CLIENT_DATA_REQUEST_FLAG.CHANGED,
                         0,
