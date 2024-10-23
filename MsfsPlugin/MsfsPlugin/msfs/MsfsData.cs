@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
 
+    using Loupedeck.MsfsPlugin;
+
     class MsfsData
     {
         private readonly List<INotifiable> notifiables = new List<INotifiable>();
@@ -11,7 +13,7 @@
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
-        public MSFSPlugin plugin { get; set; }
+        public MsfsPlugin plugin { get; set; }
         public bool DEBUG { get; set; }
         public string AircraftName { get; set; }
         public string DebugValue1 { get; set; }

@@ -1,8 +1,29 @@
 namespace Loupedeck.MsfsPlugin
 {
+    using System;
     using Loupedeck.MsfsPlugin.msfs;
-    public class MSFSPlugin : Plugin
+
+    // This class contains the plugin-level logic of the Loupedeck plugin.
+
+    public class MsfsPlugin : Plugin
     {
+        // Gets a value indicating whether this is an API-only plugin.
+        public override Boolean UsesApplicationApiOnly => true;
+
+        // Gets a value indicating whether this is a Universal plugin or an Application plugin.
+        public override Boolean HasNoApplication => true;
+
+        // Initializes a new instance of the plugin class.
+        public MsfsPlugin()
+        {
+            // Initialize the plugin log.
+            PluginLog.Init(this.Log);
+
+            // Initialize the plugin resources.
+            PluginResources.Init(this.Assembly);
+        }
+
+        // This method is called when the plugin is loaded.
         public override void Load()
         {
             Info.Icon16x16 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.16.png");
@@ -13,18 +34,10 @@ namespace Loupedeck.MsfsPlugin
             DataTransferOut.loadEvents();
         }
 
+        // This method is called when the plugin is unloaded.
         public override void Unload()
         {
             SimConnectDAO.Instance.Disconnect(true);
         }
-
-
-        public override void RunCommand(string commandName, string parameter)
-        { }
-
-        public override void ApplyAdjustment(string adjustmentName, string parameter, int diff)
-        { }
-
-        public override bool UsesApplicationApiOnly => true;
     }
 }

@@ -134,7 +134,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
             }
             catch (Exception e)
             {
-                Log.Instance.log(e.Message, LogSeverity.Debug);
+                PluginLog.Verbose(e.Message);
                 Disconnect();
             }
         }
@@ -215,7 +215,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
                     // Listen to exceptions
                     m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(SimConnect_OnRecvException);
                     // Listen to exceptions
-                    Log.Instance.log("SimConnect (MSFS2020) instantiated", LogSeverity.Debug);
+                    PluginLog.Verbose("SimConnect (MSFS2020) instantiated");
 
                     lock (timer)
                     {
@@ -373,7 +373,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
 #if DEBUG
                     // this only for debug compilation
                     // it slows down the client immensly.
-                    Log.Instance.log($"Received {simData.Data}.", LogSeverity.Debug);
+                    PluginLog.Verbose($"Received {simData.Data}.");
 #endif
 
                 }
@@ -483,8 +483,8 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
         public FSUIPCOffsetType GetSimVar(String simVarName, out String stringVal, out double floatVal)
         {
             FSUIPCOffsetType simVarType = FSUIPCOffsetType.Float;
-            bool isFloat = false;
-            bool isString = false;
+            var isFloat = false;
+            var isString = false;
 
             stringVal = "0";
             floatVal = 0.0F;
@@ -608,7 +608,7 @@ namespace Loupedeck.MsfsPlugin.msfs.mobi
         {
             SimVars.Clear();
             StringSimVars.Clear();
-            Log.Instance.log("SimVars Cleared.", LogSeverity.Debug);
+            PluginLog.Verbose("Sim var cleared");
         }
 
         private readonly object lockObject = new object();
