@@ -12,7 +12,7 @@
         public static void ReadMsfsValues(ISimConnectWrapper simConnectWrapper)
         {
             MsfsData.Instance.AircraftName = simConnectWrapper.getString("title");
-            DebugTracing.Trace("Aircraft " + MsfsData.Instance.AircraftName);
+            DebugTracing.Trace("parking brakes  " + simConnectWrapper.getLong("parkingBrake"));
 
             SetMsfsValue(BindingKeys.ENGINE_AUTO, simConnectWrapper.getLong("E1On"));
             SetMsfsValue(BindingKeys.AILERON_TRIM, (Int64)Math.Round(simConnectWrapper.getDouble("aileronTrim") * 100));
@@ -131,7 +131,7 @@
 
             //++ Insert appropriate SetMsfsValue calls here using the new binding keys and the new fields in simConnectWrapper.getLong("
 
-            MsfsData.Instance.Changed();
+            MsfsData.Instance.Changed(false);
         }
 
         // Percentages are rounded to nearest integer value:

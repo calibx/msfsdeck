@@ -20,7 +20,7 @@
 
         private MsfsData()
         {
-            DEBUG = false;
+            DEBUG = true;
         }
 
         public void Register(INotifiable notif) => notifiables.Add(notif);
@@ -34,14 +34,14 @@
             return bindings[key];
         }
 
-        public void Changed()
+        public void Changed(bool force)
         {
             lock (this)
             {
                 plugin.OnActionImageChanged(null, null, true);
                 foreach (INotifiable notifiable in notifiables)
                 {
-                    notifiable.Notify();
+                    notifiable.Notify(force);
                 }
 
             }

@@ -2,6 +2,7 @@ using Microsoft.FlightSimulator.SimConnect;
 using Microsoft.UI.Xaml.Data;
 using System;
 using System.Runtime.InteropServices;
+using Windows.Networking.Connectivity;
 
 namespace SimConnectWrapper
 {
@@ -33,6 +34,7 @@ namespace SimConnectWrapper
                 m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(SimConnect_OnRecvOpen);
                 m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(SimConnect_OnRecvSimobjectDataBytype);
                 m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(SimConnect_OnRecvException);
+                m_oSimConnect.OnRecvQuit += new SimConnect.RecvQuitEventHandler(SimConnect_OnRecvQuit);
 
                 AddRequest();
 
@@ -42,12 +44,12 @@ namespace SimConnectWrapper
                     timer.Elapsed += Refresh;
                     timer.Enabled = true;
                 }
+                _simConnectConnected = true;
             }
-            catch (COMException)
+            catch 
             {
-
+                m_oSimConnect = null;
             }
-            _simConnectConnected = true;
         }
 
         private void SimConnect_OnRecvException(SimConnect sender, SIMCONNECT_RECV_EXCEPTION data)
@@ -55,10 +57,14 @@ namespace SimConnectWrapper
             SIMCONNECT_EXCEPTION eException = (SIMCONNECT_EXCEPTION)data.dwException;
         }
 
+        // The case where the user closes game
+        private void SimConnect_OnRecvQuit(SimConnect sender, SIMCONNECT_RECV data)
+        {
+            Disconnect();
+        }
+
         private void Refresh(Object source, EventArgs e)
         {
-            lock (lockObject)
-            {
                 try
                 {
                     if (m_oSimConnect != null)
@@ -76,7 +82,6 @@ namespace SimConnectWrapper
                 {
                     Disconnect();
                 }
-            }
 
         }
 

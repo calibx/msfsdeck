@@ -5,25 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|c:\\users\\calib\\source\\repos\\msfsdeck\\simconnectwrapper\\simconnectwrapper\\simconnectwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|solutionrelative:simconnectwrapper\\simconnectwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|c:\\users\\calib\\source\\repos\\msfsdeck\\simconnectwrapper\\simconnectwrapper\\datatransfertypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|solutionrelative:simconnectwrapper\\datatransfertypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|c:\\users\\calib\\source\\repos\\msfsdeck\\simconnectwrapper\\simconnectwrapper\\isimconnectwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|solutionrelative:simconnectwrapper\\isimconnectwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|c:\\users\\calib\\source\\repos\\msfsdeck\\simconnectwrapper\\simconnectwrapper\\simconnectwrapper.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|solutionrelative:simconnectwrapper\\simconnectwrapper.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|c:\\users\\calib\\source\\repos\\msfsdeck\\simconnectwrapper\\simconnectwrapper\\simconnectwrapper.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|solutionrelative:simconnectwrapper\\simconnectwrapper.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -33,57 +14,8 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DataTransferTypes.cs",
-              "DocumentMoniker": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\DataTransferTypes.cs",
-              "RelativeDocumentMoniker": "SimConnectWrapper\\DataTransferTypes.cs",
-              "ToolTip": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\DataTransferTypes.cs",
-              "RelativeToolTip": "SimConnectWrapper\\DataTransferTypes.cs",
-              "ViewState": "AgIAAHQAAAAAAAAAAAAIwJcAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-18T20:21:59.596Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SimConnectWrapper.csproj",
-              "DocumentMoniker": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
-              "RelativeDocumentMoniker": "SimConnectWrapper\\SimConnectWrapper.csproj",
-              "ToolTip": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
-              "RelativeToolTip": "SimConnectWrapper\\SimConnectWrapper.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-11-17T20:26:14.556Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ISimConnectWrapper.cs",
-              "DocumentMoniker": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\ISimConnectWrapper.cs",
-              "RelativeDocumentMoniker": "SimConnectWrapper\\ISimConnectWrapper.cs",
-              "ToolTip": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\ISimConnectWrapper.cs",
-              "RelativeToolTip": "SimConnectWrapper\\ISimConnectWrapper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-17T17:09:41.638Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Microsoft.Common.CurrentVersion.targets",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ViewState": "AgIAANQIAAAAAAAAAAAgwGsJAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2024-11-10T16:00:11.052Z"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -92,21 +24,10 @@
               "RelativeDocumentMoniker": "SimConnectWrapper\\SimConnectWrapper.cs",
               "ToolTip": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.cs",
               "RelativeToolTip": "SimConnectWrapper\\SimConnectWrapper.cs",
-              "ViewState": "AgIAAGIAAAAAAAAAAAAuwHUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACcAAAAAAAAAAAAowCcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-10T15:51:29.558Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SimConnectWrapper",
-              "DocumentMoniker": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
-              "RelativeDocumentMoniker": "SimConnectWrapper\\SimConnectWrapper.csproj",
-              "ToolTip": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
-              "RelativeToolTip": "SimConnectWrapper\\SimConnectWrapper.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-11-10T16:00:19.847Z"
             }
           ]
         }

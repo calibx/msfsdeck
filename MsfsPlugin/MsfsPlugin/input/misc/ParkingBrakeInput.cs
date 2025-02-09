@@ -1,6 +1,7 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using Loupedeck.MsfsPlugin.input;
+    using Loupedeck.MsfsPlugin.msfs;
     using Loupedeck.MsfsPlugin.tools;
 
     class ParkingBrakeInput : DefaultInput

@@ -1,5 +1,6 @@
 ﻿namespace Loupedeck.MsfsPlugin.input
 {
+    using Loupedeck.MsfsPlugin.msfs;
     using Loupedeck.MsfsPlugin.tools;
 
     public abstract class DefaultInput : PluginDynamicCommand, INotifiable
@@ -20,7 +21,24 @@
 
         protected Binding Bind(BindingKeys key, long? value = null) => entity.Bind(key, value);
 
-        public void Notify() => entity.Notify();
+        public void Notify(bool force)
+        {
+            var refresh = false;
+            foreach (Binding binding in entity.bindings)
+            {
+                
+                if (binding.HasMSFSChanged() || force)
+                {
+                    binding.Reset();
+                    refresh = true;
+                }
+            }
+            if (refresh)
+            {
+                DebugTracing.Trace("input " + this.ToString());
+                ActionImageChanged();
+            }
+        }
 
         protected override string GetCommandDisplayName(string actionParameter, PluginImageSize imageSize) => GetValue();
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize) => GetImage(imageSize);

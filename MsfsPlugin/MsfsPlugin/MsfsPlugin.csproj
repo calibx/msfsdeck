@@ -34,6 +34,7 @@
     <None Remove="Resources\DefaultProfile30win.lp5" />
     <None Remove="Resources\DefaultProfile40win.lp5" />
     <None Remove="Resources\DefaultProfile50win.lp5" />
+    <None Remove="Resources\msfs2020_eventids.cip" />
   </ItemGroup>
 
 
@@ -54,6 +55,7 @@
     <EmbeddedResource Include="Resources\disableFull.png" />
     <EmbeddedResource Include="Resources\disconnect.png" />
     <EmbeddedResource Include="Resources\disconnectFull.png" />
+    <EmbeddedResource Include="Resources\msfs2020_eventids.cip" />
     <EmbeddedResource Include="Resources\off.png" />
     <EmbeddedResource Include="Resources\offFull.png" />
     <EmbeddedResource Include="Resources\on.png" />

@@ -8,20 +8,16 @@
 
     public class SimConnectDAO
     {
-        private bool _simConnectConnected = false;
+        private bool registered = false;
 
-        private static readonly System.Timers.Timer timer = new System.Timers.Timer();
+        private static System.Timers.Timer timer;
 
         private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
         public static SimConnectDAO Instance => lazy.Value;
 
 
-        private const double timerInterval = 300;
-        private enum DATA_REQUESTS
-        {
-            REQUEST_1
-        }
-
+        private const double timerInterval = 200;
+       
         private readonly Binding connection;
         private readonly Binding autoTaxi;
 
@@ -31,7 +27,7 @@
             autoTaxi = MsfsData.Instance.Register(BindingKeys.AUTO_TAXI);
         }
 
-        private void Refresh(Object source, EventArgs e)
+        private void Refresh(object source, EventArgs e)
         {
             lock (lockObject)
             {
@@ -39,15 +35,28 @@
                 {
                     if (SimConnectWrapper.Instance.IsConnected())
                     {
+                        DebugTracing.Trace("Connected");
                         connection.SetMsfsValue(1);
-                        DataTransferIn.ReadMsfsValues(SimConnectWrapper.Instance);
+                        if (!registered)
+                        {
+                            DataTransferOut.setPlugin(MsfsData.Instance.plugin);
+                            DataTransferOut.initEvents();
+                            registered = true;
+                        }
                         DataTransferOut.SendEvents(SimConnectWrapper.Instance);
-                        MsfsData.Instance.Changed();
+                        DataTransferIn.ReadMsfsValues(SimConnectWrapper.Instance);
+                        MsfsData.Instance.Changed(false);
                     }
                     else
                     {
+                        DebugTracing.Trace("Disconnect");
                         timer.Enabled = false;
+                        timer = null;
+                        connection.SetMsfsValue(0);
+                        registered = false;
+                        MsfsData.Instance.Changed(true);
                     }
+                    
                 }
                 catch (COMException exception)
                 {
@@ -66,17 +75,14 @@
                 {
                     binding.MSFSChanged = true;
                 }
-                MsfsData.Instance.Changed();
+                MsfsData.Instance.Changed(true);
                 try
                 {
                     SimConnectWrapper.Instance.Connect();
-
-                    DataTransferOut.setPlugin(MsfsData.Instance.plugin);
-                    DataTransferOut.initEvents();
-
-
+                    timer = new System.Timers.Timer();
                     lock (timer)
                     {
+                        timer = new System.Timers.Timer();
                         timer.Interval = timerInterval;
                         timer.Elapsed += Refresh;
                         timer.Enabled = true;
@@ -84,25 +90,21 @@
                 }
                 catch (COMException ex)
                 {
-                    DebugTracing.Trace(ex);
+                    DebugTracing.Trace("Error during cnx" + ex.ToString());
                     connection.SetMsfsValue(0);
                     foreach (Binding binding in MsfsData.Instance.bindings.Values)
                     {
                         binding.MSFSChanged = true;
                     }
-                    MsfsData.Instance.Changed();
+                    MsfsData.Instance.Changed(true);
                 }
-                _simConnectConnected = true;
             }
         }
-        public bool IsSimConnectConnected() => _simConnectConnected;
-        
+      
         public void Disconnect(bool unloading = false)
         {
             DebugTracing.Trace($"Disconnecting - unloading={unloading}");
             SimConnectWrapper.Instance.Disconnect();
-            _simConnectConnected = false;
-            
 
             if (unloading)
                 return;
@@ -112,7 +114,7 @@
             {
                 binding.MSFSChanged = true;
             }
-            MsfsData.Instance.Changed();
+            MsfsData.Instance.Changed(true);
         }
 
         private readonly object lockObject = new object();

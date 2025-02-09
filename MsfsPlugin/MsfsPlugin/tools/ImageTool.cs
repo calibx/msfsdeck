@@ -81,7 +81,7 @@
 
             if (!IsConnected())
             {
-                MsfsData.Instance.Changed();
+                MsfsData.Instance.Changed(true);
             }
         }
 
