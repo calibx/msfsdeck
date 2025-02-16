@@ -1,16 +1,17 @@
 type: plugin4
 name: MSFS
 displayName: Microsoft Flight Simulator
-version: 3.0.1
+description: Plugin for MSFS 2020
+version: 4.0.0
 author: CaliBx
 copyright: CaliBx
 
 supportedDevices:
-    - LoupedeckCt  
-    - LoupedeckLive
-    - LoupedeckLiveS
-    - RazerStreamController
+    - LoupedeckCtFamily  
+pluginCapabilities:
+    - ActivatesApplication
 
+minimumLoupedeckVersion: 6.0
 
 pluginFileName: MSFSPlugin.dll
 pluginFolderWin: ./bin/win/

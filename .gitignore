@@ -4,3 +4,5 @@
 
 /obj
 /bin/Release
+/bin/Debug
+/bin/x64/Debug

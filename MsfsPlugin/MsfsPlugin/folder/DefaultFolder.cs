@@ -15,7 +15,7 @@
 
         protected Binding Bind(BindingKeys key) => entity.Bind(key);
 
-        public void Notify() => entity.Notify();
+        public void Notify(bool force) => entity.Notify(force);
 
         readonly CommonEntity entity;
     }

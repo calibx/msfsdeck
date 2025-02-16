@@ -149,7 +149,7 @@
             actionParameters.TryGetString(eventListBox, out var eventName);
             DebugTracing.Trace("Exec " + vendor + " " + aircraft + " " + components + " " + eventName);
             Tuple<string, uint> eventItem = DataTransferOut.MobiEvents[vendor][aircraft][components.Split("/")[1]].Find(x => x.Item1 == eventName);
-            SimConnectDAO.Instance.SendEvent((DataTransferTypes.DUMMY_EVENTS)eventItem.Item2, 1);
+            SimConnectWrapper.Instance.send((DataTransferTypes.DUMMY_EVENTS)eventItem.Item2, 1);
             return true;
         }
 

@@ -104,7 +104,6 @@
 
         public override void RunCommand(string actionParameter)
         {
-            SimConnectDAO.Instance.setPlugin(Plugin);
             switch (actionParameter)
             {
                 case "Navigation":

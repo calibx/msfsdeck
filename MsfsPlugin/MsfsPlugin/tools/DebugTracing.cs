@@ -18,7 +18,7 @@
             if (TracingEnabled)
             {
                 var threadId = Thread.CurrentThread.ManagedThreadId;
-                Debug.WriteLine($"--> (thread {threadId}, method {caller}): {message}");
+                PluginLog.Info($"--> (thread {threadId}, method {caller}): {message}");
             }
         }
     }

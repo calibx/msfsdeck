@@ -25,7 +25,23 @@
 
         protected Binding Bind(BindingKeys key) => entity.Bind(key);
 
-        public void Notify() => entity.Notify();
+        public void Notify(bool force)
+        {
+            var refresh = false;
+            foreach (Binding binding in entity.bindings)
+            {
+                
+                if (binding.HasMSFSChanged() || force)
+                {
+                    binding.Reset();
+                    refresh = true;
+                }
+            }
+            if (refresh)
+            { 
+                  ActionImageChanged(); 
+            }
+        } 
 
         protected override string GetAdjustmentValue(string actionParameter) => GetDisplayValue();
 

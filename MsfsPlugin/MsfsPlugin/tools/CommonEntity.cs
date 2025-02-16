@@ -9,11 +9,11 @@
             bindings = new List<Binding>();
         }
 
-        public void Notify()
+        public void Notify(bool force)
         {
             foreach (Binding binding in bindings)
             {
-                if (binding.HasMSFSChanged())
+                if (binding.HasMSFSChanged() || force)
                 {
                     binding.Reset();
                 }
@@ -27,6 +27,6 @@
             return binding;
         }
 
-        private readonly IList<Binding> bindings;
+        public readonly IList<Binding> bindings;
     }
 }

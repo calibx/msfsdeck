@@ -11,7 +11,7 @@
 
         private static readonly Lazy<MsfsData> lazy = new Lazy<MsfsData>(() => new MsfsData());
         public static MsfsData Instance => lazy.Value;
-        public MSFSPlugin plugin { get; set; }
+        public MsfsPlugin plugin { get; set; }
         public bool DEBUG { get; set; }
         public string AircraftName { get; set; }
         public string DebugValue1 { get; set; }
@@ -20,7 +20,7 @@
 
         private MsfsData()
         {
-            DEBUG = false;
+            DEBUG = true;
         }
 
         public void Register(INotifiable notif) => notifiables.Add(notif);
@@ -34,14 +34,14 @@
             return bindings[key];
         }
 
-        public void Changed()
+        public void Changed(bool force)
         {
             lock (this)
             {
                 plugin.OnActionImageChanged(null, null, true);
                 foreach (INotifiable notifiable in notifiables)
                 {
-                    notifiable.Notify();
+                    notifiable.Notify(force);
                 }
 
             }

@@ -64,6 +64,7 @@
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(vspeedSwitch.ControllerValue));
                         break;
                     case "AP FD":
+                        DebugTracing.Trace(fdSwitch.ControllerValue.ToString());
                         bitmapBuilder.SetBackgroundImage(ImageTool.GetOnOffImage(fdSwitch.ControllerValue));
                         break;
                     case "AP FLC":
