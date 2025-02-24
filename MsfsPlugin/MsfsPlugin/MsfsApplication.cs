@@ -11,7 +11,7 @@ namespace Loupedeck.MsfsPlugin
         }
 
         // This method can be used to link the plugin to a Windows application.
-        protected override String GetProcessName() => "FlightSimulator";
+        public override string[] GetProcessOrBundleNames() => ["FlightSimulator","FlightSimulator2024"];
 
 
         // This method can be used to check whether the application is installed or not.
