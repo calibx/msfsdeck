@@ -20,7 +20,7 @@
 
         private MsfsData()
         {
-            DEBUG = true;
+            DEBUG = false;
         }
 
         public void Register(INotifiable notif) => notifiables.Add(notif);
@@ -30,6 +30,9 @@
             if (!bindings.ContainsKey(key))
             {
                 bindings.Add(key, new Binding(key, value));
+            } else
+            {
+                bindings[key].instanceCount++;
             }
             return bindings[key];
         }
