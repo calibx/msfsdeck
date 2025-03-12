@@ -4,160 +4,59 @@
     using System.Runtime.InteropServices;
 
     using Loupedeck.MsfsPlugin.tools;
+    using static Loupedeck.MsfsPlugin.msfs.DataTransferTypes;
 
-    using Microsoft.FlightSimulator.SimConnect;
-
-    using static DataTransferTypes;
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
     public class SimConnectDAO
     {
-        private SimConnectDAO() { }
-        private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
+        private bool registered = false;
 
+        private static System.Timers.Timer timer;
+
+        private static readonly Lazy<SimConnectDAO> lazy = new Lazy<SimConnectDAO>(() => new SimConnectDAO());
         public static SimConnectDAO Instance => lazy.Value;
 
-        public const Int32 WM_USER_SIMCONNECT = 0x0402;
-
-        private SimConnect m_oSimConnect = null;
-
-        private bool _simConnectConnected = false;
-
-        private static readonly System.Timers.Timer timer = new System.Timers.Timer();
 
         private const double timerInterval = 200;
+       
+        private readonly Binding connection;
+        private readonly Binding autoTaxi;
 
-        private enum DATA_REQUESTS
+        private SimConnectDAO()
         {
-            REQUEST_1
+            connection = MsfsData.Instance.Register(BindingKeys.CONNECTION);
+            autoTaxi = MsfsData.Instance.Register(BindingKeys.AUTO_TAXI);
         }
 
-        public enum hSimconnect : int
-        {
-            group1
-        }
-
-        public static void Refresh(Object source, EventArgs e) => Instance.OnTick();
-
-        public void setPlugin(Plugin plugin) => DataTransferOut.setPlugin(plugin);
-
-        public void Connect()
-        {
-            if (MsfsData.Instance.bindings[BindingKeys.CONNECTION].MsfsValue == 0)
-            {
-                DebugTracing.Trace("Trying cnx");
-                MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(2);
-                foreach (Binding binding in MsfsData.Instance.bindings.Values)
-                {
-                    binding.MSFSChanged = true;
-                }
-                MsfsData.Instance.Changed();
-                try
-                {
-                    m_oSimConnect = new SimConnect("MSFS Plugin", new IntPtr(0), WM_USER_SIMCONNECT, null, 0);
-                    m_oSimConnect.OnRecvOpen += new SimConnect.RecvOpenEventHandler(SimConnect_OnRecvOpen);
-                    m_oSimConnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(SimConnect_OnRecvSimobjectDataBytype);
-                    m_oSimConnect.OnRecvException += new SimConnect.RecvExceptionEventHandler(SimConnect_OnRecvException);
-
-                    DataTransferIn.AddRequest(m_oSimConnect);
-                    DataTransferOut.initEvents(m_oSimConnect);
-
-                    lock (timer)
-                    {
-                        timer.Interval = timerInterval;
-                        timer.Elapsed += Refresh;
-                        timer.Enabled = true;
-                    }
-                }
-                catch (COMException ex)
-                {
-                    DebugTracing.Trace(ex);
-                    MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
-                    foreach (Binding binding in MsfsData.Instance.bindings.Values)
-                    {
-                        binding.MSFSChanged = true;
-                    }
-                    MsfsData.Instance.Changed();
-                }
-                _simConnectConnected = true;
-            }
-        }
-        public bool IsSimConnectConnected() => _simConnectConnected;
-
-        private void SimConnect_OnRecvException(SimConnect sender, SIMCONNECT_RECV_EXCEPTION data)
-        {
-
-            SIMCONNECT_EXCEPTION eException = (SIMCONNECT_EXCEPTION)data.dwException;
-            DebugTracing.Trace(eException.ToString());
-        }
-
-        public void Disconnect()
-        {
-            if (m_oSimConnect != null)
-            {
-                m_oSimConnect.Dispose();
-                m_oSimConnect = null;
-                _simConnectConnected = false;
-            }
-
-            //>> If called from Unload, then I think that the rest here is superfluous to do. We could add a parameter
-            // indicating whether we are about to unload and if so return here.
-
-            MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(0);
-            foreach (Binding binding in MsfsData.Instance.bindings.Values)
-            {
-                binding.MSFSChanged = true;
-            }
-            MsfsData.Instance.Changed();
-        }
-
-        private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
-        {
-            DebugTracing.Trace("Cnx opened");
-            MsfsData.Instance.bindings[BindingKeys.CONNECTION].SetMsfsValue(1);
-            foreach (Binding binding in MsfsData.Instance.bindings.Values)
-            {
-                binding.MSFSChanged = true;
-            }
-            MsfsData.Instance.Changed();
-            timer.Interval = timerInterval;
-        }
-
-        private void SimConnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
-        {
-            var reader = (Readers)data.dwData[0];
-            DataTransferIn.ReadMsfsValues(reader);
-
-            DataTransferOut.SendEvents(m_oSimConnect);
-            AutoTaxiInput(reader);
-        }
-
-        public void SendEvent(Enum eventName, UInt32 value)
-        {
-            if (_simConnectConnected)
-            { 
-                DataTransferOut.Transmit(m_oSimConnect, eventName, value); 
-            }
-        }
-
-        private readonly object lockObject = new object();
-
-        private void OnTick()
+        private void Refresh(object source, EventArgs e)
         {
             lock (lockObject)
             {
                 try
                 {
-                    if (m_oSimConnect != null)
+                    if (SimConnectWrapper.Instance.IsConnected())
                     {
-
-                        m_oSimConnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Readers, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-                        m_oSimConnect.ReceiveMessage();
+                        DebugTracing.Trace("Connected");
+                        connection.SetMsfsValue(1);
+                        if (!registered)
+                        {
+                            DataTransferOut.setPlugin(MsfsData.Instance.plugin);
+                            DataTransferOut.initEvents();
+                            registered = true;
+                        }
+                        DataTransferOut.SendEvents(SimConnectWrapper.Instance);
+                        DataTransferIn.ReadMsfsValues(SimConnectWrapper.Instance);
+                        MsfsData.Instance.Changed(false);
                     }
                     else
                     {
+                        DebugTracing.Trace("Disconnect");
                         timer.Enabled = false;
+                        timer = null;
+                        connection.SetMsfsValue(0);
+                        registered = false;
+                        MsfsData.Instance.Changed(true);
                     }
+                    
                 }
                 catch (COMException exception)
                 {
@@ -166,35 +65,87 @@
                 }
             }
         }
+        public void Connect()
+        {
+            if (connection.MsfsValue == 0)
+            {
+                DebugTracing.Trace("Trying cnx");
+                connection.SetMsfsValue(2);
+                foreach (Binding binding in MsfsData.Instance.bindings.Values)
+                {
+                    binding.MSFSChanged = true;
+                }
+                MsfsData.Instance.Changed(true);
+                try
+                {
+                    SimConnectWrapper.Instance.Connect();
+                    timer = new System.Timers.Timer();
+                    lock (timer)
+                    {
+                        timer = new System.Timers.Timer();
+                        timer.Interval = timerInterval;
+                        timer.Elapsed += Refresh;
+                        timer.Enabled = true;
+                    }
+                }
+                catch (COMException ex)
+                {
+                    DebugTracing.Trace("Error during cnx" + ex.ToString());
+                    connection.SetMsfsValue(0);
+                    foreach (Binding binding in MsfsData.Instance.bindings.Values)
+                    {
+                        binding.MSFSChanged = true;
+                    }
+                    MsfsData.Instance.Changed(true);
+                }
+            }
+        }
+      
+        public void Disconnect(bool unloading = false)
+        {
+            DebugTracing.Trace($"Disconnecting - unloading={unloading}");
+            SimConnectWrapper.Instance.Disconnect();
 
-        private void AutoTaxiInput(Readers reader)
+            if (unloading)
+                return;
+
+            connection.SetMsfsValue(0);
+            foreach (Binding binding in MsfsData.Instance.bindings.Values)
+            {
+                binding.MSFSChanged = true;
+            }
+            MsfsData.Instance.Changed(true);
+        }
+
+        private readonly object lockObject = new object();
+
+/*        private void AutoTaxiInput(Readers reader)
         {
             if (reader.onGround == 1)
             {
-                if (MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].ControllerValue >= 2)
+                if (autoTaxi.ControllerValue >= 2)
                 {
                     if (reader.groundSpeed > 19)
                     {
-                        MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(3);
+                        autoTaxi.SetMsfsValue(3);
                         DataTransferOut.Transmit(m_oSimConnect, EVENTS.BRAKES, 1);
                     }
                     else
                     {
-                        MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(2);
+                        autoTaxi.SetMsfsValue(2);
                     }
                 }
                 else
                 {
-                    MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(1);
+                    autoTaxi.SetMsfsValue(1);
                 }
             }
             else
             {
-                MsfsData.Instance.bindings[BindingKeys.AUTO_TAXI].SetMsfsValue(0);
+                autoTaxi.SetMsfsValue(0);
             }
-        }
+        }*/
+
+
     }
 }
-
-
-

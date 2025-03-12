@@ -1,17 +1,17 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
     using Loupedeck.MsfsPlugin.input;
+    using Loupedeck.MsfsPlugin.msfs;
     using Loupedeck.MsfsPlugin.tools;
 
     class ParkingBrakeInput : DefaultInput
     {
         public ParkingBrakeInput() : base("Parking brake", "Display parking brakes state", "Misc")
         {
-            binding = Register(BindingKeys.PARKING_BRAKES);
-            bindings.Add(binding);
+            binding = Bind(BindingKeys.PARKING_BRAKES);
         }
 
-        protected override void ChangeValue() => binding.SetControllerValue(ConvertTool.GetToggledValue(binding.ControllerValue));
+        protected override void ChangeValue() => binding.ToggleControllerValue();
 
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
@@ -26,4 +26,3 @@
         readonly Binding binding;
     }
 }
-

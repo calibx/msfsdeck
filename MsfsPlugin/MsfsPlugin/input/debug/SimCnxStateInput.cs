@@ -8,14 +8,14 @@
     {
         public SimCnxStateInput() : base("ConnectionSimConnect", "Display SimConnect connection state", "Debug")
         {
-            bindings.Add(binding = Register(BindingKeys.CONNECTION));
+            binding = Bind(BindingKeys.CONNECTION);
         }
 
         protected override string GetValue() => binding.MsfsValue == 1 ? "connected" : binding.MsfsValue == 2 ? "trying to\nconnect" : "not\nconnected";
 
         protected override void RunCommand(string actionParameter)
         {
-            var curValue = bindings[0].MsfsValue;
+            var curValue = binding.MsfsValue;
             if (curValue == 1 || curValue == 2)
                 SimConnectDAO.Instance.Disconnect();
             else

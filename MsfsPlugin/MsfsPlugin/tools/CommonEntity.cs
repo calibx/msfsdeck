@@ -1,0 +1,32 @@
+﻿namespace Loupedeck.MsfsPlugin.tools
+{
+    using System.Collections.Generic;
+
+    internal class CommonEntity
+    {
+        public CommonEntity()
+        {
+            bindings = new List<Binding>();
+        }
+
+        public void Notify(bool force)
+        {
+            foreach (Binding binding in bindings)
+            {
+                if (binding.HasMSFSChanged() || force)
+                {
+                    binding.Reset();
+                }
+            }
+        }
+
+        public Binding Bind(BindingKeys key, long? value = null)
+        {
+            Binding binding = MsfsData.Instance.Register(key, value);
+            bindings.Add(binding);
+            return binding;
+        }
+
+        public readonly IList<Binding> bindings;
+    }
+}

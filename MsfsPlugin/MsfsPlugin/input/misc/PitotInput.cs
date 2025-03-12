@@ -7,8 +7,7 @@
     {
         public PitotInput() : base("Pitot", "Pitot heating", "Misc")
         {
-            binding = Register(BindingKeys.PITOT);
-            bindings.Add(binding);
+            binding = Bind(BindingKeys.PITOT);
         }
 
         protected override void ChangeValue() => binding.SetControllerValue(1);
@@ -26,4 +25,3 @@
         readonly Binding binding;
     }
 }
-

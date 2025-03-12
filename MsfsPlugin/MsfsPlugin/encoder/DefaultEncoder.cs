@@ -1,7 +1,5 @@
-﻿namespace Loupedeck.MsfsPlugin.encoder
+﻿namespace Loupedeck.MsfsPlugin
 {
-    using System.Collections.Generic;
-
     using Loupedeck.MsfsPlugin.tools;
 
     public abstract class DefaultEncoder : PluginDynamicAdjustment, INotifiable
@@ -9,13 +7,13 @@
         protected int min;
         protected int max;
         protected int step;
-        protected readonly List<Binding> bindings = new List<Binding>();
 
         protected DefaultEncoder(string name, string desc, string category, bool resettable, int min, int max, int step) : base(name, desc, category, resettable)
         {
             this.min = min;
             this.max = max;
             this.step = step;
+            entity = new CommonEntity();
             MsfsData.Instance.Register(this);
         }
 
@@ -25,22 +23,34 @@
             ActionImageChanged();
         }
 
-        protected override string GetAdjustmentValue(string actionParameter) => GetDisplayValue();
+        protected Binding Bind(BindingKeys key) => entity.Bind(key);
 
-        public void Notify()
+        public void Notify(bool force)
         {
-            foreach (Binding binding in bindings)
+            var refresh = false;
+            foreach (Binding binding in entity.bindings)
             {
-                if (binding.HasMSFSChanged())
+                
+                if (binding.HasMSFSChanged() || force)
                 {
                     binding.Reset();
+                    refresh = true;
                 }
             }
-        }
+            if (refresh)
+            { 
+                  ActionImageChanged(); 
+            }
+        } 
 
-        protected static Binding Register(BindingKeys key) => MsfsData.Instance.Register(key);
+        protected override string GetAdjustmentValue(string actionParameter) => GetDisplayValue();
+
         protected virtual string GetDisplayValue() => GetValue().ToString();
+
         protected virtual long GetValue() => 0;
+
         protected abstract void SetValue(long value);
+
+        readonly CommonEntity entity;
     }
 }

@@ -6,12 +6,15 @@
     {
         public AltitudeInput() : base("Altitude", "Display current and AP altitude", "Nav")
         {
-            bindings.Add(Register(BindingKeys.AP_ALT));
-            bindings.Add(Register(BindingKeys.ALT));
+            apAlt = Bind(BindingKeys.AP_ALT);
+            alt = Bind(BindingKeys.ALT);
         }
 
-        protected override string GetValue() => "Alt\n[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;
+        protected override string GetValue() => "Alt\n[" + apAlt.ControllerValue + "]\n" + alt.ControllerValue;
 
-        protected override void ChangeValue() => bindings[0].SetControllerValue(bindings[1].ControllerValue);
+        protected override void ChangeValue() => apAlt.SetControllerValue(alt.ControllerValue);
+
+        readonly Binding apAlt;
+        readonly Binding alt;
     }
 }

@@ -1,21 +1,22 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using Loupedeck.MsfsPlugin.encoder;
-
     class VSpeedAPEncoder : DefaultEncoder
     {
         public VSpeedAPEncoder() : base("VS", "Autopilot VS encoder", "AP", true, -10000, 10000, 100)
         {
-            bindings.Add(Register(BindingKeys.AP_VSPEED));
-            bindings.Add(Register(BindingKeys.VSPEED));
+            apVspeed = Bind(BindingKeys.AP_VSPEED);
+            vSpeed = Bind(BindingKeys.VSPEED);
         }
 
-        protected override void RunCommand(string actionParameter) => SetValue(bindings[1].ControllerValue);
+        protected override void RunCommand(string actionParameter) => SetValue(vSpeed.ControllerValue);
 
-        protected override string GetDisplayValue() => "[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;
+        protected override string GetDisplayValue() => "[" + apVspeed.ControllerValue + "]\n" + vSpeed.ControllerValue;
 
-        protected override long GetValue() => bindings[0].ControllerValue;
+        protected override long GetValue() => apVspeed.ControllerValue;
 
-        protected override void SetValue(long newValue) => bindings[0].SetControllerValue(newValue);
+        protected override void SetValue(long newValue) => apVspeed.SetControllerValue(newValue);
+
+        readonly Binding apVspeed;
+        readonly Binding vSpeed;
     }
 }

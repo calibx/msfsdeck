@@ -19,6 +19,10 @@
 
         public bool MSFSChanged { get; set; }
 
+        public int instanceCount = 1;
+
+        int resetCount= 1;
+
         public Binding(BindingKeys key, long? value = null)
         {
             Key = key;
@@ -58,6 +62,7 @@
 
             MsfsValue = newValue;
             MSFSChanged = true;
+            resetCount = instanceCount;
         }
 
         public void SetControllerValue(long newValue)
@@ -70,18 +75,25 @@
             ControllerPreviousValue = ControllerValue;
             ControllerValue = newValue;
             SimConnectDAO.Instance.Connect();
+            resetCount = instanceCount;
         }
 
         public void Reset()
         {
-            if (DoTrace)
+            DebugTracing.Trace($"Reseting Key {Key} with instance count left {resetCount}");
+            resetCount--;
+            if (resetCount == 0)
             {
-                DebugTracing.Trace($"Key {Key}. Changing ControllerValue from '{ControllerValue}' to '{MsfsValue}'.");
+                if (DoTrace)
+                {
+                    DebugTracing.Trace($"Key {Key}. Changing ControllerValue from '{ControllerValue}' to '{MsfsValue}'.");
+                }
+                ControllerValue = MsfsValue;
+                ControllerChanged = false;
+                MSFSChanged = false;
+                SetControllerValueCalled = false;
+                resetCount = instanceCount;
             }
-            ControllerValue = MsfsValue;
-            ControllerChanged = false;
-            MSFSChanged = false;
-            SetControllerValueCalled = false;
         }
 
         public void ResetController()

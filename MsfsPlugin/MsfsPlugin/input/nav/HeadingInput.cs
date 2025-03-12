@@ -6,13 +6,15 @@
     {
         public HeadingInput() : base("Heading", "Display current and AP heading", "Nav")
         {
-            bindings.Add(Register(BindingKeys.AP_HEADING));
-            bindings.Add(Register(BindingKeys.HEADING));
+            apHeading = Bind(BindingKeys.AP_HEADING);
+            heading = Bind(BindingKeys.HEADING);
         }
 
-        protected override string GetValue() => "Head\n[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;
+        protected override string GetValue() => "Head\n[" + apHeading.ControllerValue + "]\n" + heading.ControllerValue;
 
-        protected override void ChangeValue() => bindings[0].SetControllerValue(bindings[1].ControllerValue);
+        protected override void ChangeValue() => apHeading.SetControllerValue(heading.ControllerValue);
+
+        readonly Binding apHeading;
+        readonly Binding heading;
     }
 }
-

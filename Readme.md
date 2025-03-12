@@ -2,9 +2,10 @@
 The aim of this plugin is to use the Loupedeck Live to control MSFS
 # Requirements
 * Loupedeck Live : https://loupedeck.com/fr/products/loupedeck-live/
-* Mobiflight (for L:VAR) : https://www.mobiflight.com/en/index.html
 * MSFS : https://www.flightsimulator.com/
 # Changelog
+* * 4.0.0
+LoupeDeck 6 compatibility and MSFS 2024
 * * 3.0.0
 AnimalWinter164 fixes and improvements : 
 	* RPMInput add RPM

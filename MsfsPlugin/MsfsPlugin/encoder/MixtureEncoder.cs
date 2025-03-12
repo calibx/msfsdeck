@@ -1,16 +1,18 @@
 ﻿namespace Loupedeck.MsfsPlugin
 {
-    using Loupedeck.MsfsPlugin.encoder;
-
     class MixtureEncoder : DefaultEncoder
     {
-        public MixtureEncoder() : base("Mixture", "Mixture encoder for the 4 engines", "Nav", true, 0, 100, 1) =>
-            bindings.Add(Register(BindingKeys.MIXTURE));
+        public MixtureEncoder() : base("Mixture", "Mixture encoder for the 4 engines", "Nav", true, 0, 100, 1)
+        {
+            mixture = Bind(BindingKeys.MIXTURE);
+        }
 
         protected override void RunCommand(string actionParameter) => SetValue(0);
 
-        protected override long GetValue() => bindings[0].ControllerValue;
+        protected override long GetValue() => mixture.ControllerValue;
 
-        protected override void SetValue(long newValue) => bindings[0].SetControllerValue(newValue);
+        protected override void SetValue(long newValue) => mixture.SetControllerValue(newValue);
+
+        readonly Binding mixture;
     }
 }

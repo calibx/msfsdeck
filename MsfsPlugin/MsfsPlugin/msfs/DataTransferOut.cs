@@ -6,19 +6,16 @@
     using Loupedeck.MsfsPlugin.msfs.mobi;
     using Loupedeck.MsfsPlugin.tools;
 
-    using Microsoft.FlightSimulator.SimConnect;
-
     using static DataTransferTypes;
-    using static Loupedeck.MsfsPlugin.msfs.DataTransferTypes;
-    using static Loupedeck.MsfsPlugin.msfs.SimConnectDAO;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
     internal static class DataTransferOut
     {
-
         internal static Dictionary<String, Dictionary<String, Dictionary<String, List<Tuple<String, uint>>>>> MobiEvents;
         private const string STANDARD_EVENT_GROUP = "STANDARD";
-        internal static void SendEvents(SimConnect simConnect)
+
+        internal static void setPlugin(Plugin plugin) => pluginForKey = plugin;
+        internal static void SendEvents(ISimConnectWrapper simConnect)
         {
             SendEvent(EVENTS.AILERON_TRIM_SET, MsfsData.Instance.bindings[BindingKeys.AILERON_TRIM], simConnect);
             SendEvent(EVENTS.AP_ALT_VAR_SET_ENGLISH, MsfsData.Instance.bindings[BindingKeys.AP_ALT], simConnect);
@@ -71,10 +68,10 @@
             SendEvent(EVENTS.ATC_MENU_8, MsfsData.Instance.bindings[BindingKeys.ATC_8_ATC_FOLDER], simConnect);
             SendEvent(EVENTS.ATC_MENU_9, MsfsData.Instance.bindings[BindingKeys.ATC_9_ATC_FOLDER], simConnect);
 
-            SendEvent(EVENTS.TOGGLE_FLIGHT_DIRECTOR, MsfsData.Instance.bindings[BindingKeys.AP_FD_SWITCH_AL_FOLDER], simConnect);
-            SendEvent(EVENTS.AP_FLIGHT_LEVEL_CHANGE, MsfsData.Instance.bindings[BindingKeys.AP_FLC_SWITCH_AL_FOLDER], simConnect);
-            SendEvent(EVENTS.AP_APR_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_APP_SWITCH_AL_FOLDER], simConnect);
-            SendEvent(EVENTS.AP_LOC_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_LOC_SWITCH_AL_FOLDER], simConnect);
+            SendEvent(EVENTS.TOGGLE_FLIGHT_DIRECTOR, MsfsData.Instance.bindings[BindingKeys.AP_FD_SWITCH], simConnect);
+            SendEvent(EVENTS.FLIGHT_LEVEL_CHANGE, MsfsData.Instance.bindings[BindingKeys.AP_FLC_SWITCH], simConnect);
+            SendEvent(EVENTS.AP_APR_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_APP_SWITCH], simConnect);
+            SendEvent(EVENTS.AP_LOC_HOLD, MsfsData.Instance.bindings[BindingKeys.AP_LOC_SWITCH], simConnect);
 
             SendEvent(EVENTS.COM_STBY_RADIO_SET_HZ, MsfsData.Instance.bindings[BindingKeys.COM1_STBY], simConnect);
             SendEvent(EVENTS.COM1_RADIO_SWAP, MsfsData.Instance.bindings[BindingKeys.COM1_RADIO_SWAP], simConnect);
@@ -137,7 +134,8 @@
                 }
             }
 
-            if (MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerChanged)
+            // TODO : WRITERQ TO FIX LATER
+/*            if (MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerChanged)
             {
                 var writer = new Writers();
                 writer.mixtureE1 = MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerValue;
@@ -146,10 +144,10 @@
                 writer.mixtureE4 = MsfsData.Instance.bindings[BindingKeys.MIXTURE].ControllerValue;
                 simConnect.SetDataOnSimObject(DEFINITIONS.Writers, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, writer);
                 MsfsData.Instance.bindings[BindingKeys.MIXTURE].ResetController();
-            }
+            }*/
         }
 
-        private static void SendEvent(EVENTS eventName, Binding binding, SimConnect simConnect, Boolean enumerable = false)
+        private static void SendEvent(EVENTS eventName, Binding binding, ISimConnectWrapper simConnect, Boolean enumerable = false)
         {
             if (binding.ControllerChanged)
             {
@@ -181,7 +179,7 @@
                         break;
                     case EVENTS.SIM_RATE:
                         value = 1;
-                        Transmit(simConnect, eventName, 1);
+                        simConnect.send(eventName, 1);
                         eventName = binding.ControllerValue < binding.MsfsValue ? EVENTS.MINUS : EVENTS.PLUS;
                         break;
                     case EVENTS.ATC_MENU_OPEN:
@@ -206,40 +204,34 @@
                 {
                     for (UInt32 i = 1; i < 10; i++)
                     {
-                        Transmit(simConnect, eventName, i);
+                        simConnect.send(eventName, i);
                     }
                 }
                 else
                 {
-                    Transmit(simConnect, eventName, value);
+                    simConnect.send(eventName, value);
                 }
 
                 binding.ResetController();
             }
         }
 
-        internal static void Transmit(SimConnect simConnect, Enum eventName, UInt32 value)
-        {
-            DebugTracing.Trace("Send " + eventName + " with " + value);
-            simConnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventName, value, hSimconnect.group1, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-        }
-
-        internal static void setPlugin(Plugin plugin) => pluginForKey = plugin;
+        
 
         private static uint BcdEncode(uint value)
         {
             var valText = $"0x{value}0000";
             return Convert.ToUInt32(valText, 16);
         }
-        
+
         internal static void loadEvents()
         {
             if (MobiEvents == null)
             {
-                MobiEvents = new Dictionary<string, Dictionary<string, Dictionary<string, List<Tuple<String, uint>>>>> ();
-                
+                MobiEvents = new Dictionary<string, Dictionary<string, Dictionary<string, List<Tuple<String, uint>>>>>();
 
-                string[] lines = EmbeddedResources.ReadTextFile("Loupedeck.MsfsPlugin.Resources.msfs2020_eventids.cip").Split("\n");
+
+                var lines = EmbeddedResources.ReadTextFile("Loupedeck.MsfsPlugin.Resources.msfs2020_eventids.cip").Split("\n");
                 uint EventIdx = 0;
 
                 var VendorKey = "DUMMY";
@@ -262,18 +254,19 @@
                             MobiEvents[VendorKey][AircraftKey] = new Dictionary<string, List<Tuple<String, uint>>>();
                         if (!MobiEvents[VendorKey][AircraftKey].ContainsKey(ComponentKey))
                             MobiEvents[VendorKey][AircraftKey][ComponentKey] = new List<Tuple<String, uint>>();
-                    } else
+                    }
+                    else
                     {
                         MobiEvents[VendorKey][AircraftKey][ComponentKey].Add(new Tuple<string, uint>(line, EventIdx++));
                     }
                 }
             }
         }
-        internal static void initEvents(SimConnect simConnect)
+        internal static void initEvents()
         {
             foreach (EVENTS evt in Enum.GetValues(typeof(EVENTS)))
             {
-                simConnect.MapClientEventToSimEvent(evt, evt.ToString());
+                SimConnectWrapper.Instance.register(evt, evt.ToString());
             }
             foreach (var GroupKey in MobiEvents.Keys)
             {
@@ -288,7 +281,7 @@
                             {
                                 prefix = "MobiFlight.";
                             }
-                            simConnect.MapClientEventToSimEvent((MOBIFLIGHT_EVENTS)eventItem.Item2, prefix + eventItem.Item1);
+                            SimConnectWrapper.Instance.register((MOBIFLIGHT_EVENTS)eventItem.Item2, prefix + eventItem.Item1);
                         }
                     }
                 }

@@ -5,7 +5,7 @@
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0049:Simplify Names", Justification = "<Pending>")]
-    internal static class DataTransferTypes
+    public static class DataTransferTypes
     {
 
         public enum DUMMY_EVENTS
@@ -72,7 +72,7 @@
             THROTTLE_SET,
             KEY_TUG_HEADING,
             TOGGLE_FLIGHT_DIRECTOR,
-            AP_FLIGHT_LEVEL_CHANGE,
+            FLIGHT_LEVEL_CHANGE,
             AP_APR_HOLD,
             AP_LOC_HOLD,
             BRAKES,
@@ -108,149 +108,7 @@
             //++ Add new events here for data that is going to be sent from this plugin to SimConnect
         };
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        internal struct Readers
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
-            public String title;
-            public Double latitude;
-            public Double longitude;
-            public Double groundaltitude;
-            public Double gearRightPos;
-            public Double gearLeftPos;
-            public Double gearCenterPos;
-            public Int64 gearRetractable;
-            public Int64 parkingBrake;
-            public Int64 engineType;
-            public Double E1N1;
-            public Double E2N1;
-            public Double E3N1;
-            public Double E4N1;
-            public Double E1N2;
-            public Double E2N2;
-            public Double E3N2;
-            public Double E4N2;
-            public Int64 fuelCapacity;
-            public Int64 fuelQuantity;
-            public Double E1GPH;
-            public Double E2GPH;
-            public Double E3GPH;
-            public Double E4GPH;
-            public double FuelGph => E1GPH + E2GPH + E3GPH + E4GPH;
-            public Double E1PPH;
-            public Double E2PPH;
-            public Double E3PPH;
-            public Double E4PPH;
-            public double FuelPph => E1PPH + E2PPH + E3PPH + E4PPH;
-            public Int64 pushback;
-            public Int64 ENG1N1RPM;
-            public Int64 ENG2N1RPM;
-            public Int64 ENG3N1RPM;
-            public Int64 ENG4N1RPM;
-            public Int64 engineNumber;
-            public Int64 planeAltitude;
-            public Int64 apAltitude;
-            public Int64 wpID;
-            public Int64 wpDistance;
-            public Int64 wpETE;
-            public Int64 wpBearing;
-            public Int64 wpCount;
-            public Int64 apHeading;
-            public Double planeHeading;
-            public Int64 planeSpeed;
-            public Double planeVSpeed;
-            public Int64 apVSpeed;
-            public Int64 apSpeed;
-            public Int64 E1On;
-
-            public Int64 navLight;
-            public Int64 beaconLight;
-            public Int64 landingLight;
-            public Int64 taxiLight;
-            public Int64 strobeLight;
-            public Int64 panelLight;
-            public Int64 recognitionLight;
-            public Int64 wingLight;
-            public Int64 logoLight;
-            public Int64 cabinLight;
-
-            public Int64 apAltHold;
-            public Int64 apHeadingHold;
-            public Int64 apSpeedHold;
-            public Int64 apThrottleHold;
-            public Int64 apMasterHold;
-            public Int64 apNavHold;
-            public Int64 apVerticalSpeedHold;
-
-            public Double kohlsmanInHb;
-
-            public Double aileronTrim;
-            public Double elevatorTrim;
-
-            public Int64 flapMax;
-            public Int64 flapPosition;
-
-            public Int64 mixtureE1;
-            public Double propellerE1;
-
-            public Double rudderTrim;
-            public Double spoiler;
-            public Double throttle;
-            public Int64 pitot;
-            public Int64 wheelRPM;
-            public Int64 apFD;
-            public Int64 apFLC;
-            public Int64 apAPP;
-            public Int64 apLOC;
-            public Int64 onGround;
-            public Int64 groundSpeed;
-            public Int64 pushbackAttached;
-
-            public Int64 COM1ActiveFreq;
-            public Int64 COM1StbFreq;
-            public Int64 COM1Available;
-            public Int64 COM1Status;
-            //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
-            //public String COM1Type;
-
-            public Int64 COM2ActiveFreq;
-            public Int64 COM2StbFreq;
-            public Int64 COM2Available;
-            public Int64 COM2Status;
-            //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x100)]
-            //public String COM2Type;
-            public Int64 pedestralLight;
-            public Int64 glareshieldLight;
-
-            public Int64 apYawDamper;
-            public Int64 apBackCourse;
-
-            public Double simRate;
-            public Int64 spoilerArm;
-
-            public Int64 NAV1ActiveFreq;
-            public Int64 NAV2ActiveFreq;
-            public Int64 NAV1Available;
-            public Int64 NAV2Available;
-            public Int64 NAV1StbyFreq;
-            public Int64 NAV2StbyFreq;
-
-            public Int64 NAV1Obs;
-            public Int64 NAV2Obs;
-
-            public Double AirTemperature;
-            public Int64 WindDirection;
-            public Int64 WindSpeed;
-            public Int64 Visibility;
-            public Double SeaLevelPressure;
-
-            public double ADFActiveFreq;
-            public double ADFStbyFreq;
-            public Int64 ADF1Available;
-            public Int64 ADF2Available;
-
-            //++ Add fields for new data here. Ensure that the type fits what is written in the data definition below.
-        }
+        
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         internal struct Writers
@@ -261,6 +119,6 @@
             public Int64 mixtureE4;
         }
 
-        
+
     }
 }

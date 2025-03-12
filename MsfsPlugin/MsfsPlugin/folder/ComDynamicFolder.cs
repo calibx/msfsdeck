@@ -9,24 +9,14 @@
     {
         public ComDynamicFolder() : base("COM")
         {
-            bindings.Add(Register(BindingKeys.COM1_ACTIVE_FREQUENCY));
-            bindings.Add(Register(BindingKeys.COM2_ACTIVE_FREQUENCY));
-            bindings.Add(Register(BindingKeys.COM3_ACTIVE_FREQUENCY));
-            bindings.Add(Register(BindingKeys.COM1_ACTIVE_FREQUENCY_TYPE));
-            bindings.Add(Register(BindingKeys.COM2_ACTIVE_FREQUENCY_TYPE));
-            bindings.Add(Register(BindingKeys.COM3_ACTIVE_FREQUENCY_TYPE));
-            bindings.Add(Register(BindingKeys.COM1_STATUS));
-            bindings.Add(Register(BindingKeys.COM2_STATUS));
-            bindings.Add(Register(BindingKeys.COM3_STATUS));
-            bindings.Add(Register(BindingKeys.COM1_AVAILABLE));
-            bindings.Add(Register(BindingKeys.COM2_AVAILABLE));
-            bindings.Add(Register(BindingKeys.COM3_AVAILABLE));
-            bindings.Add(Register(BindingKeys.COM1_STBY));
-            bindings.Add(Register(BindingKeys.COM2_STBY));
-            bindings.Add(Register(BindingKeys.COM3_STBY));
-            bindings.Add(Register(BindingKeys.COM1_RADIO_SWAP));
-            bindings.Add(Register(BindingKeys.COM2_RADIO_SWAP));
-            bindings.Add(Register(BindingKeys.COM3_RADIO_SWAP));
+            com1Active = Bind(BindingKeys.COM1_ACTIVE_FREQUENCY);
+            com2Active = Bind(BindingKeys.COM2_ACTIVE_FREQUENCY);
+            com1Available = Bind(BindingKeys.COM1_AVAILABLE);
+            com2Available = Bind(BindingKeys.COM2_AVAILABLE);
+            com1Stby = Bind(BindingKeys.COM1_STBY);
+            com2Stby = Bind(BindingKeys.COM2_STBY);
+            com1Swap = Bind(BindingKeys.COM1_RADIO_SWAP);
+            com2Swap = Bind(BindingKeys.COM2_RADIO_SWAP);
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.None;
@@ -77,17 +67,17 @@
             switch (actionParameter)
             {
                 case "COM1 Int Encoder":
-                    ret = "COM1\n" + Math.Truncate(bindings[12].ControllerValue / 1000000f) + ".";
+                    ret = "COM1\n" + Math.Truncate(com1Stby.ControllerValue / 1000000f) + ".";
                     break;
                 case "COM1 Float Encoder":
-                    var com1dbl = Math.Round(bindings[12].ControllerValue / 1000000f - Math.Truncate(bindings[12].ControllerValue / 1000000f), 3).ToString();
+                    var com1dbl = Math.Round(com1Stby.ControllerValue / 1000000f - Math.Truncate(com1Stby.ControllerValue / 1000000f), 3).ToString();
                     ret = "COM1\n" + (com1dbl.Length > 2 ? com1dbl.Substring(2) : com1dbl).PadRight(3, '0');
                     break;
                 case "COM2 Int Encoder":
-                    ret = "COM2\n" + Math.Truncate(bindings[13].ControllerValue / 1000000f) + ".";
+                    ret = "COM2\n" + Math.Truncate(com2Stby.ControllerValue / 1000000f) + ".";
                     break;
                 case "COM2 Float Encoder":
-                    var com2dbl = Math.Round(bindings[13].ControllerValue / 1000000f - Math.Truncate(bindings[13].ControllerValue / 1000000f), 3).ToString();
+                    var com2dbl = Math.Round(com2Stby.ControllerValue / 1000000f - Math.Truncate(com2Stby.ControllerValue / 1000000f), 3).ToString();
                     ret = "COM2\n" + (com2dbl.Length > 2 ? com2dbl.Substring(2) : com2dbl).PadRight(3, '0');
                     break;
             }
@@ -101,36 +91,36 @@
                 switch (actionParameter)
                 {
                     case "COM1 Active Int":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[9].MsfsValue));
-                        bitmapBuilder.DrawText((bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Green, 40);
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(com1Available.MsfsValue));
+                        bitmapBuilder.DrawText((com1Active.ControllerValue == 0 ? "0" : com1Active.ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Green, 40);
                         break;
                     case "COM1 Active Float":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[9].MsfsValue));
-                        bitmapBuilder.DrawText(bindings[0].ControllerValue == 0 ? "0" : bindings[0].ControllerValue.ToString().Substring(3, 3), ImageTool.Green, 40);
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(com1Available.MsfsValue));
+                        bitmapBuilder.DrawText(com1Active.ControllerValue == 0 ? "0" : com1Active.ControllerValue.ToString().Substring(3, 3), ImageTool.Green, 40);
                         break;
                     case "COM1 Standby Int":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[9].MsfsValue));
-                        bitmapBuilder.DrawText((bindings[12].ControllerValue == 0 ? "0" : bindings[12].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Yellow, 40);
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(com1Available.MsfsValue));
+                        bitmapBuilder.DrawText((com1Stby.ControllerValue == 0 ? "0" : com1Stby.ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Yellow, 40);
                         break;
                     case "COM1 Standby Float":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[9].MsfsValue));
-                        bitmapBuilder.DrawText(bindings[12].ControllerValue == 0 ? "0" : bindings[12].ControllerValue.ToString().Substring(3, 3), ImageTool.Yellow, 40);
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(com1Available.MsfsValue));
+                        bitmapBuilder.DrawText(com1Stby.ControllerValue == 0 ? "0" : com1Stby.ControllerValue.ToString().Substring(3, 3), ImageTool.Yellow, 40);
                         break;
                     case "COM2 Active Int":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[10].MsfsValue));
-                        bitmapBuilder.DrawText((bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Green, 40);
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(com2Available.MsfsValue));
+                        bitmapBuilder.DrawText((com2Active.ControllerValue == 0 ? "0" : com2Active.ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Green, 40);
                         break;
                     case "COM2 Active Float":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[10].MsfsValue));
-                        bitmapBuilder.DrawText(bindings[1].ControllerValue == 0 ? "0" : bindings[1].ControllerValue.ToString().Substring(3, 3), ImageTool.Green, 40);
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(com2Available.MsfsValue));
+                        bitmapBuilder.DrawText(com2Active.ControllerValue == 0 ? "0" : com2Active.ControllerValue.ToString().Substring(3, 3), ImageTool.Green, 40);
                         break;
                     case "COM2 Standby Int":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[10].MsfsValue));
-                        bitmapBuilder.DrawText((bindings[13].ControllerValue == 0 ? "0" : bindings[13].ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Yellow, 40);
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(com2Available.MsfsValue));
+                        bitmapBuilder.DrawText((com2Stby.ControllerValue == 0 ? "0" : com2Stby.ControllerValue.ToString().Substring(0, 3)) + ".", ImageTool.Yellow, 40);
                         break;
                     case "COM2 Standby Float":
-                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(bindings[10].MsfsValue));
-                        bitmapBuilder.DrawText(bindings[13].ControllerValue == 0 ? "0" : bindings[13].ControllerValue.ToString().Substring(3, 3), ImageTool.Yellow, 40);
+                        bitmapBuilder.SetBackgroundImage(ImageTool.GetAvailableDisableImage(com2Available.MsfsValue));
+                        bitmapBuilder.DrawText(com2Stby.ControllerValue == 0 ? "0" : com2Stby.ControllerValue.ToString().Substring(3, 3), ImageTool.Yellow, 40);
                         break;
 
                 }
@@ -150,7 +140,7 @@
                 case "COM1 Standby Float":
                 case "COM1 Int Reset":
                 case "COM1 Float Reset":
-                    bindings[15].SetControllerValue(1);
+                    com1Swap.SetControllerValue(1);
                     break;
                 case "COM2 Active":
                 case "COM2 Active Int":
@@ -160,7 +150,7 @@
                 case "COM2 Standby Float":
                 case "COM2 Int Reset":
                 case "COM2 Float Reset":
-                    bindings[16].SetControllerValue(1);
+                    com2Swap.SetControllerValue(1);
                     break;
             }
         }
@@ -170,16 +160,16 @@
             switch (actionParameter)
             {
                 case "COM1 Int Encoder":
-                    bindings[12].SetControllerValue(adjuster.IncrIntValue(bindings[12].ControllerValue, ticks));
+                    IncrIntValue(com1Stby, ticks);
                     break;
                 case "COM1 Float Encoder":
-                    bindings[12].SetControllerValue(adjuster.IncrDecimalValue(bindings[12].ControllerValue, ticks));
+                    IncrDecimalValue(com1Stby, ticks);
                     break;
                 case "COM2 Int Encoder":
-                    bindings[13].SetControllerValue(adjuster.IncrIntValue(bindings[13].ControllerValue, ticks));
+                    IncrIntValue(com2Stby, ticks);
                     break;
                 case "COM2 Float Encoder":
-                    bindings[13].SetControllerValue(adjuster.IncrDecimalValue(bindings[13].ControllerValue, ticks));
+                    IncrDecimalValue(com2Stby, ticks);
                     break;
 
             }
@@ -187,6 +177,19 @@
             ButtonActionNamesChanged();
         }
 
-        readonly DecimalValueAdjuster adjuster = new DecimalValueAdjuster(118, 136, 0, 995, 5, 1000000);
+        private void IncrIntValue(Binding binding, int ticks) => binding.SetControllerValue(adjuster.IncrIntValue(binding.ControllerValue, ticks));
+
+        private void IncrDecimalValue(Binding binding, int ticks) => binding.SetControllerValue(adjuster.IncrDecimalValue(binding.ControllerValue, ticks));
+
+        private readonly DecimalValueAdjuster adjuster = new DecimalValueAdjuster(118, 136, 0, 995, 5, 1000000);
+
+        private readonly Binding com1Active;
+        private readonly Binding com2Active;
+        private readonly Binding com1Available;
+        private readonly Binding com2Available;
+        private readonly Binding com1Stby;
+        private readonly Binding com2Stby;
+        private readonly Binding com1Swap;
+        private readonly Binding com2Swap;
     }
 }

@@ -8,15 +8,15 @@
     {
         public LightsDisplay() : base("External lights", "Display external lights on/off", "Lights")
         {
-            bindings.Add(nav = Register(BindingKeys.LIGHT_NAV));
-            bindings.Add(beacon = Register(BindingKeys.LIGHT_BEACON));
-            bindings.Add(taxi = Register(BindingKeys.LIGHT_TAXI));
-            bindings.Add(strobe = Register(BindingKeys.LIGHT_STROBE));
-            bindings.Add(landing = Register(BindingKeys.LIGHT_LANDING));
-            bindings.Add(wing = Register(BindingKeys.LIGHT_WING));
-            bindings.Add(logo = Register(BindingKeys.LIGHT_LOGO));
-            bindings.Add(recognition = Register(BindingKeys.LIGHT_RECOG));
-            bindings.Add(connection = Register(BindingKeys.CONNECTION));
+            nav = Bind(BindingKeys.LIGHT_NAV);
+            beacon = Bind(BindingKeys.LIGHT_BEACON);
+            taxi = Bind(BindingKeys.LIGHT_TAXI);
+            strobe = Bind(BindingKeys.LIGHT_STROBE);
+            landing = Bind(BindingKeys.LIGHT_LANDING);
+            wing = Bind(BindingKeys.LIGHT_WING);
+            logo = Bind(BindingKeys.LIGHT_LOGO);
+            recognition = Bind(BindingKeys.LIGHT_RECOG);
+            connection = Bind(BindingKeys.CONNECTION);
         }
 
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)

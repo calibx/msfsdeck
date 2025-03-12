@@ -2,6 +2,6 @@
 {
     interface INotifiable
     {
-        void Notify();
+        void Notify(bool force);
     }
 }

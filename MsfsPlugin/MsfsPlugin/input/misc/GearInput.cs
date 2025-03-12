@@ -7,35 +7,41 @@
     {
         public GearInput() : base("Gear", "Display gears state", "Misc")
         {
-            bindings.Add(Register(BindingKeys.GEAR_RETRACTABLE));
-            bindings.Add(Register(BindingKeys.GEAR_FRONT));
-            bindings.Add(Register(BindingKeys.GEAR_LEFT));
-            bindings.Add(Register(BindingKeys.GEAR_RIGHT));
+            retractable = Bind(BindingKeys.GEAR_RETRACTABLE);
+            front = Bind(BindingKeys.GEAR_FRONT);
+            left = Bind(BindingKeys.GEAR_LEFT);
+            right = Bind(BindingKeys.GEAR_RIGHT);
         }
         protected override BitmapImage GetImage(PluginImageSize imageSize)
         {
             using (var bitmapBuilder = new BitmapBuilder(imageSize))
             {
-                if (bindings[0].ControllerValue == 1)
+                if (retractable.ControllerValue == 1)
                 {
-                    if (bindings[1].ControllerValue == 0 || bindings[1].ControllerValue == 10)
+                    if (front.ControllerValue == 0 || front.ControllerValue == 10)
                     {
-                        bitmapBuilder.DrawText("\t" + GetDisplay(bindings[1].MsfsValue) + "\n" + GetDisplay(bindings[2].MsfsValue) + "\t" + GetDisplay(bindings[3].MsfsValue), BitmapColor.White);
+                        bitmapBuilder.DrawText("\t" + GetDisplay(front.MsfsValue) + "\n" + GetDisplay(left.MsfsValue) + "\t" + GetDisplay(right.MsfsValue), BitmapColor.White);
                     }
                     else
                     {
-                        bitmapBuilder.DrawText("\t" + GetDisplay(bindings[1].MsfsValue) + "\n" + GetDisplay(bindings[2].MsfsValue) + "\t" + GetDisplay(bindings[3].MsfsValue), new BitmapColor(255, 165, 0));
+                        bitmapBuilder.DrawText("\t" + GetDisplay(front.MsfsValue) + "\n" + GetDisplay(left.MsfsValue) + "\t" + GetDisplay(right.MsfsValue), new BitmapColor(255, 165, 0));
                     }
                 }
                 else
                 {
-                    bitmapBuilder.DrawText("\t" + GetDisplay(bindings[1].MsfsValue) + "\n" + GetDisplay(bindings[2].MsfsValue) + "\t" + GetDisplay(bindings[3].MsfsValue), ImageTool.Blue);
+                    bitmapBuilder.DrawText("\t" + GetDisplay(front.MsfsValue) + "\n" + GetDisplay(left.MsfsValue) + "\t" + GetDisplay(right.MsfsValue), ImageTool.Blue);
                 }
                 return bitmapBuilder.ToImage();
             }
         }
+
+        protected override void ChangeValue() => front.SetControllerValue(1);
+
         private string GetDisplay(double gearPos) => gearPos == 0 ? "-" : gearPos == 10 ? "|" : "/";
-        protected override void ChangeValue() => bindings[1].SetControllerValue(1);
+
+        readonly Binding retractable;
+        readonly Binding front;
+        readonly Binding left;
+        readonly Binding right;
     }
 }
-

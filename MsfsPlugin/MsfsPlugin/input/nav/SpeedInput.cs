@@ -6,13 +6,15 @@
     {
         public SpeedInput() : base("Speed", "Display current and AP speed", "Nav")
         {
-            bindings.Add(Register(BindingKeys.AP_SPEED));
-            bindings.Add(Register(BindingKeys.SPEED));
+            apSpeed = Bind(BindingKeys.AP_SPEED);
+            speed = Bind(BindingKeys.SPEED);
         }
 
-        protected override string GetValue() => "Speed\n[" + bindings[0].ControllerValue + "]\n" + bindings[1].ControllerValue;
+        protected override string GetValue() => "Speed\n[" + apSpeed.ControllerValue + "]\n" + speed.ControllerValue;
 
-        protected override void ChangeValue() => bindings[0].SetControllerValue(bindings[1].ControllerValue);
+        protected override void ChangeValue() => apSpeed.SetControllerValue(speed.ControllerValue);
+
+        readonly Binding apSpeed;
+        readonly Binding speed;
     }
 }
-

@@ -8,19 +8,19 @@
     {
         public NavDynamicFolder() : base("NAV")
         {
-            bindings.Add(Nav1ActiveFreq = Register(BindingKeys.NAV1_ACTIVE_FREQUENCY));
-            bindings.Add(Nav2ActiveFreq = Register(BindingKeys.NAV2_ACTIVE_FREQUENCY));
-            bindings.Add(Nav1Available = Register(BindingKeys.NAV1_AVAILABLE));
-            bindings.Add(Nav2Available = Register(BindingKeys.NAV2_AVAILABLE));
-            bindings.Add(Nav1StandbyFreq = Register(BindingKeys.NAV1_STBY_FREQUENCY));
-            bindings.Add(Nav2StandbyFreq = Register(BindingKeys.NAV2_STBY_FREQUENCY));
-            bindings.Add(Nav1Swap = Register(BindingKeys.NAV1_RADIO_SWAP));
-            bindings.Add(Nav2Swap = Register(BindingKeys.NAV2_RADIO_SWAP));
-            bindings.Add(AdfActiveFreq = Register(BindingKeys.ADF_ACTIVE_FREQUENCY));
-            bindings.Add(AdfStandbyFreq = Register(BindingKeys.ADF_STBY_FREQUENCY));
-            bindings.Add(AdfAvail = Register(BindingKeys.ADF1_AVAILABLE));
-            bindings.Add(AdfStbyAvail = Register(BindingKeys.ADF1_STBY_AVAILABLE));
-            bindings.Add(AdfSwap = Register(BindingKeys.ADF_RADIO_SWAP));
+            Nav1ActiveFreq = Bind(BindingKeys.NAV1_ACTIVE_FREQUENCY);
+            Nav2ActiveFreq = Bind(BindingKeys.NAV2_ACTIVE_FREQUENCY);
+            Nav1Available = Bind(BindingKeys.NAV1_AVAILABLE);
+            Nav2Available = Bind(BindingKeys.NAV2_AVAILABLE);
+            Nav1StandbyFreq = Bind(BindingKeys.NAV1_STBY_FREQUENCY);
+            Nav2StandbyFreq = Bind(BindingKeys.NAV2_STBY_FREQUENCY);
+            Nav1Swap = Bind(BindingKeys.NAV1_RADIO_SWAP);
+            Nav2Swap = Bind(BindingKeys.NAV2_RADIO_SWAP);
+            AdfActiveFreq = Bind(BindingKeys.ADF_ACTIVE_FREQUENCY);
+            AdfStandbyFreq = Bind(BindingKeys.ADF_STBY_FREQUENCY);
+            AdfAvail = Bind(BindingKeys.ADF1_AVAILABLE);
+            AdfStbyAvail = Bind(BindingKeys.ADF1_STBY_AVAILABLE);
+            AdfSwap = Bind(BindingKeys.ADF_RADIO_SWAP);
         }
 
         // Plane                      Variable containing active frequency       Variable containing "other" freq     "other" frequency shown?  Swapping event
