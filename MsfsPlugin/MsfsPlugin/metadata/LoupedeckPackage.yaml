@@ -9,22 +9,22 @@ type: plugin4
 name: Msfs
 
 # Plugin name that is shown to the user.
-displayName: Msfs
+displayName: Microsoft Flight Simulator
 
 # Short description of the plugin.
-description: Add a short description of the plugin here.
+description: Plugin for MSFS 2020/2024
 
 # Name of the plugin library file.
 pluginFileName: MsfsPlugin.dll
 
 # Plugin version.
-version: 1.0
+version: 4.0.0
 
 # Author of the plugin. The author can be a company or an individual developer.
-author: 
+author: CaliBx
 
 # Copyright information.
-copyright: Copyright © 2024 . All rights reserved.
+copyright: Copyright © 2025 . All rights reserved.
 
 
 # ==================================================================================================
@@ -44,6 +44,7 @@ supportedDevices:
     # LoupedeckCtFamily covers the following devices: Loupedeck CT, Live and Live S,
     # Razer Stream Controller, and Razer Stream Controller X.
     - LoupedeckCtFamily
+    - RazerStreamControllerX
 
     # LoupedeckPlusFamily covers Loupedeck+ device. Uncomment the following line to support Loupedeck+.
     #- LoupedeckPlusFamily
@@ -54,7 +55,7 @@ pluginCapabilities:
     #- HasApplication
 
     # Uncomment the following line if the plugin sends keyboard shortcuts to the target application.
-    #- ActivatesApplication
+    - ActivatesApplication
 
 # Minimum Loupedeck version supported by the plugin.
 minimumLoupedeckVersion: 6.0
@@ -66,15 +67,15 @@ minimumLoupedeckVersion: 6.0
 
 # Name of the license that the plugin is licensed under. Select the one that you prefer.
 # NOTE: GPL license is not compatible with Loupedeck Marketplace.
-license: MIT
+license: Apache-2.0 license
 
 # URL of the plugin license.
-licenseUrl: https://opensource.org/licenses/MIT
+licenseUrl: http://www.apache.org/licenses/
 
 # URL of the support page where the users can send improvement suggestions and report bugs.
 # The URL is shown in Loupedeck Marketplace. The page can be for example a GitHub issues page.
 # NOTE: This setting is recommended when publishing the plugin in Loupedeck Marketplace.
-#supportPageUrl: https://github.com/myusername/myplugin/issues
+supportPageUrl: https://github.com/calibx/msfsdeck/discussions
 
 # URL of the plugin homepage. The URL is shown in Loupedeck Marketplace.
-#homePageUrl: https://github.com/myusername/myplugin
+homePageUrl: https://github.com/calibx/msfsdeck

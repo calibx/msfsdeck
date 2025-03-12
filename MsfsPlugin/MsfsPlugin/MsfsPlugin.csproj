@@ -39,6 +39,7 @@
 
 
   <ItemGroup>
+    <EmbeddedResource Include="metadata\Icon256x256.png" />
     <EmbeddedResource Include="Resources\16.png" />
     <EmbeddedResource Include="Resources\256.png" />
     <EmbeddedResource Include="Resources\32.png" />
