@@ -19,7 +19,7 @@
         public SimConnectWrapper()
         {
             var context = new AssemblyLoadContext("MSFSContext");
-            var pathWithEnv = @"%USERPROFILE%\AppData\Local\Logi\LogiPluginService\Plugins\MsfsPlugin";
+            var pathWithEnv = @"%USERPROFILE%\AppData\Local\Logi\LogiPluginService\Plugins\Msfs";
             var filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
             var assembly = context.LoadFromAssemblyPath(filePath + "\\SimConnectWrapper.dll");
             context.LoadFromAssemblyPath(filePath + "\\Microsoft.FlightSimulator.SimConnect.dll");
