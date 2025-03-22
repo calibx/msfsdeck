@@ -7,6 +7,7 @@
     {
         protected DefaultInput(string name, string desc, string category) : base(name, desc, category)
         {
+            SetWidget(true);
             entity = new CommonEntity();
             MsfsData.Instance.Register(this);
         }
