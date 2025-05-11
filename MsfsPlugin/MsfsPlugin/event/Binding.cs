@@ -42,8 +42,7 @@
                 // Ignore delayed change. Yes, this is not foolproof because the setting could be several
                 // changes away, but at least it avoids most of the occurrences where the value flips back
                 // and forth due to a delayed value coming from MSFS.
-                if (DoTrace)
-                    DebugTracing.Trace($"Ignoring delayed change for key '{Key}' to '{newValue}'");
+                PluginLog.Verbose($"Ignoring delayed change for key '{Key}' to '{newValue}'");
                 // Only ignore once (if the value is resent to us, we accept it):
                 ControllerPreviousValue = long.MinValue;
                 return;
@@ -52,13 +51,11 @@
             else if (ControllerChanged)
             {
                 // Ignore a change from MSFS if we are in process of sending another value to it.
-                if (DoTrace)
-                    DebugTracing.Trace($"Ignoring change for key '{Key}' to '{newValue}' since we have a new value about to be sent.");
+                PluginLog.Verbose($"Ignoring change for key '{Key}' to '{newValue}' since we have a new value about to be sent.");
                 return;
             }
 
-            if (DoTrace)
-                DebugTracing.Trace($"MSFS value for key '{Key}' changed from '{MsfsValue}' to '{newValue}'");
+            PluginLog.Verbose($"MSFS value for key '{Key}' changed from '{MsfsValue}' to '{newValue}'");
 
             MsfsValue = newValue;
             MSFSChanged = true;
@@ -69,8 +66,7 @@
         {
             SetControllerValueCalled = true;
             ControllerChanged = true;   // We need to do this even if the value is unchanged - e.g. NAV frequency swapping will only work with this
-            if (DoTrace)
-                DebugTracing.Trace($"Change {Key} from '{ControllerValue}' to '{newValue}'");
+            PluginLog.Verbose($"Change {Key} from '{ControllerValue}' to '{newValue}'");
 
             ControllerPreviousValue = ControllerValue;
             ControllerValue = newValue;
@@ -80,14 +76,11 @@
 
         public void Reset()
         {
-            DebugTracing.Trace($"Reseting Key {Key} with instance count left {resetCount}");
+            PluginLog.Verbose($"Reseting Key {Key} with instance count left {resetCount}");
             resetCount--;
             if (resetCount == 0)
             {
-                if (DoTrace)
-                {
-                    DebugTracing.Trace($"Key {Key}. Changing ControllerValue from '{ControllerValue}' to '{MsfsValue}'.");
-                }
+                PluginLog.Verbose($"Key {Key}. Changing ControllerValue from '{ControllerValue}' to '{MsfsValue}'.");
                 ControllerValue = MsfsValue;
                 ControllerChanged = false;
                 MSFSChanged = false;
@@ -98,7 +91,7 @@
 
         public void ResetController()
         {
-            DebugTracing.Trace($"Key {Key}. Changing MsfsValue from '{MsfsValue}' to '{ControllerValue}'.");
+            PluginLog.Verbose($"Key {Key}. Changing MsfsValue from '{MsfsValue}' to '{ControllerValue}'.");
             MsfsValue = ControllerValue;
             ControllerChanged = false;
             SetControllerValueCalled = false;

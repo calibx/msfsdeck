@@ -18,22 +18,35 @@
 
         public SimConnectWrapper()
         {
+            PluginLog.Info("Wrapper & sub-context initializing");
             var context = new AssemblyLoadContext("MSFSContext");
             var pathWithEnv = @"%USERPROFILE%\AppData\Local\Logi\LogiPluginService\Plugins\Msfs";
             var filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
-            var assembly = context.LoadFromAssemblyPath(filePath + "\\SimConnectWrapper.dll");
-            context.LoadFromAssemblyPath(filePath + "\\Microsoft.FlightSimulator.SimConnect.dll");
-
-            Type assemblyType = assembly.GetType("SimConnectWrapper.SimConnectWrapper");
-
-            if (assemblyType != null)
+            if (File.Exists(filePath + "\\SimConnectWrapper.dll"))
             {
-                var argTypes = Array.Empty<Type>();
-                ConstructorInfo cInfo = assemblyType.GetConstructor(argTypes);
-                simWrapper = cInfo.Invoke(null);
-            }
-        }
+                var assembly = context.LoadFromAssemblyPath(filePath + "\\SimConnectWrapper.dll");
+                PluginLog.Verbose("Wrapper DLL loaded");
+                context.LoadFromAssemblyPath(filePath + "\\Microsoft.FlightSimulator.SimConnect.dll");
+                PluginLog.Verbose("MSFS DLL loaded");
+                Type assemblyType = assembly.GetType("SimConnectWrapper.SimConnectWrapper");
+                if (assemblyType != null)
+                {
+                    var argTypes = Array.Empty<Type>();
+                    ConstructorInfo cInfo = assemblyType.GetConstructor(argTypes);
+                    simWrapper = cInfo.Invoke(null);
+                    PluginLog.Verbose("Wrapper instanciated");
+                } else
+                {
+                    PluginLog.Error("Unable to find Wrapper in sub-context");
+                }
 
+            }
+            else
+            {
+                PluginLog.Error("SimConnectWrapper.dll not found in " + filePath);
+            }
+            PluginLog.Info("Wrapper initialized");
+        }
         public void Connect() => simWrapper.InvokeMethod("Connect");
         public void Disconnect(bool unloading = false) => simWrapper.InvokeMethod("Disconnect");
         public void send(Enum eventName, uint value) => simWrapper.InvokeMethod("send", [eventName, value]);

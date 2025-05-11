@@ -28,18 +28,22 @@ namespace Loupedeck.MsfsPlugin
         // This method is called when the plugin is loaded.
         public override void Load()
         {
+            PluginLog.Info("MSFS plugin loading");
             Info.Icon16x16 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.16.png");
             Info.Icon32x32 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.32.png");
             Info.Icon48x48 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.48.png");
             Info.Icon256x256 = EmbeddedResources.ReadImage("Loupedeck.MsfsPlugin.Resources.256.png");
             MsfsData.Instance.plugin = this;
             DataTransferOut.loadEvents();
+            PluginLog.Info("MSFS plugin loaded");
         }
 
         // This method is called when the plugin is unloaded.
         public override void Unload()
         {
+            PluginLog.Info("MSFS plugin unloading");
             SimConnectWrapper.Instance.Disconnect();
+            PluginLog.Info("MSFS plugin unloaded");
         }
     }
 }
