@@ -29,13 +29,14 @@
 
         private void Refresh(object source, EventArgs e)
         {
+            PluginLog.Verbose("DAO Refreshing");
             lock (lockObject)
             {
                 try
                 {
                     if (SimConnectWrapper.Instance.IsConnected())
                     {
-                        DebugTracing.Trace("Connected");
+                        PluginLog.Verbose("Wrapper is Connected");
                         connection.SetMsfsValue(1);
                         if (!registered)
                         {
@@ -49,7 +50,7 @@
                     }
                     else
                     {
-                        DebugTracing.Trace("Disconnect");
+                        PluginLog.Verbose("Wrapper is Disconnected");
                         timer.Enabled = false;
                         timer = null;
                         connection.SetMsfsValue(0);
@@ -60,16 +61,17 @@
                 }
                 catch (COMException exception)
                 {
-                    DebugTracing.Trace(exception);
+                    PluginLog.Error("Wrapper connection error : " + exception.ToString());
                     Disconnect();
                 }
             }
         }
         public void Connect()
         {
+            
             if (connection.MsfsValue == 0)
             {
-                DebugTracing.Trace("Trying cnx");
+                PluginLog.Info("Wrapper connecting");
                 connection.SetMsfsValue(2);
                 foreach (Binding binding in MsfsData.Instance.bindings.Values)
                 {
@@ -78,6 +80,7 @@
                 MsfsData.Instance.Changed(true);
                 try
                 {
+                    PluginLog.Info("Wrapper connection initialization");
                     SimConnectWrapper.Instance.Connect();
                     timer = new System.Timers.Timer();
                     lock (timer)
@@ -90,7 +93,7 @@
                 }
                 catch (COMException ex)
                 {
-                    DebugTracing.Trace("Error during cnx" + ex.ToString());
+                    PluginLog.Error("Wrapper connection error : " +ex.ToString());
                     connection.SetMsfsValue(0);
                     foreach (Binding binding in MsfsData.Instance.bindings.Values)
                     {
@@ -103,11 +106,8 @@
       
         public void Disconnect(bool unloading = false)
         {
-            DebugTracing.Trace($"Disconnecting - unloading={unloading}");
+            PluginLog.Info("Wrapper disconnection initialization");
             SimConnectWrapper.Instance.Disconnect();
-
-            if (unloading)
-                return;
 
             connection.SetMsfsValue(0);
             foreach (Binding binding in MsfsData.Instance.bindings.Values)
@@ -115,6 +115,7 @@
                 binding.MSFSChanged = true;
             }
             MsfsData.Instance.Changed(true);
+            PluginLog.Info("Wrapper disconnected");
         }
 
         private readonly object lockObject = new object();
