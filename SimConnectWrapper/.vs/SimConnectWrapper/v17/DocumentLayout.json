@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\",
+  "WorkspaceRootPath": "\\wsl.localhost\Ubuntu\home\acarb\repos\msfsdeck\SimConnectWrapper\\",
   "Documents": [
     {
       "AbsoluteMoniker": "D:0:0:{DB485A73-E205-43D0-851E-908E8FEB3006}|SimConnectWrapper\\SimConnectWrapper.csproj|c:\\users\\calib\\source\\repos\\msfsdeck\\simconnectwrapper\\simconnectwrapper\\simconnectwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -20,9 +20,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "SimConnectWrapper.cs",
-              "DocumentMoniker": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.cs",
+              "DocumentMoniker": "\\wsl.localhost\Ubuntu\home\acarb\repos\msfsdeck\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.cs",
               "RelativeDocumentMoniker": "SimConnectWrapper\\SimConnectWrapper.cs",
-              "ToolTip": "C:\\Users\\calib\\source\\repos\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.cs",
+              "ToolTip": "\\wsl.localhost\Ubuntu\home\acarb\repos\msfsdeck\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.cs",
               "RelativeToolTip": "SimConnectWrapper\\SimConnectWrapper.cs",
               "ViewState": "AgIAACcAAAAAAAAAAAAowCcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

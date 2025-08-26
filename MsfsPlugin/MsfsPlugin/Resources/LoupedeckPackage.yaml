@@ -3,8 +3,8 @@ name: MSFS
 displayName: Microsoft Flight Simulator
 description: Plugin for MSFS 2020
 version: 4.0.0
-author: CaliBx
-copyright: CaliBx
+author: Andrew737
+copyright: Andrew737
 
 supportedDevices:
     - LoupedeckCtFamily  
@@ -17,5 +17,5 @@ pluginFileName: MSFSPlugin.dll
 pluginFolderWin: ./bin/win/
 license: Apache-2.0 license
 licenseUrl:  http://www.apache.org/licenses/
-homePageUrl: https://github.com/calibx/msfsdeck
-supportPageUrl: https://github.com/calibx/msfsdeck/discussions
+homePageUrl: https://github.com/danandrea737/msfsdeck
+supportPageUrl: https://github.com/danandrea737/msfsdeck/discussions

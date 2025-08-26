@@ -28,14 +28,14 @@ Add a new Input to change icon background size
 # Upgrading
 * Auto : for the market release, go to the market to update
 * Manual
-** Download the latest MSFSPlugin: https://github.com/calibx/msfsdeck/releases
+** Download the latest MSFSPlugin: https://github.com/danandrea737/msfsdeck/releases
 ** Doubleclick the downloaded .lplug4 file to install the plugin
 ** Validate the elevation requirement
 # Installation
 * Auto : Go to the Loupedeck market and install the plugin
 * Install Mobiflight and the WASM module
 * Manual
-** Download the latest MSFSPlugin: https://github.com/calibx/msfsdeck/releases
+** Download the latest MSFSPlugin: https://github.com/danandrea737/msfsdeck/releases
 ** Doubleclick the downloaded .lplug4 file to install the plugin
 ** Validate the elevation requirement
 # Usage
@@ -44,11 +44,11 @@ Add a new Input to change icon background size
 * Move a knob of the Loupedeck to init connection
 * Have Fun
 # Controls description
-https://github.com/calibx/msfsdeck/wiki
+https://github.com/danandrea737/msfsdeck/wiki
 # Troubleshooting
 ## N/A is displayed on each input
 The DLL isn't install correctly, verify logs, reinstall the plugin
 ## A break icon is displayed on all input
 The plugin is not connected to MSFS, move a dial or an input to init the connexion
 # Buy me a coffee
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/calibxmsfsplugin)
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/danandrea737msfsplugin)

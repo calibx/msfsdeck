@@ -2,8 +2,8 @@ type: plugin4
 name: MSFS
 displayName: Microsoft Flight Simulator
 version: 3.0.1
-author: CaliBx
-copyright: CaliBx
+author: Andrew737
+copyright: Andrew737
 
 supportedDevices:
     - LoupedeckCt  
@@ -16,5 +16,5 @@ pluginFileName: MSFSPlugin.dll
 pluginFolderWin: ./bin/win/
 license: Apache-2.0 license
 licenseUrl:  http://www.apache.org/licenses/
-homePageUrl: https://github.com/calibx/msfsdeck
-supportPageUrl: https://github.com/calibx/msfsdeck/discussions
+homePageUrl: https://github.com/danandrea737/msfsdeck
+supportPageUrl: https://github.com/danandrea737/msfsdeck/discussions

@@ -1,4 +1,4 @@
-# ==================================================================================================
+﻿# ==================================================================================================
 # GENERAL SETTINGS
 # ==================================================================================================
 
@@ -18,13 +18,13 @@ description: Plugin for MSFS 2020/2024
 pluginFileName: MsfsPlugin.dll
 
 # Plugin version.
-version: 4.0.0
+version: 4.0.10
 
 # Author of the plugin. The author can be a company or an individual developer.
-author: CaliBx
+author: Andrew737
 
 # Copyright information.
-copyright: Copyright © 2025 . All rights reserved.
+copyright: Copyright Â© 2025 . All rights reserved.
 
 
 # ==================================================================================================
@@ -75,7 +75,9 @@ licenseUrl: http://www.apache.org/licenses/
 # URL of the support page where the users can send improvement suggestions and report bugs.
 # The URL is shown in Loupedeck Marketplace. The page can be for example a GitHub issues page.
 # NOTE: This setting is recommended when publishing the plugin in Loupedeck Marketplace.
-supportPageUrl: https://github.com/calibx/msfsdeck/discussions
+supportPageUrl: https://github.com/danandrea737/msfsdeck/discussions
 
 # URL of the plugin homepage. The URL is shown in Loupedeck Marketplace.
-homePageUrl: https://github.com/calibx/msfsdeck
+homePageUrl: https://github.com/danandrea737/msfsdeck
+
+

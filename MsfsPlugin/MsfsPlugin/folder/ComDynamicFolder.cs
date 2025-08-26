@@ -1,4 +1,4 @@
-﻿namespace Loupedeck.MsfsPlugin.folder
+﻿﻿namespace Loupedeck.MsfsPlugin.folder
 {
     using System;
     using System.Collections.Generic;

@@ -14,7 +14,7 @@
         }
 
         public override PluginDynamicFolderNavigation GetNavigationArea(DeviceType _) => PluginDynamicFolderNavigation.EncoderArea;
-        public override IEnumerable<String> GetButtonPressActionNames()
+        public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
             return new[] 
             {
