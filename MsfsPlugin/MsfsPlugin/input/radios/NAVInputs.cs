@@ -1,5 +1,6 @@
-// File: MsfsPlugin/MsfsPlugin/input/RADIO_NAV/NAVInputs.cs
+// File: MsfsPlugin/MsfsPlugin/input/radios/NAVInputs.cs
 // NAV1/NAV2 keypad + FTS via MobiFlight presets (if available), with safe fallback.
+// Group: RADIO_COM
 
 namespace Loupedeck.MsfsPlugin
 {
@@ -11,38 +12,38 @@ namespace Loupedeck.MsfsPlugin
     {
         // --- Replace these with the *exact* MobiFlight preset names you have ---
         // NAV1
-        public const string NAV1_TFR     = "IFLY_737MAX_NAV1_TFR";
+        public const string NAV1_TFR = "IFLY_737MAX_NAV1_TFR";
         public const string NAV1_MODE_UP = "IFLY_737MAX_NAV1_MODE_UP";
         public const string NAV1_MODE_DN = "IFLY_737MAX_NAV1_MODE_DOWN";
-        public const string NAV1_TEST    = "IFLY_737MAX_NAV1_TEST";
-        public const string NAV1_K0      = "IFLY_737MAX_NAV1_KB_0";
-        public const string NAV1_K1      = "IFLY_737MAX_NAV1_KB_1";
-        public const string NAV1_K2      = "IFLY_737MAX_NAV1_KB_2";
-        public const string NAV1_K3      = "IFLY_737MAX_NAV1_KB_3";
-        public const string NAV1_K4      = "IFLY_737MAX_NAV1_KB_4";
-        public const string NAV1_K5      = "IFLY_737MAX_NAV1_KB_5";
-        public const string NAV1_K6      = "IFLY_737MAX_NAV1_KB_6";
-        public const string NAV1_K7      = "IFLY_737MAX_NAV1_KB_7";
-        public const string NAV1_K8      = "IFLY_737MAX_NAV1_KB_8";
-        public const string NAV1_K9      = "IFLY_737MAX_NAV1_KB_9";
-        public const string NAV1_CLR     = "IFLY_737MAX_NAV1_KB_CLR";
+        public const string NAV1_TEST = "IFLY_737MAX_NAV1_TEST";
+        public const string NAV1_K0 = "IFLY_737MAX_NAV1_KB_0";
+        public const string NAV1_K1 = "IFLY_737MAX_NAV1_KB_1";
+        public const string NAV1_K2 = "IFLY_737MAX_NAV1_KB_2";
+        public const string NAV1_K3 = "IFLY_737MAX_NAV1_KB_3";
+        public const string NAV1_K4 = "IFLY_737MAX_NAV1_KB_4";
+        public const string NAV1_K5 = "IFLY_737MAX_NAV1_KB_5";
+        public const string NAV1_K6 = "IFLY_737MAX_NAV1_KB_6";
+        public const string NAV1_K7 = "IFLY_737MAX_NAV1_KB_7";
+        public const string NAV1_K8 = "IFLY_737MAX_NAV1_KB_8";
+        public const string NAV1_K9 = "IFLY_737MAX_NAV1_KB_9";
+        public const string NAV1_CLR = "IFLY_737MAX_NAV1_KB_CLR";
 
         // NAV2
-        public const string NAV2_TFR     = "IFLY_737MAX_NAV2_TFR";
+        public const string NAV2_TFR = "IFLY_737MAX_NAV2_TFR";
         public const string NAV2_MODE_UP = "IFLY_737MAX_NAV2_MODE_UP";
         public const string NAV2_MODE_DN = "IFLY_737MAX_NAV2_MODE_DOWN";
-        public const string NAV2_TEST    = "IFLY_737MAX_NAV2_TEST";
-        public const string NAV2_K0      = "IFLY_737MAX_NAV2_KB_0";
-        public const string NAV2_K1      = "IFLY_737MAX_NAV2_KB_1";
-        public const string NAV2_K2      = "IFLY_737MAX_NAV2_KB_2";
-        public const string NAV2_K3      = "IFLY_737MAX_NAV2_KB_3";
-        public const string NAV2_K4      = "IFLY_737MAX_NAV2_KB_4";
-        public const string NAV2_K5      = "IFLY_737MAX_NAV2_KB_5";
-        public const string NAV2_K6      = "IFLY_737MAX_NAV2_KB_6";
-        public const string NAV2_K7      = "IFLY_737MAX_NAV2_KB_7";
-        public const string NAV2_K8      = "IFLY_737MAX_NAV2_KB_8";
-        public const string NAV2_K9      = "IFLY_737MAX_NAV2_KB_9";
-        public const string NAV2_CLR     = "IFLY_737MAX_NAV2_KB_CLR";
+        public const string NAV2_TEST = "IFLY_737MAX_NAV2_TEST";
+        public const string NAV2_K0 = "IFLY_737MAX_NAV2_KB_0";
+        public const string NAV2_K1 = "IFLY_737MAX_NAV2_KB_1";
+        public const string NAV2_K2 = "IFLY_737MAX_NAV2_KB_2";
+        public const string NAV2_K3 = "IFLY_737MAX_NAV2_KB_3";
+        public const string NAV2_K4 = "IFLY_737MAX_NAV2_KB_4";
+        public const string NAV2_K5 = "IFLY_737MAX_NAV2_KB_5";
+        public const string NAV2_K6 = "IFLY_737MAX_NAV2_KB_6";
+        public const string NAV2_K7 = "IFLY_737MAX_NAV2_KB_7";
+        public const string NAV2_K8 = "IFLY_737MAX_NAV2_KB_8";
+        public const string NAV2_K9 = "IFLY_737MAX_NAV2_KB_9";
+        public const string NAV2_CLR = "IFLY_737MAX_NAV2_KB_CLR";
     }
 
     internal static class NavTileMini

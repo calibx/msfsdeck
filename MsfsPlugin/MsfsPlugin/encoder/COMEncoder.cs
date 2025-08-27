@@ -1,4 +1,4 @@
-// File: MsfsPlugin/MsfsPlugin/encoder/COMEncoders.cs
+// File: MsfsPlugin/MsfsPlugin/encoder/COMEncoder.cs
 // COM split encoders only (INT/DEC) for COM1/COM2.
 // Encoder press = FTS1 (for COM1) / FTS2 (for COM2)
 // Group: RADIO_COM

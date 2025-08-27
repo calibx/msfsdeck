@@ -1,4 +1,4 @@
-// File: MsfsPlugin/MsfsPlugin/input/RADIO_COM/COMInputs.cs
+// File: MsfsPlugin/MsfsPlugin/input/radios/COMInputs.cs
 // Button tiles for COM full-value displays (COM1/COM2 Active & Standby) and FTS (swap).
 // Group: RADIO_COM
 

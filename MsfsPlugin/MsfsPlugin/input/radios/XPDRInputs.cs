@@ -1,5 +1,6 @@
-// File: MsfsPlugin/MsfsPlugin/input/RADIO_XPDR/XPDRInputs.cs
+// File: MsfsPlugin/MsfsPlugin/input/radios/XPDRInputs.cs
 // Transponder keypad + IDENT via MobiFlight presets (if available). No encoder; direct buttons.
+// Group: RADIO_COM
 
 namespace Loupedeck.MsfsPlugin
 {
@@ -8,16 +9,16 @@ namespace Loupedeck.MsfsPlugin
 
     internal static class XpdrPresets
     {
-        public const string KB0   = "IFLY_737MAX_XPDR_KB_0";
-        public const string KB1   = "IFLY_737MAX_XPDR_KB_1";
-        public const string KB2   = "IFLY_737MAX_XPDR_KB_2";
-        public const string KB3   = "IFLY_737MAX_XPDR_KB_3";
-        public const string KB4   = "IFLY_737MAX_XPDR_KB_4";
-        public const string KB5   = "IFLY_737MAX_XPDR_KB_5";
-        public const string KB6   = "IFLY_737MAX_XPDR_KB_6";
-        public const string KB7   = "IFLY_737MAX_XPDR_KB_7";
-        public const string KB8   = "IFLY_737MAX_XPDR_KB_8";
-        public const string KB9   = "IFLY_737MAX_XPDR_KB_9";
+        public const string KB0 = "IFLY_737MAX_XPDR_KB_0";
+        public const string KB1 = "IFLY_737MAX_XPDR_KB_1";
+        public const string KB2 = "IFLY_737MAX_XPDR_KB_2";
+        public const string KB3 = "IFLY_737MAX_XPDR_KB_3";
+        public const string KB4 = "IFLY_737MAX_XPDR_KB_4";
+        public const string KB5 = "IFLY_737MAX_XPDR_KB_5";
+        public const string KB6 = "IFLY_737MAX_XPDR_KB_6";
+        public const string KB7 = "IFLY_737MAX_XPDR_KB_7";
+        public const string KB8 = "IFLY_737MAX_XPDR_KB_8";
+        public const string KB9 = "IFLY_737MAX_XPDR_KB_9";
         public const string KBCLR = "IFLY_737MAX_XPDR_KB_CLR";
         public const string IDENT = "IFLY_737MAX_XPDR_IDENT";
     }
