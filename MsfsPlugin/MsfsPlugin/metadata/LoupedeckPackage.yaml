@@ -18,7 +18,7 @@ description: Plugin for MSFS 2020/2024
 pluginFileName: MsfsPlugin.dll
 
 # Plugin version.
-version: 4.0.10
+version: 4.0.15
 
 # Author of the plugin. The author can be a company or an individual developer.
 author: Andrew737
@@ -79,5 +79,10 @@ supportPageUrl: https://github.com/danandrea737/msfsdeck/discussions
 
 # URL of the plugin homepage. The URL is shown in Loupedeck Marketplace.
 homePageUrl: https://github.com/danandrea737/msfsdeck
+
+
+
+
+
 
 
