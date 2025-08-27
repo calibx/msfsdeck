@@ -32,7 +32,7 @@ namespace Loupedeck.MsfsPlugin
             => _act = Bind(BindingKeys.COM1_ACTIVE_FREQUENCY);
 
         protected override BitmapImage GetImage(PluginImageSize s)
-            => ComUi.Label(s, "COM1", ComUi.ToMHz3(_act.ControllerValue));
+            => ComUi.Label(s, "ACTIVE", ComUi.ToMHz3(_act.ControllerValue));
         protected override void ChangeValue() { /* display-only */ }
     }
 
@@ -43,7 +43,7 @@ namespace Loupedeck.MsfsPlugin
             => _stby = Bind(BindingKeys.COM1_STBY);
 
         protected override BitmapImage GetImage(PluginImageSize s)
-            => ComUi.Label(s, "COM1", ComUi.ToMHz3(_stby.ControllerValue));
+            => ComUi.Label(s, "STANDBY", ComUi.ToMHz3(_stby.ControllerValue));
         protected override void ChangeValue() { }
     }
 
@@ -54,7 +54,7 @@ namespace Loupedeck.MsfsPlugin
             => _act = Bind(BindingKeys.COM2_ACTIVE_FREQUENCY);
 
         protected override BitmapImage GetImage(PluginImageSize s)
-            => ComUi.Label(s, "COM2", ComUi.ToMHz3(_act.ControllerValue));
+            => ComUi.Label(s, "ACTIVE", ComUi.ToMHz3(_act.ControllerValue));
         protected override void ChangeValue() { }
     }
 
@@ -65,7 +65,7 @@ namespace Loupedeck.MsfsPlugin
             => _stby = Bind(BindingKeys.COM2_STBY);
 
         protected override BitmapImage GetImage(PluginImageSize s)
-            => ComUi.Label(s, "COM2", ComUi.ToMHz3(_stby.ControllerValue));
+            => ComUi.Label(s, "STANDBY", ComUi.ToMHz3(_stby.ControllerValue));
         protected override void ChangeValue() { }
     }
 

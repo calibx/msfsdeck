@@ -35,7 +35,7 @@ namespace Loupedeck.MsfsPlugin
         public Com1IntEncoder() : base("COM1 INT", "COM1 Standby integer part", "RADIO_COM", true, 118_000_000, 136_975_000, StepHz)
             => _stby = Bind(BindingKeys.COM1_STBY);
 
-        protected override string GetDisplayValue() => $"COM1\nIN\n{ComFormat.ToIntPart(_stby.ControllerValue)}";
+        protected override string GetDisplayValue() => $"{ComFormat.ToIntPart(_stby.ControllerValue)}";
         protected override long GetValue() => _stby.ControllerValue;
         protected override void SetValue(long newValue) => _stby.SetControllerValue(newValue);
 
@@ -52,7 +52,7 @@ namespace Loupedeck.MsfsPlugin
         public Com1DecEncoder() : base("COM1 DEC", "COM1 Standby decimal part", "RADIO_COM", true, 118_000_000, 136_975_000, StepHz)
             => _stby = Bind(BindingKeys.COM1_STBY);
 
-        protected override string GetDisplayValue() => $"COM1\nDEC\n{ComFormat.ToDecPart(_stby.ControllerValue)}";
+        protected override string GetDisplayValue() => $"{ComFormat.ToDecPart(_stby.ControllerValue)}";
         protected override long GetValue() => _stby.ControllerValue;
         protected override void SetValue(long newValue) => _stby.SetControllerValue(newValue);
 
@@ -68,7 +68,7 @@ namespace Loupedeck.MsfsPlugin
         public Com2IntEncoder() : base("COM2 INT", "COM2 Standby integer part", "RADIO_COM", true, 118_000_000, 136_975_000, StepHz)
             => _stby = Bind(BindingKeys.COM2_STBY);
 
-        protected override string GetDisplayValue() => $"COM2\nIN\n{ComFormat.ToIntPart(_stby.ControllerValue)}";
+        protected override string GetDisplayValue() => $"{ComFormat.ToIntPart(_stby.ControllerValue)}";
         protected override long GetValue() => _stby.ControllerValue;
         protected override void SetValue(long newValue) => _stby.SetControllerValue(newValue);
 
@@ -84,7 +84,7 @@ namespace Loupedeck.MsfsPlugin
         public Com2DecEncoder() : base("COM2 DEC", "COM2 Standby decimal part", "RADIO_COM", true, 118_000_000, 136_975_000, StepHz)
             => _stby = Bind(BindingKeys.COM2_STBY);
 
-        protected override string GetDisplayValue() => $"COM2\nDEC\n{ComFormat.ToDecPart(_stby.ControllerValue)}";
+        protected override string GetDisplayValue() => $"{ComFormat.ToDecPart(_stby.ControllerValue)}";
         protected override long GetValue() => _stby.ControllerValue;
         protected override void SetValue(long newValue) => _stby.SetControllerValue(newValue);
 
