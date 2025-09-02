@@ -1,4 +1,4 @@
-// File: MsfsPlugin/MsfsPlugin/encoder/NAV_displays.cs
+// File: MsfsPlugin/MsfsPlugin/encoder/NAVEncoder.cs
 // NAV1/NAV2 Active & Standby display tiles (2 decimals), grouped under RADIO_NAV.
 // Uses ControllerValue so it updates immediately. No MobiFlight required.
 
@@ -22,7 +22,7 @@ namespace Loupedeck.MsfsPlugin
             => _active = Bind(BindingKeys.NAV1_ACTIVE_FREQUENCY);
 
         protected override string GetDisplayValue()
-            => $"ACT\n{NavDisplayFormat.ToMHz2(_active.ControllerValue)}";
+            => $"{NavDisplayFormat.ToMHz2(_active.ControllerValue)}";
 
         protected override long GetValue() => 0;
         protected override void SetValue(long _) { }
@@ -37,7 +37,7 @@ namespace Loupedeck.MsfsPlugin
             => _stby = Bind(BindingKeys.NAV1_STBY_FREQUENCY);
 
         protected override string GetDisplayValue()
-            => $"STBY\n{NavDisplayFormat.ToMHz2(_stby.ControllerValue)}";
+            => $"{NavDisplayFormat.ToMHz2(_stby.ControllerValue)}";
 
         protected override long GetValue() => 0;
         protected override void SetValue(long _) { }
@@ -53,7 +53,7 @@ namespace Loupedeck.MsfsPlugin
             => _active = Bind(BindingKeys.NAV2_ACTIVE_FREQUENCY);
 
         protected override string GetDisplayValue()
-            => $"ACT\n{NavDisplayFormat.ToMHz2(_active.ControllerValue)}";
+            => $"{NavDisplayFormat.ToMHz2(_active.ControllerValue)}";
 
         protected override long GetValue() => 0;
         protected override void SetValue(long _) { }
@@ -68,7 +68,7 @@ namespace Loupedeck.MsfsPlugin
             => _stby = Bind(BindingKeys.NAV2_STBY_FREQUENCY);
 
         protected override string GetDisplayValue()
-            => $"STBY\n{NavDisplayFormat.ToMHz2(_stby.ControllerValue)}";
+            => $"{NavDisplayFormat.ToMHz2(_stby.ControllerValue)}";
 
         protected override long GetValue() => 0;
         protected override void SetValue(long _) { }

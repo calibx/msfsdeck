@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\acarb\\Documents\\build\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj": {}
+    "C:\\Users\\acarb\\Documents\\repo\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj": {}
   },
   "projects": {
-    "C:\\Users\\acarb\\Documents\\build\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj": {
+    "C:\\Users\\acarb\\Documents\\repo\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj": {
       "version": "4.0.3",
       "restore": {
-        "projectUniqueName": "C:\\Users\\acarb\\Documents\\build\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
+        "projectUniqueName": "C:\\Users\\acarb\\Documents\\repo\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
         "projectName": "SimConnectWrapper",
-        "projectPath": "C:\\Users\\acarb\\Documents\\build\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
+        "projectPath": "C:\\Users\\acarb\\Documents\\repo\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
         "packagesPath": "C:\\Users\\acarb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\acarb\\Documents\\build\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\obj\\",
+        "outputPath": "C:\\Users\\acarb\\Documents\\repo\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\acarb\\AppData\\Roaming\\NuGet\\NuGet.Config"

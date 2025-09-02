@@ -2,7 +2,7 @@
   "version": 2,
   "dgSpecHash": "GS802c0UNYY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\acarb\\Documents\\build\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
+  "projectFilePath": "C:\\Users\\acarb\\Documents\\repo\\msfsdeck\\SimConnectWrapper\\SimConnectWrapper\\SimConnectWrapper.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\acarb\\.nuget\\packages\\microsoft.windows.sdk.buildtools\\10.0.22621.756\\microsoft.windows.sdk.buildtools.10.0.22621.756.nupkg.sha512",
     "C:\\Users\\acarb\\.nuget\\packages\\microsoft.windowsappsdk\\1.5.240311000\\microsoft.windowsappsdk.1.5.240311000.nupkg.sha512",
